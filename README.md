@@ -1,0 +1,2 @@
+# euchre
+Web euchre game

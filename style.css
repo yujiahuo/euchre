@@ -1,0 +1,116 @@
+#gameSpace{
+	height: 600px;
+	width: 800px;
+	background-color: #004000;
+	margin: 0 auto; /* centers stuff */
+}
+
+/* CARDS */
+/* card dimensions are height:96 width:72. 1px between cards*/
+
+.card{
+	height: 96px;
+	width: 72px;
+	position: relative;
+}
+
+
+#CA{
+	background: url('cards.png') -1px -1px;
+}
+
+#CK{
+	background: url('cards.png') -877px -1px;
+}
+
+#CQ{
+	background: url('cards.png') -804px -1px;
+}
+
+#CJ{
+	background: url('cards.png') -731px -1px;
+}
+
+#C10{
+	background: url('cards.png') -658px -1px;
+}
+
+#C9{
+	background: url('cards.png') -585px -1px;
+}
+
+#SA{
+	background: url('cards.png') -1px -99px;
+}
+
+#SK{
+	background: url('cards.png') -877px -99px;
+}
+
+#SQ{
+	background: url('cards.png') -804px -99px;
+}
+
+#SJ{
+	background: url('cards.png') -731px -99px;
+}
+
+#S10{
+	background: url('cards.png') -658px -99px;
+}
+
+#S9{
+	background: url('cards.png') -585px -99px;
+}
+
+#HA{
+	background: url('cards.png') -1px -197px;
+}
+
+#HK{
+	background: url('cards.png') -877px -197px;
+}
+
+#HQ{
+	background: url('cards.png') -804px -197px;
+}
+
+#HJ{
+	background: url('cards.png') -731px -197px;
+}
+
+#H10{
+	background: url('cards.png') -658px -197px;
+}
+
+#H9{
+	background: url('cards.png') -585px -197px;
+}
+
+#DA{
+	background: url('cards.png') -1px -295px;
+}
+
+#DK{
+	background: url('cards.png') -877px -295px;
+}
+
+#DQ{
+	background: url('cards.png') -804px -295px;
+}
+
+#DJ{
+	background: url('cards.png') -731px -295px;
+}
+
+#D10{
+	background: url('cards.png') -658px -295px;
+}
+
+#D9{
+	background: url('cards.png') -585px -295px;
+}
+
+#cardBack{
+	background: url('cards.png');
+}

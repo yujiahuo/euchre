@@ -1,0 +1,35 @@
+ToDO
+
+- Make the game work
+- Sort the hand by trump/value
+- Option for open hands
+- Allow for no trump
+- AI difficulties
+- Show cards played this hand
+- Fun modes
+  - AIs can see open hands but you can't. No one will find this fun. Do it anyway.
+- Multiplayer
+- Deck choice
+
+//////////////////////////////////////
+
+Done
+
+
+//////////////////////////////////////
+
+function newHand(){
+	//get new deck of shuffled cards
+	
+	//deal them out
+	
+	//make bidding happen
+	
+	//play tricks
+}
+
+function deal(){
+	//shuffle into deck object thing
+	
+	//deal them out
+}

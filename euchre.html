@@ -1,22 +1,16 @@
 <script src="Game.js" type="text/javascript"></script>
 <script src="Card.js" type="text/javascript"></script>
-<script src="euchreControl.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="style.css">
+<script src="euchreController.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="style.css" id="style">
 
 <title>Wow so Euchre</title>
 
 <html>
 	<body onload="initialize()">
 		<div id="gameSpace">
-			<!-- south is you -->
-			<div class="player" id="south">
+			<div id="cardsContainer">
 			</div>
-			<div class="player" id="west">
-			</div>
-			<div class="player" id="north">
-			</div>
-			<div class="player" id="east">
-			</div>
+			<button onclick="newGame()">Start new game</button>
 		</div>
 	</body>
 </html>

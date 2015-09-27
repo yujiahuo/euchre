@@ -1,15 +1,23 @@
 ToDO
 
 - Make the game work
+- Going alone
+- Defending alone
 - Sort the hand by trump/value
 - Option for open hands
 - Allow for no trump
+- Stick the dealer
 - AI difficulties
 - Show cards played this hand
 - Fun modes
   - AIs can see open hands but you can't. No one will find this fun. Do it anyway.
 - Multiplayer
 - Deck choice
+- Picking dealer randomly
+- Deal euchre style (who even cares)
+- Steal the deal
+- Cutthroat
+- Card noises
 
 //////////////////////////////////////
 

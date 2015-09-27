@@ -1,7 +1,13 @@
 #gameSpace{
 	height: 600px;
-	width: 800px;
+	width: 900px;
+	/* this can make us scale with page size
+	height: 60vw;
+	width: 90vw;
+	max-height: 90vh;
+	max-width: 135vh;*/
 	background-color: #004000;
+	position: relative;
 	margin: 0 auto; /* centers stuff */
 }
 
@@ -11,9 +17,70 @@
 .card{
 	height: 96px;
 	width: 72px;
-	position: relative;
+	position: absolute;
+
+	-webkit-animation-duration: .5s;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-transition-timing-function: ease-in-out;
 }
 
+.moveSouth{
+	-webkit-animation-name: moveSouth;
+}
+
+.moveWest{
+	-webkit-animation-name: moveWest;
+}
+
+.moveNorth{
+	-webkit-animation-name: moveNorth;
+}
+
+.moveEast{
+	-webkit-animation-name: moveEast;
+}
+
+.dealerSouth{
+	top: 350;
+	left: 250;
+}
+
+.dealerWest{
+	top: 200;
+	left: 100;
+}
+
+.dealerNorth{
+	top: 100;
+	left: 200;
+}
+
+.dealerEast{
+	top: 200;
+	left: 300;
+}
+
+@-webkit-keyframes moveSouth{
+	from {}
+	to { top: 450; left: 350;}
+}
+
+@-webkit-keyframes moveWest{
+	from {}
+	to { top: 250; left: 50;}
+}
+@-webkit-keyframes moveNorth{
+	from {}
+	to { top: 50; left: 350; }
+}
+@-webkit-keyframes moveEast{
+	from {}
+	to { top: 250; left: 700;}
+}
+
+.cardBack{
+	background: url('cardBack.png') !important;
+}
 
 #CA{
 	background: url('cards.png') -1px -1px;
@@ -109,8 +176,4 @@
 
 #D9{
 	background: url('cards.png') -585px -295px;
-}
-
-#cardBack{
-	background: url('cards.png');
 }

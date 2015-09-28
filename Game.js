@@ -11,7 +11,7 @@ function Game(){
 			this.hands[i] = new Array(5);
 		}
 	
-	this.trumpCandidate = "";
+	this.trumpCandidate;
 	this.trump = "";
 	this.currentPlayer = "";
 	this.dealer = 0;
@@ -24,14 +24,12 @@ function Game(){
 	
 	this.handHistory = [];
 
-	getStyleSheet();
-	
-
 	//functions start
 	this.startNewGame = function(){
 		this.getShuffledDeck();
 		this.pickDealer();
 		this.dealHands();
+		doBidding();
 	}
 
 	this.pickDealer = function(){
@@ -90,8 +88,11 @@ function Game(){
 			card = this.deck.pop();
 			this.hands[player][cardNum] = card;
 
-			setTimeout(animateDeal, i*150, this.dealerName, playerNames[player], card.id, cardNum);
+			setTimeout(animDeal, i*100, this.dealerName, playerNames[player], card.id, cardNum);
 		}
+
+		this.trumpCandidate = this.deck.pop();
+		setTimeout(animFlipTrump, 2100, this.dealerName, this.trumpCandidate.id);
 	}
 }
 
@@ -103,40 +104,86 @@ function Game(){
  *Hella animations
  ***********/
 
-var ss; //our style sheet
-
-function getStyleSheet(){
-	ss = document.getElementById("style").sheet;
-}
-
 function placeDeck(dealer){
 	card = document.createElement("div");
 	card.className = "card cardBack dealer" + dealer;
 	document.getElementById("cardsContainer").appendChild(card);
 }
 
-//dealer and player are the names of the dealer/player
-function animateDeal(dealer, player, cardId, cardNum){
-	//create card
-	var card, destination;
+function getCardElem(dealer, cardId, flippedUp){
+	var card;
 
 	card = document.createElement("div");
-	card.className = "card cardBack dealer" + dealer;
+	card.className = "card dealer" + dealer;
+	if(!flippedUp){
+		card.classList.add("cardBack");
+	}
 	card.id = cardId;
 
 	document.getElementById("cardsContainer").appendChild(card);
 
-	card.classList.add("move" + player);
-	if (player == "South"){
-		flipCard(card);
-	}
+	return card;
 }
 
-function flipCard(card){
-	card.classList.remove("cardBack");
+//dealer and player are the names of the dealer/player
+function animDeal(dealer, player, cardId, cardNum){
+	//create card
+	var card, flippedUp;
+
+	flippedUp = (player=="South");
+	card = getCardElem(dealer, cardId, flippedUp);
+
+	setTimeout(animDealToPlayer, 50, player, card, cardNum);
 }
 
+function animDealToPlayer(player, card, cardNum){
+	switch(player){
+		case "South":
+			card.style.top = "450px";
+			card.style.left = (cardNum*20)+(390) + "px";
+			break;
+		case "West":
+			card.style.top = "250px";
+			card.style.left = (cardNum*20)+(50) + "px";
+			break;
+		case "North":
+			card.style.top = "50px";
+			card.style.left = (cardNum*20)+(390) + "px";
+			break;
+		case "East":
+			card.style.top = "250px";
+			card.style.left = (cardNum*20)+(700) + "px";
+			break;
+	} 
+}
+
+//eventually do something fancier probably
+function animFlipTrump(dealer, cardId){
+	var card;
+
+	card = getCardElem(dealer, cardId, true);
+}
+
+
+
+
+//////////////
+//Testy stuff
+//////////////
 function test(){
+	var card;
+
+	card = document.createElement("div");
+	card.className = "card cardBack";
+	card.id = "SA";
+	document.getElementById("cardsContainer").appendChild(card);
+
+	setTimeout(test2, 1000);
+}
+
+function test2(){
+	card = document.getElementById("SA");
+	card.style.left = "300px";
 }
 
 

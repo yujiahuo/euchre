@@ -18,26 +18,9 @@
 	height: 96px;
 	width: 72px;
 	position: absolute;
-
-	-webkit-animation-duration: .5s;
-	-webkit-animation-fill-mode: forwards;
-	-webkit-transition-timing-function: ease-in-out;
-}
-
-.moveSouth{
-	-webkit-animation-name: moveSouth;
-}
-
-.moveWest{
-	-webkit-animation-name: moveWest;
-}
-
-.moveNorth{
-	-webkit-animation-name: moveNorth;
-}
-
-.moveEast{
-	-webkit-animation-name: moveEast;
+	top:0px;
+	left:0px;
+	transition: all .3s;
 }
 
 .dealerSouth{
@@ -58,24 +41,6 @@
 .dealerEast{
 	top: 200;
 	left: 300;
-}
-
-@-webkit-keyframes moveSouth{
-	from {}
-	to { top: 450; left: 350;}
-}
-
-@-webkit-keyframes moveWest{
-	from {}
-	to { top: 250; left: 50;}
-}
-@-webkit-keyframes moveNorth{
-	from {}
-	to { top: 50; left: 350; }
-}
-@-webkit-keyframes moveEast{
-	from {}
-	to { top: 250; left: 700;}
 }
 
 .cardBack{

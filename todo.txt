@@ -18,6 +18,9 @@ ToDO
 - Steal the deal
 - Cutthroat
 - Card noises
+- Make the whole thing resize with window
+- Weird animation mode
+- Setting for deal speed
 
 //////////////////////////////////////
 

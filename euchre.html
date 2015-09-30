@@ -6,13 +6,23 @@
 <title>Wow so Euchre</title>
 
 <html>
-	<body onload="initialize()">
+	<body>
 		<div id="gameSpace">
+			<div id="orderUpPrompt">
+				<button onclick="orderUp()">Order Up</button>
+				<button onclick="pickSpades()">Spades</button>
+				<button onclick="pickClubs()">Clubs</button>
+				<button onclick="pickHearts()">Hearts</button>
+				<button onclick="pickDiamonds()">Diamonds</button>
+				<button onclick="pass()">Pass</button>
+			</div>
 			<div id="cardsContainer">
 			</div>
 			<button onclick="newGame()">Start new game</button>
 			<button onclick="test()">test</button>
 			<button onclick="test2()">test2</button>
+			<div id="sidebar">
+			</div>
 		</div>
 	</body>
 </html>

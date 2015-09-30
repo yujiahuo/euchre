@@ -21,6 +21,7 @@ ToDO
 - Make the whole thing resize with window
 - Weird animation mode
 - Setting for deal speed
+- Clean up params that are just globals or can be retrieved from obj
 
 //////////////////////////////////////
 

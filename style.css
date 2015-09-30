@@ -1,6 +1,6 @@
 #gameSpace{
 	height: 600px;
-	width: 900px;
+	width: 1100px;
 	/* this can make us scale with page size
 	height: 60vw;
 	width: 90vw;
@@ -11,6 +11,15 @@
 	margin: 0 auto; /* centers stuff */
 }
 
+#sidebar{
+	height: 600px;
+	width: 300px;
+	position: absolute;
+	top: 0px;
+	left: 800px;
+	background-color: #555555;
+}
+
 /* CARDS */
 /* card dimensions are height:96 width:72. 1px between cards*/
 
@@ -18,12 +27,12 @@
 	height: 96px;
 	width: 72px;
 	position: absolute;
-	top:0px;
-	left:0px;
+	top: 252px; /* (600/2)-(96/2) */
+	left: 364px;
 	transition: all .3s;
 }
 
-.dealerSouth{
+/*.dealerSouth{
 	top: 350;
 	left: 250;
 }
@@ -41,104 +50,114 @@
 .dealerEast{
 	top: 200;
 	left: 300;
-}
+}*/
 
 .cardBack{
-	background: url('cardBack.png') !important;
+	background: url('images/cardBack.png') !important;
 }
 
 #CA{
-	background: url('cards.png') -1px -1px;
+	background: url('images/cards.png') -1px -1px;
 }
 
 #CK{
-	background: url('cards.png') -877px -1px;
+	background: url('images/cards.png') -877px -1px;
 }
 
 #CQ{
-	background: url('cards.png') -804px -1px;
+	background: url('images/cards.png') -804px -1px;
 }
 
 #CJ{
-	background: url('cards.png') -731px -1px;
+	background: url('images/cards.png') -731px -1px;
 }
 
 #C10{
-	background: url('cards.png') -658px -1px;
+	background: url('images/cards.png') -658px -1px;
 }
 
 #C9{
-	background: url('cards.png') -585px -1px;
+	background: url('images/cards.png') -585px -1px;
 }
 
 #SA{
-	background: url('cards.png') -1px -99px;
+	background: url('images/cards.png') -1px -99px;
 }
 
 #SK{
-	background: url('cards.png') -877px -99px;
+	background: url('images/cards.png') -877px -99px;
 }
 
 #SQ{
-	background: url('cards.png') -804px -99px;
+	background: url('images/cards.png') -804px -99px;
 }
 
 #SJ{
-	background: url('cards.png') -731px -99px;
+	background: url('images/cards.png') -731px -99px;
 }
 
 #S10{
-	background: url('cards.png') -658px -99px;
+	background: url('images/cards.png') -658px -99px;
 }
 
 #S9{
-	background: url('cards.png') -585px -99px;
+	background: url('images/cards.png') -585px -99px;
 }
 
 #HA{
-	background: url('cards.png') -1px -197px;
+	background: url('images/cards.png') -1px -197px;
 }
 
 #HK{
-	background: url('cards.png') -877px -197px;
+	background: url('images/cards.png') -877px -197px;
 }
 
 #HQ{
-	background: url('cards.png') -804px -197px;
+	background: url('images/cards.png') -804px -197px;
 }
 
 #HJ{
-	background: url('cards.png') -731px -197px;
+	background: url('images/cards.png') -731px -197px;
 }
 
 #H10{
-	background: url('cards.png') -658px -197px;
+	background: url('images/cards.png') -658px -197px;
 }
 
 #H9{
-	background: url('cards.png') -585px -197px;
+	background: url('images/cards.png') -585px -197px;
 }
 
 #DA{
-	background: url('cards.png') -1px -295px;
+	background: url('images/cards.png') -1px -295px;
 }
 
 #DK{
-	background: url('cards.png') -877px -295px;
+	background: url('images/cards.png') -877px -295px;
 }
 
 #DQ{
-	background: url('cards.png') -804px -295px;
+	background: url('images/cards.png') -804px -295px;
 }
 
 #DJ{
-	background: url('cards.png') -731px -295px;
+	background: url('images/cards.png') -731px -295px;
 }
 
 #D10{
-	background: url('cards.png') -658px -295px;
+	background: url('images/cards.png') -658px -295px;
 }
 
 #D9{
-	background: url('cards.png') -585px -295px;
+	background: url('images/cards.png') -585px -295px;
+}
+
+#orderUpPrompt{
+	background-color: blue;
+	width: 100px;
+	height: 110px;
+	position: absolute;
+	left: 60%;
+	top: 80%;
+	display: none;
 }

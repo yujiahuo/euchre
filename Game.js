@@ -75,6 +75,20 @@ function Game(){
 			this.deck[pos] = temp;
 		}
 	}
+
+	this.addToHand = function(card){
+		this.hand[player].push(card);
+	}
+
+	this.removeFromHand = function(player, cardNum){
+		this.hands[player].splice(cardNum, 1);
+		console.log(this.hands[this.dealer]);
+	}
+
+	this.giveDealerTrump = function(){
+		this.hands[this.dealer].push(this.trumpCandidate);
+		console.log(this.hands[this.dealer]);
+	}
 }
 
 

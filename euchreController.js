@@ -3,6 +3,8 @@
 var game;
 var biddingRound = 1;
 var playersBid = 0;
+var currentPlayer;
+var bidding;
 
 function newGame(){
 	document.getElementById("cardsContainer").innerHTML = "";
@@ -15,7 +17,9 @@ function newGame(){
 
 function playGame(){
 	dealHands();
-	setTimeout(doBidding, 2500, (game.dealer+1)%4);
+	currentPlayer = game.dealer;
+	nextPlayer();
+	setTimeout(doBidding, 2500);
 }
 
 function dealHands(){
@@ -96,7 +100,7 @@ function animFlipTrump(cardId){
 	card = makeCardElem(cardId, true);
 }
 
-function doBidding(currentPlayer){
+function doBidding(){
 	//end of round of bidding
 	if(playersBid >= 4){
 		if(biddingRound == 1){
@@ -106,7 +110,7 @@ function doBidding(currentPlayer){
 			console.log("round 2 bidding starting");
 		}
 		else{
-			console.log("Bidding ends");
+			//everyone passed, reshuffle
 			return;
 		}
 	}
@@ -116,7 +120,7 @@ function doBidding(currentPlayer){
 		promptOrderUp();
 	}
 	else{
-		aiDecideOrderUp(currentPlayer);
+		aiDecideOrderUp();
 	}
 }
 
@@ -127,50 +131,61 @@ function promptOrderUp(){
 	elem.style.display = "inline";
 }
 
-function aiDecideOrderUp(player){
-	//mmake decision
-	console.log("Player " + player + " has passed");
+function aiDecideOrderUp(){
+	//make decision
+	console.log("Player " + currentPlayer + " has passed");
 	playersBid += 1;
-	setTimeout(doBidding, 1000, (player+1)%4);
+	nextPlayer();
+	setTimeout(doBidding, 1000);
 }
 
-function orderUp(){
+function pickOrderUp(){
 	console.log("You ordered up "+game.trumpCandidate.suit);
-	playersBid += 1;
-	setTimeout(doBidding, 1000, 1);
+	console.log(game.hands[game.dealer]);
+	if(game.dealer != 0){
+		aiDiscard();
+		game.giveDealerTrump();
+		game.maker = currentPlayer;
+		return;
+	}
+
 }
 
-// function pickSpades(){
-// 	playersBid += 1;
-// 	doBidding(1);
-// }
+function aiDiscard(){
+	//logic to decide which card to remove
+	game.removeFromHand(game.dealer, 1);
+}
 
-// function pickClubs(){
-// 	playersBid += 1;
-// 	doBidding(1);
-// }
+function pickSpades(){
+	console.log("You ordered up Spades");
+}
 
-// function pickHearts(){
-// 	playersBid += 1;
-// 	doBidding(1);
-// }
+function pickClubs(){
+	console.log("You ordered up Spades");
+}
 
-// function pickDiamonds(){
-// 	playersBid += 1;
-// 	doBidding(1);
-// }
+function pickHearts(){
+	console.log("You ordered up Spades");
+}
 
-// function pass(){
-// 	playersBid += 1;
-// 	doBidding(1);
-// }
+function pickDiamonds(){
+	console.log("You ordered up Spades");
+}
+
+function pass(){
+	console.log("You passed");
+	playersBid += 1;
+	nextPlayer();
+	setTimeout(doBidding, 1000);
+}
+
+function nextPlayer(){
+	currentPlayer = (currentPlayer+1)%4;
+}
 
 function playCard(card){
 	//
 }
-
-
-
 
 ///////////////////
 // Testing functions

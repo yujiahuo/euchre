@@ -2,7 +2,7 @@
  *Game class
  ***********/
 
-var dealerArray = ["South", "West", "North", "East"];
+var playerArray = ["South", "West", "North", "East"];
 
 function Game(){
 	//initialize some properties
@@ -14,12 +14,11 @@ function Game(){
 		}
 	
 	this.trumpCandidate;
-	this.trump = "";
-	this.currentPlayer = "";
-	this.dealer = 0;
-	this.dealerName = "South";
-	this.maker = "";
-	this.alonePlayer = "";
+	this.trump = ""; //suit name
+	this.currentPlayerID = 0;
+	this.dealerID = 0;
+	this.makerID = 0;
+	this.alonePlayerID = 0;
 	
 	this.nsScore = 0; //north south
 	this.weScore = 0; //west east
@@ -33,9 +32,8 @@ function Game(){
 	}
 
 	this.pickDealer = function(){
-		this.dealer = Math.floor(Math.random() * 4);
-		this.dealerName = dealerArray[this.dealer];
-		console.log(this.dealerName + this.dealer + " is the dealer.");
+		this.dealerID = Math.floor(Math.random() * 4);
+		console.log(playerArray[this.dealerID] + this.dealerID + " is the dealer.");
 	}
 
 	this.getShuffledDeck = function(){
@@ -81,13 +79,11 @@ function Game(){
 	}
 
 	this.removeFromHand = function(player, cardNum){
-		this.hands[player].splice(cardNum, 1);
-		console.log(this.hands[this.dealer]);
+		this.hands[player].splice(cardNum, 1); //it's called splice? weird huh?
 	}
 
 	this.giveDealerTrump = function(){
-		this.hands[this.dealer].push(this.trumpCandidate);
-		console.log(this.hands[this.dealer]);
+		this.hands[this.dealerID].push(this.trumpCandidate);
 	}
 }
 

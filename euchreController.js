@@ -1,10 +1,16 @@
 //Yay Controller
 
 var game;
+var currentPlayerID;
+
+//used for bidding
+var bidding;
 var biddingRound = 1;
 var playersBid = 0;
-var currentPlayer;
-var bidding;
+
+//used for playing hands
+var playersPlayed = 0;
+var handNum = 0;
 
 function newGame(){
 	document.getElementById("cardsContainer").innerHTML = "";
@@ -17,7 +23,9 @@ function newGame(){
 
 function playGame(){
 	dealHands();
-	currentPlayer = game.dealer;
+
+	//do all evil bidding for dark overlord
+	currentPlayerID = game.dealerID;
 	nextPlayer();
 	setTimeout(doBidding, 2500);
 }
@@ -29,7 +37,7 @@ function dealHands(){
 		placeDeck();
 
 		for(var i=0; i<20; i++){
-			player = (i+game.dealer)%4;
+			player = (i+game.dealerID)%4;
 			
 			cardNum = Math.floor(i/4);
 			card = game.deck.pop();
@@ -46,6 +54,72 @@ function placeDeck(){
 	makeCardElem("deck", false);
 }
 
+function doBidding(){
+	//end of round of bidding
+	if(playersBid >= 4){
+		if(biddingRound == 1){
+			//reset everything and execute rest of the function
+			biddingRound = 2;
+			playersBid = 0;
+			console.log("round 2 bidding starting");
+		}
+		else{
+			//everyone passed, reshuffle
+			console.log("everyone passed")
+			//NOTE: we need to actually start a new game here
+			return;
+		}
+	}
+
+	if(currentPlayerID == 0){
+			console.log("Your turn");
+		promptOrderUp();
+	}
+	else{
+		aiDecideOrderUp();
+	}
+}
+
+function promptOrderUp(){
+	var prompt;
+
+	elem = document.getElementById("orderUpPrompt");
+	elem.style.display = "inline";
+}
+
+function beginHands(){
+	//trump is set and all players have their starting hands
+	//game.sortHands();
+	currentPlayerID = game.dealerID;
+	nextPlayer();
+	setTimeout(playHand, 1000);
+}
+
+function playHand(){
+	if(playersPlayed >= 4){
+		handNum++;
+		if(handNum <= 5){
+			playersPlayed = 0;
+			playHand();
+		}
+	}
+
+	if(currentPlayerID == 0){
+		console.log("Your turn");
+	}
+	else{
+		aiPlayCard();
+	}
+}
+
+function nextPlayer(){
+	currentPlayerID = (currentPlayerID+1)%4;
+}
+
+///////////////////
+// Animation
+///////////////////
+
 function makeCardElem(cardId, flippedUp){
 	var card;
 
@@ -61,7 +135,6 @@ function makeCardElem(cardId, flippedUp){
 	return card;
 }
 
-//dealer and player are the names of the dealer/player
 function animDeal(playerName, cardId, cardNum){
 	//create card
 	var card, flippedUp;
@@ -100,76 +173,68 @@ function animFlipTrump(cardId){
 	card = makeCardElem(cardId, true);
 }
 
-function doBidding(){
-	//end of round of bidding
-	if(playersBid >= 4){
-		if(biddingRound == 1){
-			//reset everything and execute rest of the function
-			biddingRound = 2;
-			playersBid = 0;
-			console.log("round 2 bidding starting");
-		}
-		else{
-			//everyone passed, reshuffle
-			return;
-		}
-	}
+///////////////////
+// AI actions
+///////////////////
 
-	if(currentPlayer == 0){
-		console.log("Your turn");
-		promptOrderUp();
-	}
-	else{
-		aiDecideOrderUp();
-	}
-}
-
-function promptOrderUp(){
-	var prompt;
-
-	elem = document.getElementById("orderUpPrompt");
-	elem.style.display = "inline";
+function aiDiscard(){
+	//logic to decide which card to remove
+	game.removeFromHand(game.dealerID, 1);
 }
 
 function aiDecideOrderUp(){
 	//make decision
-	console.log("Player " + currentPlayer + " has passed");
+	console.log("Player " + currentPlayerID + " has passed");
 	playersBid += 1;
 	nextPlayer();
 	setTimeout(doBidding, 1000);
 }
 
-function pickOrderUp(){
-	console.log("You ordered up "+game.trumpCandidate.suit);
-	console.log(game.hands[game.dealer]);
-	if(game.dealer != 0){
-		aiDiscard();
-		game.giveDealerTrump();
-		game.maker = currentPlayer;
-		return;
-	}
+function aiPlayCard(){
 
 }
 
-function aiDiscard(){
-	//logic to decide which card to remove
-	game.removeFromHand(game.dealer, 1);
+///////////////////
+// Player actions
+///////////////////
+
+function pickOrderUp(){
+	console.log("You ordered up "+game.trumpCandidate.suit);
+	if(game.dealerID != 0){
+		aiDiscard();
+		game.giveDealerTrump();
+		game.makerID = currentPlayerID;
+		return;
+	}
+	beginHands();
 }
 
 function pickSpades(){
+	game.makerID = 0;
+	game.trump = "Spades";
 	console.log("You ordered up Spades");
+	beginHands();
 }
 
 function pickClubs(){
+	game.makerID = 0;
+	game.trump = "Clubs";
 	console.log("You ordered up Spades");
+	beginHands();
 }
 
 function pickHearts(){
+	game.makerID = 0;
+	game.trump = "Hearts";
 	console.log("You ordered up Spades");
+	beginHands();
 }
 
 function pickDiamonds(){
+	game.makerID = 0;
+	game.trump = "Diamonds";
 	console.log("You ordered up Spades");
+	beginHands();
 }
 
 function pass(){
@@ -177,10 +242,6 @@ function pass(){
 	playersBid += 1;
 	nextPlayer();
 	setTimeout(doBidding, 1000);
-}
-
-function nextPlayer(){
-	currentPlayer = (currentPlayer+1)%4;
 }
 
 function playCard(card){

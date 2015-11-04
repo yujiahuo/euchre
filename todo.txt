@@ -1,6 +1,11 @@
 ToDO
 
-- Make the game work
+
+++
+Put controller variables in Game?
+Split things into files
+Make sure iterating hand/trick/etc number is consistent
+
 - Going alone
 - Defending alone
 - Sort the hand by trump/value
@@ -22,6 +27,7 @@ ToDO
 - Weird animation mode
 - Setting for deal speed
 - Clean up params that are just globals or can be retrieved from obj
+- Game mode where you try to lose
 
 //////////////////////////////////////
 

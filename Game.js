@@ -10,13 +10,13 @@ function Game(){
 	this.deckSize = 24;
 	this.hands = new Array(4);
 	for(var i=0; i<4; i++){
-			this.hands[i] = new Array(5);
-		}
+		this.hands[i] = new Array(5);
+	}
 	
 	this.trumpCandidate;
 	this.trump = ""; //suit name
 	this.currentPlayerID = 0;
-	this.dealerID = 0;
+	this.dealerID = -1;
 	this.makerID = 0;
 	this.alonePlayerID = 0;
 	
@@ -25,14 +25,24 @@ function Game(){
 	
 	this.handHistory = [];
 
+	//settings that do stuff
+	this.allFaceUp;
+
+
 	//functions start
 	this.initNewGame = function(){
-		this.getShuffledDeck();
-		this.pickDealer();
+		
 	}
 
 	this.pickDealer = function(){
-		this.dealerID = Math.floor(Math.random() * 4);
+		//if we have a dealer, get the next dealer
+		if(this.dealerID > -1){
+			this.dealerID = (this.dealerID+1)%4;
+		}
+		//otherwise just randomly grab one
+		else{
+			this.dealerID = Math.floor(Math.random() * 4);
+		}
 		console.log(playerArray[this.dealerID] + this.dealerID + " is the dealer.");
 	}
 
@@ -84,6 +94,14 @@ function Game(){
 
 	this.giveDealerTrump = function(){
 		this.hands[this.dealerID].push(this.trumpCandidate);
+	}
+
+	this.resetHands = function(){
+		this.hands = new Array(4);
+		for(var i=0; i<4; i++){
+			this.hands[i] = new Array(5);
+		}
+		this.getShuffledDeck();
 	}
 }
 

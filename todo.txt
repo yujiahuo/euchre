@@ -3,8 +3,10 @@ ToDO
 
 ++
 Put controller variables in Game?
+Just refactor everything into sensible pieces
 Split things into files
 Make sure iterating hand/trick/etc number is consistent
+Make sure we use ID and Name in all var/param names
 
 - Going alone
 - Defending alone

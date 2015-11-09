@@ -9,7 +9,10 @@ suitsArray["H"] = "Hearts";
 suitsArray["D"] = "Diamonds";
 
 function Card(suit, number){
-	this.suit = suitsArray[suit];
+	this.suit = suit;
+	this.suitName = suitsArray[suit];
 	this.number = number;
 	this.id = suit + number;
+
+
 }

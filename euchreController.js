@@ -1,4 +1,6 @@
 //Yay Controller
+var tempZ = 10;
+
 
 var game;
 var currentPlayerID;
@@ -9,7 +11,7 @@ var bidding;
 var biddingRound = 1;
 var playersBid = 0;
 
-//used for playing hands
+//used for playing tricks
 var playersPlayed = 0;
 var handNum = 0;
 var trickNum = 0;
@@ -18,7 +20,7 @@ var trickPlayedCards = new Array(4);
 
 function newGame(){
 	handNum = 0;
-	document.getElementById("cardsContainer").innerHTML = "";
+	clearTable();
 	game = new Game;
 	game.initNewGame(); //does nothing right now
 	
@@ -88,6 +90,8 @@ function promptOrderUp(){
 function newHand(redealing){
 	//trump is set and all players have their starting hands
 	//game.sortHands(); eventually
+	clearTable();
+
 	if(!redealing){
 		handNum = handNum + 1;
 	}
@@ -96,14 +100,22 @@ function newHand(redealing){
 	game.getShuffledDeck();
 
 	dealHands();
+
+	for(var i=0; i<4; i++){
+		console.log(game.hands[i][0].id + " " + game.hands[i][1].id + " " + game.hands[i][2].id + " " + game.hands[i][3].id + " " + game.hands[i][4].id + " ");
+	}
+
 	currentPlayerID = game.dealerID;
 	nextPlayer();
-	trickPlayedCards = [];
 	setTimeout(doBidding, 2300);
 }
 
 function endHand(){
+	//determine winner
+}
 
+function clearTable(){
+	animClearTable();
 }
 
 function redeal(){
@@ -116,8 +128,10 @@ function redeal(){
 
 function startTricks(){
 	console.log("starting tricks");
-	trickNum = 0;
+	trickNum = 1;
 	playersPlayed = 0;
+	trickSuit = "";
+	trickPlayedCards = [];
 	currentPlayerID = game.dealerID;
 	nextPlayer();
 
@@ -127,17 +141,20 @@ function startTricks(){
 function playTrick(){
 	var cardID;
 
-	trickNum++; //start at 1
 	console.log("playing trick " + trickNum);
 	if(playersPlayed > 3){
 		if(trickNum < 5){
 			playersPlayed = 0;
+			console.log("trick ended");
 			trickNum++;
+			setTimeout(playTrick, 1000);
+			return;
 		}
 		else{
 			console.log("hand ended");
 			endHand();
 			newHand(0);
+			return
 		}
 	}
 
@@ -145,14 +162,23 @@ function playTrick(){
 		console.log("Your turn");
 	}
 	else{
+		console.log(currentPlayerID + " is playing");
 		cardID = aiPickCard(currentPlayerID);
+		console.log(currentPlayerID + " played " + cardID);
 		if(playersPlayed == 0){
 			trickSuit = cardID[0];
 		}
 		trickPlayedCards[currentPlayerID] = cardID;
+		game.removeFromHand(currentPlayerID, cardID);
+		animPlayCard(currentPlayerID, cardID);
 		playersPlayed++;
 		nextPlayer();
+		setTimeout(playTrick, 1000);
 	}
+}
+
+function endTrick(){
+
 }
 
 function nextPlayer(){
@@ -196,6 +222,7 @@ function animDeal(playerName, cardId, cardNum){
 	setTimeout(animDealToPlayer, 50, playerName, card, cardNum);
 }
 
+//called by animDeal
 function animDealToPlayer(playerName, card, cardNum){
 	switch(playerName){
 		case "South":
@@ -228,8 +255,17 @@ function animReturnHands(){
 	//bluh
 }
 
-function animPlayCard(player, cardID){
-	//bluh
+function animPlayCard(playerID, cardID){
+	var card = document.getElementById(cardID);
+
+	card.style.top = "252px";
+	card.style.left = "364px";
+	card.style.zIndex = tempZ;
+	tempZ++;
+}
+
+function animClearTable(){
+	document.getElementById("cardsContainer").innerHTML = "";
 }
 
 ///////////////////
@@ -237,7 +273,7 @@ function animPlayCard(player, cardID){
 ///////////////////
 
 function pickOrderUp(){
-	console.log("You ordered up "+game.trumpCandidate.suit);
+	console.log("You ordered up "+game.trumpCandidate.suitName);
 	var elem;
 
 	elem = document.getElementById("orderUpPrompt");
@@ -311,6 +347,8 @@ function pickCard(){
 	if(playersPlayed == 0){
 		trickSuit = this.id[0];
 	}
+	trickPlayedCards[0] = this.id;
+	animPlayCard(0, this.id);
 	playersPlayed++;
 	nextPlayer();
 
@@ -326,9 +364,10 @@ function test(){
 
 //What the fuck I've done so far and needs to be done next
 /*
- * The logic to start hands/tricks is there in theory but still needs testing
- * Next step: Make it so we can play cards. Animate them moving to the center
- *			  Factor out animation code because there will be a ton of it
+ * Tricks work
+ * Next steps: 	Enforce suit following for player
+ *				Recognize that the left follow trump suit
+ *				Factor out animation code because there will be a ton of it
 */
 
 

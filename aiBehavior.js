@@ -46,15 +46,14 @@ function aiPickCard_2(){
 ////////////////////////////////////////
 
 //LA DEE DA PLAY THE FIRST CARD THAT FOLLOWS SUIT
-//player is player name
 //returns card picked
 function aiPickCard_1(playerID){
 	if(trickSuit != ""){
-		for(var i=0; i<hand[playerID].length; i++){
-			if (hand[playerID][i].suit == trickSuit){
-				return hand[playerID][i].id;
+		for(var i=0; i<game.hands[playerID].length; i++){
+			if (game.hands[playerID][i].suit == trickSuit){
+				return game.hands[playerID][i].id;
 			}
 		}
 	}
-	return hand[playerID][0].id;
+	return game.hands[playerID][0].id;
 }

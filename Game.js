@@ -8,6 +8,8 @@ function Game(){
 	//initialize some properties
 	this.deck = [];
 	this.deckSize = 24;
+	//an array of card objects
+	//hand[0] is south, etc.
 	this.hands = new Array(4);
 	for(var i=0; i<4; i++){
 		this.hands[i] = new Array(5);
@@ -84,12 +86,19 @@ function Game(){
 		}
 	}
 
-	this.addToHand = function(card){
-		this.hand[player].push(card);
+	this.addToHand = function(playerID, card){
+		this.hands[playerID].push(card);
 	}
 
-	this.removeFromHand = function(player, cardNum){
-		this.hands[player].splice(cardNum, 1); //it's called splice? weird huh?
+	//finds index of given ID inefficiently
+	//splice removes 1 at a given index
+	//fails silently if card isn't found, which should never happen
+	this.removeFromHand = function(playerID, cardID){
+		for(var i=0; i<this.hands[playerID].length; i++){
+			if(this.hands[playerID][i].id == cardID){
+				this.hands[playerID].splice(i, 1); //it's called splice? weird huh?
+			}
+		}
 	}
 
 	this.giveDealerTrump = function(){

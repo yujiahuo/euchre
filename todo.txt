@@ -1,12 +1,9 @@
 ToDO
 
-
 ++
-Put controller variables in Game?
-Just refactor everything into sensible pieces
-Split things into files
-Make sure iterating hand/trick/etc number is consistent
-Make sure we use ID and Name in all var/param names
+Redo initialize for hands/tricks
+Get rid of redeal. newHand should handle that
+Make sure we use ID and Name in all var/param names. Also pass params more consistently
 
 - Going alone
 - Defending alone

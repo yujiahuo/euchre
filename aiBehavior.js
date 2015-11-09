@@ -4,7 +4,7 @@
 
 function aiDiscard(){
 	//logic to decide which card to remove
-	game.removeFromHand(game.dealerID, 1);
+	removeFromHand(dealerID, 1);
 }
 
 function aiDecideOrderUp(){
@@ -46,14 +46,14 @@ function aiPickCard_2(){
 ////////////////////////////////////////
 
 //LA DEE DA PLAY THE FIRST CARD THAT FOLLOWS SUIT
-//returns card picked
+//returns ID of the card picked
 function aiPickCard_1(playerID){
 	if(trickSuit != ""){
-		for(var i=0; i<game.hands[playerID].length; i++){
-			if (game.hands[playerID][i].suit == trickSuit){
-				return game.hands[playerID][i].id;
+		for(var i=0; i<hands[playerID].length; i++){
+			if(hands[playerID][i].suit == trickSuit || isLeftorRight(hands[playerID][i]) > 0){
+				return hands[playerID][i].id;
 			}
 		}
 	}
-	return game.hands[playerID][0].id;
+	return hands[playerID][0].id;
 }

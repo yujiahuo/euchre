@@ -48,11 +48,9 @@ function aiPickCard_2(){
 //LA DEE DA PLAY THE FIRST CARD THAT FOLLOWS SUIT
 //returns ID of the card picked
 function aiPickCard_1(playerID){
-	if(trickSuit != ""){
-		for(var i=0; i<hands[playerID].length; i++){
-			if(hands[playerID][i].suit == trickSuit || isLeftorRight(hands[playerID][i]) > 0){
-				return hands[playerID][i].id;
-			}
+	for(var i=0; i<hands[playerID].length; i++){
+		if(isValidPlay(hands[playerID][i])){
+			return hands[playerID][i].id;
 		}
 	}
 	return hands[playerID][0].id;

@@ -54,7 +54,7 @@ function pickDealer(){
 	else{
 		dealerID = Math.floor(Math.random() * 4);
 	}
-	console.log(playerArray[dealerID] + dealerID + " is the dealer.");
+	console.log(playerNamesMap[dealerID] + dealerID + " is the dealer.");
 }
 
 function getShuffledDeck(){
@@ -183,7 +183,7 @@ function setTrump(suit, playerID){
 }
 
 //return 1 if left, 2 if right
-function isLeftorRight(card){
+function isLeftOrRight(card){
 	if(card.number == "J"){
 		if(card.suit == trump){
 			return 2;

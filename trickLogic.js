@@ -49,6 +49,19 @@ function playTrick(){
 	}
 }
 
+function isValidPlay(card){
+	if(trickSuit == ""){
+		return true;
+	}
+	if(card.suit == trickSuit){
+		return true;
+	}
+	if(card.suit == trump && isLeftOrRight(card) > 0){
+		return true;
+	}
+	return false;
+}
+
 function endTrick(){
 
 }

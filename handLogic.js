@@ -37,7 +37,11 @@ function newHand(redealing){
 	dealHands();
 
 	for(var i=0; i<4; i++){
-		console.log(hands[i][0].id + " " + hands[i][1].id + " " + hands[i][2].id + " " + hands[i][3].id + " " + hands[i][4].id + " ");
+		console.log(hands[i][0].id + " "
+		+ hands[i][1].id + " "
+		+ hands[i][2].id + " "
+		+ hands[i][3].id + " "
+		+ hands[i][4].id + " ");
 	}
 
 	currentPlayerID = dealerID;
@@ -54,38 +58,14 @@ function pickDealer(){
 	else{
 		dealerID = Math.floor(Math.random() * 4);
 	}
-	console.log(playerNamesMap[dealerID] + dealerID + " is the dealer.");
+	animPlaceDealerButt(dealerID);
 }
 
 function getShuffledDeck(){
 	var pos,temp,size;
 	size = 24;
 
-	deck = [new Card("C","9"),
-			new Card("C","10"),
-			new Card("C","J"),
-			new Card("C","Q"),
-			new Card("C","K"),
-			new Card("C","A"),
-			new Card("S","9"),
-			new Card("S","10"),
-			new Card("S","J"),
-			new Card("S","Q"),
-			new Card("S","K"),
-			new Card("S","A"),
-			new Card("D","9"),
-			new Card("D","10"),
-			new Card("D","J"),
-			new Card("D","Q"),
-			new Card("D","K"),
-			new Card("D","A"),
-			new Card("H","9"),
-			new Card("H","10"),
-			new Card("H","J"),
-			new Card("H","Q"),
-			new Card("H","K"),
-			new Card("H","A")
-			]
+	deck = sortedDeck;
 
 	for(var i=0; i<size; i++){
 		pos = Math.floor(Math.random() * size)
@@ -104,7 +84,7 @@ function addToHand(playerID, card){
 //fails silently if card isn't found, which should never happen
 function removeFromHand(playerID, cardID){
 	for(var i=0; i<hands[playerID].length; i++){
-		if(hands[playerID][i].id == cardID){
+		if(hands[playerID][i].id === cardID){
 			hands[playerID].splice(i, 1); //it's called splice? weird huh?
 		}
 	}
@@ -129,7 +109,7 @@ function resetHands(){
 function doBidding(){
 	//end of round of bidding
 	if(playersBid > 3){
-		if(biddingRound == 1){
+		if(biddingRound === 1){
 			//reset everything and execute rest of the function
 			biddingRound = 2;
 			playersBid = 0;
@@ -143,7 +123,7 @@ function doBidding(){
 		}
 	}
 
-	if(currentPlayerID == 0){
+	if(currentPlayerID === 0){
 		console.log("Your turn");
 		promptOrderUp();
 	}
@@ -160,6 +140,10 @@ function promptOrderUp(){
 }
 
 function endHand(){
+	deckDict[rightID].suit = deckDict[rightID].id[0];
+	deckDict[rightID].number = "J";
+	deckDict[rightID].suit = deckDict[rightID].id[0];
+	deckDict[leftID].number = "J";
 	//determine winner
 }
 
@@ -178,20 +162,16 @@ function setTrump(suit, playerID){
 	elem.style.display = "none";
 
 	trump = suit;
-	leftSuit = leftMap[trump];
-	makerID = playerID;
-}
+	rightID = trump + "J";
+	deckDict[rightID].suit = trump;
+	deckDict[rightID].number = "J1";
+	//left temporarily becomes trump suit. IDs don't change, just suit and num
+	//the html elem id will NOT change
+	leftID = leftMap[trump] + "J";
+	deckDict[leftID].suit = trump;
+	deckDict[leftID].number = "J2";
 
-//return 1 if left, 2 if right
-function isLeftOrRight(card){
-	if(card.number == "J"){
-		if(card.suit == trump){
-			return 2;
-		}
-		else if(card.suit == leftSuit){
-			return 1;
-		}
-	}
+	makerID = playerID;
 }
 
 ///////////////////
@@ -199,12 +179,12 @@ function isLeftOrRight(card){
 ///////////////////
 
 function pickOrderUp(){
-	if(dealerID != 0){
+	if(dealerID !== 0){
 		aiDiscard();
 		giveDealerTrump();
 	}
 
-	setTrump(trumpCandidate, 0);
+	setTrump(trumpCandidate.suit, 0);
 	setTimeout(startTricks, 1000);
 }
 

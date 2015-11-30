@@ -1,3 +1,4 @@
+//end of bidding and start of tricks
 function startTricks(){
 	console.log("starting tricks");
 	trickNum = 1;
@@ -16,7 +17,6 @@ function playTrick(){
 	console.log("playing trick " + trickNum);
 	if(trickPlayersPlayed > 3){
 		if(trickNum < 5){
-			trickPlayersPlayed = 0;
 			console.log("trick ended");
 			trickNum++;
 			setTimeout(playTrick, 1000);
@@ -49,7 +49,6 @@ function playTrick(){
 	}
 }
 
-function isValidPlay(card){
 	if(trickSuit == ""){
 		return true;
 	}
@@ -71,13 +70,9 @@ function endTrick(){
 ///////////////////
 
 function pickCard(){
-	console.log("you played " + this.id);
 
 	if(trickPlayersPlayed == 0){
-		trickSuit = this.id[0];
 	}
-	trickPlayedCards[0] = this.id;
-	animPlayCard(0, this.id);
 	trickPlayersPlayed++;
 	nextPlayer();
 

@@ -1,15 +1,26 @@
 ToDO
 
-++
-Redo initialize for hands/tricks
-Get rid of redeal. newHand should handle that
-Make sure we use ID and Name in all var/param names. Also pass params more consistently
+Right meow functional
+- Restrict to legal bidding
+- Give dealer the ordered up card
+- Score
+- Don't allow interactions when you shouldn't be able to
 
+Clean up
+- Rename things that have stupid names
+- Animation starting function
+- Plug n chug 4 AIs
+- Redo initialize for hands/tricks
+- Get rid of redeal. newHand should handle that
+- Make sure we use ID and Name in all var/param names. Also pass params more consistently
+- Uppercase globals
+
+Enhancements
 - Going alone
 - Defending alone
 - Sort the hand by trump/value
 - Option for open hands
-- Allow for no trump
+- No trump
 - Stick the dealer
 - AI difficulties
 - Show cards played this hand
@@ -27,26 +38,3 @@ Make sure we use ID and Name in all var/param names. Also pass params more consi
 - Setting for deal speed
 - Clean up params that are just globals or can be retrieved from obj
 - Game mode where you try to lose
-
-//////////////////////////////////////
-
-Done
-
-
-//////////////////////////////////////
-
-function newHand(){
-	//get new deck of shuffled cards
-	
-	//deal them out
-	
-	//make bidding happen
-	
-	//play tricks
-}
-
-function deal(){
-	//shuffle into deck object thing
-	
-	//deal them out
-}

@@ -8,7 +8,7 @@ function initNewGame(){
 	}
 	nsScore = 0;
 	weScore = 0;
-	zIndex = 0;
+	zIndex = 1;
 
 	isBidding = false;
 	biddingRound = 0;
@@ -17,7 +17,6 @@ function initNewGame(){
 	handNum = 0;
 	trumpCandidate = "";
 	trump = "";
-	leftSuit = "";
 	dealerID = -1;
 	makerID = -1;
 	alonePlayerID = -1;

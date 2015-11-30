@@ -161,3 +161,11 @@
 	top: 80%;
 	display: none;
 }
+
+#dealerButton{
+	background: url('images/dealerButton.png');
+	background-size: contain;
+	height: 50px;
+    width: 50px; 
+	position: absolute;
+}

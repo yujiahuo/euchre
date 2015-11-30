@@ -20,7 +20,7 @@ function aiPickCard(playerID){
 
 	//decide what difficulty AI to use
 	//if(player = "North")
-	cardID = aiPickCard_1(playerID)
+	cardID = aiPickCard_1(playerID);
 
 	return cardID;
 }
@@ -49,7 +49,7 @@ function aiPickCard_2(){
 //returns ID of the card picked
 function aiPickCard_1(playerID){
 	for(var i=0; i<hands[playerID].length; i++){
-		if(isValidPlay(hands[playerID][i])){
+		if(isValidPlay(playerID, hands[playerID][i])){
 			return hands[playerID][i].id;
 		}
 	}

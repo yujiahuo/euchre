@@ -6,12 +6,8 @@
 /* Constants
 ***********************************************************/
 var DECKSIZE = 24;
-
-/**********************************************************
-/* Mappings, dicts n stuff
-***********************************************************/
-var playerNamesMap = ["South", "West", "North", "East"];
-var sortedDeck = [new Card("C","9"),
+var PLAYERNAMES = ["South", "West", "North", "East"];
+var SORTEDDECK = [new Card("C","9"),
 				  new Card("C","10"),
 				  new Card("C","J"),
 	  			  new Card("C","Q"),
@@ -36,13 +32,13 @@ var sortedDeck = [new Card("C","9"),
 				  new Card("H","K"),
 				  new Card("H","A")
 				  ];
-var deckDict = {};
-for(var i=0; i<sortedDeck.length; i++){
-	deckDict[sortedDeck[i].id] = sortedDeck[i];
+var DECKDICT = {};
+for(var i=0; i<SORTEDDECK.length; i++){
+	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
 }
 
 /**********************************************************
-/* Session data (not used yet)
+/* Session (not used yet)
 ***********************************************************/
 
 
@@ -71,7 +67,7 @@ var trump; //"C", "S", "H", "D"
 var rightID;
 var leftID;
 var dealerID;
-var makerID;
+var makers;
 var alonePlayerID;
 
 /**********************************************************
@@ -82,6 +78,8 @@ var trickNum;
 var trickSuit;
 var trickPlayedCards; //array of cards
 var currentPlayerID;
+var nsTricksWon;
+var weTricksWon;
 
 /**********************************************************
 /* Settings

@@ -5,19 +5,22 @@ Right meow functional
 - Give dealer the ordered up card
 - Score
 - Don't allow interactions when you shouldn't be able to
+- Going alone
+- Defending alone
 
 Clean up
 - Rename things that have stupid names
-- Animation starting function
+- Animation common call
 - Plug n chug 4 AIs
 - Redo initialize for hands/tricks
 - Get rid of redeal. newHand should handle that
 - Make sure we use ID and Name in all var/param names. Also pass params more consistently
-- Uppercase globals
+- Be consistent with spacing when formatting
+- Clean up hand and trick logic
+- Separate out business logic better
 
 Enhancements
-- Going alone
-- Defending alone
+- Stat mode
 - Sort the hand by trump/value
 - Option for open hands
 - No trump
@@ -29,7 +32,6 @@ Enhancements
 - Multiplayer
 - Deck choice
 - Picking dealer randomly
-- Deal euchre style (who even cares)
 - Steal the deal
 - Cutthroat
 - Card noises

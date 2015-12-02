@@ -32,26 +32,6 @@
 	transition: all .3s;
 }
 
-/*.dealerSouth{
-	top: 350;
-	left: 250;
-}
-
-.dealerWest{
-	top: 200;
-	left: 100;
-}
-
-.dealerNorth{
-	top: 100;
-	left: 200;
-}
-
-.dealerEast{
-	top: 200;
-	left: 300;
-}*/
-
 .cardBack{
 	background: url('images/cardBack.png') !important;
 }
@@ -168,4 +148,13 @@
 	height: 50px;
     width: 50px; 
 	position: absolute;
+}
+
+#blanket{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	margin: 0 auto; /* centers stuff */
+	z-index: 1;
+	display: none;
 }

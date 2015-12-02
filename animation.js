@@ -2,8 +2,9 @@
 // UI and Animation
 ///////////////////
 
-function placeDeck(){
-	makeCardElem("deck", false);
+function animStart(){
+	if(statMode) return 0;
+	return 1;
 }
 
 function makeCardElem(cardID, flippedUp){
@@ -25,39 +26,72 @@ function makeCardElem(cardID, flippedUp){
 	return card;
 }
 
-function animDeal(playerName, cardID, cardNum){
-	//create card
-	var card, flippedUp;
+function animDeal(){
+	if(!animStart()) return;
 
-	flippedUp = (playerName==="South");
-	card = makeCardElem(cardID, flippedUp);
+	var playerID;
+	var delay; //delay to second round deal
+	var elem
+	var flippedUp;
 
-	setTimeout(animDealToPlayer, 50, playerName, card, cardNum);
+	playerID = dealerID+1;
+	delay = 0;
+
+	makeCardElem("deck", false);
+
+	for(var i=0; i<hands.length; i++){
+		flippedUp = (i===0);
+		if(i%2 === dealerID%2) delay = 1;
+		else delay = 0;
+
+		for(var j=0; j<hands[i].length; j++){
+			elem = makeCardElem(hands[i][j].id, flippedUp);
+			if(j<2){
+				setTimeout(animDealSingle, i*100, playerID, elem, j);
+			}
+			else if(j===2){
+				setTimeout(animDealSingle, i*100+(delay*500), playerID, elem, j);
+			}
+			else{
+				setTimeout(animDealSingle, i*100+500, playerID, elem, j);
+			}
+		}
+		playerID = (playerID+1)%4;
+	}
+
+	setTimeout(animFlipTrump, 1500)
 }
 
-//called by animDeal
-function animDealToPlayer(playerName, card, cardNum){
-	switch(playerName){
-		case "South":
-			card.style.top = "450px";
-			card.style.left = (cardNum*20)+(320) + "px";
+function animDealSingle(playerID, cardElem, cardPos){
+
+	switch(playerID){
+		case 0:
+			cardElem.style.top = "450px";
+			cardElem.style.left = (cardPos*20)+(320) + "px";
 			break;
-		case "West":
-			card.style.top = "252px";
-			card.style.left = (cardNum*20)+(50) + "px";
+		case 1:
+			cardElem.style.top = "252px";
+			cardElem.style.left = (cardPos*20)+(50) + "px";
 			break;
-		case "North":
-			card.style.top = "50px";
-			card.style.left = (cardNum*20)+(320) + "px";
+		case 2:
+			cardElem.style.top = "50px";
+			cardElem.style.left = (cardPos*20)+(320) + "px";
 			break;
-		case "East":
-			card.style.top = "252px";
-			card.style.left = (cardNum*20)+(600) + "px";
+		case 3:
+			cardElem.style.top = "252px";
+			cardElem.style.left = (cardPos*20)+(600) + "px";
 			break;
 	} 
 }
 
+//eventually do something fancier probably
+function animFlipTrump(){
+	makeCardElem(trumpCandidate.id, true);
+}
+
 function animPlaceDealerButt(dealerID){
+	if(!animStart()) return;
+
 	var button;
 
 	button = document.getElementById("dealerButton");
@@ -86,18 +120,9 @@ function animPlaceDealerButt(dealerID){
 	}
 }
 
-//eventually do something fancier probably
-function animFlipTrump(cardID){
-	var card;
-
-	card = makeCardElem(cardID, true);
-}
-
-function animReturnHands(){
-	//bluh
-}
-
 function animPlayCard(playerID, cardID){
+	if(!animStart()) return;
+
 	var card = document.getElementById(cardID);
 
 	switch(playerID){
@@ -123,11 +148,12 @@ function animPlayCard(playerID, cardID){
 }
 
 function animWinTrick(playerID){
+	if(!animStart()) return;
+
 	var card;
 	var top;
 	var left;
 
-	console.log(playerID + "is so good");
 	switch(playerID){
 		case 0:
 			top = "450px";
@@ -157,9 +183,26 @@ function animWinTrick(playerID){
 }
 
 function animHideCards(cardElem){
+	if(!animStart()) return;
+
 	cardElem.style.display = "none";
 }
 
 function animClearTable(){
+	if(!animStart()) return;
 	document.getElementById("cardsContainer").innerHTML = "";
+}
+
+function enableBidding(){
+	var elem;
+
+	elem = document.getElementById("orderUpPrompt");
+	elem.style.display = "inline";
+}
+
+function disableBidding(){
+	var elem;
+	
+	elem = document.getElementById("orderUpPrompt");
+	elem.style.display = "none";
 }

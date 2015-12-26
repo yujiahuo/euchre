@@ -43,6 +43,9 @@ function resetHands(){
 	dealerID = -1;
 	makerID = -1;
 	alonePlayerID = -1;
+
+	nsTricksWon = 0;
+	weTricksWon = 0;
 }
 
 function pickDealer(){
@@ -114,54 +117,61 @@ function doBidding(){
 
 	if(currentPlayerID === 0){
 		console.log("Your turn");
-		enableBidding();
+		animEnableBidding();
 	}
 	else{
 		aiDecideOrderUp();
 	}
 }
 
+
 /*************************
 * Player bidding actions
 **************************/
 
 function pickOrderUp(){
+	disableActions();
 	if(dealerID !== 0){
 		aiDiscard();
 		giveDealerTrump();
 	}
 
 	setTrump(trumpCandidate.suit, 0);
-	disableBidding();
-	setTimeout(startTricks, 1000);
+	animDisableBidding();
+	startTricks();
 }
 
 function pickSpades(){
+	disableActions();
 	setTrump("S", 0);
-	disableBidding();
-	setTimeout(startTricks, 1000);
+	animDisableBidding();
+	startTricks();
 }
 
 function pickClubs(){
+	disableActions();
 	setTrump("C", 0);
-	disableBidding();
-	setTimeout(startTricks, 1000);
+	animDisableBidding();
+	startTricks();
 }
 
 function pickHearts(){
+	disableActions();
 	setTrump("H", 0);
-	disableBidding();
-	setTimeout(startTricks, 1000);
+	animDisableBidding();
+	startTricks();
 }
 
 function pickDiamonds(){
+	disableActions();
 	setTrump("D", 0);
-	disableBidding();
-	setTimeout(startTricks, 1000);
+	animDisableBidding();
+	startTricks();
 }
 
 function pass(){
-	disableBidding();
+	disableActions();
+	animDisableBidding();
 	console.log("You passed");
 	playersBid += 1;
 	nextPlayer();
@@ -179,8 +189,6 @@ function endHand(){
 	DECKDICT[leftID].number = "J";
 
 	updateScore();
-	nsTricksWon = 0;
-	weTricksWon = 0;
 }
 
 function updateScore(){
@@ -205,7 +213,5 @@ function updateScore(){
 	else{
 		console.log("something went horribly wrong with scoring");
 	}
-
-	console.log("The current score is:");
-	console.log("NS: " + nsScore + "  WE: " + weScore);
+	animShowScore();
 }

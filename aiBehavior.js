@@ -22,7 +22,14 @@ function aiPickCard(playerID){
 	//if(player = "North")
 	cardID = aiPickCard_1(playerID);
 
-	return cardID;
+	if(trickPlayersPlayed === 0){
+		trickSuit = cardID[0];
+	}
+	trickPlayedCards[currentPlayerID] = DECKDICT[cardID];
+	removeFromHand(playerID, cardID);
+	animPlayCard(playerID, cardID);
+	trickPlayersPlayed++;
+	console.log(playerID + " played " + cardID);
 }
 
 //////////////////////////////

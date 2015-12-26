@@ -34,18 +34,18 @@ function animDeal(){
 	var elem
 	var flippedUp;
 
-	playerID = dealerID+1;
+	playerID = (dealerID+1)%4;;
 	delay = 0;
 
 	makeCardElem("deck", false);
 
 	for(var i=0; i<hands.length; i++){
-		flippedUp = (i===0);
+		flippedUp = (playerID===0);
 		if(i%2 === dealerID%2) delay = 1;
 		else delay = 0;
 
 		for(var j=0; j<hands[i].length; j++){
-			elem = makeCardElem(hands[i][j].id, flippedUp);
+			elem = makeCardElem(hands[playerID][j].id, flippedUp);
 			if(j<2){
 				setTimeout(animDealSingle, i*100, playerID, elem, j);
 			}
@@ -125,6 +125,7 @@ function animPlayCard(playerID, cardID){
 
 	var card = document.getElementById(cardID);
 
+	card.classList.remove("cardBack");
 	switch(playerID){
 		case 0:
 			card.style.top = "352px";
@@ -193,16 +194,25 @@ function animClearTable(){
 	document.getElementById("cardsContainer").innerHTML = "";
 }
 
-function enableBidding(){
+//this needs to eventually only allow legal bids
+function animEnableBidding(){
 	var elem;
 
 	elem = document.getElementById("orderUpPrompt");
 	elem.style.display = "inline";
 }
 
-function disableBidding(){
+function animDisableBidding(){
 	var elem;
 	
 	elem = document.getElementById("orderUpPrompt");
 	elem.style.display = "none";
+}
+
+function animShowScore(){
+	animShowText("You: " + nsScore + "  Them: " + weScore);
+}
+
+function animShowText(text){
+	document.getElementById("sidebar").innerHTML += "<br/>" + text
 }

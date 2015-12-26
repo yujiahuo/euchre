@@ -1,6 +1,6 @@
 function newGame(){
 	//place to play with settings
-	allFaceUp = true;
+	allFaceUp = false;
 	////////
 	initNewGame();
 
@@ -20,6 +20,8 @@ function initNewGame(){
 	trickSuit = "";
 	trickPlayedCards = new Array(4);
 	currentPlayerID = -1;
+
+	disableActions();
 }
 
 function nextPlayer(){

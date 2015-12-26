@@ -73,8 +73,8 @@ var alonePlayerID;
 /**********************************************************
 /* Trick
 ***********************************************************/
-var trickplayersPlayed;
 var trickNum;
+var trickplayersPlayed;
 var trickSuit;
 var trickPlayedCards; //array of cards
 var currentPlayerID;

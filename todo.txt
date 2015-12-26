@@ -4,7 +4,6 @@ Right meow functional
 - Restrict to legal bidding
 - Give dealer the ordered up card
 - Score
-- Don't allow interactions when you shouldn't be able to
 - Going alone
 - Defending alone
 
@@ -16,7 +15,7 @@ Clean up
 - Get rid of redeal. newHand should handle that
 - Make sure we use ID and Name in all var/param names. Also pass params more consistently
 - Be consistent with spacing when formatting
-- Clean up hand and trick logic
+- Clean up trick logic
 - Separate out business logic better
 
 Enhancements
@@ -28,7 +27,7 @@ Enhancements
 - AI difficulties
 - Show cards played this hand
 - Fun modes
-  - AIs can see open hands but you can't. No one will find this fun. Do it anyway.
+  - AIs can see open hands but you can't. No one will find this fun (except Kevin). Do it anyway.
 - Multiplayer
 - Deck choice
 - Picking dealer randomly

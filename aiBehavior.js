@@ -32,6 +32,11 @@ function aiPickCard(playerID){
 	console.log(playerID + " played " + cardID);
 }
 
+//
+function aiTakeOrderedUp(playerID){
+	return aiTakeOrderedUp_1(playerID);
+}
+
 //////////////////////////////
 // Genius AI decision making
 //////////////////////////////
@@ -60,5 +65,9 @@ function aiPickCard_1(playerID){
 			return hands[playerID][i].id;
 		}
 	}
+	return hands[playerID][0].id;
+}
+
+function aiTakeOrderedUp_1(playerID){
 	return hands[playerID][0].id;
 }

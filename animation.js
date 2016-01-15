@@ -2,6 +2,7 @@
 // UI and Animation
 ///////////////////
 
+//I don't remember why I did this
 function animStart(){
 	if(statMode) return 0;
 	return 1;
@@ -22,66 +23,82 @@ function makeCardElem(cardID, flippedUp){
 	}
 
 	document.getElementById("cardsContainer").appendChild(card);
-
+	
+	card.style.zIndex = zIndex;
+	zIndex++;
+	
 	return card;
+}
+
+function animMoveCard(cardID, top, left){
+	var elem;
+	
+	elem = document.getElementById(cardID);
+	elem.style.top = top;
+	elem.style.left = left;
 }
 
 function animDeal(){
 	if(!animStart()) return;
 
-	var playerID;
+	var player;
 	var delay; //delay to second round deal
-	var elem
+	var cardID;
 	var flippedUp;
 
-	playerID = (dealerID+1)%4;;
+	player = (dealer+1)%4;;
 	delay = 0;
 
 	makeCardElem("deck", false);
 
 	for(var i=0; i<hands.length; i++){
-		flippedUp = (playerID===0);
-		if(i%2 === dealerID%2) delay = 1;
+		flippedUp = (player===players.SOUTH);
+		if(i%2 === dealer%2) delay = 1;
 		else delay = 0;
 
 		for(var j=0; j<hands[i].length; j++){
-			elem = makeCardElem(hands[playerID][j].id, flippedUp);
+			cardID = hands[player][j].id;
+			makeCardElem(cardID, flippedUp);
 			if(j<2){
-				setTimeout(animDealSingle, i*100, playerID, elem, j);
+				setTimeout(animDealSingle, i*100, player, cardID, j);
 			}
 			else if(j===2){
-				setTimeout(animDealSingle, i*100+(delay*500), playerID, elem, j);
+				setTimeout(animDealSingle, i*100+(delay*500), player, cardID, j);
 			}
 			else{
-				setTimeout(animDealSingle, i*100+500, playerID, elem, j);
+				setTimeout(animDealSingle, i*100+500, player, cardID, j);
 			}
 		}
-		playerID = (playerID+1)%4;
+		player = (player+1)%4;
 	}
 
 	setTimeout(animFlipTrump, 1500)
 }
 
-function animDealSingle(playerID, cardElem, cardPos){
-
-	switch(playerID){
-		case 0:
-			cardElem.style.top = "450px";
-			cardElem.style.left = (cardPos*20)+(320) + "px";
+function animDealSingle(player, cardID, cardPos){
+	var top;
+	var left;
+	
+	switch(player){
+		case players.SOUTH:
+			top = "450px";
+			left = (cardPos*20)+(320) + "px";
 			break;
-		case 1:
-			cardElem.style.top = "252px";
-			cardElem.style.left = (cardPos*20)+(50) + "px";
+		case players.WEST:
+			top = "252px";
+			left = (cardPos*20)+(50) + "px";
 			break;
-		case 2:
-			cardElem.style.top = "50px";
-			cardElem.style.left = (cardPos*20)+(320) + "px";
+		case players.NORTH:
+			top = "50px";
+			left = (cardPos*20)+(320) + "px";
 			break;
-		case 3:
-			cardElem.style.top = "252px";
-			cardElem.style.left = (cardPos*20)+(600) + "px";
+		case players.EAST:
+			top = "252px";
+			left = (cardPos*20)+(600) + "px";
 			break;
-	} 
+	}
+	
+	animMoveCard(cardID, top, left);
 }
 
 //eventually do something fancier probably
@@ -89,7 +106,31 @@ function animFlipTrump(){
 	makeCardElem(trumpCandidate.id, true);
 }
 
-function animPlaceDealerButt(dealerID){
+function animTakeTrump(player, toDiscardID){
+	if(!animStart()) return;
+	
+	var top;
+	var left;
+	var toDiscardElem;
+	var trumpElem;
+	
+	toDiscardElem = document.getElementById(toDiscardID);
+	trumpElem = document.getElementById(trumpCandidate.id);
+	top = toDiscardElem.style.top;
+	left = toDiscardElem.style.left;
+	
+	toDiscardElem.classList.add("cardBack");
+	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
+	
+	if(player!==players.SOUTH){
+		trumpElem.classList.add("cardBack");
+	}
+	trumpElem.style.zIndex = toDiscardElem.style.zIndex;
+	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left);
+	
+}
+
+function animPlaceDealerButt(dealer){
 	if(!animStart()) return;
 
 	var button;
@@ -100,46 +141,46 @@ function animPlaceDealerButt(dealerID){
 		button.id = "dealerButton";
 		document.getElementById("gameSpace").appendChild(button);
 	}
-	switch(dealerID){
-		case 0:
+	switch(dealer){
+		case players.SOUTH:
 			button.style.top = "470px";
 			button.style.left = "270px";
 			break;
-		case 1:
+		case players.WEST:
 			button.style.top = "272px";
 			button.style.left = "0px";
 			break;
-		case 2:
+		case players.NORTH:
 			button.style.top = "70px";
 			button.style.left = "270px";
 			break;
-		case 3:
+		case players.EAST:
 			button.style.top = "272px";
 			button.style.left = "550px";
 			break;
 	}
 }
 
-function animPlayCard(playerID, cardID){
+function animPlayCard(player, cardID){
 	if(!animStart()) return;
 
 	var card = document.getElementById(cardID);
 
 	card.classList.remove("cardBack");
-	switch(playerID){
-		case 0:
+	switch(player){
+		case players.SOUTH:
 			card.style.top = "352px";
 			card.style.left = "364px";
 			break;
-		case 1:
+		case players.WEST:
 			card.style.top = "252px";
 			card.style.left = "284px";
 			break;
-		case 2:
+		case players.NORTH:
 			card.style.top = "152px";
 			card.style.left = "364px";
 			break;
-		case 3:
+		case players.EAST:
 			card.style.top = "252px";
 			card.style.left = "444px";
 			break;
@@ -148,27 +189,27 @@ function animPlayCard(playerID, cardID){
 	zIndex++;
 }
 
-function animWinTrick(playerID){
+function animWinTrick(player){
 	if(!animStart()) return;
 
 	var card;
 	var top;
 	var left;
 
-	switch(playerID){
-		case 0:
+	switch(player){
+		case players.SOUTH:
 			top = "450px";
 			left = "320px";
 			break;
-		case 1:
+		case players.WEST:
 			top = "252px";
 			left = "50px";
 			break;
-		case 2:
+		case players.NORTH:
 			top = "50px";
 			left = "320px";
 			break;
-		case 3:
+		case players.EAST:
 			top = "252px";
 			left = "600px";
 			break;
@@ -194,19 +235,37 @@ function animClearTable(){
 	document.getElementById("cardsContainer").innerHTML = "";
 }
 
-//this needs to eventually only allow legal bids
+//let human player poke the buttons
 function animEnableBidding(){
-	var elem;
-
-	elem = document.getElementById("orderUpPrompt");
-	elem.style.display = "inline";
+	document.getElementById("orderUpPrompt").style.display = "inline";
+	document.getElementById("pass").style.display = "inline";
+	
+	if(biddingRound === 1 && hasSuit(trumpCandidate.suit, 0)){
+		document.getElementById("orderUp").style.display = "inline";
+	}
+	if(biddingRound === 2 && hasSuit(suits.SPADES, 0)){
+		document.getElementById("pickSpades").style.display = "inline";
+	}
+	if(biddingRound === 2 && hasSuit(suits.CLUBS, 0)){
+		document.getElementById("pickClubs").style.display = "inline";
+	}
+	if(biddingRound === 2 && hasSuit(suits.HEARTS, 0)){
+		document.getElementById("pickHearts").style.display = "inline";
+	}
+	if(biddingRound === 2 && hasSuit(suits.DIAMONDS, 0)){
+		document.getElementById("pickDiamonds").style.display = "inline";
+	}
 }
 
 function animDisableBidding(){
-	var elem;
+	document.getElementById("orderUpPrompt").style.display = "none";
+	document.getElementById("orderUp").style.display = "none";
+	document.getElementById("pass").style.display = "none";
 	
-	elem = document.getElementById("orderUpPrompt");
-	elem.style.display = "none";
+	document.getElementById("pickSpades").style.display = "none";
+	document.getElementById("pickClubs").style.display = "none";
+	document.getElementById("pickHearts").style.display = "none";
+	document.getElementById("pickDiamonds").style.display = "none";
 }
 
 function animShowScore(){

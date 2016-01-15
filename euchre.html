@@ -20,12 +20,12 @@
 			</div>
 
 			<div id="orderUpPrompt">
-				<button onclick="pickOrderUp()">Order Up</button>
-				<button onclick="pickSpades()">Spades</button>
-				<button onclick="pickClubs()">Clubs</button>
-				<button onclick="pickHearts()">Hearts</button>
-				<button onclick="pickDiamonds()">Diamonds</button>
-				<button onclick="pass()">Pass</button>
+				<button id="orderUp" onclick="pickOrderUp(0)">Order Up</button>
+				<button id="pickSpades" onclick="pickTrump(suits.SPADES, 0)">Spades</button>
+				<button id="pickClubs" onclick="pickTrump(suits.CLUBS, 0)">Clubs</button>
+				<button id="pickHearts" onclick="pickTrump(suits.HEARTS, 0)">Hearts</button>
+				<button id="pickDiamonds" onclick="pickTrump(suits.DIAMONDS, 0)">Diamonds</button>
+				<button id="pass" onclick="pass(0)">Pass</button>
 			</div>
 
 			<div id="blanket">

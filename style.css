@@ -29,26 +29,26 @@
 	position: absolute;
 	top: 252px; /* (600/2)-(96/2) */
 	left: 364px;
-	transition: all .3s;
+	transition: top .3s, left .3s;
 }
 
 .cardBack{
 	background: url('images/cardBack.png') !important;
 }
 
-#CA{
+#C14{
 	background: url('images/cards.png') -1px -1px;
 }
 
-#CK{
+#C13{
 	background: url('images/cards.png') -877px -1px;
 }
 
-#CQ{
+#C12{
 	background: url('images/cards.png') -804px -1px;
 }
 
-#CJ{
+#C11{
 	background: url('images/cards.png') -731px -1px;
 }
 
@@ -60,43 +60,43 @@
 	background: url('images/cards.png') -585px -1px;
 }
 
-#SA{
-	background: url('images/cards.png') -1px -99px;
+#D14{
+	background: url('images/cards.png') -1px -295px;
 }
 
-#SK{
-	background: url('images/cards.png') -877px -99px;
+#D13{
+	background: url('images/cards.png') -877px -295px;
 }
 
-#SQ{
-	background: url('images/cards.png') -804px -99px;
+#D12{
+	background: url('images/cards.png') -804px -295px;
 }
 
-#SJ{
-	background: url('images/cards.png') -731px -99px;
+#D11{
+	background: url('images/cards.png') -731px -295px;
 }
 
-#S10{
-	background: url('images/cards.png') -658px -99px;
+#D10{
+	background: url('images/cards.png') -658px -295px;
 }
 
-#S9{
-	background: url('images/cards.png') -585px -99px;
+#D9{
+	background: url('images/cards.png') -585px -295px;
 }
 
-#HA{
+#H14{
 	background: url('images/cards.png') -1px -197px;
 }
 
-#HK{
+#H13{
 	background: url('images/cards.png') -877px -197px;
 }
 
-#HQ{
+#H12{
 	background: url('images/cards.png') -804px -197px;
 }
 
-#HJ{
+#H11{
 	background: url('images/cards.png') -731px -197px;
 }
 
@@ -108,28 +108,28 @@
 	background: url('images/cards.png') -585px -197px;
 }
 
-#DA{
-	background: url('images/cards.png') -1px -295px;
+#S14{
+	background: url('images/cards.png') -1px -99px;
 }
 
-#DK{
-	background: url('images/cards.png') -877px -295px;
+#S13{
+	background: url('images/cards.png') -877px -99px;
 }
 
-#DQ{
-	background: url('images/cards.png') -804px -295px;
+#S12{
+	background: url('images/cards.png') -804px -99px;
 }
 
-#DJ{
-	background: url('images/cards.png') -731px -295px;
+#S11{
+	background: url('images/cards.png') -731px -99px;
 }
 
-#D10{
-	background: url('images/cards.png') -658px -295px;
+#S10{
+	background: url('images/cards.png') -658px -99px;
 }
 
-#D9{
-	background: url('images/cards.png') -585px -295px;
+#S9{
+	background: url('images/cards.png') -585px -99px;
 }
 
 #orderUpPrompt{

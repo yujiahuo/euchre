@@ -1,33 +1,34 @@
 /***********
- *Card class
+ *Card object
  ***********/
 
-var suitsArray = new Array();
-suitsArray["C"] = "Clubs";
-suitsArray["S"] = "Spades";
-suitsArray["H"] = "Hearts";
-suitsArray["D"] = "Diamonds";
+var suits = {
+	CLUBS: "C",
+	DIAMONDS: "D",
+	HEARTS: "H",
+	SPADES: "S",
 
-var leftMap = new Array();
-leftMap["C"] = "S";
-leftMap["S"] = "C";
-leftMap["H"] = "D";
-leftMap["D"] = "H";
+	props: {
+		"C": {"name": "Clubs", "opposite": "S"},
+		"D": {"name": "Diamonds", "opposite": "H"},
+		"H": {"name": "Hearts", "opposite": "D"},
+		"S": {"name": "Spades", "opposite": "C"},
+	},
+};
 
-var cardHierarchy = {};
-cardHierarchy["0"] = 0;
-cardHierarchy["9"] = 1;
-cardHierarchy["10"] = 2;
-cardHierarchy["J"] = 3;
-cardHierarchy["Q"] = 4;
-cardHierarchy["K"] = 5;
-cardHierarchy["A"] = 6;
-cardHierarchy["J2"] = 7;
-cardHierarchy["J1"] = 8;
+var ranks = {
+	NINE: 9,
+	TEN: 10,
+	JACK: 11,
+	QUEEN: 12,
+	KING: 13,
+	ACE: 14,
+	LEFT: 15,
+	RIGHT: 16,
+};
 
-function Card(suit, number){
-	this.suit = suit; //"C", "S", "H", "D"
-	this.suitName = suitsArray[suit];
-	this.number = number;
-	this.id = suit + number;
+function Card(suit, rank){
+	this.suit = suit;
+	this.rank = rank;
+	this.id = suit + rank;
 }

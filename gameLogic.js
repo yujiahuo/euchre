@@ -3,7 +3,6 @@ function newGame(){
 	allFaceUp = false;
 	////////
 	initNewGame();
-
 	newHand(0);
 }
 
@@ -13,17 +12,17 @@ function initNewGame(){
 	weScore = 0;
 	zIndex = 2;
 
-	handNum = 1;
+	handNum = 0;
 
 	trickplayersPlayed = 0;
 	trickNum = 1;
 	trickSuit = "";
 	trickPlayedCards = new Array(4);
-	currentPlayerID = -1;
+	currentPlayer = players.NONE;
 
 	disableActions();
 }
 
 function nextPlayer(){
-	currentPlayerID = (currentPlayerID+1)%4;
+	currentPlayer = (currentPlayer+1)%4;
 }

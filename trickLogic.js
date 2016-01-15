@@ -5,8 +5,9 @@ function startTricks(){
 	trickNum = 1;
 	nsTricksWOn = 0;
 	weTricksWon = 0;
-	currentPlayerID = dealerID;
+	currentPlayer = dealer;
 	nextPlayer();
+	isBidding = false;
 
 	if(statMode){
 		playTrick();
@@ -55,46 +56,46 @@ function playTrick(){
 		}
 	}
 
-	if(currentPlayerID === 0){
+	if(currentPlayer === players.SOUTH){
 		enableActions();
 		console.log("Your turn");
 	}
 	else{
-		console.log(currentPlayerID + " is playing");
-		aiPickCard(currentPlayerID);
+		console.log(players.props[currentPlayer].name + " is playing");
+		aiPickCard(currentPlayer);
 		nextPlayer();
 		setTimeout(playTrick, 1000);
 	}
 }
 
 function endTrick(){
-	var winnerID;
+	var winner;
 
 	console.log("trick ended");
-	winnerID = getTrickWinner();
-	currentPlayerID = winnerID;
-	if(winnerID===0 || winnerID===2) nsTricksWon += 1;
-	if(winnerID===1 || winnerID===3) weTricksWon += 1;
+	winner = getTrickWinner();
+	currentPlayer = winner;
+	if(winner===players.SOUTH || winner===players.NORTH) nsTricksWon += 1;
+	if(winner===players.WEST || winner===players.EAST) weTricksWon += 1;
 
-	console.log(winnerID + " wins the trick");
+	console.log(winner + " wins the trick");
 
-	animWinTrick(winnerID);
+	animWinTrick(winner);
 }
 
-//returns ID of winner
+//returns winning player
 function getTrickWinner(){
-	var winnerID;
+	var winner;
 	var winningCard;
 
-	winningCard = trickPlayedCards[0];
-	winnerID = 0;
+	winningCard = trickPlayedCards[players.SOUTH];
+	winner = players.SOUTH;
 	for(var i=1; i<4; i++){
 		if(isGreater(winningCard,trickPlayedCards[i])){
-			winnerID = i;
+			winner = i;
 			winningCard = trickPlayedCards[i];
 		}
 	}
-	return winnerID;
+	return winner;
 }
 
 ///////////////////
@@ -106,8 +107,15 @@ function pickCard(){
 
 	disableActions();
 	card = DECKDICT[this.id];
+	
+	if(isBidding){
+		takeTrumpCandidate(players.SOUTH, this);
+		disableActions();
+		startTricks();
+		return;
+	}
 
-	if(!isValidPlay(0, card)){
+	if(!isValidPlay(players.SOUTH, card)){
 		enableActions();
 		console.log("No. You can't play that. The suit is " + trickSuit);
 		return;
@@ -116,11 +124,11 @@ function pickCard(){
 	console.log("you played " + card.id);
 
 	if(trickPlayersPlayed === 0){
-		trickSuit = card.id[0];
+		trickSuit = card.suit;
 	}
-	trickPlayedCards[0] = card;
-	removeFromHand(0, card.id);
-	animPlayCard(0, card.id);
+	trickPlayedCards[players.SOUTH] = card;
+	removeFromHand(players.SOUTH, card);
+	animPlayCard(players.SOUTH, card.id);
 	trickPlayersPlayed++;
 	nextPlayer();
 

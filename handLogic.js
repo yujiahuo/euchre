@@ -4,18 +4,18 @@
 function newHand(redealing){
 	//trump is set and all players have their starting hands
 	//sortHands(); eventually
-	resetHands();
-	animClearTable();
-
-
 	if(!redealing){
 		handNum = handNum + 1;
 	}
 	console.log("starting hand " + handNum + ", redealing = " + redealing);
+	
+	resetHands();
+	animClearTable();
+	animDisableBidding();
+	
 	pickDealer();
 	dealHands();
-
-	currentPlayerID = dealerID;
+	currentPlayer = dealer;
 	nextPlayer();
 
 	if(statMode){
@@ -34,15 +34,14 @@ function resetHands(){
 		this.hands[i] = new Array(5);
 	}
 
-	isBidding = false;
+	isBidding = true;
 	biddingRound = 0;
 	playersBid = 0;
 
 	trumpCandidate = "";
 	trump = "";
-	dealerID = -1;
-	makerID = -1;
-	alonePlayerID = -1;
+	dealer = players.NONE;
+	alonePlayer = players.NONE;
 
 	nsTricksWon = 0;
 	weTricksWon = 0;
@@ -50,42 +49,38 @@ function resetHands(){
 
 function pickDealer(){
 	//if we have a dealer, get the next dealer
-	if(dealerID > -1){
-		dealerID = (dealerID+1)%4;
+	if(dealer !== players.NONE){
+		dealer = (dealer+1)%4;
 	}
 	//otherwise just randomly grab one
 	else{
-		dealerID = Math.floor(Math.random() * 4);
+		dealer = Math.floor(Math.random() * 4);
 	}
-	animPlaceDealerButt(dealerID);
+	animPlaceDealerButt(dealer);
 }
 
 function getShuffledDeck(){
 	var pos,temp,size;
-	size = 24;
+	size = SORTEDDECK.length;
 
-	deck = SORTEDDECK.slice(0);
-
+	deck = [];
 	for(var i=0; i<size; i++){
-		pos = Math.floor(Math.random() * size)
-		temp = deck[i];
-		deck[i] = deck[pos];
-		deck[pos] = temp;
+		deck.splice(Math.floor(Math.random() * (i+1)), 0, SORTEDDECK[i]);
 	}
 }
 
 function dealHands(){
-	var playerID, cardPos, card;
+	var player, cardPos, card;
 
 	biddingRound = 1;
 	playersBid = 0;
 
 	for(var i=0; i<20; i++){
-		playerID = (i+dealerID)%4;
+		player = (dealer+i)%4;
 		
 		cardPos = Math.floor(i/4);
 		card = deck.pop();
-		hands[playerID][cardPos] = card;
+		hands[player][cardPos] = card;
 	}
 
 	trumpCandidate = deck.pop();
@@ -115,7 +110,7 @@ function doBidding(){
 		}
 	}
 
-	if(currentPlayerID === 0){
+	if(currentPlayer === players.SOUTH){
 		console.log("Your turn");
 		animEnableBidding();
 	}
@@ -124,69 +119,15 @@ function doBidding(){
 	}
 }
 
-
-/*************************
-* Player bidding actions
-**************************/
-
-function pickOrderUp(){
-	disableActions();
-	if(dealerID !== 0){
-		aiDiscard();
-		giveDealerTrump();
-	}
-
-	setTrump(trumpCandidate.suit, 0);
-	animDisableBidding();
-	startTricks();
-}
-
-function pickSpades(){
-	disableActions();
-	setTrump("S", 0);
-	animDisableBidding();
-	startTricks();
-}
-
-function pickClubs(){
-	disableActions();
-	setTrump("C", 0);
-	animDisableBidding();
-	startTricks();
-}
-
-function pickHearts(){
-	disableActions();
-	setTrump("H", 0);
-	animDisableBidding();
-	startTricks();
-}
-
-function pickDiamonds(){
-	disableActions();
-	setTrump("D", 0);
-	animDisableBidding();
-	startTricks();
-}
-
-function pass(){
-	disableActions();
-	animDisableBidding();
-	console.log("You passed");
-	playersBid += 1;
-	nextPlayer();
-	setTimeout(doBidding, 1000);
-}
-
 /**************
  * End of Hand
  **************/
 
 function endHand(){
-	DECKDICT[rightID].suit = DECKDICT[rightID].id[0];
-	DECKDICT[rightID].number = "J";
-	DECKDICT[rightID].suit = DECKDICT[rightID].id[0];
-	DECKDICT[leftID].number = "J";
+	DECKDICT[rightID].suit = DECKDICT[rightID].suit;
+	DECKDICT[rightID].rank = ranks.JACK;
+	DECKDICT[rightID].suit = DECKDICT[rightID].suit;
+	DECKDICT[leftID].rank = ranks.JACK;
 
 	updateScore();
 }

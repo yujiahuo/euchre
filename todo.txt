@@ -1,26 +1,21 @@
 ToDO
 
 Right meow functional
-- Restrict to legal bidding
-- Give dealer the ordered up card
-- Score
+- Don't allow picking suit that was trump candidate
+- Fix giving AI ordered up card
+- Remove kitty from center and show what trump is
+
 - Going alone
 - Defending alone
 
 Clean up
-- Rename things that have stupid names
-- Animation common call
-- Plug n chug 4 AIs
-- Redo initialize for hands/tricks
-- Get rid of redeal. newHand should handle that
-- Make sure we use ID and Name in all var/param names. Also pass params more consistently
-- Be consistent with spacing when formatting
-- Clean up trick logic
-- Separate out business logic better
+- Organize anim stuff better
 
 Enhancements
-- Stat mode
 - Sort the hand by trump/value
+- Plug n chug 4 AIs who can play each other
+- Stat mode
+- If your partner is going alone, you get to see the kitty (meow)
 - Option for open hands
 - No trump
 - Stick the dealer

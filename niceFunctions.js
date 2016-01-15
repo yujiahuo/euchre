@@ -15,11 +15,12 @@ function removeFromHand(player, card){
 	}
 }
 
-function takeTrumpCandidate(player, toDiscard){
-	removeFromHand(player, toDiscard);
-	addToHand(player, toDiscard);
+//gives trump to the dealer
+function takeTrumpCandidate(toDiscard){
+	giveDealerTrump();
+	removeFromHand(dealer, toDiscard);
 	
-	animTakeTrump(player, toDiscard.id);
+	animTakeTrump(toDiscard.id);
 }
 
 function giveDealerTrump(){
@@ -55,69 +56,6 @@ function enableActions(){
 	document.getElementById("blanket").style.display = "none";
 }
 
-/**********************************************************
-/* Player stuff
-***********************************************************/
-
-function followsSuit(card){
-	if(trickSuit === ""){
-		return true;
-	}
-	if(card.suit === trickSuit){
-		return true;
-	}
-	return false;
-}
-
-function isValidPlay(player, card){
-	if(!canFollowSuit(player)){
-		return true;
-	}
-	if(followsSuit(card)){
-		return true;
-	}
-	return false;
-}
-
-//returns true if card2 is greater than card1 for this hand
-function isGreater(card1, card2){
-	if(isTrump(card1)){
-		if(!isTrump(card2)){
-			return false;
-		}
-	}
-	else if(isTrump(card2)){
-		return true;
-	}
-
-	if(followsSuit(card1)){
-		if(!followsSuit(card2)){
-			return false;
-		}
-	}
-	else if(followsSuit(card2)){
-		return true;
-	}
-
-	//both/neither are trump and both/neither follows suit
-	return (card2.rank > card1.rank);
-}
-
-function isTrump(card){
-	return card.suit===trump;
-}
-
-function canFollowSuit(player){
-	return hasSuit(trickSuit, player);
-}
-
-function hasSuit(suit, player){
-	for(var i=0; i<hands[player].length; i++){
-		if(hands[player][i].suit === suit) return true;
-	}
-	return false;
-}
-
 /*************************
 * Player bidding actions
 **************************/
@@ -129,7 +67,6 @@ function pickOrderUp(player){
 	if(dealer !== players.SOUTH || statMode){
 		disableActions();
 		aiPickUp(dealer);
-		giveDealerTrump();
 		startTricks();
 		return;
 	}

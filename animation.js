@@ -15,10 +15,7 @@ function makeCardElem(cardID, flippedUp){
 	card.className = "card";
 	card.id = cardID;
 
-	if(flippedUp || allFaceUp){
-		card.addEventListener("click", pickCard);
-	}
-	else{
+	if(!flippedUp && !allFaceUp){
 		card.classList.add("cardBack");
 	}
 
@@ -83,6 +80,7 @@ function animDealSingle(player, cardID, cardPos){
 		case players.SOUTH:
 			top = "450px";
 			left = (cardPos*20)+(320) + "px";
+			document.getElementById(cardID).addEventListener("click", pickCard);
 			break;
 		case players.WEST:
 			top = "252px";
@@ -106,7 +104,8 @@ function animFlipTrump(){
 	makeCardElem(trumpCandidate.id, true);
 }
 
-function animTakeTrump(player, toDiscardID){
+//gives trump to the dealer
+function animTakeTrump(toDiscardID){
 	if(!animStart()) return;
 	
 	var top;
@@ -122,7 +121,7 @@ function animTakeTrump(player, toDiscardID){
 	toDiscardElem.classList.add("cardBack");
 	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
 	
-	if(player!==players.SOUTH){
+	if(dealer!==players.SOUTH){
 		trumpElem.classList.add("cardBack");
 	}
 	trumpElem.style.zIndex = toDiscardElem.style.zIndex;
@@ -242,17 +241,19 @@ function animEnableBidding(){
 	
 	if(biddingRound === 1 && hasSuit(trumpCandidate.suit, 0)){
 		document.getElementById("orderUp").style.display = "inline";
+		return;
 	}
-	if(biddingRound === 2 && hasSuit(suits.SPADES, 0)){
+
+	if(canOrderUpSuit(suits.SPADES, 0)){
 		document.getElementById("pickSpades").style.display = "inline";
 	}
-	if(biddingRound === 2 && hasSuit(suits.CLUBS, 0)){
+	if(canOrderUpSuit(suits.CLUBS, 0)){
 		document.getElementById("pickClubs").style.display = "inline";
 	}
-	if(biddingRound === 2 && hasSuit(suits.HEARTS, 0)){
+	if(canOrderUpSuit(suits.HEARTS, 0)){
 		document.getElementById("pickHearts").style.display = "inline";
 	}
-	if(biddingRound === 2 && hasSuit(suits.DIAMONDS, 0)){
+	if(canOrderUpSuit(suits.DIAMONDS, 0)){
 		document.getElementById("pickDiamonds").style.display = "inline";
 	}
 }
@@ -273,5 +274,9 @@ function animShowScore(){
 }
 
 function animShowText(text){
-	document.getElementById("sidebar").innerHTML += "<br/>" + text
+	document.getElementById("sidebar").innerHTML += "<br/>" + text;
+}
+
+function OHMYGODCARD(player, card){
+	console.log("HEY " + player + " PLAYED: " + card.suit + card.rank + "(" + card.id + ")");
 }

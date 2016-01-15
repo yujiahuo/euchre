@@ -124,9 +124,8 @@ function doBidding(){
  **************/
 
 function endHand(){
-	DECKDICT[rightID].suit = DECKDICT[rightID].suit;
 	DECKDICT[rightID].rank = ranks.JACK;
-	DECKDICT[rightID].suit = DECKDICT[rightID].suit;
+	DECKDICT[leftID].suit = suits.props[DECKDICT[leftID].suit].opposite;
 	DECKDICT[leftID].rank = ranks.JACK;
 
 	updateScore();

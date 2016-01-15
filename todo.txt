@@ -1,7 +1,6 @@
 ToDO
 
 Right meow functional
-- Don't allow picking suit that was trump candidate
 - Fix giving AI ordered up card
 - Remove kitty from center and show what trump is
 
@@ -34,3 +33,11 @@ Enhancements
 - Setting for deal speed
 - Clean up params that are just globals or can be retrieved from obj
 - Game mode where you try to lose
+
+
+AI stuff
+- orderUp 	bool
+- bid		suit
+- goAlone	bool
+- pickCard	card
+- 

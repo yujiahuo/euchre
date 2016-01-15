@@ -109,8 +109,7 @@ function pickCard(){
 	card = DECKDICT[this.id];
 	
 	if(isBidding){
-		takeTrumpCandidate(players.SOUTH, this);
-		disableActions();
+		takeTrumpCandidate(card);
 		startTricks();
 		return;
 	}
@@ -121,7 +120,7 @@ function pickCard(){
 		return;
 	}
 
-	console.log("you played " + card.id);
+	OHMYGODCARD(players.SOUTH, card);
 
 	if(trickPlayersPlayed === 0){
 		trickSuit = card.suit;

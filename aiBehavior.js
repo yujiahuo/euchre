@@ -4,7 +4,7 @@
 
 function aiPickUp(player){
 	//logic to decide which card to remove
-	takeTrumpCandidate(player, hands[player][0]);
+	takeTrumpCandidate(hands[player][0]);
 }
 
 function aiDecideOrderUp(){
@@ -30,7 +30,7 @@ function aiPickCard(player){
 	removeFromHand(player, card);
 	animPlayCard(player, cardID);
 	trickPlayersPlayed++;
-	console.log(player + " played " + cardID);
+	OHMYGODCARD(player, card);
 }
 
 //////////////////////////////

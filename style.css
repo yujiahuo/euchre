@@ -139,7 +139,7 @@
 	position: absolute;
 	left: 60%;
 	top: 80%;
-	z-index: 2;
+	z-index: 9001;
 	display: none;
 }
 
@@ -156,6 +156,6 @@
 	width: 800px;
 	position: absolute;
 	margin: 0 auto; /* centers stuff */
-	z-index: 1;
+	z-index: 9000;
 	display: none;
 }

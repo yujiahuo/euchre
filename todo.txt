@@ -1,43 +1,45 @@
-ToDO
+ToDo
 
 Right meow functional
-- Fix giving AI ordered up card
-- Remove kitty from center and show what trump is
-
 - Going alone
 - Defending alone
 
 Clean up
 - Organize anim stuff better
+- Clean up AI
 
 Enhancements
 - Sort the hand by trump/value
-- Plug n chug 4 AIs who can play each other
-- Stat mode
-- If your partner is going alone, you get to see the kitty (meow)
-- Option for open hands
-- No trump
-- Stick the dealer
+- playerAPI needs to expose a bunch more stuff before AIs can do anything nice
+- Queue up your next card
+- Get rid of delay at start of player 0's turn
+- Card noises
 - AI difficulties
 - Show cards played this hand
-- Fun modes
-  - AIs can see open hands but you can't. No one will find this fun (except Kevin). Do it anyway.
+- Stat mode
+- Option for open hands
+- If your partner is going alone, you get to see the kitty (meow)
+
+Low priority
+- Speedy (instant) AI players
+- Auto-play last trick
+- Auto-pass if it's all you can do
 - Multiplayer
-- Deck choice
-- Picking dealer randomly
+- Card pack choice
 - Steal the deal
-- Cutthroat
-- Card noises
 - Make the whole thing resize with window
-- Weird animation mode
-- Setting for deal speed
-- Clean up params that are just globals or can be retrieved from obj
+
+Game modes
+- No trump
+- Stick the dealer
+- Cutthroat
+- AIs can see open hands but you can't. No one will find this fun (except Kevin). Do it anyway.
 - Game mode where you try to lose
 
 
-AI stuff
-- orderUp 	bool
-- bid		suit
-- goAlone	bool
-- pickCard	card
-- 
+AI decisions that need to be made
+- Some kind of init once it can see its hand
+- Order up or not
+- Bid on second round bidding
+- Go alone
+- Pick card to play

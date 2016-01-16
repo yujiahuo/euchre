@@ -120,6 +120,7 @@ function animTakeTrump(toDiscardID){
 	
 	toDiscardElem.classList.add("cardBack");
 	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
+	setTimeout(animHideCard, 400, toDiscardElem);
 	
 	if(dealer!==players.SOUTH){
 		trumpElem.classList.add("cardBack");
@@ -163,35 +164,41 @@ function animPlaceDealerButt(dealer){
 function animPlayCard(player, cardID){
 	if(!animStart()) return;
 
-	var card = document.getElementById(cardID);
+	var cardElem = document.getElementById(cardID);
 
-	card.classList.remove("cardBack");
+	animFlipCard(cardElem);
 	switch(player){
 		case players.SOUTH:
-			card.style.top = "352px";
-			card.style.left = "364px";
+			cardElem.style.top = "352px";
+			cardElem.style.left = "364px";
 			break;
 		case players.WEST:
-			card.style.top = "252px";
-			card.style.left = "284px";
+			cardElem.style.top = "252px";
+			cardElem.style.left = "284px";
 			break;
 		case players.NORTH:
-			card.style.top = "152px";
-			card.style.left = "364px";
+			cardElem.style.top = "152px";
+			cardElem.style.left = "364px";
 			break;
 		case players.EAST:
-			card.style.top = "252px";
-			card.style.left = "444px";
+			cardElem.style.top = "252px";
+			cardElem.style.left = "444px";
 			break;
 	}
-	card.style.zIndex = zIndex;
+	cardElem.style.zIndex = zIndex;
 	zIndex++;
+}
+
+//check for class list and flip the other way too
+//correct this in doBidding
+function animFlipCard(cardElem){
+	cardElem.classList.remove("cardBack");
 }
 
 function animWinTrick(player){
 	if(!animStart()) return;
 
-	var card;
+	var cardElem;
 	var top;
 	var left;
 
@@ -215,15 +222,28 @@ function animWinTrick(player){
 	}
 
 	for(var i=0; i<4; i++){
-		card = document.getElementById(trickPlayedCards[i].id);
-		card.style.top = top;
-		card.style.left = left;
-		card.classList.add("cardBack");
-		setTimeout(animHideCards, 400, card);
+		cardElem = document.getElementById(trickPlayedCards[i].id);
+		cardElem.style.top = top;
+		cardElem.style.left = left;
+		cardElem.classList.add("cardBack");
+		setTimeout(animHideCard, 400, cardElem);
 	}
 }
 
-function animHideCards(cardElem){
+function animRemoveKitty(){
+	if(!animStart()) return;
+
+	var elem;
+
+	elem = document.getElementById("deck");
+	setTimeout(animHideCard, 300, elem);
+	if(trumpCandidate.suit !== trump){ //trump candidate wasn't picked up
+		elem = document.getElementById(trumpCandidate.id);
+		setTimeout(animHideCard, 300, elem);
+	}
+}
+
+function animHideCard(cardElem){
 	if(!animStart()) return;
 
 	cardElem.style.display = "none";

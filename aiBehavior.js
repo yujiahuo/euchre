@@ -1,5 +1,5 @@
 ///////////////////
-// AI actions
+// AI switching
 ///////////////////
 
 function aiPickUp(player){
@@ -24,7 +24,7 @@ function aiPickCard(player){
 	cardID = card.id
 
 	if(trickPlayersPlayed === 0){
-		trickSuit = cardID[0];
+		trickSuit = card.suit;
 	}
 	trickPlayedCards[currentPlayer] = DECKDICT[cardID];
 	removeFromHand(player, card);
@@ -47,23 +47,4 @@ function aiPickCard_3(){
 
 function aiPickCard_2(){
 
-}
-
-////////////////////////////////////////
-// Absolute dipshit AI decision making
-////////////////////////////////////////
-
-//LA DEE DA PLAY THE FIRST CARD THAT FOLLOWS SUIT
-//returns ID of the card picked
-function aiPickCard_1(player){
-	for(var i=0; i<hands[player].length; i++){
-		if(isValidPlay(player, hands[player][i])){
-			return hands[player][i];
-		}
-	}
-	return hands[player][0];
-}
-
-function aiTakeOrderedUp_1(player){
-	return hands[player][0];
 }

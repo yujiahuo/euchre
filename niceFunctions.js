@@ -1,3 +1,11 @@
+/***********
+ * Utilities
+ ***********/
+
+function nextPlayer(){
+	currentPlayer = (currentPlayer+1)%4;
+}
+
 function addToHand(player, card){
 	hands[player].push(card);
 }
@@ -25,6 +33,9 @@ function takeTrumpCandidate(toDiscard){
 
 function giveDealerTrump(){
 	hands[dealer].push(trumpCandidate);
+	if(dealer === players.SOUTH){
+		document.getElementById(trumpCandidate.id).addEventListener("click", pickCard);
+	}
 }
 
 function setTrump(suit, player){

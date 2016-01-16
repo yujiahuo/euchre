@@ -29,10 +29,10 @@ var players = {
 	EAST: 3,
 
 	props: {
-		0: {"name": "South"},
-		1: {"name": "West"},
-		2: {"name": "North"},
-		3: {"name": "East"},
+		0: {"name": "South", "partner": 2},
+		1: {"name": "West", "partner": 3},
+		2: {"name": "North", "partner": 0},
+		3: {"name": "East", "partner": 1},
 	},
 }
 
@@ -62,7 +62,7 @@ var nsScore; //north south
 var weScore; //west east
 var handNum
 var trumpCandidate; //card
-var trump; //"C", "S", "H", "D"
+var trump; //suit
 var rightID;
 var leftID;
 var dealer;
@@ -84,9 +84,12 @@ var weTricksWon;
 /* Settings
 ***********************************************************/
 var allFaceUp;
+var statMode; //4 AIs play against each other
 
-//4 AIs play against each other. You can plug in any AIs you want
-var statMode;
-
+//what AIs to plug for each player
+var southAI;
+var eastAI;
+var northAI;
+var westAI;
 
 

@@ -101,6 +101,9 @@ function doBidding(){
 			biddingRound = 2;
 			playersBid = 0;
 			console.log("round 2 bidding starting");
+
+			var elem = document.getElementById(trumpCandidate.id);
+			elem.classList.add("cardBack");
 		}
 		else{
 			//everyone passed, reshuffle
@@ -129,29 +132,4 @@ function endHand(){
 	DECKDICT[leftID].rank = ranks.JACK;
 
 	updateScore();
-}
-
-function updateScore(){
-	if(nsTricksWon > weTricksWon){
-		//got all tricks or euchred other team
-		if(nsTricksWon===5 || makers==="we"){
-			nsScore += 2;
-		}
-		else{
-			nsScore += 1;
-		}
-	}
-	else if(weTricksWon > nsTricksWon){
-		//got all tricks or euchred other team
-		if(weTricksWon===5 || makers==="ns"){
-			weScore += 2;
-		}
-		else{
-			weScore += 1;
-		}
-	}
-	else{
-		console.log("something went horribly wrong with scoring");
-	}
-	animShowScore();
 }

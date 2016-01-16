@@ -1,13 +1,14 @@
 //end of bidding and start of tricks
 function startTricks(){
 	console.log("starting tricks");
-	initNewTrick();
 	trickNum = 1;
 	nsTricksWOn = 0;
 	weTricksWon = 0;
 	currentPlayer = dealer;
 	nextPlayer();
 	isBidding = false;
+	initNewTrick();
+	animRemoveKitty();
 
 	if(statMode){
 		playTrick();
@@ -17,6 +18,7 @@ function startTricks(){
 	}
 }
 
+//called before each trick
 function initNewTrick(){
 	trickPlayersPlayed = 0;
 	trickSuit = "";
@@ -53,6 +55,12 @@ function playTrick(){
 				setTimeout(newHand, 1000, 0);
 			}
 			return
+		}
+	}
+
+	if(alonePlayer !== players.NONE){
+		if(currentPlayer === players.props[alonePlayer].partner){
+			return;
 		}
 	}
 

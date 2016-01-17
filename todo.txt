@@ -9,7 +9,6 @@ Clean up
 - Clean up AI
 
 Enhancements
-- Sort the hand by trump/value
 - playerAPI needs to expose a bunch more stuff before AIs can do anything nice
 - Queue up your next card
 - Get rid of delay at start of player 0's turn

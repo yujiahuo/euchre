@@ -14,6 +14,7 @@ function startTricks(){
 		playTrick();
 	}
 	else{
+		setTimeout(animSortHand, 500);
 		setTimeout(playTrick, 1000);
 	}
 }

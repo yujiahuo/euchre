@@ -33,6 +33,8 @@ function animMoveCard(cardID, top, left){
 	elem = document.getElementById(cardID);
 	elem.style.top = top;
 	elem.style.left = left;
+	elem.style.zIndex = zIndex;
+	zIndex++;
 }
 
 function animDeal(){
@@ -56,6 +58,10 @@ function animDeal(){
 		for(var j=0; j<hands[i].length; j++){
 			cardID = hands[player][j].id;
 			makeCardElem(cardID, flippedUp);
+			if(flippedUp){
+				document.getElementById(cardID).addEventListener("click", pickCard);
+			}
+
 			if(j<2){
 				setTimeout(animDealSingle, i*100, player, cardID, j);
 			}
@@ -80,7 +86,6 @@ function animDealSingle(player, cardID, cardPos){
 		case players.SOUTH:
 			top = "450px";
 			left = (cardPos*20)+(320) + "px";
-			document.getElementById(cardID).addEventListener("click", pickCard);
 			break;
 		case players.WEST:
 			top = "252px";
@@ -161,32 +166,70 @@ function animPlaceDealerButt(dealer){
 	}
 }
 
+//sorts human player hand by alphabetical suit (after trump), then rank
+//within each suit
+function animSortHand(){
+	var sortedDict = [];
+	var key;
+	var suit;
+	var pos;
+
+	for(var i=0; i<5; i++){
+		key = 0;
+		suit = hands[players.SOUTH][i].suit;
+		switch(suit){
+			case trump:
+				break;
+			case suits.CLUBS:
+				key += 100;
+				break;
+			case suits.DIAMONDS:
+				key += 200;
+				break;
+			case suits.HEARTS:
+				key += 300;
+				break;
+			case suits.SPADES:
+				key += 400;
+				break;
+		}
+		key += (20 - hands[players.SOUTH][i].rank); //highest ranks come first
+		sortedDict[key] = hands[players.SOUTH][i].id;
+	}
+	
+	pos = 1;
+	for(key in sortedDict){
+		animDealSingle(players.SOUTH, sortedDict[key], pos);
+		pos++;
+	}
+}
+
 function animPlayCard(player, cardID){
 	if(!animStart()) return;
 
-	var cardElem = document.getElementById(cardID);
+	var top;
+	var left;
 
-	animFlipCard(cardElem);
+	animFlipCard(document.getElementById(cardID));
 	switch(player){
 		case players.SOUTH:
-			cardElem.style.top = "352px";
-			cardElem.style.left = "364px";
+			top = "352px";
+			left = "364px";
 			break;
 		case players.WEST:
-			cardElem.style.top = "252px";
-			cardElem.style.left = "284px";
+			top = "252px";
+			left = "284px";
 			break;
 		case players.NORTH:
-			cardElem.style.top = "152px";
-			cardElem.style.left = "364px";
+			top = "152px";
+			left = "364px";
 			break;
 		case players.EAST:
-			cardElem.style.top = "252px";
-			cardElem.style.left = "444px";
+			top = "252px";
+			left = "444px";
 			break;
 	}
-	cardElem.style.zIndex = zIndex;
-	zIndex++;
+	animMoveCard(cardID, top, left);
 }
 
 //check for class list and flip the other way too

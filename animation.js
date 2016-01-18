@@ -75,7 +75,8 @@ function animDeal(){
 		player = (player+1)%4;
 	}
 
-	setTimeout(animFlipTrump, 1500)
+	setTimeout(animFlipTrump, 1500);
+	setTimeout(animSortHand, 1500);
 }
 
 function animDealSingle(player, cardID, cardPos){
@@ -169,6 +170,8 @@ function animPlaceDealerButt(dealer){
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
 function animSortHand(){
+	if(!animStart()) return;
+
 	var sortedDict = [];
 	var key;
 	var suit;
@@ -197,9 +200,9 @@ function animSortHand(){
 		sortedDict[key] = hands[players.SOUTH][i].id;
 	}
 	
-	pos = 1;
+	pos = 0;
 	for(key in sortedDict){
-		animDealSingle(players.SOUTH, sortedDict[key], pos);
+		setTimeout(animDealSingle, 300, players.SOUTH, sortedDict[key], pos);
 		pos++;
 	}
 }

@@ -1,5 +1,5 @@
 ///////////////////
-// AI switching
+// Basically some AI wrappers
 ///////////////////
 
 function aiPickUp(player){

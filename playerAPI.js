@@ -71,3 +71,7 @@ function canOrderUpSuit(suit, player){
 	}
 	return false;
 }
+
+function myHand(){
+	return hands[currentPlayer];
+}

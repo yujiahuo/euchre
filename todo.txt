@@ -10,8 +10,9 @@ Clean up
 
 Enhancements
 - playerAPI needs to expose a bunch more stuff before AIs can do anything nice
+- Make AI stuff way prettier. Stop doing things that make no sense in aiBehavior
 - Queue up your next card
-- Get rid of delay at start of player 0's turn
+	- Get rid of delay at start of player 0's turn
 - Card noises
 - AI difficulties
 - Show cards played this hand

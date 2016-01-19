@@ -29,7 +29,7 @@ function aiChooseTrump(){}
 // Return true if going alone
 //Params: none
 //Returns: bool
-function goAlone(){}
+function chooseGoAlone(){}
 
 //Your turn to play a card
 //Params: none

@@ -34,7 +34,7 @@ function takeTrumpCandidate(toDiscard){
 function giveDealerTrump(){
 	hands[dealer].push(trumpCandidate);
 	if(dealer === players.SOUTH){
-		document.getElementById(trumpCandidate.id).addEventListener("click", pickCard);
+		document.getElementById(trumpCandidate.id).addEventListener("click", clickCard);
 	}
 }
 
@@ -90,6 +90,19 @@ function pickTrump(suit, player){
 	setTrump(suit, player);
 	animDisableBidding();
 	startTricks();
+}
+
+//also handles unselecting the button
+function goAlone(player){
+	if(alonePlayer === players.NONE){
+		alonePlayer = player;
+		numPlayers -= 1;
+		animFlipButton(true);
+	}
+	else{
+		alonePlayer = players.NONE;
+		animFlipButton(false);
+	}
 }
 
 function pass(player){

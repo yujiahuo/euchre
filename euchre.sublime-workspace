@@ -1,0 +1,357 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"trickpla",
+				"trickPlayedCards"
+			],
+			[
+				"all",
+				"allFaceUp"
+			],
+			[
+				"creat",
+				"createElement"
+			],
+			[
+				"get",
+				"getCardElem"
+			],
+			[
+				"trum",
+				"trumpCandidate"
+			],
+			[
+				"card",
+				"card"
+			],
+			[
+				"col",
+				"COL_GHOST"
+			],
+			[
+				"COL_",
+				"COL_GHOST"
+			],
+			[
+				"cou",
+				"count_vampires"
+			],
+			[
+				"g",
+				"guess"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 67.0,
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"cta",
+				"CTags: Rebuild Tags"
+			],
+			[
+				"ctags",
+				"CTags: Rebuild Tags"
+			],
+			[
+				"ct",
+				"CTags: Rebuild Tags"
+			],
+			[
+				"package in",
+				"Package Control: Install Package"
+			],
+			[
+				"package ins",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 331.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/Yujia/Documents/Code/euchre/gameLogic.js",
+		"/Users/Yujia/Documents/Code/euchre/handLogic.js",
+		"/Users/Yujia/Documents/Code/euchre/playerAPI.js",
+		"/Users/Yujia/Documents/Code/euchre/trickLogic.js",
+		"/Users/Yujia/Documents/Code/euchre/niceFunctions.js",
+		"/Users/Yujia/Documents/Code/euchre/euchre.sublime-project",
+		"/Users/Yujia/Documents/Code/euchre/playerAPI",
+		"/Users/Yujia/Documents/Code/euchre/niceFunctions copy.js",
+		"/Users/Yujia/Documents/Code/euchre/euchreController.js",
+		"/Users/Yujia/Documents/Code/euchre/Animations.js",
+		"/Users/Yujia/Documents/Code/puzzles/galaxies.c",
+		"/Users/Yujia/Documents/Code/puzzles/misc.c",
+		"/Users/Yujia/Documents/Code/puzzles/drawing.c",
+		"/Users/Yujia/Documents/Code/puzzles/blackbox.c",
+		"/Users/Yujia/Documents/Code/puzzles/dominosa.c",
+		"/Users/Yujia/Documents/Code/puzzles/sfafef.patch",
+		"/Users/Yujia/Documents/Code/puzzles/signpost.c",
+		"/Users/Yujia/Documents/Code/puzzles/undead.c",
+		"/Users/Yujia/Library/Application Support/Sublime Text 2/Packages/CTags/CTags.sublime-settings",
+		"/Users/Yujia/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Users/Yujia/puzzles/galaxies.c"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"playTrick",
+			"resethands",
+			"biddingroun",
+			"isbidding",
+			"trickSuit =",
+			"\" played",
+			"played",
+			"disab",
+			"this",
+			"rightid",
+			"curre",
+			"currentPlayerID",
+			"number",
+			".number",
+			"playerID",
+			"player",
+			"suit",
+			"playerID",
+			"tricksuit",
+			"winnerID",
+			"makerID",
+			"winner",
+			"settrump",
+			"animPlayCard",
+			"blanket",
+			"anim",
+			"setTimeout(startTricks, 1000);",
+			"disableBidding",
+			"enableBidding",
+			"enableBidd",
+			"enableBidding",
+			"}\n",
+			"pickdealer",
+			"animplacedec",
+			"disableBiddingButtons",
+			"nextPlayer();",
+			"playerID",
+			"endTrick",
+			"animwin",
+			"getShuffledDeck",
+			"dealhands",
+			"sortedd",
+			"DECKDICT",
+			"deckDict",
+			"playernames",
+			"sorteddeck",
+			"clearTable",
+			"is so",
+			"is so good",
+			"makerid",
+			"display",
+			"left",
+			"animPlayCard",
+			"element",
+			"curWinner",
+			"trickPlayedCards",
+			"trickSuit",
+			"isleftor",
+			"!=",
+			"setTrump",
+			"==",
+			"trump",
+			"isValidPlay",
+			"tricksuit",
+			"zindex",
+			"zindex =",
+			"zindex",
+			"dealer",
+			"playerArray",
+			"trump",
+			"playernames",
+			"playerNames",
+			"playernames",
+			"tempz",
+			"game.",
+			"this.",
+			"redeal",
+			"this.",
+			"playedcards",
+			"playersPlayed",
+			".suit",
+			"hand",
+			"tricksuit",
+			"playerName",
+			"cardsuit =",
+			"playTrick",
+			"makeCardElem",
+			"nextPlayer",
+			"prompt",
+			"nextplay",
+			"playersBid",
+			"aiDecideOrderUp",
+			"playcard",
+			"resetHands",
+			"startTrick",
+			"setupTrick",
+			"f",
+			"playHand",
+			"setupPlayHand",
+			"++",
+			"newHand",
+			"hidden",
+			"promptOrderUp",
+			"display",
+			"beginHand",
+			"dobidding",
+			"dobudding",
+			"pickdealer",
+			"is the dealer",
+			"game.",
+			"dealHands",
+			"currentPlayer",
+			"dealerArray",
+			"maker",
+			"makerID",
+			"maker",
+			"currentPlayer",
+			"dealer",
+			"currentPlayer",
+			"console.lo",
+			"console.",
+			"doBidding",
+			"1",
+			"doBidding",
+			"makeCardElem",
+			"getCardElem",
+			"animFlipTrump",
+			"animdeal"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/Yujia/Documents/Code/euchre/euchre.html"
+			],
+			[
+				"a",
+				"/Users/Yujia/Documents/Code/puzzles/undead.c"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}

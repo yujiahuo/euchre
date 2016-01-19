@@ -1,5 +1,14 @@
 //returns true if card2 is greater than card1 for this hand
+//if a card is undefined, the other card wins
+//if both cards are undefined, return false
 function isGreater(card1, card2){
+	if(card1 === undefined){
+		return true;
+	}
+	else if(card2 === undefined){
+		return false;
+	}
+	
 	if(isTrump(card1)){
 		if(!isTrump(card2)){
 			return false;
@@ -33,7 +42,7 @@ function isValidPlay(player, card){
 }
 
 function isTrump(card){
-	return card.suit===trump;
+	return card.suit === trump;
 }
 
 function followsSuit(card){

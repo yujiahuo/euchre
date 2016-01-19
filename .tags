@@ -1,0 +1,128 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Card	Card.js	/^function Card(suit, rank){$/;"	c
+DECKDICT	Game.js	/^var DECKDICT = [];$/;"	v
+DECKSIZE	Game.js	/^var DECKSIZE = 24;$/;"	v
+OHMYGODCARD	animation.js	/^function OHMYGODCARD(player, card){$/;"	f
+SORTEDDECK	Game.js	/^var SORTEDDECK = [];$/;"	v
+addToHand	niceFunctions.js	/^function addToHand(player, card){$/;"	f
+aiChooseTrump	AIInterface.js	/^function aiChooseTrump(){}$/;"	f
+aiChooseTrump	idiotAI.js	/^function aiChooseTrump(){$/;"	f
+aiDecideOrderUp	aiBehavior.js	/^function aiDecideOrderUp(){$/;"	f
+aiInit	AIInterface.js	/^function aiInit(){}$/;"	f
+aiInit	idiotAI.js	/^function aiInit(){}$/;"	f
+aiOrderUp	AIInterface.js	/^function aiOrderUp(){}$/;"	f
+aiOrderUp	idiotAI.js	/^function aiOrderUp(){$/;"	f
+aiPickCard	aiBehavior.js	/^function aiPickCard(player){$/;"	f
+aiPickCard_1	idiotAI.js	/^function aiPickCard_1(player){$/;"	f
+aiPickCard_2	aiBehavior.js	/^function aiPickCard_2(){$/;"	f
+aiPickCard_3	aiBehavior.js	/^function aiPickCard_3(){$/;"	f
+aiPickUp	aiBehavior.js	/^function aiPickUp(player){$/;"	f
+aiTakeOrderedUp_1	idiotAI.js	/^function aiTakeOrderedUp_1(player){$/;"	f
+allFaceUp	Game.js	/^var allFaceUp;$/;"	v
+alonePlayer	Game.js	/^var alonePlayer;$/;"	v
+animClearTable	animation.js	/^function animClearTable(){$/;"	f
+animDeal	animation.js	/^function animDeal(){$/;"	f
+animDealSingle	animation.js	/^function animDealSingle(player, cardID, cardPos){$/;"	f
+animDisableBidding	animation.js	/^function animDisableBidding(){$/;"	f
+animEnableBidding	animation.js	/^function animEnableBidding(){$/;"	f
+animFlipCard	animation.js	/^function animFlipCard(cardElem){$/;"	f
+animFlipTrump	animation.js	/^function animFlipTrump(){$/;"	f
+animHideCard	animation.js	/^function animHideCard(cardElem){$/;"	f
+animMoveCard	animation.js	/^function animMoveCard(cardID, top, left){$/;"	f
+animPlaceDealerButt	animation.js	/^function animPlaceDealerButt(dealer){$/;"	f
+animPlayCard	animation.js	/^function animPlayCard(player, cardID){$/;"	f
+animRemoveKitty	animation.js	/^function animRemoveKitty(){$/;"	f
+animShowScore	animation.js	/^function animShowScore(){$/;"	f
+animShowText	animation.js	/^function animShowText(text){$/;"	f
+animSortHand	animation.js	/^function animSortHand(){$/;"	f
+animStart	animation.js	/^function animStart(){$/;"	f
+animTakeTrump	animation.js	/^function animTakeTrump(toDiscardID){$/;"	f
+animWinTrick	animation.js	/^function animWinTrick(player){$/;"	f
+biddingRound	Game.js	/^var biddingRound;$/;"	v
+canFollowSuit	playerAPI.js	/^function canFollowSuit(player){$/;"	f
+canOrderUpSuit	playerAPI.js	/^function canOrderUpSuit(suit, player){$/;"	f
+currentPlayer	Game.js	/^var currentPlayer;$/;"	v
+dealHands	handLogic.js	/^function dealHands(){$/;"	f
+dealer	Game.js	/^var dealer;$/;"	v
+deck	Game.js	/^var deck; \/\/contains the shuffled deck or what's left of it after dealing$/;"	v
+disableActions	niceFunctions.js	/^function disableActions(){$/;"	f
+doBidding	handLogic.js	/^function doBidding(){$/;"	f
+eastAI	Game.js	/^var eastAI;$/;"	v
+enableActions	niceFunctions.js	/^function enableActions(){$/;"	f
+endGame	gameLogic.js	/^function endGame(didIWinIHopeIWon){$/;"	f
+endHand	handLogic.js	/^function endHand(){$/;"	f
+endTrick	trickLogic.js	/^function endTrick(){$/;"	f
+followsSuit	playerAPI.js	/^function followsSuit(card){$/;"	f
+getShuffledDeck	handLogic.js	/^function getShuffledDeck(){$/;"	f
+getTrickWinner	trickLogic.js	/^function getTrickWinner(){$/;"	f
+giveDealerTrump	niceFunctions.js	/^function giveDealerTrump(){$/;"	f
+goAlone	AIInterface.js	/^function goAlone(){}$/;"	f
+goAlone	idiotAI.js	/^function goAlone(){$/;"	f
+goAlone	niceFunctions.js	/^function goAlone(player){$/;"	f
+handNum	Game.js	/^var handNum$/;"	v
+hands	Game.js	/^var hands; \/\/2d array of everyone's hands$/;"	v
+hasSuit	playerAPI.js	/^function hasSuit(suit, player){$/;"	f
+initNewGame	gameLogic.js	/^function initNewGame(){$/;"	f
+initNewTrick	trickLogic.js	/^function initNewTrick(){$/;"	f
+isBidding	Game.js	/^var isBidding;$/;"	v
+isGreater	playerAPI.js	/^function isGreater(card1, card2){$/;"	f
+isTrump	playerAPI.js	/^function isTrump(card){$/;"	f
+isValidPlay	playerAPI.js	/^function isValidPlay(player, card){$/;"	f
+leftID	Game.js	/^var leftID;$/;"	v
+makeCardElem	animation.js	/^function makeCardElem(cardID, flippedUp){$/;"	f
+makers	Game.js	/^var makers;$/;"	v
+myHand	playerAPI.js	/^function myHand(){$/;"	f
+newGame	gameLogic.js	/^function newGame(){$/;"	f
+newHand	handLogic.js	/^function newHand(redealing){$/;"	f
+nextPlayer	niceFunctions.js	/^function nextPlayer(){$/;"	f
+northAI	Game.js	/^var northAI;$/;"	v
+nsScore	Game.js	/^var nsScore; \/\/north south$/;"	v
+nsTricksWon	Game.js	/^var nsTricksWon;$/;"	v
+pass	niceFunctions.js	/^function pass(player){$/;"	f
+pickCard	AIInterface.js	/^function pickCard(){}/;"	f
+pickCard	idiotAI.js	/^function pickCard(){$/;"	f
+pickCard	trickLogic.js	/^function pickCard(){$/;"	f
+pickDealer	handLogic.js	/^function pickDealer(){$/;"	f
+pickDiscard	AIInterface.js	/^function pickDiscard(){}$/;"	f
+pickDiscard	idiotAI.js	/^function pickDiscard(){$/;"	f
+pickOrderUp	niceFunctions.js	/^function pickOrderUp(player){$/;"	f
+pickTrump	niceFunctions.js	/^function pickTrump(suit, player){$/;"	f
+playTrick	trickLogic.js	/^function playTrick(){$/;"	f
+players.NONE	Game.js	/^	NONE: -1,$/;"	p
+playersBid	Game.js	/^var playersBid;$/;"	v
+ranks.ACE	Card.js	/^	ACE: 14,$/;"	p
+ranks.JACK	Card.js	/^	JACK: 11,$/;"	p
+ranks.KING	Card.js	/^	KING: 13,$/;"	p
+ranks.LEFT	Card.js	/^	LEFT: 15,$/;"	p
+ranks.NINE	Card.js	/^	NINE: 9,$/;"	p
+ranks.QUEEN	Card.js	/^	QUEEN: 12,$/;"	p
+ranks.RIGHT	Card.js	/^	RIGHT: 16,$/;"	p
+ranks.TEN	Card.js	/^	TEN: 10,$/;"	p
+removeFromHand	niceFunctions.js	/^function removeFromHand(player, card){$/;"	f
+resetHands	handLogic.js	/^function resetHands(){$/;"	f
+rightID	Game.js	/^var rightID;$/;"	v
+setTrump	niceFunctions.js	/^function setTrump(suit, player){$/;"	f
+southAI	Game.js	/^var southAI;$/;"	v
+startTricks	trickLogic.js	/^function startTricks(){$/;"	f
+statMode	Game.js	/^var statMode; \/\/4 AIs play against each other$/;"	v
+suits.CLUBS	Card.js	/^	CLUBS: "C",$/;"	p
+suits.DIAMONDS	Card.js	/^	DIAMONDS: "D",$/;"	p
+suits.HEARTS	Card.js	/^	HEARTS: "H",$/;"	p
+suits.SPADES	Card.js	/^	SPADES: "S",$/;"	p
+suits.props	Card.js	/^	props: {$/;"	p
+takeTrumpCandidate	niceFunctions.js	/^function takeTrumpCandidate(toDiscard){$/;"	f
+trickNum	Game.js	/^var trickNum;$/;"	v
+trickPlayedCards	Game.js	/^var trickPlayedCards; \/\/array of cards$/;"	v
+trickSuit	Game.js	/^var trickSuit;$/;"	v
+trickplayersPlayed	Game.js	/^var trickplayersPlayed;$/;"	v
+trump	Game.js	/^var trump; \/\/suit$/;"	v
+updateScore	gameLogic.js	/^function updateScore(){$/;"	f
+weScore	Game.js	/^var weScore; \/\/west east$/;"	v
+weTricksWon	Game.js	/^var weTricksWon;$/;"	v
+westAI	Game.js	/^var westAI;$/;"	v
+zIndex	Game.js	/^var zIndex; \/\/iterated to make sure the right cards end up on top when they move$/;"	v

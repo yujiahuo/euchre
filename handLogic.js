@@ -42,6 +42,7 @@ function resetHands(){
 	trump = "";
 	dealer = players.NONE;
 	alonePlayer = players.NONE;
+	numPlayers = 4;
 
 	nsTricksWon = 0;
 	weTricksWon = 0;

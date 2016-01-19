@@ -1,0 +1,128 @@
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_PROGRAM_VERSION	5.8	//
+aiChooseTrump	AIInterface.js	/^function aiChooseTrump(){}$/;"	f
+aiInit	AIInterface.js	/^function aiInit(){}$/;"	f
+aiOrderUp	AIInterface.js	/^function aiOrderUp(){}$/;"	f
+goAlone	AIInterface.js	/^function goAlone(){}$/;"	f
+pickCard	AIInterface.js	/^function pickCard(){}/;"	f
+pickDiscard	AIInterface.js	/^function pickDiscard(){}$/;"	f
+Card	Card.js	/^function Card(suit, rank){$/;"	c
+ranks.ACE	Card.js	/^	ACE: 14,$/;"	p
+ranks.JACK	Card.js	/^	JACK: 11,$/;"	p
+ranks.KING	Card.js	/^	KING: 13,$/;"	p
+ranks.LEFT	Card.js	/^	LEFT: 15,$/;"	p
+ranks.NINE	Card.js	/^	NINE: 9,$/;"	p
+ranks.QUEEN	Card.js	/^	QUEEN: 12,$/;"	p
+ranks.RIGHT	Card.js	/^	RIGHT: 16,$/;"	p
+ranks.TEN	Card.js	/^	TEN: 10,$/;"	p
+suits.CLUBS	Card.js	/^	CLUBS: "C",$/;"	p
+suits.DIAMONDS	Card.js	/^	DIAMONDS: "D",$/;"	p
+suits.HEARTS	Card.js	/^	HEARTS: "H",$/;"	p
+suits.SPADES	Card.js	/^	SPADES: "S",$/;"	p
+suits.props	Card.js	/^	props: {$/;"	p
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+DECKDICT	Game.js	/^var DECKDICT = [];$/;"	v
+DECKSIZE	Game.js	/^var DECKSIZE = 24;$/;"	v
+SORTEDDECK	Game.js	/^var SORTEDDECK = [];$/;"	v
+allFaceUp	Game.js	/^var allFaceUp;$/;"	v
+alonePlayer	Game.js	/^var alonePlayer;$/;"	v
+biddingRound	Game.js	/^var biddingRound;$/;"	v
+currentPlayer	Game.js	/^var currentPlayer;$/;"	v
+dealer	Game.js	/^var dealer;$/;"	v
+deck	Game.js	/^var deck; \/\/contains the shuffled deck or what's left of it after dealing$/;"	v
+eastAI	Game.js	/^var eastAI;$/;"	v
+handNum	Game.js	/^var handNum$/;"	v
+hands	Game.js	/^var hands; \/\/2d array of everyone's hands$/;"	v
+isBidding	Game.js	/^var isBidding;$/;"	v
+leftID	Game.js	/^var leftID;$/;"	v
+makers	Game.js	/^var makers;$/;"	v
+northAI	Game.js	/^var northAI;$/;"	v
+nsScore	Game.js	/^var nsScore; \/\/north south$/;"	v
+nsTricksWon	Game.js	/^var nsTricksWon;$/;"	v
+players.NONE	Game.js	/^	NONE: -1,$/;"	p
+playersBid	Game.js	/^var playersBid;$/;"	v
+rightID	Game.js	/^var rightID;$/;"	v
+southAI	Game.js	/^var southAI;$/;"	v
+statMode	Game.js	/^var statMode; \/\/4 AIs play against each other$/;"	v
+trickNum	Game.js	/^var trickNum;$/;"	v
+trickPlayedCards	Game.js	/^var trickPlayedCards; \/\/array of cards$/;"	v
+trickSuit	Game.js	/^var trickSuit;$/;"	v
+trickplayersPlayed	Game.js	/^var trickplayersPlayed;$/;"	v
+trump	Game.js	/^var trump; \/\/suit$/;"	v
+weScore	Game.js	/^var weScore; \/\/west east$/;"	v
+weTricksWon	Game.js	/^var weTricksWon;$/;"	v
+westAI	Game.js	/^var westAI;$/;"	v
+zIndex	Game.js	/^var zIndex; \/\/iterated to make sure the right cards end up on top when they move$/;"	v
+aiDecideOrderUp	aiBehavior.js	/^function aiDecideOrderUp(){$/;"	f
+aiPickCard	aiBehavior.js	/^function aiPickCard(player){$/;"	f
+aiPickCard_2	aiBehavior.js	/^function aiPickCard_2(){$/;"	f
+aiPickCard_3	aiBehavior.js	/^function aiPickCard_3(){$/;"	f
+aiPickUp	aiBehavior.js	/^function aiPickUp(player){$/;"	f
+OHMYGODCARD	animation.js	/^function OHMYGODCARD(player, card){$/;"	f
+animClearTable	animation.js	/^function animClearTable(){$/;"	f
+animDeal	animation.js	/^function animDeal(){$/;"	f
+animDealSingle	animation.js	/^function animDealSingle(player, cardID, cardPos){$/;"	f
+animDisableBidding	animation.js	/^function animDisableBidding(){$/;"	f
+animEnableBidding	animation.js	/^function animEnableBidding(){$/;"	f
+animFlipCard	animation.js	/^function animFlipCard(cardElem){$/;"	f
+animFlipTrump	animation.js	/^function animFlipTrump(){$/;"	f
+animHideCard	animation.js	/^function animHideCard(cardElem){$/;"	f
+animMoveCard	animation.js	/^function animMoveCard(cardID, top, left){$/;"	f
+animPlaceDealerButt	animation.js	/^function animPlaceDealerButt(dealer){$/;"	f
+animPlayCard	animation.js	/^function animPlayCard(player, cardID){$/;"	f
+animRemoveKitty	animation.js	/^function animRemoveKitty(){$/;"	f
+animShowScore	animation.js	/^function animShowScore(){$/;"	f
+animShowText	animation.js	/^function animShowText(text){$/;"	f
+animSortHand	animation.js	/^function animSortHand(){$/;"	f
+animStart	animation.js	/^function animStart(){$/;"	f
+animTakeTrump	animation.js	/^function animTakeTrump(toDiscardID){$/;"	f
+animWinTrick	animation.js	/^function animWinTrick(player){$/;"	f
+makeCardElem	animation.js	/^function makeCardElem(cardID, flippedUp){$/;"	f
+endGame	gameLogic.js	/^function endGame(didIWinIHopeIWon){$/;"	f
+initNewGame	gameLogic.js	/^function initNewGame(){$/;"	f
+newGame	gameLogic.js	/^function newGame(){$/;"	f
+updateScore	gameLogic.js	/^function updateScore(){$/;"	f
+dealHands	handLogic.js	/^function dealHands(){$/;"	f
+doBidding	handLogic.js	/^function doBidding(){$/;"	f
+endHand	handLogic.js	/^function endHand(){$/;"	f
+getShuffledDeck	handLogic.js	/^function getShuffledDeck(){$/;"	f
+newHand	handLogic.js	/^function newHand(redealing){$/;"	f
+pickDealer	handLogic.js	/^function pickDealer(){$/;"	f
+resetHands	handLogic.js	/^function resetHands(){$/;"	f
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+aiChooseTrump	idiotAI.js	/^function aiChooseTrump(){$/;"	f
+aiInit	idiotAI.js	/^function aiInit(){}$/;"	f
+aiOrderUp	idiotAI.js	/^function aiOrderUp(){$/;"	f
+aiPickCard_1	idiotAI.js	/^function aiPickCard_1(player){$/;"	f
+aiTakeOrderedUp_1	idiotAI.js	/^function aiTakeOrderedUp_1(player){$/;"	f
+goAlone	idiotAI.js	/^function goAlone(){$/;"	f
+pickCard	idiotAI.js	/^function pickCard(){$/;"	f
+pickDiscard	idiotAI.js	/^function pickDiscard(){$/;"	f
+addToHand	niceFunctions.js	/^function addToHand(player, card){$/;"	f
+disableActions	niceFunctions.js	/^function disableActions(){$/;"	f
+enableActions	niceFunctions.js	/^function enableActions(){$/;"	f
+giveDealerTrump	niceFunctions.js	/^function giveDealerTrump(){$/;"	f
+goAlone	niceFunctions.js	/^function goAlone(player){$/;"	f
+nextPlayer	niceFunctions.js	/^function nextPlayer(){$/;"	f
+pass	niceFunctions.js	/^function pass(player){$/;"	f
+pickOrderUp	niceFunctions.js	/^function pickOrderUp(player){$/;"	f
+pickTrump	niceFunctions.js	/^function pickTrump(suit, player){$/;"	f
+removeFromHand	niceFunctions.js	/^function removeFromHand(player, card){$/;"	f
+setTrump	niceFunctions.js	/^function setTrump(suit, player){$/;"	f
+takeTrumpCandidate	niceFunctions.js	/^function takeTrumpCandidate(toDiscard){$/;"	f
+canFollowSuit	playerAPI.js	/^function canFollowSuit(player){$/;"	f
+canOrderUpSuit	playerAPI.js	/^function canOrderUpSuit(suit, player){$/;"	f
+followsSuit	playerAPI.js	/^function followsSuit(card){$/;"	f
+hasSuit	playerAPI.js	/^function hasSuit(suit, player){$/;"	f
+isGreater	playerAPI.js	/^function isGreater(card1, card2){$/;"	f
+isTrump	playerAPI.js	/^function isTrump(card){$/;"	f
+isValidPlay	playerAPI.js	/^function isValidPlay(player, card){$/;"	f
+myHand	playerAPI.js	/^function myHand(){$/;"	f
+endTrick	trickLogic.js	/^function endTrick(){$/;"	f
+getTrickWinner	trickLogic.js	/^function getTrickWinner(){$/;"	f
+initNewTrick	trickLogic.js	/^function initNewTrick(){$/;"	f
+pickCard	trickLogic.js	/^function pickCard(){$/;"	f
+playTrick	trickLogic.js	/^function playTrick(){$/;"	f
+startTricks	trickLogic.js	/^function startTricks(){$/;"	f

@@ -142,6 +142,13 @@
 	display: none;
 }
 
+#alone{
+	background-color: green;
+	width: 80px;
+	height: 16px;
+	text-align: center;
+}
+
 #dealerButton{
 	background: url('images/dealerButton.png');
 	background-size: contain;

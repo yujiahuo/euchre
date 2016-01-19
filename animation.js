@@ -59,7 +59,7 @@ function animDeal(){
 			cardID = hands[player][j].id;
 			makeCardElem(cardID, flippedUp);
 			if(flippedUp){
-				document.getElementById(cardID).addEventListener("click", pickCard);
+				document.getElementById(cardID).addEventListener("click", clickCard);
 			}
 
 			if(j<2){
@@ -268,6 +268,9 @@ function animWinTrick(player){
 	}
 
 	for(var i=0; i<4; i++){
+		if(trickPlayedCards[i] === undefined){
+			continue;
+		}
 		cardElem = document.getElementById(trickPlayedCards[i].id);
 		cardElem.style.top = top;
 		cardElem.style.left = left;
@@ -289,6 +292,15 @@ function animRemoveKitty(){
 	}
 }
 
+function animHidePartnerHand(){
+	var player;
+
+	player = players.props[alonePlayer].partner;
+	for(var i=0; i<hands[player].length; i++){
+		animHideCard(document.getElementById(hands[player][i].id));
+	}
+}
+
 function animHideCard(cardElem){
 	if(!animStart()) return;
 
@@ -307,20 +319,25 @@ function animEnableBidding(){
 	
 	if(biddingRound === 1 && hasSuit(trumpCandidate.suit, 0)){
 		document.getElementById("orderUp").style.display = "inline";
+		document.getElementById("alone").style.display = "inline";
 		return;
 	}
 
 	if(canOrderUpSuit(suits.SPADES, 0)){
 		document.getElementById("pickSpades").style.display = "inline";
+		document.getElementById("alone").style.display = "inline";
 	}
 	if(canOrderUpSuit(suits.CLUBS, 0)){
 		document.getElementById("pickClubs").style.display = "inline";
+		document.getElementById("alone").style.display = "inline";
 	}
 	if(canOrderUpSuit(suits.HEARTS, 0)){
 		document.getElementById("pickHearts").style.display = "inline";
+		document.getElementById("alone").style.display = "inline";
 	}
 	if(canOrderUpSuit(suits.DIAMONDS, 0)){
 		document.getElementById("pickDiamonds").style.display = "inline";
+		document.getElementById("alone").style.display = "inline";
 	}
 }
 
@@ -333,6 +350,19 @@ function animDisableBidding(){
 	document.getElementById("pickClubs").style.display = "none";
 	document.getElementById("pickHearts").style.display = "none";
 	document.getElementById("pickDiamonds").style.display = "none";
+	document.getElementById("alone").style.display = "none";
+	document.getElementById("alone").style.backgroundColor = "green";
+}
+
+//flips a button on or off
+//needs to be generic but for now flips the 'go alone' button
+function animFlipButton(on){
+	if(on){
+		document.getElementById("alone").style.backgroundColor = "red";
+	}
+	else{
+		document.getElementById("alone").style.backgroundColor = "green";
+	}
 }
 
 function animShowScore(){

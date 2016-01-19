@@ -51,7 +51,7 @@ function aiChooseTrump(){
 // Return true if going alone
 //Params: none
 //Returns: bool
-function goAlone(){
+function chooseGoAlone(){
 	return false;
 }
 
@@ -67,5 +67,6 @@ function pickCard(){
 			return hand[i];
 		}
 	}
+	//we will never reach this but just in case
 	return hand[0];
 }

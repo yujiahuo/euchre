@@ -27,24 +27,38 @@ function initNewGame(){
 
 function updateScore(){
 	if(nsTricksWon > weTricksWon){
-		//got all tricks or euchred other team
-		if(nsTricksWon===5 || makers==="we"){
-			nsScore += 2;
+		//gain at least one point
+		nsScore++;
+		if(nsTricksWon === 5){
+			//at least one more for having all the tricks
+			nsScore++;
+			if(alonePlayer === players.SOUTH || alonePlayer === players.NORTH){
+				nsScore += 2;
+			}
 		}
-		else{
-			nsScore += 1;
+		if(makers === 'we'){
+			nsScore++;
+			//defend alone same logic as alone player
 		}
+
 		animShowScore();
 		if(nsScore >= 10) endGame(true);
 	}
 	else if(weTricksWon > nsTricksWon){
-		//got all tricks or euchred other team
-		if(weTricksWon===5 || makers==="ns"){
-			weScore += 2;
+		//gain at least one point
+		weScore++;
+		if(weTricksWon === 5){
+			//at least one more for having all the tricks
+			weScore++;
+			if(alonePlayer === players.WEST || alonePlayer === players.EAST){
+				weScore += 2;
+			}
 		}
-		else{
-			weScore += 1;
+		if(makers === 'ns'){
+			weScore++;
+			//defend alone same logic as alone player
 		}
+
 		animShowScore();
 		if(weScore >= 10) endGame(false);
 	}

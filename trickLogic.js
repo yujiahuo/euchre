@@ -9,7 +9,11 @@ function startTricks(){
 	isBidding = false;
 	initNewTrick();
 	animRemoveKitty();
-
+	if(alonePlayer !== players.NONE){
+		animShowText(alonePlayer + " is going alone ");
+		animHidePartnerHand();
+	}
+	
 	if(statMode){
 		playTrick();
 	}
@@ -32,7 +36,7 @@ function playTrick(){
 
 	console.log("playing trick " + trickNum);
 
-	if(trickPlayersPlayed > 3){
+	if(trickPlayersPlayed > numPlayers-1){
 		if(trickNum < 5){
 			endTrick();
 			initNewTrick();
@@ -55,12 +59,14 @@ function playTrick(){
 			else{
 				setTimeout(newHand, 1000, 0);
 			}
-			return
+			return;
 		}
 	}
 
 	if(alonePlayer !== players.NONE){
 		if(currentPlayer === players.props[alonePlayer].partner){
+			nextPlayer();
+			setTimeout(playTrick, 1000);
 			return;
 		}
 	}
@@ -111,7 +117,7 @@ function getTrickWinner(){
 // Player playing actions
 ///////////////////
 
-function pickCard(){
+function clickCard(){
 	var card;
 
 	disableActions();

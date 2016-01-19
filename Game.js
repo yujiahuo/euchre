@@ -68,6 +68,7 @@ var leftID;
 var dealer;
 var makers;
 var alonePlayer;
+var numPlayers; //this is usually 4 but can be 3 or 2 depending on loners
 
 /**********************************************************
 /* Trick

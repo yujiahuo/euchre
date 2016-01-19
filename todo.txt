@@ -2,23 +2,29 @@ ToDo
 
 Right meow functional
 - Going alone
+	- Hide partner's hand
+	- Score properly
 - Defending alone
 
 Clean up
-- Organize anim stuff better
-- Clean up AI
+- Organize functions better and comment everything
 
 Enhancements
-- playerAPI needs to expose a bunch more stuff before AIs can do anything nice
-- Make AI stuff way prettier. Stop doing things that make no sense in aiBehavior
+- Make AI stuff way prettier
+	- Stop doing things that make no sense in aiBehavior
+	- playerAPI needs to expose a bunch more stuff
+	- AI switch needs to be better (documentGlobal.aiFunction?)
+	- Make vars private
 - Queue up your next card
 	- Get rid of delay at start of player 0's turn
 - Card noises
 - AI difficulties
 - Show cards played this hand
 - Stat mode
+- Recenter hand after cards are played
 - Option for open hands
 - If your partner is going alone, you get to see the kitty (meow)
+- Let functions handle multiple param types
 
 Low priority
 - Speedy (instant) AI players
@@ -43,3 +49,7 @@ AI decisions that need to be made
 - Bid on second round bidding
 - Go alone
 - Pick card to play
+
+Keyboard stuff
+- ctrl + shift click (go to definition)
+- ctrl + shift + right click (go back)

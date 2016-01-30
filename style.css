@@ -20,6 +20,21 @@
 	background-color: #555555;
 }
 
+#sidebarTop{
+	height: 80px;
+	background-color: #AAAAAA;
+	padding-left: 5px;
+}
+
+#sidebarText{
+	position: relative;
+	height: 518px;
+	top: 2px;
+	background-color: #AAAAAA;
+	padding-left: 5px;
+	overflow: scroll;
+}
+
 /* CARDS */
 /* card dimensions are height:96 width:72. 1px between cards*/
 

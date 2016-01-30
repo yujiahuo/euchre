@@ -32,19 +32,3 @@ function aiPickCard(player){
 	trickPlayersPlayed++;
 	OHMYGODCARD(player, card);
 }
-
-//////////////////////////////
-// Genius AI decision making
-//////////////////////////////
-
-function aiPickCard_3(){
-
-}
-
-/////////////////////////////////
-// Mediocre AI decision making
-/////////////////////////////////
-
-function aiPickCard_2(){
-
-}

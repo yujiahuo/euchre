@@ -46,6 +46,8 @@ function resetHands(){
 
 	nsTricksWon = 0;
 	weTricksWon = 0;
+
+	animShowText("", 1);
 }
 
 function pickDealer(){

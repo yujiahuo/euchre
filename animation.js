@@ -369,10 +369,16 @@ function animShowScore(){
 	animShowText("You: " + nsScore + "  Them: " + weScore);
 }
 
-function animShowText(text){
-	document.getElementById("sidebar").innerHTML += "<br/>" + text;
+function animShowText(text, overwrite){
+	var div = document.getElementById("sidebarText");
+	div.innerHTML += "<br/>" + text;
+	div.scrollTop = div.scrollHeight;
+}
+
+function animShowTextTop(text, overwrite){
+	document.getElementById("sidebarTop").innerHTML += "<br/>" + text;
 }
 
 function OHMYGODCARD(player, card){
-	console.log("HEY " + player + " PLAYED: " + card.suit + card.rank + "(" + card.id + ")");
+	animShowText("HEY " + player + " PLAYED: " + card.suit + card.rank + "(" + card.id + ")");
 }

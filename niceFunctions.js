@@ -55,8 +55,8 @@ function setTrump(suit, player){
 		makers = "we";
 	}
 
-	animShowText("Trump is "+ trump);
-	animShowText("Makers are " + makers);
+	animShowTextTop("Trump is "+ trump);
+	animShowTextTop("Makers are " + makers);
 }
 
 function disableActions(){

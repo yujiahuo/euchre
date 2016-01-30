@@ -10,7 +10,7 @@ function startTricks(){
 	initNewTrick();
 	animRemoveKitty();
 	if(alonePlayer !== players.NONE){
-		animShowText(alonePlayer + " is going alone ");
+		animShowTextTop(alonePlayer + " is going alone ");
 		animHidePartnerHand();
 	}
 	
@@ -36,9 +36,23 @@ function playTrick(){
 
 	console.log("playing trick " + trickNum);
 
-	if(trickPlayersPlayed > numPlayers-1){
-		if(trickNum < 5){
-			endTrick();
+	//everyone has played
+	if(trickPlayersPlayed === numPlayers){
+		endTrick();
+
+		//all tricks have been played
+		if(trickNum === 5){
+			console.log("hand ended");
+			endHand();
+			if(statMode){
+				newHand(0);
+			}
+			else{
+				setTimeout(newHand, 1000, 0);
+			}
+			return;
+		}
+		else{
 			initNewTrick();
 			trickNum++;
 			if(statMode){
@@ -49,24 +63,12 @@ function playTrick(){
 			}
 			return;
 		}
-		else{
-			console.log("hand ended");
-			endTrick();
-			endHand();
-			if(statMode){
-				newHand(0);
-			}
-			else{
-				setTimeout(newHand, 1000, 0);
-			}
-			return;
-		}
 	}
 
 	if(alonePlayer !== players.NONE){
 		if(currentPlayer === players.props[alonePlayer].partner){
 			nextPlayer();
-			setTimeout(playTrick, 1000);
+			playTrick();
 			return;
 		}
 	}
@@ -92,7 +94,7 @@ function endTrick(){
 	if(winner===players.SOUTH || winner===players.NORTH) nsTricksWon += 1;
 	if(winner===players.WEST || winner===players.EAST) weTricksWon += 1;
 
-	console.log(winner + " wins the trick");
+	console.log(nsTricksWon + " : " + weTricksWon);
 
 	animWinTrick(winner);
 }

@@ -1,15 +1,12 @@
 ToDo
 
 Right meow functional
-- Going alone
-	- Hide partner's hand
-	- Score properly
-- Defending alone
 
 Clean up
 - Organize functions better and comment everything
 
 Enhancements
+- Defending alone
 - Make AI stuff way prettier
 	- Stop doing things that make no sense in aiBehavior
 	- playerAPI needs to expose a bunch more stuff

@@ -1,15 +1,10 @@
 <html>
 	<head>
-		<script src="Card.js" type="text/javascript"></script>
-		<script src="Game.js" type="text/javascript"></script>
-		<script src="niceFunctions.js" type="text/javascript"></script>
+		<script src="animation.js" type="text/javascript"></script>
 		<script src="playerAPI.js" type="text/javascript"></script>
 		<script src="gameLogic.js" type="text/javascript"></script>
-		<script src="handLogic.js" type="text/javascript"></script>
-		<script src="trickLogic.js" type="text/javascript"></script>
 		<script src="idiotAI.js" type="text/javascript"></script>
-		<script src="aiBehavior.js" type="text/javascript"></script>
-		<script src="animation.js" type="text/javascript"></script>
+		<script src="Game.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" id="style">
 		
 		<title>Wow so Euchre</title>
@@ -25,16 +20,16 @@
 			</div>
 
 			<div id="orderUpPrompt">
-				<button id="orderUp" onclick="pickOrderUp(0)">Order Up</button>
-				<button id="pickSpades" onclick="pickTrump(suits.SPADES, 0)">Spades</button>
-				<button id="pickClubs" onclick="pickTrump(suits.CLUBS, 0)">Clubs</button>
-				<button id="pickHearts" onclick="pickTrump(suits.HEARTS, 0)">Hearts</button>
-				<button id="pickDiamonds" onclick="pickTrump(suits.DIAMONDS, 0)">Diamonds</button>
+				<button id="orderUp" onclick="game.clickOrderUp()">Order Up</button>
+				<button id="pickSpades" onclick="game.clickTrump(suits.SPADES)">Spades</button>
+				<button id="pickClubs" onclick="game.clickTrump(suits.CLUBS)">Clubs</button>
+				<button id="pickHearts" onclick="game.clickTrump(suits.HEARTS)">Hearts</button>
+				<button id="pickDiamonds" onclick="game.clickTrump(suits.DIAMONDS)">Diamonds</button>
 				
-				<div id="alone" onclick="goAlone(0)">
-					Go alone
+				<div id="alone" onclick="clickGoAlone(0)">
+					Alone
 				</div>
-				<button id="pass" onclick="pass(0)">Pass</button>
+				<button id="pass" onclick="game.clickPass()">Pass</button>
 			</div>
 
 			<div id="blanket">

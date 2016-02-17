@@ -1,3 +1,7 @@
+/*******************************
+* Nice totes public utilities
+********************************/
+
 //returns true if card2 is greater than card1 for this hand
 //if a card is undefined, the other card wins
 //if both cards are undefined, return false
@@ -8,7 +12,7 @@ function isGreater(card1, card2){
 	else if(card2 === undefined){
 		return false;
 	}
-	
+
 	if(isTrump(card1)){
 		if(!isTrump(card2)){
 			return false;
@@ -42,26 +46,28 @@ function isValidPlay(player, card){
 }
 
 function isTrump(card){
-	return card.suit === trump;
+	return card.suit === game.getTrump;
 }
 
 function followsSuit(card){
-	if(trickSuit === ""){
+	if(game.getTrickSuit() === ""){
 		return true;
 	}
-	if(card.suit === trickSuit){
+	if(card.suit === game.getTrickSuit){
 		return true;
 	}
 	return false;
 }
 
 function canFollowSuit(player){
-	return hasSuit(trickSuit, player);
+	return hasSuit(game.getTrickSuit, player);
 }
 
-function hasSuit(suit, player){
-	for(var i=0; i<hands[player].length; i++){
-		if(hands[player][i].suit === suit) return true;
+//can be called about the current player
+function hasSuit(suit){
+	var hand = myHand();
+	for(var i=0; i<hand.length; i++){
+		if(hand[i].suit === suit) return true;
 	}
 	return false;
 }
@@ -70,17 +76,17 @@ function hasSuit(suit, player){
    order up a given suit.
    Depends on bidding round */
 function canOrderUpSuit(suit, player){
-	if(biddingRound === 1){
-		if(trumpCandidate.suit !== suit) return false;
+	if(game.getBiddingRound() === 1){
+		if(game.getTrumpCandidate().suit !== suit) return false;
 		if(hasSuit(suit, player)) return true;
 	}
-	if(biddingRound === 2){
-		if(trumpCandidate.suit === suit) return false;
+	if(game.getBiddingRound() === 2){
+		if(game.getTrumpCandidate().suit === suit) return false;
 		if(hasSuit(suit, player)) return true;
 	}
 	return false;
 }
 
 function myHand(){
-	return hands[currentPlayer];
+	return game.myHand();
 }

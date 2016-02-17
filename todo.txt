@@ -1,8 +1,9 @@
 ToDo
 
-Right meow functional
+Right meow
 
 Clean up
+- Inconsistently relying on player 0 being human
 - Organize functions better and comment everything
 
 Enhancements

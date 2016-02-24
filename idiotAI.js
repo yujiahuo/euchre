@@ -51,7 +51,7 @@ function IdiotAI(){
 
 		hand = game.myHand();
 		for(var i=0; i<hand.length; i++){
-			if(isValidPlay(game.getCurrentPlayer(), hand[i])){
+			if(isValidPlay(hand[i])){
 				return hand[i];
 			}
 		}

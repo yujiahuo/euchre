@@ -9,7 +9,7 @@ function makeCardElem(cardID, flippedUp){
 	card.className = "card";
 	card.id = cardID;
 
-	if(!flippedUp && !game.getAllFaceUp()){
+	if(!flippedUp){
 		card.classList.add("cardBack");
 	}
 
@@ -53,7 +53,7 @@ function animDeal(hands){
 	makeCardElem(game.getTrumpCandidate().id, false);
 
 	for(var i=0; i<hands.length; i++){
-		flippedUp = (player===players.SOUTH);
+		flippedUp = (!game.isAiPlayer(i) || game.getAllFaceUp());
 		if(i%2 === dealer%2) delay = 1;
 		else delay = 0;
 
@@ -124,7 +124,7 @@ function animTakeTrump(toDiscardID){
 	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
 	setTimeout(animHideCard, 400, toDiscardElem);
 	
-	if(game.getDealer() !== players.SOUTH){
+	if(game.isAiPlayer(game.getDealer()) && !game.getAllFaceUp()){
 		trumpElem.classList.add("cardBack");
 	}
 	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
@@ -176,7 +176,7 @@ function animSortHand(hand){
 		key = 0;
 		suit = hand[i].suit;
 		switch(suit){
-			case game.getTrump:
+			case game.getTrump():
 				break;
 			case suits.CLUBS:
 				key += 100;
@@ -202,13 +202,14 @@ function animSortHand(hand){
 	}
 }
 
-function animPlayCard(player, cardID){
+function animPlayCard(player, cardID, flipCard){
 	if(game.getStatMode()) return;
 
 	var top;
 	var left;
 
-	animFlipCard(cardID);
+	if(flipCard && !game.getAllFaceUp()) animFlipCard(cardID);
+
 	switch(player){
 		case players.SOUTH:
 			top = "352px";
@@ -292,7 +293,7 @@ function animRemoveKitty(){
 function animHidePartnerHand(hands){
 	var player;
 
-	player = players.props[game.getAlonePlayer].partner;
+	player = players.props[game.getAlonePlayer()].partner;
 	for(var i=0; i<hands[player].length; i++){
 		animHideCard(document.getElementById(hands[player][i].id));
 	}
@@ -363,7 +364,7 @@ function animFlipButton(on){
 }
 
 function animShowScore(){
-	animShowText("You: " + game.getNsScore + "  Them: " + game.getEwScore);
+	animShowText("You: " + game.getNsScore() + "  Them: " + game.getEwScore());
 }
 
 function animShowText(text, overwrite){

@@ -121,7 +121,7 @@ function Game(){
 	var __aiPlayers = [null, new IdiotAI(), new IdiotAI(), new IdiotAI()];
 
 	//settings
-	var __allFaceUp = false;
+	var __allFaceUp = true;
 	var __statMode = false; //4 AIs play against each other
 
 	//get methods
@@ -194,6 +194,9 @@ function Game(){
 	this.getStatMode = function(){
 		return __statMode;
 	}
+	this.isAiPlayer = function(player){
+		return (__aiPlayers[player] !== null);
+	}
 
 	/*******************************
  	* Private functions
@@ -230,14 +233,16 @@ function Game(){
 		__ewTricksWon = 0;
 
 		pickDealer();
-		__currentPlayer = __dealer;
-		nextPlayer();
 
 		for(i=0; i<4; i++){
+			__currentPlayer = i;
 			if(__aiPlayers[i] !== null){
 				__aiPlayers[i].init();
 			}
 		}
+
+		__currentPlayer = __dealer;
+		nextPlayer();
 
 		animShowText("", 1); //clear div
 		animDisableBidding();
@@ -357,7 +362,6 @@ function Game(){
 	}
 
 	function goAlone(player){
-		__alonePlayer = player;
 		__numPlayers -= 1;
 	}
 
@@ -390,19 +394,23 @@ function Game(){
 		DECKDICT[__leftID].rank = ranks.LEFT;
 
 		__maker = __currentPlayer;
+		if(__alonePlayer !== players.NONE){
+			goAlone(__alonePlayer);
+		}
 
 		animShowTextTop("Trump is "+ __trump);
 		animShowTextTop("Maker is " + __maker);
 	}
 
 	function giveDealerTrump(toDiscard){
-		if(__aiPlayers[__dealer] === null){
-			document.getElementById(__trumpCandidate.id).addEventListener("click", game.clickCard);
-		}
 		addToHand(__dealer, __trumpCandidate);
 		removeFromHand(__dealer, toDiscard);
 	
 		animTakeTrump(toDiscard.id);
+
+		if(__aiPlayers[__dealer] === null){
+			document.getElementById(__trumpCandidate.id).addEventListener("click", game.clickCard);
+		}
 	}
 
  	function endHand(){
@@ -425,7 +433,7 @@ function Game(){
 
 		animRemoveKitty();
 		if(__alonePlayer !== players.NONE){
-			animShowTextTop(alonePlayer + " is going alone ");
+			animShowTextTop(__alonePlayer + " is going alone ");
 			animHidePartnerHand(__hands);
 		}
 		
@@ -448,7 +456,7 @@ function Game(){
 
 	//plays a single trick
 	function playTrick(){
-		var cardID;
+		var card;
 		var ai;
 
 		//everyone has played
@@ -485,13 +493,35 @@ function Game(){
 		}
 		else{
 			console.log(players.props[__currentPlayer].name + " is playing");
-			playCard(ai.pickCard());
+			card = ai.pickCard();
+			if(!isValidPlay(card)){
+				card = autoPickCard();
+			}
+			playCard(card);
 			nextPlayer();
 			setTimeout(playTrick, 1000);
 		}
 	}
 
+	//your AI sucks and didn't pick a valid card
+	function autoPickCard(){
+		var hand;
+
+		hand = __hands[__currentPlayer];
+		for(var i=0; i<hand.length; i++){
+			if(isValidPlay(hand[i])){
+				return hand[i];
+			}
+		}
+		//we will never reach this but just in case
+		return hand[0];
+	}
+
 	function playCard(card){
+		var flipCard;
+
+		flipCard = (__aiPlayers[__currentPlayer] !== null); //flip card for AIs
+
 		if(__trickPlayersPlayed === 0){
 			__trickSuit = card.suit;
 		}
@@ -499,7 +529,7 @@ function Game(){
 		removeFromHand(__currentPlayer, card);
 		__trickPlayersPlayed++;
 
-		animPlayCard(__currentPlayer, card.id);
+		animPlayCard(__currentPlayer, card.id, flipCard);
 	}
 
 	function endTrick(){
@@ -512,6 +542,7 @@ function Game(){
 
 		console.log(__nsTricksWon + " : " + __ewTricksWon);
 
+		__currentPlayer = winner;
 		animWinTrick(winner, __trickPlayedCards);
 	}
 
@@ -625,6 +656,7 @@ function Game(){
 	this.clickTrump = function(suit){
 		setTrump(suit);
 		animDisableBidding();
+		startTricks();
 	}
 
 	this.clickPass = function(){
@@ -636,14 +668,13 @@ function Game(){
 		else setTimeout(doBidding, 1000);
 	}
 
-	this.clickGoAlone = function(player){
-		if(alonePlayer === players.NONE){
-			goAlone(player);
+	this.clickGoAlone = function(){
+		if(__alonePlayer === players.NONE){
+			__alonePlayer = players.SOUTH;
 			animFlipButton(true);
 		}
 		else{
-			alonePlayer = players.NONE;
-			numPlayers += 1;
+			__alonePlayer = players.NONE;
 			animFlipButton(false);
 		}
 	}
@@ -661,15 +692,15 @@ function Game(){
 			return;
 		}
 
-		if(!isValidPlay(players.SOUTH, card)){
+		if(!isValidPlay(card)){
 			enableActions();
-			console.log("No. You can't play that. The suit is " + trickSuit);
+			console.log("No. You can't play that. The suit is " + __trickSuit);
 			return;
 		}
 		playCard(card);
 		nextPlayer();
 
-		playTrick();
+		setTimeout(playTrick, 1000);
 	}
 
 	this.myHand = function(){

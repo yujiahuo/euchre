@@ -35,8 +35,8 @@ function isGreater(card1, card2){
 	return (card2.rank > card1.rank);
 }
 
-function isValidPlay(player, card){
-	if(!canFollowSuit(player)){
+function isValidPlay(card){
+	if(!hasSuit(game.getTrickSuit())){
 		return true;
 	}
 	if(followsSuit(card)){
@@ -46,21 +46,20 @@ function isValidPlay(player, card){
 }
 
 function isTrump(card){
-	return card.suit === game.getTrump;
+	return card.suit === game.getTrump();
 }
 
 function followsSuit(card){
-	if(game.getTrickSuit() === ""){
+	var trickSuit;
+
+	trickSuit = game.getTrickSuit();
+	if(trickSuit === ""){
 		return true;
 	}
-	if(card.suit === game.getTrickSuit){
+	if(card.suit === trickSuit){
 		return true;
 	}
 	return false;
-}
-
-function canFollowSuit(player){
-	return hasSuit(game.getTrickSuit, player);
 }
 
 //can be called about the current player

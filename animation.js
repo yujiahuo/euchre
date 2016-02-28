@@ -24,6 +24,7 @@ function makeCardElem(cardID, flippedUp){
 function animMoveCard(cardID, top, left, z){
 	var elem;
 	
+	console.log(cardID);
 	elem = document.getElementById(cardID);
 	elem.style.top = top;
 	elem.style.left = left;
@@ -37,7 +38,7 @@ function animMoveCard(cardID, top, left, z){
 }
 
 function animDeal(hands){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 
 	var player;
 	var delay; //delay to second round deal
@@ -53,14 +54,14 @@ function animDeal(hands){
 	makeCardElem(game.getTrumpCandidate().id, false);
 
 	for(var i=0; i<hands.length; i++){
-		flippedUp = (!game.isAiPlayer(i) || game.getAllFaceUp());
+		flippedUp = (!game.isAiPlayer(player) || game.isAllFaceUp());
 		if(i%2 === dealer%2) delay = 1;
 		else delay = 0;
 
 		for(var j=0; j<hands[i].length; j++){
 			cardID = hands[player][j].id;
 			makeCardElem(cardID, flippedUp);
-			if(flippedUp){
+			if(!game.isAiPlayer(player)){
 				document.getElementById(cardID).addEventListener("click", game.clickCard);
 			}
 
@@ -106,7 +107,7 @@ function animDealSingle(player, cardID, cardPos){
 
 //gives trump to the dealer
 function animTakeTrump(toDiscardID){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 	
 	var top;
 	var left;
@@ -124,7 +125,7 @@ function animTakeTrump(toDiscardID){
 	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
 	setTimeout(animHideCard, 400, toDiscardElem);
 	
-	if(game.isAiPlayer(game.getDealer()) && !game.getAllFaceUp()){
+	if(game.isAiPlayer(game.getDealer()) && !game.isAllFaceUp()){
 		trumpElem.classList.add("cardBack");
 	}
 	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
@@ -132,7 +133,7 @@ function animTakeTrump(toDiscardID){
 }
 
 function animPlaceDealerButt(){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 
 	var button;
 
@@ -165,7 +166,7 @@ function animPlaceDealerButt(){
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
 function animSortHand(hand){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 
 	var sortedDict = [];
 	var key;
@@ -203,12 +204,12 @@ function animSortHand(hand){
 }
 
 function animPlayCard(player, cardID, flipCard){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 
 	var top;
 	var left;
 
-	if(flipCard && !game.getAllFaceUp()) animFlipCard(cardID);
+	if(flipCard && !game.isAllFaceUp()) animFlipCard(cardID);
 
 	switch(player){
 		case players.SOUTH:
@@ -238,7 +239,7 @@ function animFlipCard(cardID){
 }
 
 function animWinTrick(player, cards){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 
 	var cardElem;
 	var top;
@@ -276,7 +277,7 @@ function animWinTrick(player, cards){
 }
 
 function animRemoveKitty(){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 
 	var elem;
 	var trumpCandidate;
@@ -300,13 +301,13 @@ function animHidePartnerHand(hands){
 }
 
 function animHideCard(cardElem){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 
 	cardElem.style.display = "none";
 }
 
 function animClearTable(){
-	if(game.getStatMode()) return;
+	if(game.isStatMode()) return;
 	document.getElementById("cardsContainer").innerHTML = "";
 }
 
@@ -321,19 +322,19 @@ function animEnableBidding(){
 		return;
 	}
 
-	if(canOrderUpSuit(suits.SPADES, 0)){
+	if(canOrderUpSuit(suits.SPADES)){
 		document.getElementById("pickSpades").style.display = "inline";
 		document.getElementById("alone").style.display = "inline";
 	}
-	if(canOrderUpSuit(suits.CLUBS, 0)){
+	if(canOrderUpSuit(suits.CLUBS)){
 		document.getElementById("pickClubs").style.display = "inline";
 		document.getElementById("alone").style.display = "inline";
 	}
-	if(canOrderUpSuit(suits.HEARTS, 0)){
+	if(canOrderUpSuit(suits.HEARTS)){
 		document.getElementById("pickHearts").style.display = "inline";
 		document.getElementById("alone").style.display = "inline";
 	}
-	if(canOrderUpSuit(suits.DIAMONDS, 0)){
+	if(canOrderUpSuit(suits.DIAMONDS)){
 		document.getElementById("pickDiamonds").style.display = "inline";
 		document.getElementById("alone").style.display = "inline";
 	}
@@ -367,10 +368,16 @@ function animShowScore(){
 	animShowText("You: " + game.getNsScore() + "  Them: " + game.getEwScore());
 }
 
-function animShowText(text, overwrite){
+function animShowText(text, nest, overwrite){
 	var div = document.getElementById("sidebarText");
 	if(overwrite){
 		div.innerHTML = "";
+	}
+	if(!nest){
+		nest = 0;
+	}
+	for(var i=0; i<nest; i++){
+		div.innerHTML += "&nbsp&nbsp";
 	}
 	div.innerHTML += text + "<br>";
 	div.scrollTop = div.scrollHeight;
@@ -385,7 +392,7 @@ function animShowTextTop(text, overwrite){
 }
 
 function OHMYGODCARD(player, card){
-	animShowText("HEY " + player + " PLAYED: " + card.suit + card.rank + "(" + card.id + ")");
+	animShowText(player + " played: " + card.suit + card.rank + "(" + card.id + ")");
 }
 
 function disableActions(){

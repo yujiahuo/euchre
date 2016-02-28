@@ -36,6 +36,9 @@ function isGreater(card1, card2){
 }
 
 function isValidPlay(card){
+	if(card == null){ //double equal will also find undefined
+		return false;
+	}
 	if(!hasSuit(game.getTrickSuit())){
 		return true;
 	}
@@ -74,18 +77,34 @@ function hasSuit(suit){
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */
-function canOrderUpSuit(suit, player){
+function canOrderUpSuit(suit){
 	if(game.getBiddingRound() === 1){
 		if(game.getTrumpCandidate().suit !== suit) return false;
-		if(hasSuit(suit, player)) return true;
+		if(hasSuit(suit)) return true;
 	}
 	if(game.getBiddingRound() === 2){
 		if(game.getTrumpCandidate().suit === suit) return false;
-		if(hasSuit(suit, player)) return true;
+		if(hasSuit(suit)) return true;
 	}
 	return false;
 }
 
 function myHand(){
 	return game.myHand();
+}
+
+//count how many of a suit you have
+function countSuit(suit){
+
+}
+
+function test(){
+	var foo;
+
+	if(foo){
+		console.log("yes");
+	}
+	else{
+		console.log("no");
+	}
 }

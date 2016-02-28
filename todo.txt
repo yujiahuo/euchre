@@ -1,28 +1,23 @@
 ToDo
 
 Right meow
+- Improve printouts
 
 Clean up
-- Inconsistently relying on player 0 being human
-- Organize functions better and comment everything
+- Comment everything
 
 Enhancements
-- Defending alone
-- Make AI stuff way prettier
-	- Stop doing things that make no sense in aiBehavior
-	- playerAPI needs to expose a bunch more stuff
-	- AI switch needs to be better (documentGlobal.aiFunction?)
-	- Make vars private
+- Defending alones
 - Queue up your next card
 	- Get rid of delay at start of player 0's turn
-- Card noises
+- Settings
+	- Show cards played this hand
+	- Stat mode
+	- Card noises
+	- Option for open hands
 - AI difficulties
-- Show cards played this hand
-- Stat mode
 - Recenter hand after cards are played
-- Option for open hands
 - If your partner is going alone, you get to see the kitty (meow)
-- Let functions handle multiple param types
 
 Low priority
 - Speedy (instant) AI players
@@ -39,14 +34,6 @@ Game modes
 - Cutthroat
 - AIs can see open hands but you can't. No one will find this fun (except Kevin). Do it anyway.
 - Game mode where you try to lose
-
-
-AI decisions that need to be made
-- Some kind of init once it can see its hand
-- Order up or not
-- Bid on second round bidding
-- Go alone
-- Pick card to play
 
 Keyboard stuff
 - ctrl + shift click (go to definition)

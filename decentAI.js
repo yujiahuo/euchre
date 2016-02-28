@@ -2,14 +2,15 @@
 /* Functions AIs have to implement
 /* 
 /* You may call functions from playerAPI.js
-/* All other functions and vars are "private"
 *******************************************************/
 
 function DecentAI(){
 	//Called once hands have been dealt and the trump candidate is revealed
 	//Params: none
 	//Returns: none
-	this.init = function(){}
+	this.init = function(){
+
+	}
 
 	//Bidding round 1, choose whether to order up or pass
 	//Params: none

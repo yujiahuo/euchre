@@ -74,10 +74,15 @@ var zIndex = 0; //iterated to make sure recently moved cards end up on top
  *Card object
  *****************************************************************************/
 
-function Card(suit, rank){
+function Card(suit, rank, id){
 	this.suit = suit;
 	this.rank = rank;
-	this.id = suit + rank;
+	if(id){
+		this.id = id;
+	}
+	else{
+		this.id = suit + rank;
+	}
 }
 
 /*****************************************************************************
@@ -144,7 +149,10 @@ function Game(){
 		return __handNum;
 	}
 	this.getTrumpCandidate = function(){
-		return __trumpCandidate;
+		var card;
+
+		card = new Card(__trumpCandidate.suit, __trumpCandidate.rank, __trumpCandidate.id);
+		return card;
 	}
 	this.getTrump = function(){
 		return __trump;
@@ -177,7 +185,15 @@ function Game(){
 		return __trickSuit;
 	}
 	this.getTrickPlayedCards = function(){
-		return __trickPlayedCards;
+		var playedCards = [];
+		var card;
+
+		for(var i=0; i<__trickPlayedCards.length; i++){
+			card = __trickPlayedCards[i];
+			playedCards[i] = new Card(card.suit, card.rank, card.id);
+		}
+
+		return playedCards;
 	}
 	this.getCurrentPlayer = function(){
 		return __currentPlayer;
@@ -188,14 +204,14 @@ function Game(){
 	this.getEwTricksWon = function(){
 		return __ewTricksWon;
 	}
-	this.getAllFaceUp = function(){
+	this.isAllFaceUp = function(){
 		return __allFaceUp;
 	}
-	this.getStatMode = function(){
+	this.isStatMode = function(){
 		return __statMode;
 	}
 	this.isAiPlayer = function(player){
-		return (__aiPlayers[player] !== null);
+		return (__aiPlayers[player] != null);
 	}
 
 	/*******************************
@@ -244,13 +260,14 @@ function Game(){
 		__currentPlayer = __dealer;
 		nextPlayer();
 
-		animShowText("", 1); //clear div
+		//animShowText("", 1); //clear div
 		animDisableBidding();
 		animClearTable();
 
 		getShuffledDeck();
 		dealHands();
 
+		animShowText("Bidding");
 		if(__statMode) doBidding();
 		else setTimeout(doBidding, 3000);
 	}
@@ -292,14 +309,16 @@ function Game(){
 		
 		animDeal(__hands);
 		setTimeout(animFlipCard, 1500, __trumpCandidate.id);
-		setTimeout(animSortHand, 1500, __hands[0]);
+		if(__aiPlayers[players.SOUTH] === null){
+			setTimeout(animSortHand, 1500, __hands[0]);
+		}
 	}
 
 	function doBidding(){
 		//a bidding round has ended without any bids
 		if(__playersBid === 4){
 			if(__biddingRound === 1){
-				animShowText("Starting bidding round 2")
+				animShowText("Starting bidding round 2");
 				__biddingRound = 2;
 				__playersBid = 0;
 
@@ -323,31 +342,30 @@ function Game(){
 		//let human player take action
 		if(ai === null){
 			animEnableBidding();
-			animShowText("Your turn");
 			return;
 		}
 
 		if(__biddingRound === 1){
-			if(ai.chooseOrderUp()){
+			if(ai.chooseOrderUp() && canOrderUpSuit(__trumpCandidate.suit)){
 				if(ai.chooseGoAlone()){
 					goAlone(__currentPlayer);
 				}
 				orderUp();
 				doneBidding = true;
 			}
-			animShowText("Player " + __currentPlayer + " passed.");
+			animShowText("Player " + __currentPlayer + " passed.", 1);
 		}
 
 		if(__biddingRound === 2){
 			bidSuit = ai.pickTrump();
-			if(bidSuit !== null){
+			if(bidSuit !== null && canOrderUpSuit(bidSuit)){
 				if(ai.chooseGoAlone()){
 					goAlone(__currentPlayer);
 				}
 				setTrump(bidSuit);
 				doneBidding = true;
 			}
-			animShowText("Player " + __currentPlayer + " passed.");
+			animShowText("Player " + __currentPlayer + " passed.", 1);
 		}
 
 		if(doneBidding){
@@ -367,18 +385,26 @@ function Game(){
 
 	function orderUp(){
 		var ai;
+		var card;
 
 		ai = __aiPlayers[__dealer];
 		__currentPlayer = __dealer;
 		setTrump(__trumpCandidate.suit);
 		if(ai === null){
+			animShowText("Discard a card", 1);
 			//wait for player to select a card to discard
 			enableActions();
 			return;
 		}
 		else{
-			giveDealerTrump(ai.pickDiscard());
+			card = ai.pickDiscard();
+			if(card == null){
+				card = __hands[__currentPlayer][0];
+			}
+			giveDealerTrump(card);
 		}
+
+		animShowText(__currentPlayer + " ordered up " + __trumpCandidate.suit, 1);
 
 		startTricks();
 	}
@@ -422,7 +448,7 @@ function Game(){
 
 	//end of bidding phase and start of trick playing
 	function startTricks(){
-		console.log("starting tricks");
+		animShowText("Playing hand");
 		__trickNum = 1;
 		__nsTricksWOn = 0;
 		__weTricksWon = 0;
@@ -442,6 +468,7 @@ function Game(){
 		}
 		else{
 			setTimeout(animSortHand, 600, __hands[0]);
+			animShowText("Trick " + __trickNum, 1);
 			if(__statMode) playTrick();
 			else setTimeout(playTrick, 1000);
 		}
@@ -473,6 +500,7 @@ function Game(){
 			else{
 				initNewTrick();
 				__trickNum++;
+				animShowText("Trick " + __trickNum, 1);
 				if(__statMode) playTrick;
 				else setTimeout(playTrick, 1000);
 				return;
@@ -488,11 +516,11 @@ function Game(){
 				return;
 			}
 		}
+
 		if(ai === null){
 			enableActions();
 		}
 		else{
-			console.log(players.props[__currentPlayer].name + " is playing");
 			card = ai.pickCard();
 			if(!isValidPlay(card)){
 				card = autoPickCard();
@@ -530,6 +558,7 @@ function Game(){
 		__trickPlayersPlayed++;
 
 		animPlayCard(__currentPlayer, card.id, flipCard);
+		animShowText(players.props[__currentPlayer].name + " played " + card.id, 2);
 	}
 
 	function endTrick(){
@@ -663,7 +692,7 @@ function Game(){
 		nextPlayer();
 		__playersBid++;
 		animDisableBidding();
-		animShowText("You passed");
+		animShowText("You passed", 1);
 		if(__statMode) doBidding();
 		else setTimeout(doBidding, 1000);
 	}
@@ -704,6 +733,14 @@ function Game(){
 	}
 
 	this.myHand = function(){
-		return __hands[__currentPlayer];
+		var hand = [];
+		var card;
+
+		for(var i=0; i<__hands[__currentPlayer].length; i++){
+			card = __hands[__currentPlayer][i];
+			hand[i] = new Card(card.suit, card.rank, card.id);
+		}
+
+		return hand;
 	}
 }

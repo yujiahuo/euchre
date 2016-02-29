@@ -9,7 +9,6 @@ function DecentAI(){
 	//Params: none
 	//Returns: none
 	this.init = function(){
-
 	}
 
 	//Bidding round 1, choose whether to order up or pass

@@ -1,19 +1,83 @@
+#everything{
+	height: 600px;
+	width: 1000px;
+	position: relative;
+	margin: 0 auto; /* centers stuff */
+	font-family: Arial;
+	font-size: 14px;
+}
+
 #gameSpace{
 	height: 600px;
-	width: 1100px;
+	width: 800px;
 	/* this can make us scale with page size
 	height: 60vw;
 	width: 90vw;
 	max-height: 90vh;
 	max-width: 135vh;*/
-	background-color: #004000;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #4C7A34;
+}
+
+#menu{
+	height: 200px;
+	width: 250px;
+	position: absolute;
+	top: 200px;
+	left: 275px;
+	background-color: #CBE8BA;
+}
+
+#newGame{
+	width: 135px;
 	position: relative;
-	margin: 0 auto; /* centers stuff */
+	margin: 0 auto;
+	top: 20px;
+}
+
+#newGameButt{
+	padding: 15px 15px;
+}
+
+#difficulty{
+	width: 72px;
+	position: relative;
+	margin: 0 auto;
+	top: 30px;
+}
+
+#gameOptions{
+	width: 120px;
+	position: relative;
+	margin: 0 auto;
+	top: 30px;
+}
+
+#settings{
+	position: absolute;
+	top: 120px;
+	left: 20px;
+}
+
+#howToPlay{
+	position: absolute;
+	top: 120px;
+	left: 120px;
+}
+
+#copyright{
+	position: absolute;
+	top: 170px;
+	left: 75px;
+	color: #666666;
+	font-size: 12px;
 }
 
 #sidebar{
 	height: 600px;
-	width: 300px;
+	width: 200px;
 	position: absolute;
 	top: 0px;
 	left: 800px;
@@ -22,7 +86,7 @@
 
 #sidebarTop{
 	height: 80px;
-	background-color: #AAAAAA;
+	background-color: #CBE8BA;
 	padding-left: 5px;
 }
 
@@ -30,9 +94,84 @@
 	position: relative;
 	height: 518px;
 	top: 2px;
-	background-color: #AAAAAA;
+	background-color: #CBE8BA;
 	padding-left: 5px;
 	overflow: scroll;
+}
+
+#orderUpPrompt{
+	width: 100px;
+	height: 110px;
+	position: absolute;
+	left: 80%;
+	top: 80%;
+	z-index: 9001;
+	display: none;
+}
+
+#alone{
+	background-color: green;
+	width: 80px;
+	height: 16px;
+	text-align: center;
+}
+
+#dealerButton{
+	background: url('images/dealerButton.png');
+	background-size: contain;
+	height: 50px;
+    width: 50px; 
+	position: absolute;
+}
+
+#blanket{
+	height: 600px;
+	width: 800px;
+	position: absolute;
+	margin: 0 auto; /* centers stuff */
+	z-index: 9000;
+	display: none;
+}
+
+button{
+	background-color: #CCCCCC;
+	color: black;
+    border: 2px solid #999999;
+    border-radius: 5px;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.tooltiptext {
+	position: absolute;
+    width: 200px;
+    top: 0px;
+    left: 200px; 
+    background-color: #EEEEEE;
+    color: #111111;
+    padding: 5px 5px 5px 0px;
+    border-radius: 6px;
+
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tooltip:hover .tooltiptext {
+    opacity: 1;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 10%;
+    right: 100%; /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #EEEEEE transparent transparent;
 }
 
 /* CARDS */
@@ -145,38 +284,4 @@
 
 #S9{
 	background: url('images/cards.png') -585px -99px;
-}
-
-#orderUpPrompt{
-	width: 100px;
-	height: 110px;
-	position: absolute;
-	left: 60%;
-	top: 80%;
-	z-index: 9001;
-	display: none;
-}
-
-#alone{
-	background-color: green;
-	width: 80px;
-	height: 16px;
-	text-align: center;
-}
-
-#dealerButton{
-	background: url('images/dealerButton.png');
-	background-size: contain;
-	height: 50px;
-    width: 50px; 
-	position: absolute;
-}
-
-#blanket{
-	height: 600px;
-	width: 800px;
-	position: absolute;
-	margin: 0 auto; /* centers stuff */
-	z-index: 9000;
-	display: none;
 }

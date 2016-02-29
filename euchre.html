@@ -11,34 +11,54 @@
 	</head>
 
 	<body>
-		<div id="gameSpace">
-			<div id="sidebar">
+		<div id="everything">
+			<div id="sidebar" >
 				<div id="sidebarTop">
 				</div>
 				<div id="sidebarText">
 				</div>
 			</div>
-
-			<div id="orderUpPrompt">
-				<button id="orderUp" onclick="game.clickOrderUp()">Order Up</button>
-				<button id="pickSpades" onclick="game.clickTrump(suits.SPADES)">Spades</button>
-				<button id="pickClubs" onclick="game.clickTrump(suits.CLUBS)">Clubs</button>
-				<button id="pickHearts" onclick="game.clickTrump(suits.HEARTS)">Hearts</button>
-				<button id="pickDiamonds" onclick="game.clickTrump(suits.DIAMONDS)">Diamonds</button>
-				
-				<div id="alone" onclick="game.clickGoAlone()">
-					Alone
+			<div id="gameSpace">
+				<div id="menu">
+					<div id="newGame">
+						<button onclick="newGame()" id="newGameButt">Start new game</button>
+					</div>
+					<div id="difficulty" class="tooltip">
+						<select>
+						  <option value="Easy">Easy</option>
+						  <option value="Medium">Medium</option>
+						  <option value="Hard">Hard</option>
+						</select>
+					</div>
+	  				<div id="settings" class="tooltip">
+						<button onclick="settings()">Settings</button>
+					</div>
+					<div id="howToPlay" class="tooltip">
+						<button onclick="howToPlay()">How to play</button>
+					</div>
+					<div id="copyright">
+						<p>&copy; Yujia Huo 2016</p>
+					</div>
 				</div>
-				<button id="pass" onclick="game.clickPass()">Pass</button>
-			</div>
+				<div id="orderUpPrompt">
+					<div id="alone" onclick="game.clickGoAlone()">
+						Alone
+					</div>
+					<button id="orderUp" onclick="game.clickOrderUp()">Order Up</button>
+					<button id="pickSpades" onclick="game.clickTrump(suits.SPADES)">Spades</button>
+					<button id="pickClubs" onclick="game.clickTrump(suits.CLUBS)">Clubs</button>
+					<button id="pickHearts" onclick="game.clickTrump(suits.HEARTS)">Hearts</button>
+					<button id="pickDiamonds" onclick="game.clickTrump(suits.DIAMONDS)">Diamonds</button>
+					<button id="pass" onclick="game.clickPass()">Pass</button>
+				</div>
 
-			<div id="blanket">
-			</div>
+				<div id="blanket">
+				</div>
 
-			<div id="cardsContainer">
+				<div id="cardsContainer">
+				</div>
 			</div>
 		</div>
-		<button onclick="newGame()">Start new game</button>
 		<button onclick="test()">test</button>
 		<button onclick="test2()">test2</button>
 	</body>

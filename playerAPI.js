@@ -95,7 +95,12 @@ function myHand(){
 
 //count how many of a suit you have
 function countSuit(suit){
-
+	var count = 0;
+	var hand = myHand();
+	for(var i=0; i<hand.length; i++){
+		if(hand[i].suit === suit) count++;
+	}
+	return count;
 }
 
 function test(){

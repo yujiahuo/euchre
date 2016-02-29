@@ -1,12 +1,11 @@
 ToDo
 
 Right meow
-- Improve printouts
 
 Clean up
-- Comment everything
 
 Enhancements
+- Make UI not suck
 - Defending alones
 - Queue up your next card
 	- Get rid of delay at start of player 0's turn
@@ -19,22 +18,33 @@ Enhancements
 - Recenter hand after cards are played
 - If your partner is going alone, you get to see the kitty (meow)
 
+Game modes
+- No trump
+- Stick the dealer
+- AIs can see open hands but you can't. No one will find this fun (except Kevin). Do it anyway.
+- Game mode where you try to lose
+
 Low priority
 - Speedy (instant) AI players
 - Auto-play last trick
 - Auto-pass if it's all you can do
 - Multiplayer
 - Card pack choice
-- Steal the deal
 - Make the whole thing resize with window
-
-Game modes
-- No trump
-- Stick the dealer
-- Cutthroat
-- AIs can see open hands but you can't. No one will find this fun (except Kevin). Do it anyway.
-- Game mode where you try to lose
 
 Keyboard stuff
 - ctrl + shift click (go to definition)
 - ctrl + shift + right click (go back)
+
+					<div id="gameOptions" class="tooltip">
+						<input type="checkbox" value="stickDealer" class="tooltip">Stick the dealer
+						<br>
+	  					<input type="checkbox" value="noTrump" class="tooltip">Allow no trump
+	  					<br>
+	  					<input type="checkbox" value="loserWins" class="tooltip">Loser wins
+	  					<span class="tooltiptext">
+	  						<ul>
+	  							<li>Stick the dealer: If no trump is selected by the end of bidding, the dealer must choose a trump</li>
+	  							<li>Allow no trump: Can call no trump</li>
+	  					</span>
+	  				</div>

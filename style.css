@@ -21,60 +21,6 @@
 	background-color: #4C7A34;
 }
 
-#menu{
-	height: 200px;
-	width: 250px;
-	position: absolute;
-	top: 200px;
-	left: 275px;
-	background-color: #CBE8BA;
-}
-
-#newGame{
-	width: 135px;
-	position: relative;
-	margin: 0 auto;
-	top: 20px;
-}
-
-#newGameButt{
-	padding: 15px 15px;
-}
-
-#difficulty{
-	width: 72px;
-	position: relative;
-	margin: 0 auto;
-	top: 30px;
-}
-
-#gameOptions{
-	width: 120px;
-	position: relative;
-	margin: 0 auto;
-	top: 30px;
-}
-
-#settings{
-	position: absolute;
-	top: 120px;
-	left: 20px;
-}
-
-#howToPlay{
-	position: absolute;
-	top: 120px;
-	left: 120px;
-}
-
-#copyright{
-	position: absolute;
-	top: 170px;
-	left: 75px;
-	color: #666666;
-	font-size: 12px;
-}
-
 #sidebar{
 	height: 600px;
 	width: 200px;
@@ -131,47 +77,6 @@
 	margin: 0 auto; /* centers stuff */
 	z-index: 9000;
 	display: none;
-}
-
-button{
-	background-color: #CCCCCC;
-	color: black;
-    border: 2px solid #999999;
-    border-radius: 5px;
-    padding: 5px 15px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 14px;
-    display: inline-block;
-}
-
-.tooltiptext {
-	position: absolute;
-    width: 200px;
-    top: 0px;
-    left: 200px; 
-    background-color: #EEEEEE;
-    color: #111111;
-    padding: 5px 5px 5px 0px;
-    border-radius: 6px;
-
-    opacity: 0;
-    transition: opacity 1s;
-}
-
-.tooltip:hover .tooltiptext {
-    opacity: 1;
-}
-
-.tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    top: 10%;
-    right: 100%; /* To the left of the tooltip */
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent #EEEEEE transparent transparent;
 }
 
 /* CARDS */

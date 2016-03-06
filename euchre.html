@@ -6,7 +6,8 @@
 		<script src="idiotAI.js" type="text/javascript"></script>
 		<script src="Game.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" id="style">
-		
+		<link rel="stylesheet" type="text/css" href="menuStyle.css" id="menuStyle">
+
 		<title>Wow so Euchre</title>
 	</head>
 
@@ -19,27 +20,33 @@
 				</div>
 			</div>
 			<div id="gameSpace">
+
+				<!--Menu stuff.-->
 				<div id="menu">
-					<div id="newGame">
-						<button onclick="newGame()" id="newGameButt">Start new game</button>
-					</div>
-					<div id="difficulty" class="tooltip">
-						<select>
-						  <option value="Easy">Easy</option>
-						  <option value="Medium">Medium</option>
-						  <option value="Hard">Hard</option>
-						</select>
-					</div>
-	  				<div id="settings" class="tooltip">
-						<button onclick="settings()">Settings</button>
-					</div>
-					<div id="howToPlay" class="tooltip">
-						<button onclick="howToPlay()">How to play</button>
-					</div>
-					<div id="copyright">
-						<p>&copy; Yujia Huo 2016</p>
+					<div id="menuItems">
+						<div id="newGame">
+							<button onclick="newGame()" id="newGameButt">Start new game</button>
+						</div>
+						<div id="difficulty" class="tooltip">
+							<select>
+							  <option value="Easy">Easy</option>
+							  <option value="Medium">Medium</option>
+							  <option value="Hard">Hard</option>
+							</select>
+						</div>
+		  				<div id="settings" class="tooltip">
+							<button onclick="settings()">Settings</button>
+						</div>
+						<div id="howToPlay" class="tooltip">
+							<button onclick="howToPlay()">How to play</button>
+						</div>
+						<div id="copyright">
+							<p>&copy; Yujia Huo 2016</p>
+						</div>
 					</div>
 				</div>
+
+				<!--Game buttons-->
 				<div id="orderUpPrompt">
 					<div id="alone" onclick="game.clickGoAlone()">
 						Alone

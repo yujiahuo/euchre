@@ -93,6 +93,10 @@ function myHand(){
 	return game.myHand();
 }
 
+function getTrickPlayedCards(){
+	return game.getTrickPlayedCards();
+}
+
 //count how many of a suit you have
 function countSuit(suit){
 	var count = 0;

@@ -126,7 +126,7 @@ function Game(){
 	var __aiPlayers = [null, new IdiotAI(), new IdiotAI(), new IdiotAI()];
 
 	//settings
-	var __allFaceUp = true;
+	var __allFaceUp = false;
 	var __statMode = false; //4 AIs play against each other
 
 	//get methods
@@ -212,6 +212,17 @@ function Game(){
 	}
 	this.isAiPlayer = function(player){
 		return (__aiPlayers[player] != null);
+	}
+	this.myHand = function(){
+		var hand = [];
+		var card;
+
+		for(var i=0; i<__hands[__currentPlayer].length; i++){
+			card = __hands[__currentPlayer][i];
+			hand[i] = new Card(card.suit, card.rank, card.id);
+		}
+
+		return hand;
 	}
 
 	/*******************************
@@ -493,8 +504,6 @@ function Game(){
 			//all tricks have been played
 			if(__trickNum === 5){
 				endHand();
-				if(__statMode) newHand(0);
-				else setTimeout(newHand, 1000, 0);
 				return;
 			}
 			else{
@@ -595,7 +604,7 @@ function Game(){
 	function updateScore(){
 		if(__nsTricksWon > __ewTricksWon){
 			//gain at least one point
-			__nsScore++;
+			__nsScore+=10;
 			if(__nsTricksWon === 5){
 				//at least one more for having all the tricks
 				__nsScore++;
@@ -603,7 +612,7 @@ function Game(){
 					__nsScore += 2;
 				}
 			}
-			if(__maker === players.SOUTH || __maker === players.NORTH){
+			if(__maker === players.EAST || __maker === players.WEST){
 				__nsScore++;
 				//defend alone same logic as alone player
 			}
@@ -621,7 +630,7 @@ function Game(){
 					__ewScore += 2;
 				}
 			}
-			if(__maker === players.EAST || __maker === players.WEST){
+			if(__maker === players.NORTH || __maker === players.SOUTH){
 				__ewScore++;
 				//defend alone same logic as alone player
 			}
@@ -730,17 +739,5 @@ function Game(){
 		nextPlayer();
 
 		setTimeout(playTrick, 1000);
-	}
-
-	this.myHand = function(){
-		var hand = [];
-		var card;
-
-		for(var i=0; i<__hands[__currentPlayer].length; i++){
-			card = __hands[__currentPlayer][i];
-			hand[i] = new Card(card.suit, card.rank, card.id);
-		}
-
-		return hand;
 	}
 }

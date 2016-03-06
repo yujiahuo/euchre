@@ -1,7 +1,5 @@
 ToDo
 
-Right meow
-
 Clean up
 
 Enhancements
@@ -17,6 +15,7 @@ Enhancements
 - AI difficulties
 - Recenter hand after cards are played
 - If your partner is going alone, you get to see the kitty (meow)
+- Sort hands with alternating color suits
 
 Game modes
 - No trump

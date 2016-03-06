@@ -3,3 +3,7 @@ function newGame(){
 	game = new Game();
 	game.start();
 }
+
+function settings(){
+	
+}

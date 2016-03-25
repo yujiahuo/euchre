@@ -22,27 +22,141 @@
 			<div id="gameSpace">
 
 				<!--Menu stuff.-->
-				<div id="menu">
-					<div id="menuItems">
+				<div id="menu" class="settingsActive">
+					<!--Start menu-->
+					<div id="startMenuItems" class="menuItems">
 						<div id="newGame">
 							<button onclick="newGame()" id="newGameButt">Start new game</button>
 						</div>
-						<div id="difficulty" class="tooltip">
-							<select>
-							  <option value="Easy">Easy</option>
-							  <option value="Medium">Medium</option>
-							  <option value="Hard">Hard</option>
-							</select>
+		  				<div id="settings">
+							<button onclick="settings()" id="settingsButt">Settings</button>
 						</div>
-		  				<div id="settings" class="tooltip">
-							<button onclick="settings()">Settings</button>
-						</div>
-						<div id="howToPlay" class="tooltip">
-							<button onclick="howToPlay()">How to play</button>
+						<div id="howToPlay">
+							<button onclick="howToPlay()" id="howToButt">How to play</button>
 						</div>
 						<div id="copyright">
 							<p>&copy; Yujia Huo 2016</p>
 						</div>
+					</div>
+
+					<!--Settings menu-->
+					<div id="settingsMenuItems" class="menuItems">
+						<h3>Game Settings</h3>
+						<div class="options">
+							<input type="checkbox" value="chkSound">
+							Sound
+						</div>
+						<div class="tooltip">
+							?
+							<span class="tooltiptext">
+		  						Card noises ~ woosh
+		  					</span>
+						</div>
+						<br>
+
+						<div class="options">
+							<input type="checkbox" value="chkOpenHands">
+							Open hands<br>
+						</div>
+						<div class="tooltip">
+							?
+							<span class="tooltiptext">
+		  						All hands are visible during the game
+		  					</span>
+						</div>
+						<br>
+
+						<div class="options">
+							<input type="checkbox" value="chkDefendAlone">
+							Defend alone
+						</div>
+						<div class="tooltip">
+							?
+							<span class="tooltiptext">
+		  						Enable defending alone against an alone player
+		  					</span>
+						</div>
+						<br>
+
+						<div class="options">
+							<input type="checkbox" value="chkNoTrump">
+							No trump
+						</div>
+						<div class="tooltip">
+							?
+							<span class="tooltiptext">
+		  						Allow 'no trump' as a bid
+		  					</span>
+						</div>
+						<br>
+
+						<div class="options">
+							<input type="checkbox" value="chkShowHistory">
+							Show trick history
+						</div>
+						<div class="tooltip">
+							?
+							<span class="tooltiptext">
+		  						Show a log of all cards played during the game in the sidebar
+		  					</span>
+						</div>
+
+						<br><br>
+
+						<h3>AI Settings</h3>
+
+						<div class="options">
+							<input type="checkbox" value="chkStatMode">
+							AI vs AI mode
+						</div>
+						<div class="tooltip">
+							?
+							<span class="tooltiptext">
+		  						Have AIs play a bunch of games to get stats
+		  					</span>
+						</div>
+
+						<br><br>
+
+						<div class="options">
+							<table>
+							  <tr>
+							    <td>North AI</td>
+							    <td>
+							    	<select>
+									  <option value="volvo">Some AI</option>
+									</select>
+							    </td>
+							  </tr>
+							  <tr>
+							    <td>East AI</td>
+							    <td>
+							    	<select>
+									  <option value="volvo">Some AI</option>
+									</select>
+							    </td>
+							  </tr><tr>
+							    <td>West AI</td>
+							    <td>
+							    	<select>
+									  <option value="volvo">Some AI</option>
+									</select>
+							    </td>
+							  </tr><tr>
+							    <td>South AI</td>
+							    <td>
+							    	<select>
+									  <option value="volvo">Some AI</option>
+									</select>
+							    </td>
+							  </tr>
+							</table>
+						</div>
+					</div>
+
+					<!--How to play page-->
+					<div id="howToMenuItems" class="menuItems">
+
 					</div>
 				</div>
 

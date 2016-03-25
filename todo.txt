@@ -1,4 +1,6 @@
 ToDo
+- Find a good CSS tutorial because you suck at it
+- Why the fuck do divs sometimes stack vertically and sometimes not
 
 Clean up
 
@@ -47,3 +49,11 @@ Keyboard stuff
 	  							<li>Allow no trump: Can call no trump</li>
 	  					</span>
 	  				</div>
+
+	  				<div id="difficulty" class="tooltip">
+						<select>
+						  <option value="Easy">Easy</option>
+						  <option value="Medium">Medium</option>
+						  <option value="Hard">Hard</option>
+						</select>
+					</div>

@@ -9,29 +9,43 @@ function settings(){
 	appearMenu("settings");
 }
 
+function back(){
+	disappearMenu("settings");
+	disappearMenu("howTo");
+	appearMenu("start");
+}
+
 function howToPlay(){
-	document.getElementById("menu").classList.remove("startMenu");
-	document.getElementById("menu").classList.add("howToMenu");
-	document.getElementById("startMenuItems").style.opacity = "0";
+	disappearMenu("start");
+	appearMenu("howTo");
 }
 
 function appearMenu(menuName){
 	document.getElementById("menu").classList.add(menuName+"Active");
-	document.getElementById(menuName+"MenuItems").style.opacity = "1";
-	toggleMenu(menuName+"MenuItems", 1);
+	setTimeout(toggleOpacity, 100, menuName+"MenuItems", 1);
+	toggleDisplay(menuName+"MenuItems", 1);
 }
 
 function disappearMenu(menuName){
 	document.getElementById("menu").classList.remove(menuName+"Active");
 	document.getElementById(menuName+"MenuItems").style.opacity = "0";
-	setTimeout(toggleMenu, 300, menuName+"MenuItems", 0);
+	setTimeout(toggleDisplay, 300, menuName+"MenuItems", 0);
 }
 
-function toggleMenu(elemID, on){
+function toggleDisplay(elemID, on){
 	if(on){
 		document.getElementById(elemID).style.display = "inline";
 	}
 	else{
 		document.getElementById(elemID).style.display = "none";
+	}
+}
+
+function toggleOpacity(elemID, on){
+	if(on){
+		document.getElementById(elemID).style.opacity = "1";
+	}
+	else{
+		document.getElementById(elemID).style.opacity = "0";
 	}
 }

@@ -97,14 +97,24 @@ function getTrickPlayedCards(){
 	return game.getTrickPlayedCards();
 }
 
-//count how many of a suit you have
-function countSuit(suit){
+//how many cards of a given suit you have
+function numCardsOfSuit(suit){
 	var count = 0;
 	var hand = myHand();
 	for(var i=0; i<hand.length; i++){
 		if(hand[i].suit === suit) count++;
 	}
 	return count;
+}
+
+//number of suits you're holding
+function countSuits(){
+	var suitArray = [];
+	var hand = myHand();
+	for(var i=0; i<hand.length; i++){
+		suitArray[hand[i].suit] = 1;
+	}
+	return suitArray.length;
 }
 
 function test(){

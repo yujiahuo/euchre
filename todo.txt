@@ -1,8 +1,12 @@
 ToDo
-- Find a good CSS tutorial because you suck at it
-- Why the fuck do divs sometimes stack vertically and sometimes not
+
+
+- Implement easy game modes
+- Try an AI that will actually bid and maybe try to win
+- Add content to menus
 
 Clean up
+- Use calc css
 
 Enhancements
 - Make UI not suck
@@ -25,7 +29,7 @@ Game modes
 - AIs can see open hands but you can't. No one will find this fun (except Kevin). Do it anyway.
 - Game mode where you try to lose
 
-Low priority
+Maybe sometime
 - Speedy (instant) AI players
 - Auto-play last trick
 - Auto-pass if it's all you can do
@@ -33,27 +37,9 @@ Low priority
 - Card pack choice
 - Make the whole thing resize with window
 
+
+---Reminders---
+
 Keyboard stuff
 - ctrl + shift click (go to definition)
 - ctrl + shift + right click (go back)
-
-					<div id="gameOptions" class="tooltip">
-						<input type="checkbox" value="stickDealer" class="tooltip">Stick the dealer
-						<br>
-	  					<input type="checkbox" value="noTrump" class="tooltip">Allow no trump
-	  					<br>
-	  					<input type="checkbox" value="loserWins" class="tooltip">Loser wins
-	  					<span class="tooltiptext">
-	  						<ul>
-	  							<li>Stick the dealer: If no trump is selected by the end of bidding, the dealer must choose a trump</li>
-	  							<li>Allow no trump: Can call no trump</li>
-	  					</span>
-	  				</div>
-
-	  				<div id="difficulty" class="tooltip">
-						<select>
-						  <option value="Easy">Easy</option>
-						  <option value="Medium">Medium</option>
-						  <option value="Hard">Hard</option>
-						</select>
-					</div>

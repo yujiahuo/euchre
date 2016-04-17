@@ -78,11 +78,13 @@ function DecentAI(){
 	this.pickCard = function(){
 		var numPlayersPlayed;
 		var playedCards;
-		var lowestWinningCard;
+		var lowestWinningCard = null;
 		var lowestWinningValue = 1000;
 		var winningValue = 0;
 		var value;
 		var i;
+
+		hand = game.myHand(); //you need to do this or else
 
 		numPlayersPlayed = game.getTrickPlayersPlayed();
 		if(numPlayersPlayed === 0){
@@ -94,8 +96,9 @@ function DecentAI(){
 		//Find currently winning value
 		for(i=0; i<playedCards.length; i++){
 			if(playedCards[i] === null) continue;
-			if(getCardValue(playedCards[i]) > winningValue){
-				winningValue = playedCards[i].value;
+			value = getCardValue(playedCards[i]);
+			if(value > winningValue){
+				winningValue = value;
 			}
 		}
 
@@ -119,12 +122,12 @@ function DecentAI(){
 		}
 
 		if(lowestWinningCard){
-			console.log("lowest winning card");
+			console.log("lowest winning: " + lowestWinningValue);
 			return lowestWinningCard;
 		}
 		else{
-			console.log("boooo worst card");
-			return getWorstCard();
+			console.log("worst card");
+			return getWorstCard(true);
 		}
 	}
 

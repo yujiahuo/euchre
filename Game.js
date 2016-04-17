@@ -238,7 +238,7 @@ function Game(){
  	function grabSettings(){
 		//checkbox settings
 		__sound = document.getElementById("chkSound").checked;
-		__openHands = true;//document.getElementById("chkOpenHands").checked;
+		__openHands = document.getElementById("chkOpenHands").checked;
 		__defendAlong = document.getElementById("chkDefendAlone").checked;
 		__noTrump = document.getElementById("chkNoTrump").checked;
 		__showTrickHistory = document.getElementById("chkShowHistory").checked;
@@ -463,7 +463,7 @@ function Game(){
 			goAlone(__alonePlayer);
 		}
 
-		animShowTextTop("Trump is "+ __trump);
+		animShowTextTop("Trump is "+ __trump, true);
 		animShowTextTop("Maker is " + __maker);
 	}
 
@@ -622,6 +622,7 @@ function Game(){
 		winningCard = __trickPlayedCards[players.SOUTH];
 		winner = players.SOUTH;
 		for(var i=1; i<4; i++){
+			if(__trickPlayedCards[i] === null) continue;
 			if(isGreater(winningCard, __trickPlayedCards[i])){
 				winner = i;
 				winningCard = __trickPlayedCards[i];

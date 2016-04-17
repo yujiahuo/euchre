@@ -266,7 +266,7 @@ function animWinTrick(player, cards){
 	}
 
 	for(var i=0; i<4; i++){
-		if(cards[i] === undefined){
+		if(cards[i] === null){
 			continue;
 		}
 		cardElem = document.getElementById(cards[i].id);

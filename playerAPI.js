@@ -129,13 +129,14 @@ function getCardValue(card){
 	return value;
 }
 
-function getWorstCard(){
+function getWorstCard(mustBeLegal){
 	var worstCard;
 	var worstValue = 1000;
 	var value;
 	var hand = myHand();
 
 	for(var i=0; i<hand.length; i++){
+		if(mustBeLegal && !isValidPlay(hand[i])) continue;
 		value = getCardValue(hand[i]);
 		if(value < worstValue){
 			worstCard = hand[i];
@@ -145,13 +146,14 @@ function getWorstCard(){
 	return worstCard;
 }
 
-function getBestCard(){
+function getBestCard(mustBeLegal){
 	var bestCard;
 	var bestValue = 0;
 	var value;
 	var hand = myHand();
 
 	for(var i=0; i<hand.length; i++){
+		if(mustBeLegal && !isValidPlay(hand[i])) continue;
 		value = getCardValue(hand[i]);
 		if(value > bestValue){
 			bestCard = hand[i];

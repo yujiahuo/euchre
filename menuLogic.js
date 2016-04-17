@@ -15,6 +15,11 @@ function back(){
 	appearMenu("start");
 }
 
+function backFromGame(){
+	//document.getElementById("cardsContainer").innerHTML = "";
+	animShowText("MEOWMEOWMEOW");
+}
+
 function howToPlay(){
 	disappearMenu("start");
 	appearMenu("howTo");

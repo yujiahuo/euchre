@@ -1,3 +1,23 @@
+button{
+	background-color: #CCCCCC;
+	color: black;
+    border: 2px solid #999999;
+    border-radius: 5px;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+}
+
+table{
+	font-size: inherit;
+}
+
+.gray{
+	color: #888888;
+}
+
 #everything{
 	height: 600px;
 	width: 1000px;
@@ -66,7 +86,7 @@
 	background: url('images/dealerButton.png');
 	background-size: contain;
 	height: 50px;
-    width: 50px; 
+    width: 50px;
 	position: absolute;
 }
 

@@ -3,9 +3,9 @@
 		<script src="animation.js" type="text/javascript"></script>
 		<script src="Game.js" type="text/javascript"></script>
 		<script src="playerAPI.js" type="text/javascript"></script>
-		<script src="gameLogic.js" type="text/javascript"></script>
-		<script src="idiotAI.js" type="text/javascript"></script>
-		<script src="decentAI.js" type="text/javascript"></script>
+		<script src="menuLogic.js" type="text/javascript"></script>
+		<script src="IdiotAI.js" type="text/javascript"></script>
+		<script src="DecentAI.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" id="style">
 		<link rel="stylesheet" type="text/css" href="menuStyle.css" id="menuStyle">
 
@@ -50,7 +50,7 @@
 					<div id="settingsMenuItems" class="menuItems">
 						<h3>Game Settings</h3>
 						<div class="options">
-							<input type="checkbox" value="chkSound">
+							<input type="checkbox" value="chkSound" id="chkSound">
 							Sound
 						</div>
 						<div class="tooltip">
@@ -62,7 +62,7 @@
 						<br>
 
 						<div class="options">
-							<input type="checkbox" value="chkOpenHands">
+							<input type="checkbox" value="chkOpenHands" id="chkOpenHands">
 							Open hands<br>
 						</div>
 						<div class="tooltip">
@@ -74,7 +74,7 @@
 						<br>
 
 						<div class="options">
-							<input type="checkbox" value="chkDefendAlone">
+							<input type="checkbox" value="chkDefendAlone" id="chkDefendAlone">
 							Defend alone
 						</div>
 						<div class="tooltip">
@@ -86,7 +86,7 @@
 						<br>
 
 						<div class="options">
-							<input type="checkbox" value="chkNoTrump">
+							<input type="checkbox" value="chkNoTrump" id="chkNoTrump">
 							No trump
 						</div>
 						<div class="tooltip">
@@ -98,7 +98,7 @@
 						<br>
 
 						<div class="options">
-							<input type="checkbox" value="chkShowHistory">
+							<input type="checkbox" value="chkShowHistory" id="chkShowHistory">
 							Show trick history
 						</div>
 						<div class="tooltip">
@@ -113,8 +113,8 @@
 						<h3>AI Settings</h3>
 
 						<div class="options">
-							<input type="checkbox" value="chkStatMode">
-							AI vs AI mode
+							<input type="checkbox" value="chkStatMode" id="chkStatMode">
+							Stat mode
 						</div>
 						<div class="tooltip">
 							?
@@ -131,7 +131,8 @@
 							    <td>North AI</td>
 							    <td>
 							    	<select>
-									  <option value="volvo">Some AI</option>
+									  <option value="idiotAI">IdiotAI</option>
+									  <option value="decentAI">DecentAI</option>
 									</select>
 							    </td>
 							  </tr>
@@ -139,22 +140,22 @@
 							    <td>East AI</td>
 							    <td>
 							    	<select>
-									  <option value="volvo">Some AI</option>
+									  <option value="idiotAI">IdiotAI</option>
+									  <option value="decentAI">DecentAI</option>
 									</select>
 							    </td>
 							  </tr><tr>
 							    <td>West AI</td>
 							    <td>
 							    	<select>
-									  <option value="volvo">Some AI</option>
+									  <option value="idiotAI">IdiotAI</option>
+									  <option value="decentAI">DecentAI</option>
 									</select>
 							    </td>
 							  </tr><tr>
 							    <td>South AI</td>
 							    <td>
-							    	<select>
-									  <option value="volvo">Some AI</option>
-									</select>
+							    	<p class="gray">(Human)</p>
 							    </td>
 							  </tr>
 							</table>
@@ -201,6 +202,14 @@
 				</div>
 
 				<!--Game buttons-->
+				<div id="gameBack">
+					<!--
+					<button onclick="backFromGame()">
+						Meow
+					</button>
+					-->
+				</div>
+
 				<div id="orderUpPrompt">
 					<div id="alone" onclick="game.clickGoAlone()">
 						Alone
@@ -220,7 +229,5 @@
 				</div>
 			</div>
 		</div>
-		<button onclick="test()">test</button>
-		<button onclick="test2()">test2</button>
 	</body>
 </html>

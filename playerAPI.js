@@ -109,21 +109,58 @@ function numCardsOfSuit(suit){
 
 //number of suits you're holding
 function countSuits(){
-	var suitArray = [];
+	var suitArray = {"S":0, "D":0, "C":0, "H":0};
 	var hand = myHand();
 	for(var i=0; i<hand.length; i++){
 		suitArray[hand[i].suit] = 1;
 	}
-	return suitArray.length;
+	return suitArray["S"] + suitArray["D"] + suitArray["C"] + suitArray["H"];
 }
 
-function test(){
-	var foo;
+function getOppositeSuit(suit){
+	return suits.props[suit].opposite;
+}
 
-	if(foo){
-		console.log("yes");
+function getCardValue(card){
+	var value;
+
+	value = card.rank;
+	if(isTrump(card)) value += 100;
+	return value;
+}
+
+function getWorstCard(){
+	var worstCard;
+	var worstValue = 1000;
+	var value;
+	var hand = myHand();
+
+	for(var i=0; i<hand.length; i++){
+		value = getCardValue(hand[i]);
+		if(value < worstValue){
+			worstCard = hand[i];
+			worstValue = value;
+		}
 	}
-	else{
-		console.log("no");
+	return worstCard;
+}
+
+function getBestCard(){
+	var bestCard;
+	var bestValue = 0;
+	var value;
+	var hand = myHand();
+
+	for(var i=0; i<hand.length; i++){
+		value = getCardValue(hand[i]);
+		if(value > bestValue){
+			bestCard = hand[i];
+			bestValue = value;
+		}
 	}
+	return bestCard;
+}
+
+function leftOfPlayer(player){
+	return (player+1)%4;
 }

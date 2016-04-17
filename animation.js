@@ -14,17 +14,16 @@ function makeCardElem(cardID, flippedUp){
 	}
 
 	document.getElementById("cardsContainer").appendChild(card);
-	
+
 	card.style.zIndex = zIndex;
 	zIndex++;
-	
+
 	return card;
 }
 
 function animMoveCard(cardID, top, left, z){
 	var elem;
-	
-	console.log(cardID);
+
 	elem = document.getElementById(cardID);
 	elem.style.top = top;
 	elem.style.left = left;
@@ -54,7 +53,7 @@ function animDeal(hands){
 	makeCardElem(game.getTrumpCandidate().id, false);
 
 	for(var i=0; i<hands.length; i++){
-		flippedUp = (!game.isAiPlayer(player) || game.isAllFaceUp());
+		flippedUp = (!game.isAiPlayer(player) || game.isOpenHands());
 		if(i%2 === dealer%2) delay = 1;
 		else delay = 0;
 
@@ -82,7 +81,7 @@ function animDeal(hands){
 function animDealSingle(player, cardID, cardPos){
 	var top;
 	var left;
-	
+
 	switch(player){
 		case players.SOUTH:
 			top = "450px";
@@ -101,35 +100,35 @@ function animDealSingle(player, cardID, cardPos){
 			left = (cardPos*20)+(600) + "px";
 			break;
 	}
-	
+
 	animMoveCard(cardID, top, left);
 }
 
 //gives trump to the dealer
 function animTakeTrump(toDiscardID){
 	if(game.isStatMode()) return;
-	
+
 	var top;
 	var left;
 	var toDiscardElem;
 	var trumpElem;
 	var trumpCandidate;
-	
+
 	trumpCandidate = game.getTrumpCandidate();
 	toDiscardElem = document.getElementById(toDiscardID);
 	trumpElem = document.getElementById(trumpCandidate.id);
 	top = toDiscardElem.style.top;
 	left = toDiscardElem.style.left;
-	
+
 	toDiscardElem.classList.add("cardBack");
 	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
 	setTimeout(animHideCard, 400, toDiscardElem);
-	
-	if(game.isAiPlayer(game.getDealer()) && !game.isAllFaceUp()){
+
+	if(game.isAiPlayer(game.getDealer()) && !game.isOpenHands()){
 		trumpElem.classList.add("cardBack");
 	}
 	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
-	
+
 }
 
 function animPlaceDealerButt(){
@@ -179,23 +178,23 @@ function animSortHand(hand){
 		switch(suit){
 			case game.getTrump():
 				break;
-			case suits.CLUBS:
+			case suits.SPADES:
 				key += 100;
 				break;
 			case suits.DIAMONDS:
 				key += 200;
 				break;
-			case suits.HEARTS:
+			case suits.CLUBS:
 				key += 300;
 				break;
-			case suits.SPADES:
+			case suits.HEARTS:
 				key += 400;
 				break;
 		}
 		key += (20 - hand[i].rank); //highest ranks come first
 		sortedDict[key] = hand[i].id;
 	}
-	
+
 	pos = 0;
 	for(key in sortedDict){
 		setTimeout(animDealSingle, 300, players.SOUTH, sortedDict[key], pos);
@@ -209,7 +208,7 @@ function animPlayCard(player, cardID, flipCard){
 	var top;
 	var left;
 
-	if(flipCard && !game.isAllFaceUp()) animFlipCard(cardID);
+	if(flipCard && !game.isOpenHands()) animFlipCard(cardID);
 
 	switch(player){
 		case players.SOUTH:
@@ -235,6 +234,8 @@ function animPlayCard(player, cardID, flipCard){
 //check for class list and flip the other way too
 //correct this in doBidding
 function animFlipCard(cardID){
+	if(game.isStatMode()) return;
+
 	document.getElementById(cardID).classList.toggle("cardBack");
 }
 
@@ -292,6 +293,8 @@ function animRemoveKitty(){
 }
 
 function animHidePartnerHand(hands){
+	if(game.isStatMode()) return;
+
 	var player;
 
 	player = players.props[game.getAlonePlayer()].partner;
@@ -313,9 +316,11 @@ function animClearTable(){
 
 //let human player poke the buttons
 function animEnableBidding(){
+	if(game.isStatMode()) return;
+
 	document.getElementById("orderUpPrompt").style.display = "inline";
 	document.getElementById("pass").style.display = "inline";
-	
+
 	if(game.getBiddingRound() === 1 && hasSuit(game.getTrumpCandidate().suit)){
 		document.getElementById("orderUp").style.display = "inline";
 		document.getElementById("alone").style.display = "inline";
@@ -341,10 +346,12 @@ function animEnableBidding(){
 }
 
 function animDisableBidding(){
+	if(game.isStatMode()) return;
+
 	document.getElementById("orderUpPrompt").style.display = "none";
 	document.getElementById("orderUp").style.display = "none";
 	document.getElementById("pass").style.display = "none";
-	
+
 	document.getElementById("pickSpades").style.display = "none";
 	document.getElementById("pickClubs").style.display = "none";
 	document.getElementById("pickHearts").style.display = "none";
@@ -356,6 +363,8 @@ function animDisableBidding(){
 //flips a button on or off
 //needs to be generic but for now flips the 'go alone' button
 function animFlipButton(on){
+	if(game.isStatMode()) return;
+
 	if(on){
 		document.getElementById("alone").style.backgroundColor = "red";
 	}
@@ -389,10 +398,6 @@ function animShowTextTop(text, overwrite){
 		div.innerHTML = "";
 	}
 	div.innerHTML += text + "<br>";
-}
-
-function OHMYGODCARD(player, card){
-	animShowText(player + " played: " + card.suit + card.rank + "(" + card.id + ")");
 }
 
 function disableActions(){

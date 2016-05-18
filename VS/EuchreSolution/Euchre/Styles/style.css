@@ -1,0 +1,212 @@
+button{
+	background-color: #CCCCCC;
+	color: black;
+    border: 2px solid #999999;
+    border-radius: 5px;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+}
+
+table{
+	font-size: inherit;
+}
+
+.gray{
+	color: #888888;
+}
+
+#everything{
+	height: 600px;
+	width: 1000px;
+	position: relative;
+	margin: 0 auto; /* centers stuff */
+	font-family: Arial;
+	font-size: 14px;
+}
+
+#gameSpace{
+	height: 600px;
+	width: 800px;
+	/* this can make us scale with page size
+	height: 60vw;
+	width: 90vw;
+	max-height: 90vh;
+	max-width: 135vh;*/
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #4C7A34;
+}
+
+#sidebar{
+	height: 600px;
+	width: 200px;
+	position: absolute;
+	top: 0px;
+	left: 800px;
+	background-color: #555555;
+}
+
+#sidebarTop{
+	height: 80px;
+	background-color: #CBE8BA;
+	padding-left: 5px;
+}
+
+#sidebarText{
+	position: relative;
+	height: 518px;
+	top: 2px;
+	background-color: #CBE8BA;
+	padding-left: 5px;
+	overflow: scroll;
+}
+
+#orderUpPrompt{
+	width: 100px;
+	height: 110px;
+	position: absolute;
+	left: 80%;
+	top: 80%;
+	z-index: 9001;
+	display: none;
+}
+
+#alone{
+	background-color: green;
+	width: 80px;
+	height: 16px;
+	text-align: center;
+}
+
+#dealerButton{
+	background: url('images/dealerButton.png');
+	background-size: contain;
+	height: 50px;
+    width: 50px;
+	position: absolute;
+}
+
+#blanket{
+	height: 600px;
+	width: 800px;
+	position: absolute;
+	margin: 0 auto; /* centers stuff */
+	z-index: 9000;
+	display: none;
+}
+
+/* CARDS */
+/* card dimensions are height:96 width:72. 1px between cards*/
+
+.card{
+	height: 96px;
+	width: 72px;
+	position: absolute;
+	top: 252px; /* (600/2)-(96/2) */
+	left: 364px;
+	transition: top .3s, left .3s;
+}
+
+.cardBack{
+	background: url('images/cardBack.png') !important;
+}
+
+#C14{
+	background: url('images/cards.png') -1px -1px;
+}
+
+#C13{
+	background: url('images/cards.png') -877px -1px;
+}
+
+#C12{
+	background: url('images/cards.png') -804px -1px;
+}
+
+#C11{
+	background: url('images/cards.png') -731px -1px;
+}
+
+#C10{
+	background: url('images/cards.png') -658px -1px;
+}
+
+#C9{
+	background: url('images/cards.png') -585px -1px;
+}
+
+#D14{
+	background: url('images/cards.png') -1px -295px;
+}
+
+#D13{
+	background: url('images/cards.png') -877px -295px;
+}
+
+#D12{
+	background: url('images/cards.png') -804px -295px;
+}
+
+#D11{
+	background: url('images/cards.png') -731px -295px;
+}
+
+#D10{
+	background: url('images/cards.png') -658px -295px;
+}
+
+#D9{
+	background: url('images/cards.png') -585px -295px;
+}
+
+#H14{
+	background: url('images/cards.png') -1px -197px;
+}
+
+#H13{
+	background: url('images/cards.png') -877px -197px;
+}
+
+#H12{
+	background: url('images/cards.png') -804px -197px;
+}
+
+#H11{
+	background: url('images/cards.png') -731px -197px;
+}
+
+#H10{
+	background: url('images/cards.png') -658px -197px;
+}
+
+#H9{
+	background: url('images/cards.png') -585px -197px;
+}
+
+#S14{
+	background: url('images/cards.png') -1px -99px;
+}
+
+#S13{
+	background: url('images/cards.png') -877px -99px;
+}
+
+#S12{
+	background: url('images/cards.png') -804px -99px;
+}
+
+#S11{
+	background: url('images/cards.png') -731px -99px;
+}
+
+#S10{
+	background: url('images/cards.png') -658px -99px;
+}
+
+#S9{
+	background: url('images/cards.png') -585px -99px;
+}

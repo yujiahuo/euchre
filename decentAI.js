@@ -88,7 +88,6 @@ function DecentAI(){
 
 		numPlayersPlayed = game.getTrickPlayersPlayed();
 		if(numPlayersPlayed === 0){
-			console.log("hey no one played playing best");
 			return getBestCard();
 		}
 
@@ -122,11 +121,9 @@ function DecentAI(){
 		}
 
 		if(lowestWinningCard){
-			console.log("lowest winning: " + lowestWinningValue);
 			return lowestWinningCard;
 		}
 		else{
-			console.log("worst card");
 			return getWorstCard(true);
 		}
 	}

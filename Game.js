@@ -386,6 +386,7 @@ function Game(){
 		}
 
 		if(doneBidding){
+			if()
 			startTricks();
 		}
 		else{
@@ -575,6 +576,8 @@ function Game(){
 	function autoPickCard(){
 		var hand;
 
+		console.log("*** AI tried to pick a card it can't play.");
+
 		hand = __hands[__currentPlayer];
 		for(var i=0; i<hand.length; i++){
 			if(isValidPlay(hand[i])){
@@ -644,7 +647,7 @@ function Game(){
 					__nsScore += 2;
 				}
 			}
-			if(__maker === players.EAST || __maker === players.WEST){
+			if(!__nsTricksWon === 5 && __maker === players.EAST || __maker === players.WEST){
 				__nsScore++;
 				//defend alone same logic as alone player
 			}
@@ -662,7 +665,7 @@ function Game(){
 					__ewScore += 2;
 				}
 			}
-			if(__maker === players.NORTH || __maker === players.SOUTH){
+			if(!__ewTricksWon === 5 && __maker === players.NORTH || __maker === players.SOUTH){
 				__ewScore++;
 				//defend alone same logic as alone player
 			}

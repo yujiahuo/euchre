@@ -148,7 +148,7 @@
 #textDiv{
 	width: 330px;
 	height: 430px;
-	overflow: scroll;
+	overflow: auto;
 	padding: 0px 20px;
 	background-color: #E1F1E1;
 	border-radius: 2px;

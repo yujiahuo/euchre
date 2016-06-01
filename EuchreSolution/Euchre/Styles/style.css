@@ -62,7 +62,7 @@ table{
 	top: 2px;
 	background-color: #CBE8BA;
 	padding-left: 5px;
-	overflow: scroll;
+	overflow: auto;
 }
 
 #orderUpPrompt{

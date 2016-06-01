@@ -90,6 +90,8 @@ function Card(suit, rank, id){
  *****************************************************************************/
 
 function Game(){
+    //#region Private variables
+
 	//game
 	var __deck; //contains the shuffled deck or what's left of it after dealing
 
@@ -130,8 +132,9 @@ function Game(){
 
 	var __statMode;
 	var __aiPlayers = [null, null, null, null];
+    //#endregion
 
-	//get methods
+    //#region Get functions
 	this.getIsBidding = function(){
 		return __isBidding;
 	}
@@ -231,6 +234,8 @@ function Game(){
 		return hand;
 	}
 
+    //#endregion
+
 	/*******************************
  	* Private functions
  	********************************/
@@ -302,6 +307,7 @@ function Game(){
 		else setTimeout(doBidding, 3000);
 	}
 
+    //EXTRACT
 	function pickDealer(){
 		//if we have a dealer, get the next dealer
 		if(__dealer !== players.NONE){
@@ -314,6 +320,7 @@ function Game(){
 		animPlaceDealerButt();
 	}
 
+    //EXTRACT
 	function getShuffledDeck(){
 		var pos,temp,size;
 		size = SORTEDDECK.length;
@@ -386,7 +393,7 @@ function Game(){
 		}
 
 		if(doneBidding){
-			if()
+			
 			startTricks();
 		}
 		else{

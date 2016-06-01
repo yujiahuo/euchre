@@ -56,6 +56,8 @@
     <Content Include="euchre.html" />
     <Content Include="AIScript\idiotAI.js" />
     <Content Include="GameScript\game.js" />
+    <Content Include="GameScript\menuLogic.js" />
+    <Content Include="GameScript\utils.js" />
     <Content Include="Styles\menuStyle.css" />
     <Content Include="GameScript\playerAPI.js" />
     <Content Include="Styles\style.css" />

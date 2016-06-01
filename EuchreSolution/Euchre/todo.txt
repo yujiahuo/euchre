@@ -36,3 +36,11 @@ Low priority game modes
 Keyboard stuff
 - ctrl + shift click (go to definition)
 - ctrl + shift + right click (go back)
+
+Next rewrite
+- Write so that things don't call each other as awkwardly as they did.
+  Maybe have some functions that are way super simple and just keep looping until they get interrupted by a human player.
+  Then the human player call just iterates the player and starts the cycle again
+- Write with AI vs AI as a default with human interruptions
+- Unit testing
+- Somehow make it clear which functions also involve animation

@@ -83,7 +83,7 @@ table{
 }
 
 #dealerButton{
-	background: url('images/dealerButton.png');
+	background: url('../Images/dealerButton.png');
 	background-size: contain;
 	height: 50px;
     width: 50px;
@@ -112,101 +112,101 @@ table{
 }
 
 .cardBack{
-	background: url('images/cardBack.png') !important;
+	background: url('../Images/cardBack.png') !important;
 }
 
 #C14{
-	background: url('images/cards.png') -1px -1px;
+	background: url('../../Images/cards.png') -1px -1px;
 }
 
 #C13{
-	background: url('images/cards.png') -877px -1px;
+	background: url('../../Images/cards.png') -877px -1px;
 }
 
 #C12{
-	background: url('images/cards.png') -804px -1px;
+	background: url('../../Images/cards.png') -804px -1px;
 }
 
 #C11{
-	background: url('images/cards.png') -731px -1px;
+	background: url('../../Images/cards.png') -731px -1px;
 }
 
 #C10{
-	background: url('images/cards.png') -658px -1px;
+	background: url('../../Images/cards.png') -658px -1px;
 }
 
 #C9{
-	background: url('images/cards.png') -585px -1px;
+	background: url('../../Images/cards.png') -585px -1px;
 }
 
 #D14{
-	background: url('images/cards.png') -1px -295px;
+	background: url('../Images/cards.png') -1px -295px;
 }
 
 #D13{
-	background: url('images/cards.png') -877px -295px;
+	background: url('../Images/cards.png') -877px -295px;
 }
 
 #D12{
-	background: url('images/cards.png') -804px -295px;
+	background: url('../Images/cards.png') -804px -295px;
 }
 
 #D11{
-	background: url('images/cards.png') -731px -295px;
+	background: url('../Images/cards.png') -731px -295px;
 }
 
 #D10{
-	background: url('images/cards.png') -658px -295px;
+	background: url('../Images/cards.png') -658px -295px;
 }
 
 #D9{
-	background: url('images/cards.png') -585px -295px;
+	background: url('../Images/cards.png') -585px -295px;
 }
 
 #H14{
-	background: url('images/cards.png') -1px -197px;
+	background: url('../Images/cards.png') -1px -197px;
 }
 
 #H13{
-	background: url('images/cards.png') -877px -197px;
+	background: url('../Images/cards.png') -877px -197px;
 }
 
 #H12{
-	background: url('images/cards.png') -804px -197px;
+	background: url('../Images/cards.png') -804px -197px;
 }
 
 #H11{
-	background: url('images/cards.png') -731px -197px;
+	background: url('../Images/cards.png') -731px -197px;
 }
 
 #H10{
-	background: url('images/cards.png') -658px -197px;
+	background: url('../Images/cards.png') -658px -197px;
 }
 
 #H9{
-	background: url('images/cards.png') -585px -197px;
+	background: url('../Images/cards.png') -585px -197px;
 }
 
 #S14{
-	background: url('images/cards.png') -1px -99px;
+	background: url('../Images/cards.png') -1px -99px;
 }
 
 #S13{
-	background: url('images/cards.png') -877px -99px;
+	background: url('../Images/cards.png') -877px -99px;
 }
 
 #S12{
-	background: url('images/cards.png') -804px -99px;
+	background: url('../Images/cards.png') -804px -99px;
 }
 
 #S11{
-	background: url('images/cards.png') -731px -99px;
+	background: url('../Images/cards.png') -731px -99px;
 }
 
 #S10{
-	background: url('images/cards.png') -658px -99px;
+	background: url('../Images/cards.png') -658px -99px;
 }
 
 #S9{
-	background: url('images/cards.png') -585px -99px;
+	background: url('../Images/cards.png') -585px -99px;
 }

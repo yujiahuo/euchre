@@ -1,6 +1,18 @@
 /*******************************
-* Nice totes public utilities
+* Get game properties
 ********************************/
+
+function myHand() {
+    return game.myHand();
+}
+
+function getTrickPlayedCards() {
+    return game.getTrickPlayedCards();
+}
+
+function leftOfPlayer(player) {
+    return (player + 1) % 4;
+}
 
 //returns true if card2 is greater than card1 for this hand
 //if a card is undefined, the other card wins
@@ -89,14 +101,6 @@ function canOrderUpSuit(suit){
 	return false;
 }
 
-function myHand(){
-	return game.myHand();
-}
-
-function getTrickPlayedCards(){
-	return game.getTrickPlayedCards();
-}
-
 //how many cards of a given suit you have
 function numCardsOfSuit(suit){
 	var count = 0;
@@ -161,8 +165,4 @@ function getBestCard(mustBeLegal){
 		}
 	}
 	return bestCard;
-}
-
-function leftOfPlayer(player){
-	return (player+1)%4;
 }

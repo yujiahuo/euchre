@@ -57,7 +57,6 @@ for(var suit in suits){
 	if(suit==="props") continue;
 	for(var rank in ranks){
 		if(rank==="LEFT" || rank==="RIGHT") continue;
-
 		SORTEDDECK.push(new Card(suits[suit], ranks[rank]));
 	}
 }
@@ -239,7 +238,7 @@ function Game(){
 	/*******************************
  	* Private functions
  	********************************/
-
+    //#region Setup
  	function grabSettings(){
 		//checkbox settings
 		__sound = document.getElementById("chkSound").checked;
@@ -252,6 +251,9 @@ function Game(){
 		__statMode = document.getElementById("chkStatMode").checked;; //4 AIs play against each other
 		__aiPlayers = [null, new DecentAI(), new DecentAI(), new DecentAI()];
  	}
+
+
+    //#endregion
 
 	//The beginning of a hand. A hand involves picking a dealer,
 	//bidding, and playing until someone wins the hand.

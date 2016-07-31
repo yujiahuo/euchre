@@ -42,3 +42,39 @@ function dealHands(deck, hands, dealer) {
         hands[player][cardPos] = card;
     }
 }
+
+//returns: bid suit
+function getBid(player) {
+    var round;
+    var aiPlayer;
+    var bidSuit;
+
+    round = game.getGameStage();
+    aiPlayer = game.getAIPlayer(player);
+
+    if (ai !== null) {
+        if (round === 1) {
+            if (ai.chooseOrderUp()) {
+                return game.getTrumpCandidate();
+            }
+        }
+        else if (round === 2) {
+            bidSuit = ai.pickTrump();
+            if (bidSuit) {
+                return bidsuit;
+            }
+        }
+    }
+
+    //else if hooman
+}
+
+function getGoAlone(player) {
+    var aiPlayer;
+
+    aiPlayer = game.getAIPlayer(player);
+
+    if (ai !== null) {
+        return ai.chooseGoAlone();
+    }
+}

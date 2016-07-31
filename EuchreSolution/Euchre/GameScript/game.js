@@ -8,7 +8,6 @@ function Game(){
     //game
     var __nsScore; //north south
     var __ewScore; //east west
-    var __handNum; //what hand number we're on
 
     //hand
     var __deck; //contains the shuffled deck or what's left of it after dealing
@@ -56,9 +55,6 @@ function Game(){
     }
     this.getEwScore = function(){
         return __ewScore;
-    }
-    this.getHandNum = function(){
-        return __handNum;
     }
     this.getTrumpCandidateCard = function(){
         var card;
@@ -126,8 +122,8 @@ function Game(){
     this.isStatMode = function(){
         return __statMode;
     }
-    this.isAiPlayer = function(player){
-        return (__aiPlayers[player] != null);
+    this.getAIPlayer = function(player){
+        return (__aiPlayers[player]);
     }
     this.myHand = function(){
         var hand = [];
@@ -164,7 +160,6 @@ function Game(){
     function initGame() {
         __nsScore = 0;
         __ewScore = 0;
-        __handNum = 0;
     }
 
     function initHand() {
@@ -221,41 +216,42 @@ function Game(){
         initHand();
         dealHands(__deck, __hands, __dealer);
         __trumpCandidateCard = __deck.pop();
-        if (!redealing) {
-            __handNum++; //goes from 1-5
-        }
 
         bidSuccessful = doBidding();
         if (bidSuccessful) {
             while (__trickNum < 5) {
-                playTricks();
+                playTrick();
             }
-        }
-        else{
-            playHand(true);
         }
     }
 
     //get a bid
     function doBidding() {
-        //you wrote bad code and somehow we're playing tricks and calling this
-        if (__gameStage === gameStages.TRICKS) return;
+        var bidSuccessful;
 
-        //first round bidding
-        if (__gameStage === gameStages.BID1) {
-            if (__playersBid === 4) {
-                __gameStage = gameStages.BID2;
-                __playersBid = 0;
+        //do round 1 stuff
+        __gameStage = gameStages.BID1;
+        for (var i = 0; i < 4; i++) {
+            bidSuccessful = getBid(__currentPlayer);
+            if (bidSuccessful) {
+                setMakers(__currentPlayer);
+                if (getGoAlone(__currentPlayer)) {
+                    setGoAlone();
+                }
+                return true;
             }
-
+            __currentPlayer = nextPlayer(__currentPlayer);
         }
 
-        //second round bidding
-        else if (__gameStage === gameStages.BID2) {
-            if (__playersBid === 4) {
-                return false;
-            }
-        }
+        //NEXT: write bidding round 2
+    }
+
+    function setMakers(player) {
+
+    }
+
+    function setGoAlone(player) {
+
     }
 
     function endGame() {

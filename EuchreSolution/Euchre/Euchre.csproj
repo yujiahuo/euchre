@@ -56,11 +56,15 @@
     <Content Include="euchre.html" />
     <Content Include="AIScript\idiotAI.js" />
     <Content Include="GameScript\game.js" />
+    <Content Include="GameScript\globs.js" />
     <Content Include="GameScript\menuLogic.js" />
     <Content Include="GameScript\utils.js" />
     <Content Include="Styles\menuStyle.css" />
     <Content Include="GameScript\playerAPI.js" />
     <Content Include="Styles\style.css" />
+    <Content Include="Tests\qunit-1.23.1.js" />
+    <Content Include="Tests\qunitPage.html" />
+    <Content Include="Tests\tests.js" />
     <Content Include="todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

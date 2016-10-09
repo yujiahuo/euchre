@@ -1,4 +1,4 @@
-﻿QUnit.test("set dealer", function (assert) {
+﻿QUnit.test("get dealer", function (assert) {
     var result;
 
     result = getDealer(players.SOUTH);

@@ -125,6 +125,9 @@ function Game(){
     this.getAIPlayer = function(player){
         return (__aiPlayers[player]);
     }
+    this.isAiPlayer = function (player) {
+        return (__aiPlayers[player] !== null);
+    }
     this.myHand = function(){
         var hand = [];
         var card;
@@ -182,13 +185,6 @@ function Game(){
             __hands[i] = new Array(5);
         }
 
-        for (i = 0; i < 4; i++) {
-            __currentPlayer = i; //AIs need to know who they are so they can get their hands
-            if (__aiPlayers[i] !== null) {
-                __aiPlayers[i].init();
-            }
-        }
-
         __currentPlayer = nextPlayer(__dealer);
     }
 
@@ -201,49 +197,60 @@ function Game(){
     }
     //#endregion
 
-    function playGame() {
-        grabSettings();
-        initGame();
+    function playGame(init) {
+        if (init) {
+            grabSettings();
+            initGame();
+        }
         while(__nsScore < 10 && __ewScore < 10){
-            playHand(false);
+            playHand(true);
         }
         endGame();
     }
 
-    function playHand(redealing) {
+    function playHand(init) {
         var bidSuccessful;
 
-        initHand();
-        dealHands(__deck, __hands, __dealer);
-        __trumpCandidateCard = __deck.pop();
+        if (init) {
+            initHand();
 
-        bidSuccessful = doBidding();
+            dealHands(__deck, __hands, __dealer);
+            __trumpCandidateCard = __deck.pop();
+            animDeal(__hands);
+
+            for (i = 0; i < 4; i++) {
+                __currentPlayer = i; //AIs need to know who they are so they can get their hands
+                if (__aiPlayers[i] !== null) {
+                    __aiPlayers[i].init();
+                }
+            }
+        }
+        
+        if (__gameStage !== gameStages.TRICKS) {
+            doBidding();
+        }
+        
         if (bidSuccessful) {
             while (__trickNum < 5) {
                 playTrick();
+                __trickNum--;
             }
         }
     }
 
     //get a bid
-    function doBidding() {
+    function getBid(round) {
         var bidSuccessful;
 
         //do round 1 stuff
-        __gameStage = gameStages.BID1;
-        for (var i = 0; i < 4; i++) {
-            bidSuccessful = getBid(__currentPlayer);
-            if (bidSuccessful) {
-                setMakers(__currentPlayer);
-                if (getGoAlone(__currentPlayer)) {
-                    setGoAlone();
-                }
-                return true;
-            }
-            __currentPlayer = nextPlayer(__currentPlayer);
-        }
+        bidSuccessful = getAIBid(__currentPlayer);
 
-        //NEXT: write bidding round 2
+        if (bidSuccessful) {
+            setMakers(__currentPlayer);
+            if (getGoAlone(__currentPlayer)) {
+                setGoAlone();
+            }
+        }
     }
 
     function setMakers(player) {
@@ -254,7 +261,19 @@ function Game(){
 
     }
 
+    function playTrick() {
+
+    }
+
     function endGame() {
 
+    }
+
+    /*******************************
+ 	* Public functions
+ 	********************************/
+
+    this.start = function(){
+        playGame();
     }
 }

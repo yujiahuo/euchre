@@ -50,7 +50,7 @@ function animDeal(hands){
 	delay = 0;
 
 	makeCardElem("deck", false);
-	makeCardElem(game.getTrumpCandidate().id, false);
+	makeCardElem(game.getTrumpCandidateCard().id, false);
 
 	for(var i=0; i<hands.length; i++){
 		flippedUp = (!game.isAiPlayer(player) || game.isOpenHands());

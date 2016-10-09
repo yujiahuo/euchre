@@ -2,6 +2,7 @@
     return (currentPlayer + 1) % 4;
 }
 
+//TESTED
 function getDealer(prevDealer) {
     var dealer;
 
@@ -16,6 +17,7 @@ function getDealer(prevDealer) {
     return dealer;
 }
 
+//TESTED
 function getShuffledDeck() {
     var deck;
     var pos;
@@ -31,6 +33,7 @@ function getShuffledDeck() {
     return deck;
 }
 
+//TESTED
 function dealHands(deck, hands, dealer) {
     var player, cardPos, card;
 
@@ -44,29 +47,27 @@ function dealHands(deck, hands, dealer) {
 }
 
 //returns: bid suit
-function getBid(player) {
-    var round;
-    var aiPlayer;
+function getAIBid(player) {
+    var stage;
+    var ai;
     var bidSuit;
 
-    round = game.getGameStage();
-    aiPlayer = game.getAIPlayer(player);
+    stage = game.getGameStage();
+    ai = game.getAIPlayer(player);
 
-    if (ai !== null) {
-        if (round === 1) {
-            if (ai.chooseOrderUp()) {
-                return game.getTrumpCandidate();
-            }
-        }
-        else if (round === 2) {
-            bidSuit = ai.pickTrump();
-            if (bidSuit) {
-                return bidsuit;
-            }
+    if (ai === null) return;
+
+    if (stage === 0) { //bidding round 1
+        if (ai.chooseOrderUp()) {
+            return game.getTrumpCandidate();
         }
     }
-
-    //else if hooman
+    else if (stage === 1) { //bidding round 2
+        bidSuit = ai.pickTrump();
+        if (bidSuit) {
+            return bidsuit;
+        }
+    }
 }
 
 function getGoAlone(player) {

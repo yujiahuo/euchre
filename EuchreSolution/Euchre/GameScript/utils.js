@@ -57,17 +57,18 @@ function getAIBid(player) {
 
     if (ai === null) return;
 
-    if (stage === 0) { //bidding round 1
+    if (stage === gameStages.BID1) { //bidding round 1
         if (ai.chooseOrderUp()) {
             return game.getTrumpCandidate();
         }
     }
-    else if (stage === 1) { //bidding round 2
+    else if (stage === gameStages.BID2) { //bidding round 2
         bidSuit = ai.pickTrump();
         if (bidSuit) {
             return bidsuit;
         }
     }
+    return null;
 }
 
 function getGoAlone(player) {

@@ -50,9 +50,14 @@ var ranks = {
 
 //enum of game stage
 var gameStages = {
-    BID1: 0,
-    BID2: 1,
-    TRICKS: 2,
+    NEWGAME: 0,
+    NEWHAND: 1,
+    BID1: 2,
+    HDISCARD: 3,
+    BID2: 4,
+    NEWTRICK: 5,
+    PLAYTRICK: 6,
+    ENDGAME: 7
 };
 
 var DECKSIZE = 24;

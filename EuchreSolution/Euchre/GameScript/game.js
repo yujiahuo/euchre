@@ -16,8 +16,6 @@ function Game(){
     var __hands; //2d array of everyone's hands
     var __trumpCandidateCard; //turned up card
     var __trumpSuit;	//current trump suit
-    var __rightID; //ID of right bower (not affected by change in rank)
-    var __leftID; //ID of left bower (not affected by change in rank)
     var __dealer;
     var __maker; //player who called trump
     var __alonePlayer;
@@ -64,12 +62,6 @@ function Game(){
     }
     this.getTrumpSuit = function(){
         return __trumpSuit;
-    }
-    this.getRightID = function(){
-        return __rightID;
-    }
-    this.getLeftID = function(){
-        return __leftID;
     }
     this.getDealer = function(){
         return __dealer;
@@ -145,6 +137,50 @@ function Game(){
     /*******************************
  	* Private functions
  	********************************/
+
+    function startNewGame() {
+        grabSettings();
+        initGame();
+        doStep();
+    }
+
+    function doStep() {
+        switch (__gameStage) {
+            case gameStages.NEWHAND:
+                initHand();
+                break;
+            case gameStages.BID1:
+                if (!isAiPlayer(__currentPlayer)){
+                    letHumanBid(1);
+                    return;
+                }
+                getBid();
+                break;
+            case gameStages.BID2:
+                if (!isAiPlayer(__currentPlayer)){
+                    letHumanBid(2);
+                    return;
+                }
+                getBid();
+                break;
+            case gameStages.HDISCARD:
+                letHumanAct();
+                return;
+            case gameStages.NEWTRICK:
+                initTrick();
+                break;
+            case gameStages.PLAYTRICK:
+                if (!isAiPlayer(__currentPlayer)){
+                    letHumanClickCards();
+                    return;
+                }
+                playTrick();
+                break;
+        }
+
+        doStep();
+    }
+
     //#region Setup
     function grabSettings(){
         //checkbox settings
@@ -160,11 +196,14 @@ function Game(){
         __hasHooman = __aiPlayers.indexOf(null) > -1;
     }
 
+    //just sets scores to 0
     function initGame() {
         __nsScore = 0;
         __ewScore = 0;
+        __gameStage = gameStages.NEWHAND;
     }
 
+    //resets variables, gets dealer, shuffles deck, inits empty hands, sets currentplayer to left of dealer
     function initHand() {
         __gameStage = gameStages.BID1;
         __playersBid = 0;
@@ -186,82 +225,117 @@ function Game(){
         }
 
         __currentPlayer = nextPlayer(__dealer);
+
+        dealHands(__deck, __hands, __dealer);
+        __trumpCandidateCard = __deck.pop();
+        animDeal(__hands);
+
+        //let AIs initialize
+        for (i = 0; i < 4; i++) {
+            __currentPlayer = i;
+            if (__aiPlayers[i] !== null) {
+                __aiPlayers[i].init();
+            }
+        }
+
+        __currentPlayer = nextPlayer(__dealer);
+        __gameStage = gameStages.BID1;
     }
 
+    //resets variables, sets currentplayer to left of dealer
     function initTrick() {
         __trickNum = 0;
         __trickPlayersPlayed = 0;
         __trickSuit = null;
         __trickPlayedCards = [null, null, null, null];
-        __currentPlayer = players.NONE; //TODO: init current player for realz?
+        __currentPlayer = nextPlayer(__dealer);
+        __gameStage = gameStages.PLAYTRICKS;
     }
     //#endregion
 
-    function playGame(init) {
-        if (init) {
-            grabSettings();
-            initGame();
-        }
-        while(__nsScore < 10 && __ewScore < 10){
-            playHand(true);
-        }
-        endGame();
-    }
+    //get a bid
+    function getBid() {
+        var suit;
+        var alone;
+        var discard;
 
-    function playHand(init) {
-        var bidSuccessful;
+        //do round 1 stuff
+        suit = getAIBid(__currentPlayer);
 
-        if (init) {
-            initHand();
-
-            dealHands(__deck, __hands, __dealer);
-            __trumpCandidateCard = __deck.pop();
-            animDeal(__hands);
-
-            for (i = 0; i < 4; i++) {
-                __currentPlayer = i; //AIs need to know who they are so they can get their hands
-                if (__aiPlayers[i] !== null) {
-                    __aiPlayers[i].init();
+        if (suit) {
+            if (getGoAlone(__currentPlayer)) {
+                alone = true;
+            }
+            setTrump(__trumpSuit, __currentPlayer, alone);
+            if (__gameStage === gameStages.BID1) {
+                if (!isAiPlayer(__dealer)){
+                    __gameStage = gameStages.HDISCARD;
+                }
+                else{
+                    discard = getAIDiscard(__dealer);
+                    discardCard(discard);
+                    __gameStage = gameStages.NEWTRICK;
                 }
             }
         }
-        
-        if (__gameStage !== gameStages.TRICKS) {
-            doBidding();
-        }
-        
-        if (bidSuccessful) {
-            while (__trickNum < 5) {
-                playTrick();
-                __trickNum--;
+
+        //y u no bid?
+        else {
+            if (__playersBid === 4) {
+                if (__gameStage === gameStages.BID1) {
+                    __gameStage = gameStages.BID2;
+                }
+                else {
+                    __gameStage = gameStages.NEWHAND;
+                }
+            }
+            else {
+                __currentPlayer = nextPlayer(__currentPlayer);
             }
         }
     }
 
-    //get a bid
-    function getBid(round) {
-        var bidSuccessful;
+    //sets trumpSuit, left/right nonsense, maker, and alone player
+    function setTrump(suit, player, alone) {
+        var rightID;
+        var leftID;
 
-        //do round 1 stuff
-        bidSuccessful = getAIBid(__currentPlayer);
+        __trumpSuit = suit;
 
-        if (bidSuccessful) {
-            setMakers(__currentPlayer);
-            if (getGoAlone(__currentPlayer)) {
-                setGoAlone();
-            }
+        //This chunk is for changing the rank and suit of the right and left bowers
+        //for the duration of the hand.
+        //Note: The cards' IDs stay the same
+        rightID = __trumpSuit + ranks.JACK;
+        DECKDICT[rightID].rank = ranks.RIGHT;
+        leftID = suits.props[__trumpSuit].opposite + ranks.JACK;
+        DECKDICT[leftID].suit = __trumpSuit;
+        DECKDICT[leftID].rank = ranks.LEFT;
+
+        __maker = player;
+        if (alone) {
+            __alonePlayer = player;
         }
     }
 
-    function setMakers(player) {
-
+    function getDiscard(){
+        if(!isAiPlayer(__dealer)){
+            letHumanClickCards();
+        }
     }
 
-    function setGoAlone(player) {
-
+    function discardCard(toDiscard) {
+        removeFromHand(__dealer, toDiscard);
+        __hands[__dealer].push(__trumpCandidate);
     }
+
 
     function playTrick() {
+        var card;
+
+        //card = 
+    }
+
+    function playCard(player, card) {
 
     }
 
@@ -269,11 +343,29 @@ function Game(){
 
     }
 
+    function addToHand(player, card){
+        __hands[player].push(card);
+    }
+
+    //finds index of given ID inefficiently
+    //splice removes 1 at a given index
+    //fails silently if card isn't found, which should never happen
+    function removeFromHand(player, card){
+        var cardID = card.id;
+	
+        for(var i=0; i<__hands[player].length; i++){
+            if(__hands[player][i].id === cardID){
+                __hands[player].splice(i, 1);
+            }
+        }
+    }
+
+
     /*******************************
  	* Public functions
  	********************************/
 
     this.start = function(){
-        playGame();
+        startNewGame();
     }
 }

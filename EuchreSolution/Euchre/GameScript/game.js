@@ -174,7 +174,7 @@ function Game(){
                     letHumanClickCards();
                     return;
                 }
-                playTrick();
+                playTrickStep();
                 break;
         }
 
@@ -192,7 +192,7 @@ function Game(){
 
         //ai settings
         __statMode = document.getElementById("chkStatMode").checked;; //4 AIs play against each other
-        __aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
+        __aiPlayers = [null, new DecentAI(), new DecentAI(), new DecentAI()];
         __hasHooman = __aiPlayers.indexOf(null) > -1;
     }
 
@@ -205,7 +205,6 @@ function Game(){
 
     //resets variables, gets dealer, shuffles deck, inits empty hands, sets currentplayer to left of dealer
     function initHand() {
-        __gameStage = gameStages.BID1;
         __playersBid = 0;
         __trumpCandidateCard = null;
         __trumpSuit = null;
@@ -218,6 +217,8 @@ function Game(){
         __ewTricksWon = 0;
 
         __dealer = getDealer(players.NONE);
+        animPlaceDealerButt()
+
         __deck = getShuffledDeck();
         __hands = new Array(4);
         for (i = 0; i < 4; i++) {
@@ -279,19 +280,18 @@ function Game(){
             }
         }
 
-        //y u no bid?
-        else {
-            if (__playersBid === 4) {
-                if (__gameStage === gameStages.BID1) {
-                    __gameStage = gameStages.BID2;
-                }
-                else {
-                    __gameStage = gameStages.NEWHAND;
-                }
+        __playersBid++;
+
+        if (__playersBid === 4) {
+            if (__gameStage === gameStages.BID1) {
+                __gameStage = gameStages.BID2;
             }
             else {
-                __currentPlayer = nextPlayer(__currentPlayer);
+                __gameStage = gameStages.NEWHAND;
             }
+        }
+        else {
+            __currentPlayer = nextPlayer(__currentPlayer);
         }
     }
 
@@ -329,14 +329,22 @@ function Game(){
     }
 
 
-    function playTrick() {
+    function playTrickStep() {
         var card;
 
-        //card = 
+        card = __aiPlayers[__currentPlayer].pickCard();
+
+        if(!isValidPlay(card)){
+            //TODO: play shit
+            return;
+        }
+
+        playCard(__currentPlayer, card);
     }
 
     function playCard(player, card) {
-
+        //play card, store played card, iterate num players played
+        //check if hand ended, then check if game ended
     }
 
     function endGame() {
@@ -352,7 +360,7 @@ function Game(){
     //fails silently if card isn't found, which should never happen
     function removeFromHand(player, card){
         var cardID = card.id;
-	
+
         for(var i=0; i<__hands[player].length; i++){
             if(__hands[player][i].id === cardID){
                 __hands[player].splice(i, 1);

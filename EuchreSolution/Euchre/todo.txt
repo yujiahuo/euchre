@@ -42,3 +42,4 @@ Progress
 - Every step more or less works for AIs except PLAYTRICKS and END
 - Next step: Finish AI steps and add in animation so AIs can play each other
 - Then: Get human working
+- Then: Stop AI from cheating

@@ -20,7 +20,7 @@ function DecentAI(){
 	//Returns: bool
 	this.chooseOrderUp = function(){
 	    handStrength = this.calculateHandStrength(game.getTrumpCandidateCard().suit);
-		if(handStrength > 2) return true;
+		if (handStrength > 2) return true;
 		return false;
 	}
 
@@ -132,7 +132,7 @@ function DecentAI(){
 	this.calculateHandStrength = function(trumpSuit){
 		var smartlyCalculatedValue;
 
-		smartlyCalculatedValue = numCardsOfSuit(trumpSuit);
+		smartlyCalculatedValue = numCardsOfSuit(hand, trumpSuit);
 		if(this.theyHaveTheLeft(trumpSuit)){
 			smartlyCalculatedValue++;
 		}

@@ -154,26 +154,26 @@ function Game(){
                     letHumanBid(1);
                     return;
                 }
-                getBid();
+                handleBid();
                 break;
             case gameStages.BID2:
-                //animShowText("STAGE: bid2");
+                animShowText("STAGE: bid2");
                 if (!__aiPlayers[__currentPlayer]) {
                     letHumanBid(2);
                     return;
                 }
-                getBid();
+                handleBid();
                 break;
             case gameStages.DISCARD:
-                //animShowText("STAGE: discard");
+                animShowText("STAGE: discard");
                 if (!__aiPlayers[__dealer]) {
                     letHumanClickCards();
                     return;
                 }
-                discardCard(__aiPlayers[__dealer].getDiscard());
+                discardCard(__aiPlayers[__dealer].pickDiscard());
                 return;
             case gameStages.NEWTRICK:
-                //animShowText("STAGE: newtrick");
+                animShowText("STAGE: newtrick");
                 return;
                 initTrick();
                 break;
@@ -262,29 +262,23 @@ function Game(){
     //#endregion
 
     //get a bid
-    function getBid() {
+    function handleBid() {
         var suit;
         var alone;
         var discard;
 
-        //animShowText("bidding");
+        //see if AI bids
         suit = getAIBid(__currentPlayer);
-
         if (suit) {
-            //animShowText(__currentPlayer + " bid " + suit["name"] + ".");
-            if (getGoAlone(__currentPlayer)) {
-                alone = true;
-            }
-            setTrump(__trumpSuit, __currentPlayer, alone);
-            //if round 1, dealer also needs to discard
-            if (__gameStage === gameStages.BID1) {
-                __gameStage = gameStages.DISCARD;
-            }
-            else {
-                __gameStage = gameStages.NEWTRICK;
-            }
+            alone = getGoAlone(__currentPlayer);
+            endBidding(suit, alone);
+            return;
         }
         //animShowText(__currentPlayer + " passed.");
+        advanceBidding();
+    }
+
+    function advanceBidding() {
         __playersBid++;
 
         //everyone bid, round is over
@@ -298,6 +292,18 @@ function Game(){
         }
         else {
             __currentPlayer = nextPlayer(__currentPlayer);
+        }
+    }
+
+    function endBidding(suit, alone) {
+        animShowText(players.props[__currentPlayer].name + " " + suits.props[suit].name + " " + alone);
+        setTrump(suit, __currentPlayer, alone);
+        //if round 1, dealer also needs to discard
+        if (__gameStage === gameStages.BID1) {
+            __gameStage = gameStages.DISCARD;
+        }
+        else {
+            __gameStage = gameStages.NEWTRICK;
         }
     }
 

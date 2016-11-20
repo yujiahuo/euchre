@@ -14,60 +14,62 @@ function leftOfPlayer(player) {
     return (player + 1) % 4;
 }
 
-//returns true if card2 is greater than card1 for this hand
+//**TESTED**
+//returns the card that is greater in this trick
 //if a card is undefined, the other card wins
-//if both cards are undefined, return false
-function isGreater(card1, card2){
+//if both cards are undefined, return null
+function greaterCard(card1, card2, trickSuit, trump) {
 	if(card1 === undefined){
-		return true;
+		return card2;
 	}
 	else if(card2 === undefined){
-		return false;
+	    return card1;
 	}
 
-	if(isTrump(card1)){
-		if(!isTrump(card2)){
-			return false;
+	if(isTrump(card1, trump)){
+		if(!isTrump(card2, trump)){
+		    return card1;
 		}
 	}
-	else if(isTrump(card2)){
-		return true;
+	else if(isTrump(card2, trump)){
+	    return card2;
 	}
 
-	if(followsSuit(card1)){
-		if(!followsSuit(card2)){
-			return false;
+	if (followsSuit(card1, trickSuit)) {
+	    if (!followsSuit(card2, trickSuit)) {
+	        return card1;
 		}
 	}
-	else if(followsSuit(card2)){
-		return true;
+	else if (followsSuit(card2, trickSuit)) {
+	    return card2;
 	}
 
 	//both/neither are trump and both/neither follows suit
-	return (card2.rank > card1.rank);
+	if (card1.rank > card2.rank) return card1;
+	else return card2;
 }
 
-function isValidPlay(card){
+//**TESTED**
+function isValidPlay(hand, card, trickSuit) {
 	if(card == null){ //double equal will also find undefined
 		return false;
 	}
-	if(!hasSuit(game.getTrickSuit())){
+	if (!hasSuit(hand, trickSuit)) {
 		return true;
 	}
-	if(followsSuit(card)){
+	if (followsSuit(card, trickSuit)) {
 		return true;
 	}
 	return false;
 }
 
-function isTrump(card){
-	return card.suit === game.getTrump();
+//**NOT TESTING**
+function isTrump(card, trump) {
+    return card.suit === trump;
 }
 
-function followsSuit(card){
-	var trickSuit;
-
-	trickSuit = game.getTrickSuit();
+//**NOT TESTING**
+function followsSuit(card, trickSuit) {
 	if(trickSuit === ""){
 		return true;
 	}
@@ -77,9 +79,8 @@ function followsSuit(card){
 	return false;
 }
 
-//can be called about the current player
-function hasSuit(suit){
-	var hand = myHand();
+//**TESTED**
+function hasSuit(hand, suit){
 	for(var i=0; i<hand.length; i++){
 		if(hand[i].suit === suit) return true;
 	}
@@ -89,22 +90,21 @@ function hasSuit(suit){
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */
-function canOrderUpSuit(suit){
+function canOrderUpSuit(hand, suit){
 	if(game.getBiddingRound() === 1){
 		if(game.getTrumpCandidate().suit !== suit) return false;
-		if(hasSuit(suit)) return true;
+		if(hasSuit(hand, suit)) return true;
 	}
 	if(game.getBiddingRound() === 2){
 		if(game.getTrumpCandidate().suit === suit) return false;
-		if(hasSuit(suit)) return true;
+		if(hasSuit(hand, suit)) return true;
 	}
 	return false;
 }
 
 //how many cards of a given suit you have
-function numCardsOfSuit(suit){
+function numCardsOfSuit(hand, suit){
 	var count = 0;
-	var hand = myHand();
 	for(var i=0; i<hand.length; i++){
 		if(hand[i].suit === suit) count++;
 	}
@@ -125,22 +125,21 @@ function getOppositeSuit(suit){
 	return suits.props[suit].opposite;
 }
 
-function getCardValue(card){
+function getCardValue(card, trump){
 	var value;
 
 	value = card.rank;
-	if(isTrump(card)) value += 100;
+	if(isTrump(card, trump)) value += 100;
 	return value;
 }
 
-function getWorstCard(mustBeLegal){
+function getWorstCard(hand, trickSuit, mustBeLegal) {
 	var worstCard;
 	var worstValue = 1000;
 	var value;
-	var hand = myHand();
 
 	for(var i=0; i<hand.length; i++){
-		if(mustBeLegal && !isValidPlay(hand[i])) continue;
+	    if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
 		value = getCardValue(hand[i]);
 		if(value < worstValue){
 			worstCard = hand[i];
@@ -150,14 +149,13 @@ function getWorstCard(mustBeLegal){
 	return worstCard;
 }
 
-function getBestCard(mustBeLegal){
+function getBestCard(hand, trickSuit, mustBeLegal) {
 	var bestCard;
 	var bestValue = 0;
 	var value;
-	var hand = myHand();
 
 	for(var i=0; i<hand.length; i++){
-		if(mustBeLegal && !isValidPlay(hand[i])) continue;
+	    if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
 		value = getCardValue(hand[i]);
 		if(value > bestValue){
 			bestCard = hand[i];

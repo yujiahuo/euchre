@@ -59,6 +59,10 @@
     <Content Include="GameScript\globs.js" />
     <Content Include="GameScript\menuLogic.js" />
     <Content Include="GameScript\utils.js" />
+    <Content Include="jasmine\spec\PlayerSpec.js" />
+    <Content Include="jasmine\spec\SpecHelper.js" />
+    <Content Include="jasmine\src\Player.js" />
+    <Content Include="jasmine\src\Song.js" />
     <Content Include="Styles\menuStyle.css" />
     <Content Include="GameScript\playerAPI.js" />
     <Content Include="Styles\style.css" />

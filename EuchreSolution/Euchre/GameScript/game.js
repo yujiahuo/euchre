@@ -117,9 +117,6 @@ function Game(){
     this.getAIPlayer = function(player){
         return (__aiPlayers[player]);
     }
-    this.isAiPlayer = function (player) {
-        return (__aiPlayers[player] !== null);
-    }
     this.myHand = function(){
         var hand = [];
         var card;
@@ -139,6 +136,7 @@ function Game(){
  	********************************/
 
     function startNewGame() {
+        animShowText("STAGE: start");
         grabSettings();
         initGame();
         doStep();
@@ -147,37 +145,46 @@ function Game(){
     function doStep() {
         switch (__gameStage) {
             case gameStages.NEWHAND:
+                animShowText("STAGE: newhand");
                 initHand();
                 break;
             case gameStages.BID1:
-                if (!isAiPlayer(__currentPlayer)){
+                animShowText("STAGE: bid1");
+                if (!__aiPlayers[__currentPlayer]) {
                     letHumanBid(1);
                     return;
                 }
                 getBid();
                 break;
             case gameStages.BID2:
-                if (!isAiPlayer(__currentPlayer)){
+                //animShowText("STAGE: bid2");
+                if (!__aiPlayers[__currentPlayer]) {
                     letHumanBid(2);
                     return;
                 }
                 getBid();
                 break;
-            case gameStages.HDISCARD:
-                letHumanAct();
+            case gameStages.DISCARD:
+                //animShowText("STAGE: discard");
+                if (!__aiPlayers[__dealer]) {
+                    letHumanClickCards();
+                    return;
+                }
+                discardCard(__aiPlayers[__dealer].getDiscard());
                 return;
             case gameStages.NEWTRICK:
+                //animShowText("STAGE: newtrick");
+                return;
                 initTrick();
                 break;
             case gameStages.PLAYTRICK:
-                if (!isAiPlayer(__currentPlayer)){
+                if (!__aiPlayers[__currentPlayer]) {
                     letHumanClickCards();
                     return;
                 }
                 playTrickStep();
                 break;
         }
-
         doStep();
     }
 
@@ -185,14 +192,14 @@ function Game(){
     function grabSettings(){
         //checkbox settings
         __sound = document.getElementById("chkSound").checked;
-        __openHands = document.getElementById("chkOpenHands").checked;
+        __openHands = true //document.getElementById("chkOpenHands").checked;
         __defendAlong = document.getElementById("chkDefendAlone").checked;
         __noTrump = document.getElementById("chkNoTrump").checked;
         __showTrickHistory = document.getElementById("chkShowHistory").checked;
 
         //ai settings
         __statMode = document.getElementById("chkStatMode").checked;; //4 AIs play against each other
-        __aiPlayers = [null, new DecentAI(), new DecentAI(), new DecentAI()];
+        __aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
         __hasHooman = __aiPlayers.indexOf(null) > -1;
     }
 
@@ -260,28 +267,27 @@ function Game(){
         var alone;
         var discard;
 
-        //do round 1 stuff
+        //animShowText("bidding");
         suit = getAIBid(__currentPlayer);
 
         if (suit) {
+            //animShowText(__currentPlayer + " bid " + suit["name"] + ".");
             if (getGoAlone(__currentPlayer)) {
                 alone = true;
             }
             setTrump(__trumpSuit, __currentPlayer, alone);
+            //if round 1, dealer also needs to discard
             if (__gameStage === gameStages.BID1) {
-                if (!isAiPlayer(__dealer)){
-                    __gameStage = gameStages.HDISCARD;
-                }
-                else{
-                    discard = getAIDiscard(__dealer);
-                    discardCard(discard);
-                    __gameStage = gameStages.NEWTRICK;
-                }
+                __gameStage = gameStages.DISCARD;
+            }
+            else {
+                __gameStage = gameStages.NEWTRICK;
             }
         }
-
+        //animShowText(__currentPlayer + " passed.");
         __playersBid++;
 
+        //everyone bid, round is over
         if (__playersBid === 4) {
             if (__gameStage === gameStages.BID1) {
                 __gameStage = gameStages.BID2;
@@ -317,24 +323,19 @@ function Game(){
         }
     }
 
-    function getDiscard(){
-        if(!isAiPlayer(__dealer)){
-            letHumanClickCards();
-        }
-    }
-
     function discardCard(toDiscard) {
         removeFromHand(__dealer, toDiscard);
         __hands[__dealer].push(__trumpCandidate);
-    }
 
+        __gameStage = gameStages.NEWTRICK;
+    }
 
     function playTrickStep() {
         var card;
 
         card = __aiPlayers[__currentPlayer].pickCard();
 
-        if(!isValidPlay(card)){
+        if (!isValidPlay(hands[__currentPlayer], card, tricksuit)) {
             //TODO: play shit
             return;
         }

@@ -19,7 +19,7 @@ function DecentAI(){
 	//Params: none
 	//Returns: bool
 	this.chooseOrderUp = function(){
-		handStrength = this.calculateHandStrength(game.getTrumpCandidate().suit);
+	    handStrength = this.calculateHandStrength(game.getTrumpCandidateCard().suit);
 		if(handStrength > 2) return true;
 		return false;
 	}
@@ -35,22 +35,22 @@ function DecentAI(){
 	//Params: none
 	//Returns: suit or null
 	this.pickTrump = function(){
-		if(game.getTrumpCandidate().suit !== suits.CLUBS){
+	    if (game.getTrumpCandidateCard().suit !== suits.CLUBS) {
 			handStrength = this.calculateHandStrength(suits.CLUBS);
 			if(handStrength > 2) return suits.CLUBS;
 		}
 
-		if(game.getTrumpCandidate().suit !== suits.DIAMONDS){
+	    if (game.getTrumpCandidateCard().suit !== suits.DIAMONDS) {
 			handStrength = this.calculateHandStrength(suits.DIAMONDS);
 			if(handStrength > 2) return suits.DIAMONDS;
 		}
 
-		if(game.getTrumpCandidate().suit !== suits.SPADES){
+	    if (game.getTrumpCandidateCard().suit !== suits.SPADES) {
 			handStrength = this.calculateHandStrength(suits.SPADES);
 			if(handStrength > 2) return suits.SPADES;
 		}
 
-		if(game.getTrumpCandidate().suit !== suits.HEARTS){
+	    if (game.getTrumpCandidateCard().suit !== suits.HEARTS) {
 			handStrength = this.calculateHandStrength(suits.HEARTS);
 			if(handStrength > 2) return suits.HEARTS;
 		}
@@ -110,7 +110,7 @@ function DecentAI(){
 		//If not last player, play the lowest card that can win
 		//If we can't win, then sluff
 		for(i=0; i<hand.length; i++){
-			if(!isValidPlay(hand[i])) continue;
+			if(!isValidPlay(hand, hand[i], tricksuit)) continue;
 			value = getCardValue(hand[i]);
 			if(value > winningValue){
 				if(value < lowestWinningValue){

@@ -1,8 +1,9 @@
-﻿function nextPlayer(currentPlayer) {
+﻿//**NOT TESTING**
+function nextPlayer(currentPlayer) {
     return (currentPlayer + 1) % 4;
 }
 
-//TESTED
+//**TESTED**
 function getDealer(prevDealer) {
     var dealer;
 
@@ -17,7 +18,7 @@ function getDealer(prevDealer) {
     return dealer;
 }
 
-//TESTED
+//**TESTED**
 function getShuffledDeck() {
     var deck;
     var pos;
@@ -33,7 +34,7 @@ function getShuffledDeck() {
     return deck;
 }
 
-//TESTED
+//**TESTED**
 function dealHands(deck, hands, dealer) {
     var player, cardPos, card;
 
@@ -46,6 +47,7 @@ function dealHands(deck, hands, dealer) {
     }
 }
 
+//**NOT TESTING**
 //returns: bid suit
 function getAIBid(player) {
     var stage;
@@ -71,6 +73,7 @@ function getAIBid(player) {
     return null;
 }
 
+//**NOT TESTING**
 function getGoAlone(player) {
     var aiPlayer;
 
@@ -80,3 +83,4 @@ function getGoAlone(player) {
         return ai.chooseGoAlone();
     }
 }
+

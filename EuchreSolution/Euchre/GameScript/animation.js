@@ -53,14 +53,14 @@ function animDeal(hands){
 	makeCardElem(game.getTrumpCandidateCard().id, false);
 
 	for(var i=0; i<hands.length; i++){
-		flippedUp = (!game.isAiPlayer(player) || game.isOpenHands());
+	    flippedUp = (!game.getAIPlayer(player) || game.isOpenHands());
 		if(i%2 === dealer%2) delay = 1;
 		else delay = 0;
 
 		for(var j=0; j<hands[i].length; j++){
 			cardID = hands[player][j].id;
 			makeCardElem(cardID, flippedUp);
-			if(!game.isAiPlayer(player)){
+			if (!game.getAIPlayer(player)) {
 				document.getElementById(cardID).addEventListener("click", game.clickCard);
 			}
 
@@ -76,6 +76,8 @@ function animDeal(hands){
 		}
 		player = (player+1)%4;
 	}
+
+	animFlipCard(game.getTrumpCandidateCard().id);
 }
 
 function animDealSingle(player, cardID, cardPos){
@@ -124,7 +126,7 @@ function animTakeTrump(toDiscardID){
 	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
 	setTimeout(animHideCard, 400, toDiscardElem);
 
-	if(game.isAiPlayer(game.getDealer()) && !game.isOpenHands()){
+	if (game.getAIPlayer(game.getDealer()) && !game.isOpenHands()) {
 		trumpElem.classList.add("cardBack");
 	}
 	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
@@ -315,13 +317,13 @@ function animClearTable(){
 }
 
 //let human player poke the buttons
-function animEnableBidding(){
+function animEnableBidding(hand){
 	if(game.isStatMode()) return;
 
 	document.getElementById("orderUpPrompt").style.display = "inline";
 	document.getElementById("pass").style.display = "inline";
 
-	if(game.getBiddingRound() === 1 && hasSuit(game.getTrumpCandidate().suit)){
+	if(game.getBiddingRound() === 1 && hasSuit(hand, game.getTrumpCandidate().suit)){
 		document.getElementById("orderUp").style.display = "inline";
 		document.getElementById("alone").style.display = "inline";
 		return;

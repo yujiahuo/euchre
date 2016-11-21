@@ -1,21 +1,29 @@
 ///////////////////
 // UI and Animation
 ///////////////////
+
 function makeCardElem(cardID, flippedUp) {
     var card;
+
     card = document.createElement("div");
     card.className = "card";
     card.id = cardID;
+
     if (!flippedUp) {
         card.classList.add("cardBack");
     }
+
     document.getElementById("cardsContainer").appendChild(card);
+
     card.style.zIndex = zIndex;
     zIndex++;
+
     return card;
 }
-function animMoveCard(cardID, top, left, z) {
+
+function animMoveCard(cardID, top, left, z?) {
     var elem;
+
     elem = document.getElementById(cardID);
     elem.style.top = top;
     elem.style.left = left;
@@ -27,32 +35,35 @@ function animMoveCard(cardID, top, left, z) {
     }
     zIndex++;
 }
+
 function animDeal(hands) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     var player;
     var delay; //delay to second round deal
     var cardID;
     var flippedUp;
     var dealer;
+
     dealer = game.getDealer();
-    player = (dealer + 1) % 4;
-    ;
+    player = (dealer + 1) % 4;;
     delay = 0;
+
     makeCardElem("deck", false);
     makeCardElem(game.getTrumpCandidateCard().id, false);
+
     for (var i = 0; i < hands.length; i++) {
         flippedUp = (!game.getAIPlayer(player) || game.isOpenHands());
-        if (i % 2 === dealer % 2)
-            delay = 1;
-        else
-            delay = 0;
+        if (i % 2 === dealer % 2) delay = 1;
+        else delay = 0;
+
         for (var j = 0; j < hands[i].length; j++) {
             cardID = hands[player][j].id;
             makeCardElem(cardID, flippedUp);
             if (!game.getAIPlayer(player)) {
                 document.getElementById(cardID).addEventListener("click", game.clickCard);
             }
+
             if (j < 2) {
                 setTimeout(animDealSingle, i * 100, player, cardID, j);
             }
@@ -65,11 +76,14 @@ function animDeal(hands) {
         }
         player = (player + 1) % 4;
     }
+
     animFlipCard(game.getTrumpCandidateCard().id);
 }
-function animDealSingle(player, cardID, cardPos) {
+
+function animDealSingle(player: Player, cardID: string, cardPos: number) {
     var top;
     var left;
+
     switch (player) {
         case Player.South:
             top = "450px";
@@ -88,34 +102,42 @@ function animDealSingle(player, cardID, cardPos) {
             left = (cardPos * 20) + (600) + "px";
             break;
     }
+
     animMoveCard(cardID, top, left);
 }
+
 //gives trump to the dealer
 function animTakeTrump(toDiscardID) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     var top;
     var left;
     var toDiscardElem;
     var trumpElem;
     var trumpCandidate;
+
     trumpCandidate = game.getTrumpCandidate();
     toDiscardElem = document.getElementById(toDiscardID);
     trumpElem = document.getElementById(trumpCandidate.id);
     top = toDiscardElem.style.top;
     left = toDiscardElem.style.left;
+
     toDiscardElem.classList.add("cardBack");
     setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
     setTimeout(animHideCard, 400, toDiscardElem);
+
     if (game.getAIPlayer(game.getDealer()) && !game.isOpenHands()) {
         trumpElem.classList.add("cardBack");
     }
     setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
+
 }
+
 function animPlaceDealerButt() {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     var button;
+
     button = document.getElementById("dealerButton");
     if (button === null) {
         button = document.createElement("div");
@@ -141,15 +163,17 @@ function animPlaceDealerButt() {
             break;
     }
 }
+
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
 function animSortHand(hand) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     var sortedDict = [];
     var key;
     var suit;
     var pos;
+
     for (var i = 0; i < 5; i++) {
         key = 0;
         suit = hand[i].suit;
@@ -172,19 +196,22 @@ function animSortHand(hand) {
         key += (20 - hand[i].rank); //highest ranks come first
         sortedDict[key] = hand[i].id;
     }
+
     pos = 0;
     for (key in sortedDict) {
         setTimeout(animDealSingle, 300, Player.South, sortedDict[key], pos);
         pos++;
     }
 }
-function animPlayCard(player, cardID, flipCard) {
-    if (game.isStatMode())
-        return;
+
+function animPlayCard(player: Player, cardID: string, flipCard: boolean) {
+    if (game.isStatMode()) return;
+
     var top;
     var left;
-    if (flipCard && !game.isOpenHands())
-        animFlipCard(cardID);
+
+    if (flipCard && !game.isOpenHands()) animFlipCard(cardID);
+
     switch (player) {
         case Player.South:
             top = "352px";
@@ -205,19 +232,22 @@ function animPlayCard(player, cardID, flipCard) {
     }
     animMoveCard(cardID, top, left);
 }
+
 //check for class list and flip the other way too
 //correct this in doBidding
 function animFlipCard(cardID) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     document.getElementById(cardID).classList.toggle("cardBack");
 }
-function animWinTrick(player, cards) {
-    if (game.isStatMode())
-        return;
+
+function animWinTrick(player: Player, cards: Card[]) {
+    if (game.isStatMode()) return;
+
     var cardElem;
     var top;
     var left;
+
     switch (player) {
         case Player.South:
             top = "450px";
@@ -236,6 +266,7 @@ function animWinTrick(player, cards) {
             left = "600px";
             break;
     }
+
     for (var i = 0; i < 4; i++) {
         if (cards[i] === null) {
             continue;
@@ -247,48 +278,55 @@ function animWinTrick(player, cards) {
         setTimeout(animHideCard, 400, cardElem);
     }
 }
+
 function animRemoveKitty() {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     var elem;
     var trumpCandidate;
+
     trumpCandidate = game.getTrumpCandidate();
     elem = document.getElementById("deck");
     setTimeout(animHideCard, 300, elem);
-    if (trumpCandidate.suit !== game.getTrump()) {
+    if (trumpCandidate.suit !== game.getTrump()) { //trump candidate wasn't picked up
         elem = document.getElementById(trumpCandidate.id);
         setTimeout(animHideCard, 300, elem);
     }
 }
+
 function animHidePartnerHand(hands) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     var player = getPartner(game.getAlonePlayer());
     for (var i = 0; i < hands[player].length; i++) {
         animHideCard(document.getElementById(hands[player][i].id));
     }
 }
+
 function animHideCard(cardElem) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     cardElem.style.display = "none";
 }
+
 function animClearTable() {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
     document.getElementById("cardsContainer").innerHTML = "";
 }
+
 //let human player poke the buttons
 function animEnableBidding(hand) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     document.getElementById("orderUpPrompt").style.display = "inline";
     document.getElementById("pass").style.display = "inline";
+
     if (game.getBiddingRound() === 1 && hasSuit(hand, game.getTrumpCandidate().suit)) {
         document.getElementById("orderUp").style.display = "inline";
         document.getElementById("alone").style.display = "inline";
         return;
     }
+
     if (canOrderUpSuit(hand, Suit.Spades)) {
         document.getElementById("pickSpades").style.display = "inline";
         document.getElementById("alone").style.display = "inline";
@@ -306,12 +344,14 @@ function animEnableBidding(hand) {
         document.getElementById("alone").style.display = "inline";
     }
 }
+
 function animDisableBidding() {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     document.getElementById("orderUpPrompt").style.display = "none";
     document.getElementById("orderUp").style.display = "none";
     document.getElementById("pass").style.display = "none";
+
     document.getElementById("pickSpades").style.display = "none";
     document.getElementById("pickClubs").style.display = "none";
     document.getElementById("pickHearts").style.display = "none";
@@ -319,11 +359,12 @@ function animDisableBidding() {
     document.getElementById("alone").style.display = "none";
     document.getElementById("alone").style.backgroundColor = "green";
 }
+
 //flips a button on or off
 //needs to be generic but for now flips the 'go alone' button
 function animFlipButton(on) {
-    if (game.isStatMode())
-        return;
+    if (game.isStatMode()) return;
+
     if (on) {
         document.getElementById("alone").style.backgroundColor = "red";
     }
@@ -331,10 +372,12 @@ function animFlipButton(on) {
         document.getElementById("alone").style.backgroundColor = "green";
     }
 }
+
 function animShowScore() {
     animShowText("You: " + game.getNsScore() + "  Them: " + game.getEwScore());
 }
-function animShowText(text, nest, overwrite) {
+
+function animShowText(text: string, nest?: number, overwrite?: boolean) {
     var div = document.getElementById("sidebarText");
     if (overwrite) {
         div.innerHTML = "";
@@ -348,6 +391,7 @@ function animShowText(text, nest, overwrite) {
     div.innerHTML += text + "<br>";
     div.scrollTop = div.scrollHeight;
 }
+
 function animShowTextTop(text, overwrite) {
     var div = document.getElementById("sidebarTop");
     if (overwrite) {
@@ -355,9 +399,11 @@ function animShowTextTop(text, overwrite) {
     }
     div.innerHTML += text + "<br>";
 }
+
 function disableActions() {
     document.getElementById("blanket").style.display = "inline";
 }
+
 function enableActions() {
     document.getElementById("blanket").style.display = "none";
 }

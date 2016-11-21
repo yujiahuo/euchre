@@ -1,5 +1,5 @@
-//**NOT TESTING**
-function nextPlayer(currentPlayer) {
+﻿//**NOT TESTING**
+function nextPlayer(currentPlayer: Player): Player {
     switch (currentPlayer) {
         case Player.South:
             return Player.West;
@@ -13,8 +13,9 @@ function nextPlayer(currentPlayer) {
             return null;
     }
 }
+
 //**NOT TESTING**
-function getPartner(player) {
+function getPartner(player: Player): Player {
     switch (player) {
         case Player.South:
             return Player.North;
@@ -28,8 +29,9 @@ function getPartner(player) {
             return null;
     }
 }
+
 //**NOT TESTING**
-function getOppositeSuit(suit) {
+function getOppositeSuit(suit: Suit): Suit {
     switch (suit) {
         case Suit.Clubs:
             return Suit.Spades;
@@ -41,57 +43,69 @@ function getOppositeSuit(suit) {
             return Suit.Clubs;
     }
 }
+
 //**TESTED**
-function getDealer(prevDealer) {
+function getDealer(prevDealer?: Player): Player {
     var dealer;
+
     //if we have a dealer, get the next dealer
     if (prevDealer !== undefined) {
         dealer = nextPlayer(prevDealer);
     }
+        //otherwise just randomly grab one
     else {
         dealer = Math.floor(Math.random() * 4);
     }
     return dealer;
 }
+
 //**TESTED**
-function getShuffledDeck() {
+function getShuffledDeck(): Card[] {
     var deck;
     var pos;
     var temp;
     var size;
+
     size = SORTEDDECK.length;
     deck = [];
     for (var i = 0; i < size; i++) {
         deck.splice(Math.floor(Math.random() * (i + 1)), 0, SORTEDDECK[i]);
     }
+
     return deck;
 }
+
 //**TESTED**
-function dealHands(deck, hands, dealer) {
+function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
     var player, cardPos, card;
+
     for (var i = 0; i < 20; i++) {
         player = (dealer + i) % 4;
+
         cardPos = Math.floor(i / 4);
         card = deck.pop();
         hands[player][cardPos] = card;
     }
 }
+
 //**NOT TESTING**
 //returns: bid suit
-function getAIBid(player) {
+function getAIBid(player: Player): Suit {
     var stage;
     var ai;
     var bidSuit;
+
     stage = game.getGameStage();
     ai = game.getAIPlayer(player);
-    if (ai === null)
-        return;
-    if (stage === GameStage.BidRound1) {
+
+    if (ai === null) return;
+
+    if (stage === GameStage.BidRound1) { //bidding round 1
         if (ai.chooseOrderUp()) {
             return game.getTrumpCandidateCard().suit;
         }
     }
-    else if (stage === GameStage.BidRound2) {
+    else if (stage === GameStage.BidRound2) { //bidding round 2
         bidSuit = ai.pickTrump();
         if (bidSuit) {
             return bidSuit;
@@ -99,11 +113,15 @@ function getAIBid(player) {
     }
     return null;
 }
+
 //**NOT TESTING**
-function getGoAlone(player) {
+function getGoAlone(player: Player): boolean {
     var aiPlayer;
+
     aiPlayer = game.getAIPlayer(player);
+
     if (aiPlayer !== null) {
         return aiPlayer.chooseGoAlone();
     }
 }
+

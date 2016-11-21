@@ -145,3 +145,10 @@ function getBestCard(hand, trickSuit, trump, mustBeLegal) {
     }
     return bestCard;
 }
+function getFirstLegalCard(hand) {
+    for (var i = 0; i < hand.length; i++) {
+        if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
+            return hand[i];
+        }
+    }
+}

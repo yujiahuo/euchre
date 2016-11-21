@@ -23,15 +23,7 @@ var IdiotAI = (function () {
         return false;
     };
     IdiotAI.prototype.pickCard = function () {
-        var hand;
-        hand = game.myHand();
-        for (var i = 0; i < hand.length; i++) {
-            if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
-                return hand[i];
-            }
-        }
-        //we will never reach this but just in case
-        return hand[0];
+        return getFirstLegalCard(myHand());
     };
     return IdiotAI;
 }());

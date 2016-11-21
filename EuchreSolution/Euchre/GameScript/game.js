@@ -163,7 +163,6 @@ function Game() {
                     letHumanClickCards();
                     return;
                 }
-                return;
                 playTrickStep();
                 break;
         }
@@ -290,6 +289,7 @@ function Game() {
         }
     }
     function discardCard(toDiscard) {
+        animShowText(Player[__currentPlayer] + " discarded " + toDiscard.id, 1);
         removeFromHand(__dealer, toDiscard);
         __hands[__dealer].push(__trumpCandidateCard);
         startTricks();
@@ -300,12 +300,29 @@ function Game() {
     }
     function playTrickStep() {
         var card;
+        var hand = __hands[__currentPlayer];
         card = __aiPlayers[__currentPlayer].pickCard();
-        if (!isValidPlay(__hands[__currentPlayer], card, __trickSuitLead)) {
-            //TODO: play shit
-            return;
+        if (!isValidPlay(hand, card, __trickSuitLead)) {
+            card = getFirstLegalCard(hand);
         }
         playCard(__currentPlayer, card);
+        advanceTrick();
+    }
+    function advanceTrick() {
+        //TODO: this
+        __trickPlayersPlayed++;
+        //everyone played, end trick
+        if (__trickPlayersPlayed > 3) {
+            if (__trickNum > 4) {
+            }
+            else {
+                __trickPlayersPlayed = 0;
+                __trickNum++;
+            }
+        }
+        else {
+            __currentPlayer = nextPlayer(__currentPlayer);
+        }
     }
     function playCard(player, card) {
         //play card, store played card, iterate num players played

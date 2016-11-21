@@ -152,3 +152,11 @@ function getBestCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: b
     }
     return bestCard;
 }
+
+function getFirstLegalCard(hand: Card[]): Card {
+    for (var i = 0; i < hand.length; i++) {
+        if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
+            return hand[i];
+        }
+    }
+}

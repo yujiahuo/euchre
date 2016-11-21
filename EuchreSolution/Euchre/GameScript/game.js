@@ -157,18 +157,13 @@ function Game() {
                     return;
                 }
                 discardCard(__aiPlayers[__dealer].pickDiscard());
-                return;
-            case GameStage.NewTrick:
-                return;
-            /*TODO: re-enable this
-            initTrick();
-            break;
-            */
+                break;
             case GameStage.PlayTricks:
                 if (!__aiPlayers[__currentPlayer]) {
                     letHumanClickCards();
                     return;
                 }
+                return;
                 playTrickStep();
                 break;
         }
@@ -184,7 +179,7 @@ function Game() {
         __showTrickHistory = document.getElementById("chkShowHistory").checked;
         //ai settings
         __statMode = document.getElementById("chkStatMode").checked; //4 AIs play against each other
-        __aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
+        __aiPlayers = [new TestAI(), new TestAI(), new TestAI(), new TestAI()];
         __hasHooman = __aiPlayers.indexOf(null) > -1;
     }
     //just sets scores to 0
@@ -203,6 +198,7 @@ function Game() {
         __numPlayers = 0;
         __nsTricksWon = 0;
         __ewTricksWon = 0;
+        __trickNum = 0;
         __dealer = getDealer();
         animPlaceDealerButt();
         __deck = getShuffledDeck();
@@ -224,14 +220,12 @@ function Game() {
         __currentPlayer = nextPlayer(__dealer);
         __gameStage = GameStage.BidRound1;
     }
-    //resets variables, sets currentplayer to left of dealer
+    //called at the beginning of each trick
     function initTrick() {
-        __trickNum = 0; //TODO: find this a new home
         __trickPlayersPlayed = 0;
         __trickSuitLead = null;
         __trickPlayedCards = [null, null, null, null];
-        __currentPlayer = nextPlayer(__dealer);
-        __gameStage = GameStage.PlayTricks;
+        //TODO: set current player to whoever won last trick
     }
     //#endregion
     //get a bid
@@ -239,21 +233,23 @@ function Game() {
         var suit;
         var alone;
         var discard;
+        var aiPlayer = __aiPlayers[__currentPlayer];
         //see if AI bids
-        suit = getAIBid(__currentPlayer);
-        if (suit) {
-            alone = getGoAlone(__currentPlayer);
+        suit = getAIBid(aiPlayer, __gameStage);
+        if (suit !== null) {
+            alone = aiPlayer.chooseGoAlone();
             endBidding(suit, alone);
             return;
         }
-        //animShowText(__currentPlayer + " passed.");
+        animShowText(__currentPlayer + " passed.", 1);
         advanceBidding();
     }
     function advanceBidding() {
         __playersBid++;
         //everyone bid, round is over
-        if (__playersBid === 4) {
+        if (__playersBid > 3) {
             if (__gameStage === GameStage.BidRound1) {
+                __playersBid = 0;
                 __gameStage = GameStage.BidRound2;
             }
             else {
@@ -265,14 +261,14 @@ function Game() {
         }
     }
     function endBidding(suit, alone) {
-        animShowText(__currentPlayer + " " + Suit[suit] + " " + alone);
+        animShowText(__currentPlayer + " " + Suit[suit] + " " + alone, 1);
         setTrump(suit, __currentPlayer, alone);
         //if round 1, dealer also needs to discard
         if (__gameStage === GameStage.BidRound1) {
             __gameStage = GameStage.Discard;
         }
         else {
-            __gameStage = GameStage.NewTrick;
+            startTricks();
         }
     }
     //sets trumpSuit, left/right nonsense, maker, and alone player
@@ -283,7 +279,7 @@ function Game() {
         //This chunk is for changing the rank and suit of the right and left bowers
         //for the duration of the hand.
         //Note: The cards' IDs stay the same
-        rightID = __trumpSuit + Rank.Jack;
+        rightID = Suit[__trumpSuit] + Rank.Jack;
         DECKDICT[rightID].rank = Rank.Right;
         leftID = Suit[getOppositeSuit(__trumpSuit)] + Rank.Jack;
         DECKDICT[leftID].suit = __trumpSuit;
@@ -296,7 +292,11 @@ function Game() {
     function discardCard(toDiscard) {
         removeFromHand(__dealer, toDiscard);
         __hands[__dealer].push(__trumpCandidateCard);
-        __gameStage = GameStage.NewTrick;
+        startTricks();
+    }
+    function startTricks() {
+        __gameStage = GameStage.PlayTricks;
+        initTrick();
     }
     function playTrickStep() {
         var card;

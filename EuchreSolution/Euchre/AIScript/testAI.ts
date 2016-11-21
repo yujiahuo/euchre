@@ -1,16 +1,14 @@
 /******************************************************
-/* Never bids
-/* Plays its first legal move
+/* Does whatever a test AI does
 /*******************************************************/
 
-class IdiotAI implements EuchreAI{
+class TestAI implements EuchreAI{
 
     init() {
-        //just chillin'
     }
 
-	chooseOrderUp(){
-		return false;
+    chooseOrderUp() {
+        return false;
 	}
 
 	pickDiscard(){
@@ -21,7 +19,7 @@ class IdiotAI implements EuchreAI{
 	}
 
 	pickTrump(){
-		return null;
+        return Suit.Clubs;
 	}
 
 	chooseGoAlone(){

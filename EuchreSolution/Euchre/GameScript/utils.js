@@ -78,32 +78,18 @@ function dealHands(deck, hands, dealer) {
 }
 //**NOT TESTING**
 //returns: bid suit
-function getAIBid(player) {
-    var stage;
-    var ai;
+function getAIBid(aiPlayer, stage) {
     var bidSuit;
-    stage = game.getGameStage();
-    ai = game.getAIPlayer(player);
-    if (ai === null)
-        return;
     if (stage === GameStage.BidRound1) {
-        if (ai.chooseOrderUp()) {
+        if (aiPlayer.chooseOrderUp()) {
             return game.getTrumpCandidateCard().suit;
         }
     }
     else if (stage === GameStage.BidRound2) {
-        bidSuit = ai.pickTrump();
-        if (bidSuit) {
+        bidSuit = aiPlayer.pickTrump();
+        if (bidSuit !== undefined) {
             return bidSuit;
         }
     }
     return null;
-}
-//**NOT TESTING**
-function getGoAlone(player) {
-    var aiPlayer;
-    aiPlayer = game.getAIPlayer(player);
-    if (aiPlayer !== null) {
-        return aiPlayer.chooseGoAlone();
-    }
 }

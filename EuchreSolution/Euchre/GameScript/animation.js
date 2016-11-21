@@ -36,8 +36,7 @@ function animDeal(hands) {
     var flippedUp;
     var dealer;
     dealer = game.getDealer();
-    player = (dealer + 1) % 4;
-    ;
+    player = nextPlayer(dealer);
     delay = 0;
     makeCardElem("deck", false);
     makeCardElem(game.getTrumpCandidateCard().id, false);
@@ -65,7 +64,7 @@ function animDeal(hands) {
         }
         player = (player + 1) % 4;
     }
-    animFlipCard(game.getTrumpCandidateCard().id);
+    setTimeout(animFlipCard, 1000, game.getTrumpCandidateCard().id);
 }
 function animDealSingle(player, cardID, cardPos) {
     var top;

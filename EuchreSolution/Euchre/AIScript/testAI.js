@@ -1,28 +1,26 @@
 /******************************************************
-/* Never bids
-/* Plays its first legal move
+/* Does whatever a test AI does
 /*******************************************************/
-var IdiotAI = (function () {
-    function IdiotAI() {
+var TestAI = (function () {
+    function TestAI() {
     }
-    IdiotAI.prototype.init = function () {
-        //just chillin'
+    TestAI.prototype.init = function () {
     };
-    IdiotAI.prototype.chooseOrderUp = function () {
+    TestAI.prototype.chooseOrderUp = function () {
         return false;
     };
-    IdiotAI.prototype.pickDiscard = function () {
+    TestAI.prototype.pickDiscard = function () {
         var hand;
         hand = game.myHand();
         return hand[0];
     };
-    IdiotAI.prototype.pickTrump = function () {
-        return null;
+    TestAI.prototype.pickTrump = function () {
+        return Suit.Clubs;
     };
-    IdiotAI.prototype.chooseGoAlone = function () {
+    TestAI.prototype.chooseGoAlone = function () {
         return false;
     };
-    IdiotAI.prototype.pickCard = function () {
+    TestAI.prototype.pickCard = function () {
         var hand;
         hand = game.myHand();
         for (var i = 0; i < hand.length; i++) {
@@ -33,5 +31,5 @@ var IdiotAI = (function () {
         //we will never reach this but just in case
         return hand[0];
     };
-    return IdiotAI;
+    return TestAI;
 }());

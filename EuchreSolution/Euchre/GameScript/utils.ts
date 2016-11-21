@@ -90,38 +90,20 @@ function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
 
 //**NOT TESTING**
 //returns: bid suit
-function getAIBid(player: Player): Suit {
-    var stage;
-    var ai;
+function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit {
     var bidSuit;
 
-    stage = game.getGameStage();
-    ai = game.getAIPlayer(player);
-
-    if (ai === null) return;
-
     if (stage === GameStage.BidRound1) { //bidding round 1
-        if (ai.chooseOrderUp()) {
+        if (aiPlayer.chooseOrderUp()) {
             return game.getTrumpCandidateCard().suit;
         }
     }
     else if (stage === GameStage.BidRound2) { //bidding round 2
-        bidSuit = ai.pickTrump();
-        if (bidSuit) {
+        bidSuit = aiPlayer.pickTrump();
+        if (bidSuit !== undefined) {
             return bidSuit;
         }
     }
     return null;
-}
-
-//**NOT TESTING**
-function getGoAlone(player: Player): boolean {
-    var aiPlayer;
-
-    aiPlayer = game.getAIPlayer(player);
-
-    if (aiPlayer !== null) {
-        return aiPlayer.chooseGoAlone();
-    }
 }
 

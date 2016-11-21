@@ -36,9 +36,8 @@ var GameStage;
     GameStage[GameStage["BidRound1"] = 2] = "BidRound1";
     GameStage[GameStage["Discard"] = 3] = "Discard";
     GameStage[GameStage["BidRound2"] = 4] = "BidRound2";
-    GameStage[GameStage["NewTrick"] = 5] = "NewTrick";
-    GameStage[GameStage["PlayTricks"] = 6] = "PlayTricks";
-    GameStage[GameStage["EndGame"] = 7] = "EndGame";
+    GameStage[GameStage["PlayTricks"] = 5] = "PlayTricks";
+    GameStage[GameStage["EndGame"] = 6] = "EndGame";
 })(GameStage || (GameStage = {}));
 var Card = (function () {
     function Card(suit, rank) {

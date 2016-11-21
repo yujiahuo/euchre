@@ -6,14 +6,6 @@ function myHand(): Card[] {
     return game.myHand();
 }
 
-function getTrickPlayedCards() {
-    return game.getTrickPlayedCards();
-}
-
-function leftOfPlayer(player: Player) {
-    return (player + 1) % 4;
-}
-
 //**TESTED**
 //returns the card that is greater in this trick
 //if a card is undefined, the other card wins

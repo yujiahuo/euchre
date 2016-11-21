@@ -37,8 +37,7 @@ enum GameStage {
     BidRound1,
     Discard,
     BidRound2,
-    NewTrick,
-    PlayTricks, //TODO: figure out the right name
+    PlayTricks,
     EndGame,
 }
 

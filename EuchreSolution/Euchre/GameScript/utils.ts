@@ -107,3 +107,16 @@ function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit {
     return null;
 }
 
+function calculatePointGain(tricksTaken: number, maker: boolean, alone: boolean, defendingAlone?: boolean): number {
+    if (maker) {
+        if (tricksTaken === 5) {
+            return alone ? 4 : 2;
+        }
+        else {
+            return 1;
+        }
+    }
+    else {
+        return alone && defendingAlone ? 4 : 2;
+    }
+}

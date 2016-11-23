@@ -4,6 +4,11 @@ ToDo
 	- No trump
 - Implement stat mode
 - Implement defend alone
+- Enforce rules
+	- When playing a card, make sure the card exists in their hand and that they can legally play it
+
+
+
 - Fix up sidebar
 - AI difficulties
 - Rename decentAI to something less flattering

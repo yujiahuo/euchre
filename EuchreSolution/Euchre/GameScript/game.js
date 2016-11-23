@@ -4,6 +4,7 @@
 function Game() {
     //#region Private variables
     //game
+    var __currentPlayer;
     var __nsScore; //north south
     var __ewScore; //east west
     //hand
@@ -24,7 +25,6 @@ function Game() {
     var __trickPlayersPlayed; //how many players have played this trick
     var __trickSuitLead; //the suit that was lead
     var __trickPlayedCards; //array of cards that have been played this trick so far
-    var __currentPlayer;
     //settings
     var __sound;
     var __openHands;
@@ -114,7 +114,7 @@ function Game() {
         var card;
         for (var i = 0; i < __hands[__currentPlayer].length; i++) {
             card = __hands[__currentPlayer][i];
-            hand[i] = new Card(card.suit, card.rank);
+            hand[i] = new Card(card.suit, card.rank, card.id);
         }
         return hand;
     };
@@ -165,6 +165,8 @@ function Game() {
                 }
                 playTrickStep();
                 break;
+            default:
+                return;
         }
         doStep();
     }
@@ -177,8 +179,8 @@ function Game() {
         __noTrump = document.getElementById("chkNoTrump").checked;
         __showTrickHistory = document.getElementById("chkShowHistory").checked;
         //ai settings
-        __statMode = document.getElementById("chkStatMode").checked; //4 AIs play against each other
-        __aiPlayers = [new TestAI(), new TestAI(), new TestAI(), new TestAI()];
+        __statMode = true; //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
+        __aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
         __hasHooman = __aiPlayers.indexOf(null) > -1;
     }
     //just sets scores to 0
@@ -224,7 +226,6 @@ function Game() {
         __trickPlayersPlayed = 0;
         __trickSuitLead = null;
         __trickPlayedCards = [null, null, null, null];
-        //TODO: set current player to whoever won last trick
     }
     //#endregion
     //get a bid
@@ -245,8 +246,9 @@ function Game() {
     }
     function advanceBidding() {
         __playersBid++;
+        __currentPlayer = nextPlayer(__currentPlayer);
         //everyone bid, round is over
-        if (__playersBid > 3) {
+        if (__playersBid >= 4) {
             if (__gameStage === GameStage.BidRound1) {
                 __playersBid = 0;
                 __gameStage = GameStage.BidRound2;
@@ -254,9 +256,6 @@ function Game() {
             else {
                 __gameStage = GameStage.NewHand;
             }
-        }
-        else {
-            __currentPlayer = nextPlayer(__currentPlayer);
         }
     }
     function endBidding(suit, alone) {
@@ -309,26 +308,74 @@ function Game() {
         advanceTrick();
     }
     function advanceTrick() {
-        //TODO: this
         __trickPlayersPlayed++;
+        __currentPlayer = nextPlayer(__currentPlayer);
         //everyone played, end trick
-        if (__trickPlayersPlayed > 3) {
-            if (__trickNum > 4) {
+        if (__trickPlayersPlayed >= 4) {
+            var trickWinner = getBestCard(__trickPlayedCards, __trickSuitLead, __trumpSuit)[1];
+            scoreTrick(trickWinner);
+            if (__trickNum >= 4) {
+                endHand();
             }
             else {
-                __trickPlayersPlayed = 0;
+                initTrick();
+                __currentPlayer = trickWinner;
                 __trickNum++;
             }
         }
-        else {
-            __currentPlayer = nextPlayer(__currentPlayer);
-        }
     }
     function playCard(player, card) {
+        removeFromHand(player, card);
+        __trickPlayedCards[player] = card;
+        animShowText(Player[player] + " played " + card.id, 1);
         //play card, store played card, iterate num players played
         //check if hand ended, then check if game ended
     }
+    function scoreTrick(trickWinner) {
+        if (trickWinner === Player.North || trickWinner === Player.South) {
+            __nsTricksWon++;
+            animShowText("NS won this trick", 2);
+        }
+        else {
+            __ewTricksWon++;
+            animShowText("EW won this trick", 2);
+        }
+    }
+    function endHand() {
+        resetJacks();
+        updateScore();
+        if (__nsScore >= 10 || __ewScore >= 10) {
+            endGame();
+        }
+        else {
+            __gameStage = GameStage.NewHand;
+        }
+    }
+    function resetJacks() {
+        var rightID;
+        var leftID;
+        rightID = Suit[__trumpSuit] + Rank.Jack;
+        DECKDICT[rightID].rank = Rank.Jack;
+        leftID = Suit[getOppositeSuit(__trumpSuit)] + Rank.Jack;
+        DECKDICT[leftID].suit = getOppositeSuit(__trumpSuit);
+        DECKDICT[leftID].rank = Rank.Jack;
+    }
+    function updateScore() {
+        var isMaker;
+        var alone = (__alonePlayer !== null);
+        if (__nsTricksWon > __ewTricksWon) {
+            isMaker = (__maker === Player.North || __maker === Player.South);
+            __nsScore += calculatePointGain(__nsTricksWon, isMaker, alone);
+        }
+        else {
+            isMaker = (__maker === Player.East || __maker === Player.West);
+            __ewScore += calculatePointGain(__ewTricksWon, isMaker, alone);
+        }
+        animShowText("Score: " + __nsScore + " : " + __ewScore);
+    }
     function endGame() {
+        animShowText("Final score: " + __nsScore + " : " + __ewScore);
+        __gameStage = null;
     }
     function addToHand(player, card) {
         __hands[player].push(card);

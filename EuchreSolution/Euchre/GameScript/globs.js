@@ -40,10 +40,13 @@ var GameStage;
     GameStage[GameStage["EndGame"] = 6] = "EndGame";
 })(GameStage || (GameStage = {}));
 var Card = (function () {
-    function Card(suit, rank) {
+    function Card(suit, rank, id) {
         this.suit = suit;
         this.rank = rank;
-        this.id = Suit[suit] + rank;
+        if (id)
+            this.id = id;
+        else
+            this.id = Suit[suit] + rank;
     }
     return Card;
 }());

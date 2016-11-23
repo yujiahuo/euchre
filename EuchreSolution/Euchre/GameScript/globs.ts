@@ -46,10 +46,11 @@ class Card {
     public rank: Rank;
     public id: string;
 
-    constructor(suit: Suit, rank: Rank) {
+    constructor(suit: Suit, rank: Rank, id?: string) {
         this.suit = suit;
         this.rank = rank;
-        this.id = Suit[suit] + rank;
+        if (id) this.id = id;
+        else this.id = Suit[suit] + rank;
     }
 }
 

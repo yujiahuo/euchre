@@ -93,3 +93,16 @@ function getAIBid(aiPlayer, stage) {
     }
     return null;
 }
+function calculatePointGain(tricksTaken, maker, alone, defendingAlone) {
+    if (maker) {
+        if (tricksTaken === 5) {
+            return alone ? 4 : 2;
+        }
+        else {
+            return 1;
+        }
+    }
+    else {
+        return alone && defendingAlone ? 4 : 2;
+    }
+}

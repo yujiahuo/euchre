@@ -80,7 +80,7 @@ var DecentAI = (function () {
         this.hand = game.myHand(); //you need to do this or else
         numPlayersPlayed = game.getTrickPlayersPlayed();
         if (numPlayersPlayed === 0) {
-            return getBestCard(this.hand, trickSuit, trumpSuit);
+            return getBestCard(this.hand, trickSuit, trumpSuit)[0];
         }
         playedCards = game.getTrickPlayedCards();
         //Find currently winning value

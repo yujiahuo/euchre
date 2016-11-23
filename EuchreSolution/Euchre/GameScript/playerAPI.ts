@@ -137,20 +137,23 @@ function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: 
     return worstCard;
 }
 
-function getBestCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: boolean) {
+//returns: the best card and who played it as: [card, player]
+function getBestCard(cards: Card[], trickSuit: Suit, trump: Suit) {
     var bestCard;
     var bestValue = 0;
     var value;
+    var player: Player;
 
-    for (var i = 0; i < hand.length; i++) {
-        if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
-        value = getCardValue(hand[i], trump);
+    for (var i = 0; i < cards.length; i++) {
+        if (!isValidPlay(cards, cards[i], trickSuit)) continue;
+        value = getCardValue(cards[i], trump);
         if (value > bestValue) {
-            bestCard = hand[i];
+            bestCard = cards[i];
+            player = i;
             bestValue = value;
         }
     }
-    return bestCard;
+    return [bestCard, player];
 }
 
 function getFirstLegalCard(hand: Card[]): Card {

@@ -1,6 +1,7 @@
 ///////////////////
 // UI and Animation
 ///////////////////
+//TODO: make all the card elements at once instead of making them as we deal
 function makeCardElem(cardID, flippedUp) {
     var card;
     card = document.createElement("div");

@@ -180,7 +180,7 @@ function Game() {
         __showTrickHistory = document.getElementById("chkShowHistory").checked;
         //ai settings
         __statMode = true; //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
-        __aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
+        __aiPlayers = [new DecentAI(), new IdiotAI(), new DecentAI(), new IdiotAI()];
         __hasHooman = __aiPlayers.indexOf(null) > -1;
     }
     //just sets scores to 0

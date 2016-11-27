@@ -38,4 +38,8 @@ class TestAI implements EuchreAI{
 		//we will never reach this but just in case
 		return hand[0];
 	}
+
+    trickEnd(cards: playedCard[]): void {
+        return;
+    }
 }

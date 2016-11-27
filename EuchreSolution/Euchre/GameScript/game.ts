@@ -356,6 +356,7 @@ function Game(){
 
         //everyone played, end trick
         if (__trickPlayersPlayed >= 4) {
+            //TODO: call trickEnd for all AIs here
             let trickWinner = getBestCard(__trickPlayedCards, __trickSuitLead, __trumpSuit)[1];
             scoreTrick(trickWinner);
             if (__trickNum >= 4) {

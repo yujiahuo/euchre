@@ -109,6 +109,10 @@ class DecentAI implements EuchreAI{
         }
     }
 
+    trickEnd(cards: playedCard[]): void {
+        return;
+    }
+
 	//Whatever just count trump
 	calculateHandStrength = function(trumpSuit){
 		var smartlyCalculatedValue;

@@ -31,4 +31,8 @@ class IdiotAI implements EuchreAI{
     pickCard() {
         return getFirstLegalCard(myHand());
 	}
+
+    trickEnd(cards: playedCard[]): void {
+        return;
+    }
 }

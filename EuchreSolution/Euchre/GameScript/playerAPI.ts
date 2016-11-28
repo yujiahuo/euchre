@@ -181,4 +181,10 @@ function getFirstLegalCard(hand: Card[]): Card {
     }
 }
 
-//TODO: am I dealer
+function me() : Player{
+	return game.getCurrentPlayer();
+}
+
+function isDealer(player: Player): boolean {
+	return player === game.getDealer();
+}

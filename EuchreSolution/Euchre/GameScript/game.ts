@@ -37,7 +37,7 @@ function Game() {
     var __noTrump: boolean;
     var __showTrickHistory: boolean;
     var __statMode: boolean;
-    var __aiPlayers = [null, null, null, null];
+    var __aiPlayers: EuchreAI[];
     var __hasHooman: boolean; //if there is a human player
     //#endregion
 

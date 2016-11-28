@@ -3,7 +3,7 @@
 /* Will play the the lowest card that can beat all cards played so far
 /* If last player and partner is winning, sluff
 /*******************************************************/
-class DecentAI implements EuchreAI{
+class DecentAI implements EuchreAI {
 	private hand: Card[];
     private handStrength: number;
     private trickSuit: Suit;
@@ -69,7 +69,7 @@ class DecentAI implements EuchreAI{
 
         numPlayersPlayed = game.getTrickPlayersPlayed();
         if (numPlayersPlayed === 0) {
-            return getBestCard(this.hand, trickSuit, trumpSuit)[0];
+            return getBestCardInHand(this.hand, trickSuit, trumpSuit)[0];
         }
 
         playedCards = game.getTrickPlayedCards();
@@ -109,16 +109,15 @@ class DecentAI implements EuchreAI{
         }
     }
 
-    trickEnd(cards: playedCard[]): void {
+	trickEnd(): void {
         return;
     }
-
 	//Whatever just count trump
-	calculateHandStrength = function(trumpSuit){
+	calculateHandStrength = function (trumpSuit) {
 		var smartlyCalculatedValue;
 
 		smartlyCalculatedValue = numCardsOfSuit(this.hand, trumpSuit);
-		if(this.theyHaveTheLeft(trumpSuit)){
+		if (this.theyHaveTheLeft(trumpSuit)) {
 			smartlyCalculatedValue++;
 		}
 
@@ -126,13 +125,15 @@ class DecentAI implements EuchreAI{
 		return smartlyCalculatedValue;
 	}
 
-	theyHaveTheLeft = function(trumpSuit){
-        for (var i = 0; i < this.hand.length; i++){
+	theyHaveTheLeft = function (trumpSuit) {
+        for (var i = 0; i < this.hand.length; i++) {
             if (this.hand[i].rank === Rank.Jack
-                && this.hand[i].suit === getOppositeSuit(trumpSuit)){
+                && this.hand[i].suit === getOppositeSuit(trumpSuit)) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+
 }

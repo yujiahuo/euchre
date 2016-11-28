@@ -2,7 +2,7 @@
 /* Does whatever a test AI does
 /*******************************************************/
 
-class TestAI implements EuchreAI{
+class TestAI implements EuchreAI {
 
     init() {
     }
@@ -11,27 +11,27 @@ class TestAI implements EuchreAI{
         return false;
 	}
 
-	pickDiscard(){
+	pickDiscard() {
 		var hand;
 
 		hand = game.myHand();
 		return hand[0];
 	}
 
-	pickTrump(){
+	pickTrump() {
         return Suit.Clubs;
 	}
 
-	chooseGoAlone(){
+	chooseGoAlone() {
 		return false;
 	}
 
-	pickCard(){
+	pickCard() {
 		var hand;
 
 		hand = game.myHand();
-		for(var i=0; i<hand.length; i++){
-		    if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
+		for (var i = 0; i < hand.length; i++) {
+			if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
 				return hand[i];
 			}
 		}
@@ -39,7 +39,7 @@ class TestAI implements EuchreAI{
 		return hand[0];
 	}
 
-    trickEnd(cards: playedCard[]): void {
+    trickEnd(): void {
         return;
     }
 }

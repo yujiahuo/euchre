@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="AIScript\aiInterface.ts" />
+    <TypeScriptCompile Include="AIScript\testAI.ts" />
     <TypeScriptCompile Include="GameScript\animation.ts" />
     <TypeScriptCompile Include="AIScript\decentAI.ts" />
     <Content Include="Content\jasmine\jasmine.css" />
@@ -63,6 +64,9 @@
     <TypeScriptCompile Include="GameScript\globs.ts" />
     <TypeScriptCompile Include="GameScript\menuLogic.ts" />
     <TypeScriptCompile Include="GameScript\utils.ts" />
+    <Content Include="Images\cardBack.png" />
+    <Content Include="Images\cards.png" />
+    <Content Include="Images\dealerButton.png" />
     <Content Include="jasmine\lib\jasmine-2.5.2\boot.js" />
     <Content Include="jasmine\lib\jasmine-2.5.2\console.js" />
     <Content Include="jasmine\lib\jasmine-2.5.2\jasmine-html.js" />
@@ -93,9 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Jasmine\SpecRunner.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Controllers\JasmineController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

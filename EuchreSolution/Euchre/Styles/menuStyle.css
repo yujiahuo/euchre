@@ -1,4 +1,4 @@
-#menu{
+#menu {
 	position: relative;
 	margin: 0 auto;
 	background-color: #CBE8BA;
@@ -6,24 +6,24 @@
 	transition: height .3s, width .3s, top .3s;
 }
 
-.menuItems{
+.menuItems {
 	transition: opacity .1s;
 }
 
 /* Start menu stuff */
 
-.startActive{
+.startActive {
 	height: 180px;
 	width: 250px;
 	top: 200px;
 }
 
-#startMenuItems{
+#startMenuItems {
 	opacity: 1;
 	display: inline;
 }
 
-#newGame{
+#newGame {
 	width: 135px;
 	position: absolute;
 	margin: 0 auto;
@@ -31,28 +31,28 @@
 	left: calc((100% - 135px)/2);
 }
 
-#newGameButt{
+#newGameButt {
 	padding: 15px 15px;
 	height: 60px;
 }
 
-#settings{
+#settings {
 	position: absolute;
 	top: 110px;
 	left: 15px;
 }
 
-#settingsButt{
+#settingsButt {
 	width: 100px;
 }
 
-#howToPlay{
+#howToPlay {
 	position: absolute;
 	top: 110px;
 	left: 125px;
 }
 
-#copyright{
+#copyright {
 	position: absolute;
 	top: 150px;
 	left: 75px;
@@ -62,13 +62,13 @@
 
 /* Settings menu stuff */
 
-.settingsActive{
+.settingsActive {
 	height: 400px;
 	width: 270px;
 	top: 100px;
 }
 
-#settingsMenuItems{
+#settingsMenuItems {
 	position: absolute;
 	top: 0px;
 	left: 15px;
@@ -76,14 +76,14 @@
 	display: none;
 }
 
-.options{
+.options {
 	position: relative;
 	top: 0px;
 	left: 10px;
 	float: left;
 }
 
-.tooltip{
+.tooltip {
 	position: relative;
 	width: 15px;
 	top: 0px;
@@ -91,53 +91,52 @@
 	float: left;
 }
 
-.tooltiptext{
+.tooltiptext {
 	position: absolute;
-    width: 200px;
-    top: 0px;
-    left: 50px;
-    background-color: #444444;
-    color: #AAAAAA;
-    padding: 7px 7px 7px 7px;
-    border-radius: 6px;
-
-    z-index: 1;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 1s;
+	width: 200px;
+	top: 0px;
+	left: 50px;
+	background-color: #444444;
+	color: #AAAAAA;
+	padding: 7px 7px 7px 7px;
+	border-radius: 6px;
+	z-index: 1;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 1s;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
+	visibility: visible;
+	opacity: 1;
 }
 
 /* This is the arrow thing */
 .tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    top: 10px;
-    right: 100%; /* To the left of the tooltip */
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent #444444 transparent transparent;
+	content: " ";
+	position: absolute;
+	top: 10px;
+	right: 100%; /* To the left of the tooltip */
+	margin-top: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent #444444 transparent transparent;
 }
 
-#settingsBack{
+#settingsBack {
 	position: relative;
 	top: 20px;
 }
 
 /* How To menu stuff */
 
-.howToActive{
+.howToActive {
 	height: 500px;
 	width: 400px;
 	top: 50px;
 }
 
-#howToMenuItems{
+#howToMenuItems {
 	position: absolute;
 	top: 10px;
 	left: 15px;
@@ -145,7 +144,7 @@
 	display: none;
 }
 
-#textDiv{
+#textDiv {
 	width: 330px;
 	height: 430px;
 	overflow: auto;
@@ -154,7 +153,7 @@
 	border-radius: 2px;
 }
 
-#howToBack{
+#howToBack {
 	position: relative;
 	top: 10px;
 }

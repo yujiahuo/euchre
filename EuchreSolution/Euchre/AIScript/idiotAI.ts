@@ -3,28 +3,28 @@
 /* Plays its first legal move
 /*******************************************************/
 
-class IdiotAI implements EuchreAI{
+class IdiotAI implements EuchreAI {
 
     init() {
         //just chillin'
     }
 
-	chooseOrderUp(){
+	chooseOrderUp() {
 		return false;
 	}
 
-	pickDiscard(){
+	pickDiscard() {
 		var hand;
 
 		hand = game.myHand();
 		return hand[0];
 	}
 
-	pickTrump(){
+	pickTrump() {
 		return null;
 	}
 
-	chooseGoAlone(){
+	chooseGoAlone() {
 		return false;
 	}
 
@@ -32,7 +32,7 @@ class IdiotAI implements EuchreAI{
         return getFirstLegalCard(myHand());
 	}
 
-    trickEnd(cards: playedCard[]): void {
+    trickEnd(): void {
         return;
     }
 }

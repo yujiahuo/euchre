@@ -2,7 +2,7 @@
  * Game object
  *****************************************************************************/
 
-function Game(){
+function Game() {
     //#region Private variables
 
     //game
@@ -28,7 +28,7 @@ function Game(){
     var __trickNum: number; //what trick we're on
     var __trickPlayersPlayed: number; //how many players have played this trick
     var __trickSuitLead: Suit; //the suit that was lead
-    var __trickPlayedCards: Card[]; //array of cards that have been played this trick so far
+    var __trickPlayedCards: PlayedCard[]; //array of cards that have been played this trick so far
 
     //settings
     var __sound: boolean;
@@ -42,86 +42,85 @@ function Game(){
     //#endregion
 
     //#region Get functions
-    this.getGameStage = function(){
+    this.getGameStage = function () {
         return __gameStage;
     }
-    this.getPlayersBid = function(){
+    this.getPlayersBid = function () {
         return __playersBid;
     }
-    this.getNsScore = function(){
+    this.getNsScore = function () {
         return __nsScore;
     }
-    this.getEwScore = function(){
+    this.getEwScore = function () {
         return __ewScore;
     }
-    this.getTrumpCandidateCard = function(){
+    this.getTrumpCandidateCard = function () {
         var card;
 
         card = new Card(__trumpCandidateCard.suit, __trumpCandidateCard.rank);
         return card;
     }
-    this.getTrumpSuit = function(){
+    this.getTrumpSuit = function () {
         return __trumpSuit;
     }
-    this.getDealer = function(){
+    this.getDealer = function () {
         return __dealer;
     }
-    this.getMaker = function(){
+    this.getMaker = function () {
         return __maker;
     }
-    this.getAlonePlayer = function(){
+    this.getAlonePlayer = function () {
         return __alonePlayer;
     }
-    this.getNumPlayers = function(){
+    this.getNumPlayers = function () {
         return __numPlayers;
     }
-    this.getTrickNum = function(){
+    this.getTrickNum = function () {
         return __trickNum;
     }
-    this.getTrickPlayersPlayed = function(){
+    this.getTrickPlayersPlayed = function () {
         return __trickPlayersPlayed;
     }
-    this.getTrickSuit = function(){
+    this.getTrickSuit = function () {
         return __trickSuitLead;
     }
-    this.getTrickPlayedCards = function(){
-        var playedCards = [];
-        var card;
+    this.getTrickPlayedCards = function () {
+        var playedCards: PlayedCard[] = [];
+        var card: Card;
+        var cardCopy: Card;
 
-        for(var i=0; i<__trickPlayedCards.length; i++){
-            card = __trickPlayedCards[i];
-            if(card === null){
-                playedCards[i] = null;
-            }
-            else{
-                playedCards[i] = new Card(card.suit, card.rank);
-            }
+        for (var i = 0; i < __trickPlayedCards.length; i++) {
+            card = __trickPlayedCards[i].card;
+
+            //make deep copy of cards
+            cardCopy = new Card(card.suit, card.rank);
+            playedCards.push({ player: __trickPlayedCards[i].player, card: cardCopy });
         }
         return playedCards;
     }
-    this.getCurrentPlayer = function(){
+    this.getCurrentPlayer = function () {
         return __currentPlayer;
     }
-    this.getNsTricksWon = function(){
+    this.getNsTricksWon = function () {
         return __nsTricksWon;
     }
-    this.getEwTricksWon = function(){
+    this.getEwTricksWon = function () {
         return __ewTricksWon;
     }
-    this.isOpenHands = function(){
+    this.isOpenHands = function () {
         return __openHands;
     }
-    this.isStatMode = function(){
+    this.isStatMode = function () {
         return __statMode;
     }
-    this.getAIPlayer = function(player){
+    this.getAIPlayer = function (player) {
         return (__aiPlayers[player]);
     }
-    this.myHand = function(){
+    this.myHand = function () {
         var hand = [];
         var card;
 
-        for(var i=0; i<__hands[__currentPlayer].length; i++){
+        for (var i = 0; i < __hands[__currentPlayer].length; i++) {
             card = __hands[__currentPlayer][i];
             hand[i] = new Card(card.suit, card.rank, card.id);
         }
@@ -147,7 +146,7 @@ function Game(){
     function letHumanClickCards() { }
 
     function doStep() {
-        animShowText("STAGE: "  + GameStage[__gameStage]);
+        animShowText("STAGE: " + GameStage[__gameStage]);
         switch (__gameStage) {
             case GameStage.NewHand:
                 initHand();
@@ -187,7 +186,7 @@ function Game(){
     }
 
     //#region Setup
-    function grabSettings(){
+    function grabSettings() {
         //checkbox settings
         __sound = (document.getElementById("chkSound") as HTMLInputElement).checked;
         __openHands = true //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
@@ -251,7 +250,7 @@ function Game(){
     function initTrick() {
         __trickPlayersPlayed = 0;
         __trickSuitLead = null;
-        __trickPlayedCards = [null, null, null, null];
+        __trickPlayedCards = [];
     }
     //#endregion
 
@@ -356,23 +355,31 @@ function Game(){
 
         //everyone played, end trick
         if (__trickPlayersPlayed >= 4) {
-            //TODO: call trickEnd for all AIs here
-            let trickWinner = getBestCard(__trickPlayedCards, __trickSuitLead, __trumpSuit)[1];
-            scoreTrick(trickWinner);
-            if (__trickNum >= 4) {
-                endHand();
-            }
-            else {
-                initTrick();
-                __currentPlayer = trickWinner;
-                __trickNum++;
-            }
+            endTrick();
         }
     }
 
+	function endTrick() {
+		for (i = 0; i < 4; i++) {
+			if (__aiPlayers[i] !== null) {
+				__aiPlayers[i].trickEnd();
+			}
+		}
+		let trickWinner = getBestCardPlayed(__trickPlayedCards, __trickSuitLead, __trumpSuit).player;
+		scoreTrick(trickWinner);
+		if (__trickNum >= 4) {
+			endHand();
+		}
+		else {
+			initTrick();
+			__currentPlayer = trickWinner;
+			__trickNum++;
+		}
+	}
+
     function playCard(player, card) {
         removeFromHand(player, card);
-        __trickPlayedCards[player] = card;
+        __trickPlayedCards.push({ player: player, card: card });
         animShowText(Player[player] + " played " + card.id, 1);
         //play card, store played card, iterate num players played
         //check if hand ended, then check if game ended
@@ -432,18 +439,18 @@ function Game(){
         __gameStage = null;
     }
 
-    function addToHand(player, card){
+    function addToHand(player, card) {
         __hands[player].push(card);
     }
 
     //finds index of given ID inefficiently
     //splice removes 1 at a given index
     //fails silently if card isn't found, which should never happen
-    function removeFromHand(player, card){
+    function removeFromHand(player, card) {
         var cardID = card.id;
 
-        for(var i=0; i<__hands[player].length; i++){
-            if(__hands[player][i].id === cardID){
+        for (var i = 0; i < __hands[player].length; i++) {
+            if (__hands[player][i].id === cardID) {
                 __hands[player].splice(i, 1);
             }
         }
@@ -454,7 +461,7 @@ function Game(){
  	* Public functions
  	********************************/
 
-    this.start = function(){
+    this.start = function () {
         startNewGame();
     }
 }

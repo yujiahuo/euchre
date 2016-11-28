@@ -52,7 +52,7 @@ function getDealer(prevDealer?: Player): Player {
     if (prevDealer !== undefined) {
         dealer = nextPlayer(prevDealer);
     }
-        //otherwise just randomly grab one
+	//otherwise just randomly grab one
     else {
         dealer = Math.floor(Math.random() * 4);
     }

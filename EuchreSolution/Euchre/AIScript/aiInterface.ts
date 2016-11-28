@@ -5,12 +5,7 @@
 /* All other functions and vars are "private"
 *******************************************************/
 
-interface playedCard {
-	player: Player;
-	card: Card;
-}
-
-interface EuchreAI{
+interface EuchreAI {
 	//Called once hands have been dealt and the trump candidate is revealed
 	//Params: none
 	//Returns: none
@@ -45,5 +40,5 @@ interface EuchreAI{
 	//Called at the end of each trick
 	//Params: An array of players and the cards they played, in play order
 	//Returns: none
-	trickEnd(cardsPlayed: playedCard[]): void
+	trickEnd(): void;
 }

@@ -1,24 +1,24 @@
-button{
+button {
 	background-color: #CCCCCC;
 	color: black;
-    border: 2px solid #999999;
-    border-radius: 5px;
-    padding: 5px 15px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 14px;
-    display: inline-block;
+	border: 2px solid #999999;
+	border-radius: 5px;
+	padding: 5px 15px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	display: inline-block;
 }
 
-table{
+table {
 	font-size: inherit;
 }
 
-.gray{
+.gray {
 	color: #888888;
 }
 
-#everything{
+#everything {
 	height: 600px;
 	width: 1000px;
 	position: relative;
@@ -27,7 +27,7 @@ table{
 	font-size: 14px;
 }
 
-#gameSpace{
+#gameSpace {
 	height: 600px;
 	width: 800px;
 	/* this can make us scale with page size
@@ -41,7 +41,7 @@ table{
 	background-color: #4C7A34;
 }
 
-#sidebar{
+#sidebar {
 	height: 600px;
 	width: 200px;
 	position: absolute;
@@ -50,13 +50,13 @@ table{
 	background-color: #555555;
 }
 
-#sidebarTop{
+#sidebarTop {
 	height: 80px;
 	background-color: #CBE8BA;
 	padding-left: 5px;
 }
 
-#sidebarText{
+#sidebarText {
 	position: relative;
 	height: 518px;
 	top: 2px;
@@ -65,7 +65,7 @@ table{
 	overflow: auto;
 }
 
-#orderUpPrompt{
+#orderUpPrompt {
 	width: 100px;
 	height: 110px;
 	position: absolute;
@@ -75,22 +75,22 @@ table{
 	display: none;
 }
 
-#alone{
+#alone {
 	background-color: green;
 	width: 80px;
 	height: 16px;
 	text-align: center;
 }
 
-#dealerButton{
+#dealerButton {
 	background: url('../Images/dealerButton.png');
 	background-size: contain;
 	height: 50px;
-    width: 50px;
+	width: 50px;
 	position: absolute;
 }
 
-#blanket{
+#blanket {
 	height: 600px;
 	width: 800px;
 	position: absolute;
@@ -102,7 +102,7 @@ table{
 /* CARDS */
 /* card dimensions are height:96 width:72. 1px between cards*/
 
-.card{
+.card {
 	height: 96px;
 	width: 72px;
 	position: absolute;
@@ -111,102 +111,102 @@ table{
 	transition: top .3s, left .3s;
 }
 
-.cardBack{
+.cardBack {
 	background: url('../Images/cardBack.png') !important;
 }
 
-#Clubs14{
+#Clubs14 {
 	background: url('../../Images/cards.png') -1px -1px;
 }
 
-#Clubs13{
+#Clubs13 {
 	background: url('../../Images/cards.png') -877px -1px;
 }
 
-#Clubs12{
+#Clubs12 {
 	background: url('../../Images/cards.png') -804px -1px;
 }
 
-#Clubs11{
+#Clubs11 {
 	background: url('../../Images/cards.png') -731px -1px;
 }
 
-#Clubs10{
+#Clubs10 {
 	background: url('../../Images/cards.png') -658px -1px;
 }
 
-#Clubs9{
+#Clubs9 {
 	background: url('../../Images/cards.png') -585px -1px;
 }
 
-#Diamonds14{
+#Diamonds14 {
 	background: url('../Images/cards.png') -1px -295px;
 }
 
-#Diamonds13{
+#Diamonds13 {
 	background: url('../Images/cards.png') -877px -295px;
 }
 
-#Diamonds12{
+#Diamonds12 {
 	background: url('../Images/cards.png') -804px -295px;
 }
 
-#Diamonds11{
+#Diamonds11 {
 	background: url('../Images/cards.png') -731px -295px;
 }
 
-#Diamonds10{
+#Diamonds10 {
 	background: url('../Images/cards.png') -658px -295px;
 }
 
-#Diamonds9{
+#Diamonds9 {
 	background: url('../Images/cards.png') -585px -295px;
 }
 
-#Hearts14{
+#Hearts14 {
 	background: url('../Images/cards.png') -1px -197px;
 }
 
-#Hearts13{
+#Hearts13 {
 	background: url('../Images/cards.png') -877px -197px;
 }
 
-#Hearts12{
+#Hearts12 {
 	background: url('../Images/cards.png') -804px -197px;
 }
 
-#Hearts11{
+#Hearts11 {
 	background: url('../Images/cards.png') -731px -197px;
 }
 
-#Hearts10{
+#Hearts10 {
 	background: url('../Images/cards.png') -658px -197px;
 }
 
-#Hearts9{
+#Hearts9 {
 	background: url('../Images/cards.png') -585px -197px;
 }
 
-#Spades14{
+#Spades14 {
 	background: url('../Images/cards.png') -1px -99px;
 }
 
-#Spades13{
+#Spades13 {
 	background: url('../Images/cards.png') -877px -99px;
 }
 
-#Spades12{
+#Spades12 {
 	background: url('../Images/cards.png') -804px -99px;
 }
 
-#Spades11{
+#Spades11 {
 	background: url('../Images/cards.png') -731px -99px;
 }
 
-#Spades10{
+#Spades10 {
 	background: url('../Images/cards.png') -658px -99px;
 }
 
-#Spades9{
+#Spades9 {
 	background: url('../Images/cards.png') -585px -99px;
 }

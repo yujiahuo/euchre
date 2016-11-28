@@ -1,236 +1,238 @@
 <html>
-	<head>
-        <script src="GameScript/globs.js" type="text/javascript"></script>
-        <script src="GameScript/animation.js" type="text/javascript"></script>
-        <script src="GameScript/utils.js" type="text/javascript"></script>
-		<script src="GameScript/game.js" type="text/javascript"></script>
-        <script src="GameScript/menuLogic.js" type="text/javascript"></script>
-        <script src="GameScript/playerAPI.js" type="text/javascript"></script>
-		<script src="AIScript/decentAI.js" type="text/javascript"></script>
-		<script src="AIScript/idiotAI.js" type="text/javascript"></script>
-        <script src="AIScript/testAI.js" type="text/javascript"></script>
-		<link rel="stylesheet" type="text/css" href="Styles/style.css" id="style">
-		<link rel="stylesheet" type="text/css" href="Styles/menuStyle.css" id="menuStyle">
+<head>
+	<script src="GameScript/globs.js" type="text/javascript"></script>
+	<script src="GameScript/animation.js" type="text/javascript"></script>
+	<script src="GameScript/utils.js" type="text/javascript"></script>
+	<script src="GameScript/game.js" type="text/javascript"></script>
+	<script src="GameScript/menuLogic.js" type="text/javascript"></script>
+	<script src="GameScript/playerAPI.js" type="text/javascript"></script>
+	<script src="AIScript/decentAI.js" type="text/javascript"></script>
+	<script src="AIScript/idiotAI.js" type="text/javascript"></script>
+	<script src="AIScript/testAI.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="Styles/style.css" id="style">
+	<link rel="stylesheet" type="text/css" href="Styles/menuStyle.css" id="menuStyle">
 
-		<title>Wow so Euchre</title>
-	</head>
+	<title>Wow so Euchre</title>
+</head>
 
-	<body>
-		<div id="everything">
-			<div id="sidebar" >
-				<div id="sidebarTop">
-				</div>
-				<div id="sidebarText">
-				</div>
+<body>
+	<div id="everything">
+		<div id="sidebar">
+			<div id="sidebarTop">
 			</div>
-			<div id="gameSpace">
-
-				<!--Menu stuff.-->
-				<div id="menu" class="startActive">
-					<!--Start menu-->
-					<div id="startMenuItems" class="menuItems">
-						<div id="newGame">
-							<button onclick="newGame()" id="newGameButt">
-								Start new game
-							</button>
-						</div>
-		  				<div id="settings">
-							<button onclick="settings()" id="settingsButt">
-								Settings
-							</button>
-						</div>
-						<div id="howToPlay">
-							<button onclick="howToPlay()" id="howToButt">
-								How to play
-							</button>
-						</div>
-						<div id="copyright">
-							<p>&copy; Yujia Huo 2016</p>
-						</div>
-					</div>
-
-					<!--Settings menu-->
-					<div id="settingsMenuItems" class="menuItems">
-						<h3>Game Settings</h3>
-						<div class="options">
-							<input type="checkbox" value="chkSound" id="chkSound">
-							Sound
-						</div>
-						<div class="tooltip">
-							?
-							<span class="tooltiptext">
-		  						Card noises ~ woosh
-		  					</span>
-						</div>
-						<br>
-
-						<div class="options">
-							<input type="checkbox" value="chkOpenHands" id="chkOpenHands">
-							Open hands<br>
-						</div>
-						<div class="tooltip">
-							?
-							<span class="tooltiptext">
-		  						All hands are visible during the game
-		  					</span>
-						</div>
-						<br>
-
-						<div class="options">
-							<input type="checkbox" value="chkDefendAlone" id="chkDefendAlone">
-							Defend alone
-						</div>
-						<div class="tooltip">
-							?
-							<span class="tooltiptext">
-		  						Enable defending alone against an alone player
-		  					</span>
-						</div>
-						<br>
-
-						<div class="options">
-							<input type="checkbox" value="chkNoTrump" id="chkNoTrump">
-							No trump
-						</div>
-						<div class="tooltip">
-							?
-							<span class="tooltiptext">
-		  						Allow 'no trump' as a bid
-		  					</span>
-						</div>
-						<br>
-
-						<div class="options">
-							<input type="checkbox" value="chkShowHistory" id="chkShowHistory">
-							Show trick history
-						</div>
-						<div class="tooltip">
-							?
-							<span class="tooltiptext">
-		  						Show a log of all cards played during the game in the sidebar
-		  					</span>
-						</div>
-
-						<br><br>
-
-						<h3>AI Settings</h3>
-
-						<div class="options">
-							<input type="checkbox" value="chkStatMode" id="chkStatMode">
-							Stat mode
-						</div>
-						<div class="tooltip">
-							?
-							<span class="tooltiptext">
-		  						Have AIs play a bunch of games to get stats
-		  					</span>
-						</div>
-
-						<br><br>
-
-						<div class="options">
-							<table>
-							  <tr>
-							    <td>North AI</td>
-							    <td>
-							    	<select>
-									  <option value="idiotAI">IdiotAI</option>
-									  <option value="decentAI">DecentAI</option>
-									</select>
-							    </td>
-							  </tr>
-							  <tr>
-							    <td>East AI</td>
-							    <td>
-							    	<select>
-									  <option value="idiotAI">IdiotAI</option>
-									  <option value="decentAI">DecentAI</option>
-									</select>
-							    </td>
-							  </tr><tr>
-							    <td>West AI</td>
-							    <td>
-							    	<select>
-									  <option value="idiotAI">IdiotAI</option>
-									  <option value="decentAI">DecentAI</option>
-									</select>
-							    </td>
-							  </tr><tr>
-							    <td>South AI</td>
-							    <td>
-							    	<p class="gray">(Human)</p>
-							    </td>
-							  </tr>
-							</table>
-						</div>
-						<div id="settingsBack">
-							<button onclick="back()">
-								Back
-							</button>
-						</div>
-
-					</div>
-
-					<!--How to play page-->
-					<div id="howToMenuItems" class="menuItems">
-						<div id="textDiv">
-							<h3>How To Play</h3>
-							<h4>The Deck</h4>
-							24 cards: The ace, king, queen, jack, ten and nine of; clubs, diamonds, hearts and spades.
-							<h4>Players</h4>
-							4: Two teams consisting of two players each are seated across from each other.
-							<h4>Object</h4>
-							To be the first team to score 10 points.
-							<h4>Ranks</h4>
-							In the trump suit, the highest card is the jack, called the "Right Bower." The second highest card is the jack from the suit that is the same color (black or red) as the trump suit, called the "Left Bower". The third highest is the ace, followed by the king on down to the nine of trump; Right Bower-Left Bower-A-K-Q-10-9. The non-trump suits are ranked ace high down to the nine; A-K-Q-J-10-9. One suit will be without a jack, as this card will become the Left Bower.
-							<h4>The Deal</h4>
-							Five cards are dealt to each player. The four undealt cards (known as the kitty) are placed facedown on the table. The top card of the kitty (21st card of the deck), is turned faceup. It is commonly called the upcard.
-							<h4>Making Trump</h4>
-							Beginning with the player to the dealer's left and proceeding clockwise, each player in turn has an opportunity to accept the suit of the upcard as trump, or to decline by saying "Pass." If the upcard is accepted as trump by any player, that player tells the dealer to "pick it up." If it is the dealer, he needn't say anything. Picking up the card is self-explanatory. The dealer then takes the upcard into his own hand and discards one face-down. If all four players decline, the upcard is turned down and each player in turn--again beginning to the dealer's left--may name any suit except the former upcard's suit as trump, or may pass. If everyone passes, the deal is thrown in and the next dealer deals. The player who chooses the trump suit, either by accepting the upcard's suit as trump, or by naming a different suit, is called the maker. Before the play of the hand begins, the maker may announce; "Alone", in which case the maker's partner places his hand facedown and does not participate in the play.
-							<h4>The Play</h4>
-							The player to the left of the dealer leads any card by placing it faceup on the table. Each player in turn, moving clockwise around the table, must play a card of the same suit that was led if able. If unable to follow suit, a player may play any card. When all four players have played a card, the "trick" is complete. The trick is won by the player who played the highest trump, or if no trumps were thrown, by the one who played the highest card of the suit originally led.
-							<h4>Scoring</h4>
-							The makers (the partnership of the player who named or ordered trump) must try to win at least three of the five tricks. Taking three tricks or more will score points, while failing to adds points to the opponent's score instead. The maker's partnership scores 1 point for taking three or four tricks, or 2 points if they manage to take all five tricks (known as a march). If they take fewer than three tricks however, they are euchred and score nothing -- instead, the defending side scores 2 points.
-							A maker who opts to play alone (without his partner) can score 4 points for taking all five tricks. The lone player can only score 1 point for taking three or four tricks. Taking two or less of the tricks alone will score 2 points for the adversaries.
-							Keeping score can be done in a variety of ways (scorecards, pegboards, chalkboards etc.), but most importantly, the method adopted must be agreed to and understood by all parties prior to engaging in play.
-							The side marking a score should announce their total in an audible voice when doing so. The adversaries have until the time the next upcard is turned to challenge the scoring, otherwise the score stands as marked.
-							The player sitting closest to scorekeeping device is responsible for marking it correctly. He may be reminded by his partner or any outside party however.
-						</div>
-						<div id="howToBack">
-							<button onclick="back()">
-								Back
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<!--Game buttons-->
-				<div id="gameBack">
-					<!--
-					<button onclick="backFromGame()">
-						Meow
-					</button>
-					-->
-				</div>
-
-				<div id="orderUpPrompt">
-					<div id="alone" onclick="game.clickGoAlone()">
-						Alone
-					</div>
-					<button id="orderUp" onclick="game.clickOrderUp()">Order Up</button>
-					<button id="pickSpades" onclick="game.clickTrump(suits.SPADES)">Spades</button>
-					<button id="pickClubs" onclick="game.clickTrump(suits.CLUBS)">Clubs</button>
-					<button id="pickHearts" onclick="game.clickTrump(suits.HEARTS)">Hearts</button>
-					<button id="pickDiamonds" onclick="game.clickTrump(suits.DIAMONDS)">Diamonds</button>
-					<button id="pass" onclick="game.clickPass()">Pass</button>
-				</div>
-
-				<div id="blanket">
-				</div>
-
-				<div id="cardsContainer">
-				</div>
+			<div id="sidebarText">
 			</div>
 		</div>
-	</body>
+		<div id="gameSpace">
+
+			<!--Menu stuff.-->
+			<div id="menu" class="startActive">
+				<!--Start menu-->
+				<div id="startMenuItems" class="menuItems">
+					<div id="newGame">
+						<button onclick="newGame()" id="newGameButt">
+							Start new game
+						</button>
+					</div>
+					<div id="settings">
+						<button onclick="settings()" id="settingsButt">
+							Settings
+						</button>
+					</div>
+					<div id="howToPlay">
+						<button onclick="howToPlay()" id="howToButt">
+							How to play
+						</button>
+					</div>
+					<div id="copyright">
+						<p>&copy; Yujia Huo 2016</p>
+					</div>
+				</div>
+
+				<!--Settings menu-->
+				<div id="settingsMenuItems" class="menuItems">
+					<h3>Game Settings</h3>
+					<div class="options">
+						<input type="checkbox" value="chkSound" id="chkSound">
+						Sound
+					</div>
+					<div class="tooltip">
+						?
+						<span class="tooltiptext">
+							Card noises ~ woosh
+						</span>
+					</div>
+					<br>
+
+					<div class="options">
+						<input type="checkbox" value="chkOpenHands" id="chkOpenHands">
+						Open hands<br>
+					</div>
+					<div class="tooltip">
+						?
+						<span class="tooltiptext">
+							All hands are visible during the game
+						</span>
+					</div>
+					<br>
+
+					<div class="options">
+						<input type="checkbox" value="chkDefendAlone" id="chkDefendAlone">
+						Defend alone
+					</div>
+					<div class="tooltip">
+						?
+						<span class="tooltiptext">
+							Enable defending alone against an alone player
+						</span>
+					</div>
+					<br>
+
+					<div class="options">
+						<input type="checkbox" value="chkNoTrump" id="chkNoTrump">
+						No trump
+					</div>
+					<div class="tooltip">
+						?
+						<span class="tooltiptext">
+							Allow 'no trump' as a bid
+						</span>
+					</div>
+					<br>
+
+					<div class="options">
+						<input type="checkbox" value="chkShowHistory" id="chkShowHistory">
+						Show trick history
+					</div>
+					<div class="tooltip">
+						?
+						<span class="tooltiptext">
+							Show a log of all cards played during the game in the sidebar
+						</span>
+					</div>
+
+					<br><br>
+
+					<h3>AI Settings</h3>
+
+					<div class="options">
+						<input type="checkbox" value="chkStatMode" id="chkStatMode">
+						Stat mode
+					</div>
+					<div class="tooltip">
+						?
+						<span class="tooltiptext">
+							Have AIs play a bunch of games to get stats
+						</span>
+					</div>
+
+					<br><br>
+
+					<div class="options">
+						<table>
+							<tr>
+								<td>North AI</td>
+								<td>
+									<select>
+										<option value="idiotAI">IdiotAI</option>
+										<option value="decentAI">DecentAI</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>East AI</td>
+								<td>
+									<select>
+										<option value="idiotAI">IdiotAI</option>
+										<option value="decentAI">DecentAI</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>West AI</td>
+								<td>
+									<select>
+										<option value="idiotAI">IdiotAI</option>
+										<option value="decentAI">DecentAI</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>South AI</td>
+								<td>
+									<p class="gray">(Human)</p>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="settingsBack">
+						<button onclick="back()">
+							Back
+						</button>
+					</div>
+
+				</div>
+
+				<!--How to play page-->
+				<div id="howToMenuItems" class="menuItems">
+					<div id="textDiv">
+						<h3>How To Play</h3>
+						<h4>The Deck</h4>
+						24 cards: The ace, king, queen, jack, ten and nine of; clubs, diamonds, hearts and spades.
+						<h4>Players</h4>
+						4: Two teams consisting of two players each are seated across from each other.
+						<h4>Object</h4>
+						To be the first team to score 10 points.
+						<h4>Ranks</h4>
+						In the trump suit, the highest card is the jack, called the "Right Bower." The second highest card is the jack from the suit that is the same color (black or red) as the trump suit, called the "Left Bower". The third highest is the ace, followed by the king on down to the nine of trump; Right Bower-Left Bower-A-K-Q-10-9. The non-trump suits are ranked ace high down to the nine; A-K-Q-J-10-9. One suit will be without a jack, as this card will become the Left Bower.
+						<h4>The Deal</h4>
+						Five cards are dealt to each player. The four undealt cards (known as the kitty) are placed facedown on the table. The top card of the kitty (21st card of the deck), is turned faceup. It is commonly called the upcard.
+						<h4>Making Trump</h4>
+						Beginning with the player to the dealer's left and proceeding clockwise, each player in turn has an opportunity to accept the suit of the upcard as trump, or to decline by saying "Pass." If the upcard is accepted as trump by any player, that player tells the dealer to "pick it up." If it is the dealer, he needn't say anything. Picking up the card is self-explanatory. The dealer then takes the upcard into his own hand and discards one face-down. If all four players decline, the upcard is turned down and each player in turn--again beginning to the dealer's left--may name any suit except the former upcard's suit as trump, or may pass. If everyone passes, the deal is thrown in and the next dealer deals. The player who chooses the trump suit, either by accepting the upcard's suit as trump, or by naming a different suit, is called the maker. Before the play of the hand begins, the maker may announce; "Alone", in which case the maker's partner places his hand facedown and does not participate in the play.
+						<h4>The Play</h4>
+						The player to the left of the dealer leads any card by placing it faceup on the table. Each player in turn, moving clockwise around the table, must play a card of the same suit that was led if able. If unable to follow suit, a player may play any card. When all four players have played a card, the "trick" is complete. The trick is won by the player who played the highest trump, or if no trumps were thrown, by the one who played the highest card of the suit originally led.
+						<h4>Scoring</h4>
+						The makers (the partnership of the player who named or ordered trump) must try to win at least three of the five tricks. Taking three tricks or more will score points, while failing to adds points to the opponent's score instead. The maker's partnership scores 1 point for taking three or four tricks, or 2 points if they manage to take all five tricks (known as a march). If they take fewer than three tricks however, they are euchred and score nothing -- instead, the defending side scores 2 points.
+						A maker who opts to play alone (without his partner) can score 4 points for taking all five tricks. The lone player can only score 1 point for taking three or four tricks. Taking two or less of the tricks alone will score 2 points for the adversaries.
+						Keeping score can be done in a variety of ways (scorecards, pegboards, chalkboards etc.), but most importantly, the method adopted must be agreed to and understood by all parties prior to engaging in play.
+						The side marking a score should announce their total in an audible voice when doing so. The adversaries have until the time the next upcard is turned to challenge the scoring, otherwise the score stands as marked.
+						The player sitting closest to scorekeeping device is responsible for marking it correctly. He may be reminded by his partner or any outside party however.
+					</div>
+					<div id="howToBack">
+						<button onclick="back()">
+							Back
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!--Game buttons-->
+			<div id="gameBack">
+				<!--
+				<button onclick="backFromGame()">
+					Meow
+				</button>
+				-->
+			</div>
+
+			<div id="orderUpPrompt">
+				<div id="alone" onclick="game.clickGoAlone()">
+					Alone
+				</div>
+				<button id="orderUp" onclick="game.clickOrderUp()">Order Up</button>
+				<button id="pickSpades" onclick="game.clickTrump(suits.SPADES)">Spades</button>
+				<button id="pickClubs" onclick="game.clickTrump(suits.CLUBS)">Clubs</button>
+				<button id="pickHearts" onclick="game.clickTrump(suits.HEARTS)">Hearts</button>
+				<button id="pickDiamonds" onclick="game.clickTrump(suits.DIAMONDS)">Diamonds</button>
+				<button id="pass" onclick="game.clickPass()">Pass</button>
+			</div>
+
+			<div id="blanket">
+			</div>
+
+			<div id="cardsContainer">
+			</div>
+		</div>
+	</div>
+</body>
 </html>

@@ -121,6 +121,7 @@ function getCardValue(card: Card, trump: Suit) {
     return value;
 }
 
+//TODO: do we need this? Rename to worst card in hand and fix?
 function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: boolean) {
     var worstCard;
     var worstValue = 1000;
@@ -137,23 +138,39 @@ function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: 
     return worstCard;
 }
 
-//returns: the best card and who played it as: [card, player]
-function getBestCard(cards: Card[], trickSuit: Suit, trump: Suit) {
+//returns: the best card and who played it as a PlayedCard
+function getBestCardPlayed(cards: PlayedCard[], trickSuit: Suit, trump: Suit): PlayedCard {
     var bestCard;
     var bestValue = 0;
     var value;
     var player: Player;
 
     for (var i = 0; i < cards.length; i++) {
-        if (!isValidPlay(cards, cards[i], trickSuit)) continue;
-        value = getCardValue(cards[i], trump);
+        value = getCardValue(cards[i].card, trump);
         if (value > bestValue) {
-            bestCard = cards[i];
+            bestCard = cards[i].card;
             player = i;
             bestValue = value;
         }
     }
-    return [bestCard, player];
+    return { player: player, card: bestCard };
+}
+
+function getBestCardInHand(hand: Card[], trickSuit: Suit, trump: Suit): PlayedCard {
+    var bestCard;
+    var bestValue = 0;
+    var value;
+    var player: Player;
+
+    for (var i = 0; i < hand.length; i++) {
+        value = getCardValue(hand[i], trump);
+        if (value > bestValue) {
+            bestCard = hand[i];
+            player = i;
+            bestValue = value;
+        }
+    }
+    return bestCard;
 }
 
 function getFirstLegalCard(hand: Card[]): Card {
@@ -163,3 +180,5 @@ function getFirstLegalCard(hand: Card[]): Card {
         }
     }
 }
+
+//TODO: am I dealer

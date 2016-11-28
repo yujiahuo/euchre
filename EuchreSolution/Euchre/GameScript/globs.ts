@@ -20,6 +20,8 @@ enum Suit {
     Spades,
 }
 
+var suitsArray: Suit[] = [Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades];
+
 enum Rank {
     Nine = 9,
     Ten = 10,
@@ -54,6 +56,11 @@ class Card {
     }
 }
 
+interface PlayedCard {
+    player: Player;
+    card: Card;
+}
+
 const DECKSIZE = 24;
 
 //sorted deck of cards
@@ -62,10 +69,9 @@ const SORTEDDECK: Card[] = buildSortedDeck();
 
 function buildSortedDeck(): Card[] {
     let deck = [];
-    let suits: Suit[] = [Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades];
     let ranks: Rank[] = [Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King, Rank.Ace];
 
-    for (let suit of suits) {
+    for (let suit of suitsArray) {
         for (let rank of ranks) {
             deck.push(new Card(suit, rank));
         }

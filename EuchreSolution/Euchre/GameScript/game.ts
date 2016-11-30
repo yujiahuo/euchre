@@ -359,23 +359,23 @@ function Game() {
         }
     }
 
-	function endTrick() {
-		for (i = 0; i < 4; i++) {
-			if (__aiPlayers[i] !== null) {
-				__aiPlayers[i].trickEnd();
-			}
-		}
-		let trickWinner = getBestCardPlayed(__trickPlayedCards, __trickSuitLead, __trumpSuit).player;
-		scoreTrick(trickWinner);
-		if (__trickNum >= 4) {
-			endHand();
-		}
-		else {
-			initTrick();
-			__currentPlayer = trickWinner;
-			__trickNum++;
-		}
-	}
+    function endTrick() {
+        for (i = 0; i < 4; i++) {
+            if (__aiPlayers[i] !== null) {
+                __aiPlayers[i].trickEnd();
+            }
+        }
+        let trickWinner = getBestCardPlayed(__trickPlayedCards, __trumpSuit).player;
+        scoreTrick(trickWinner);
+        if (__trickNum >= 4) {
+            endHand();
+        }
+        else {
+            initTrick();
+            __currentPlayer = trickWinner;
+            __trickNum++;
+        }
+    }
 
     function playCard(player, card) {
         removeFromHand(player, card);

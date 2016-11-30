@@ -139,35 +139,41 @@ function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: 
 }
 
 //returns: the best card and who played it as a PlayedCard
-function getBestCardPlayed(cards: PlayedCard[], trickSuit: Suit, trump: Suit): PlayedCard {
-    var bestCard;
-    var bestValue = 0;
-    var value;
-    var player: Player;
+function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
+    let bestCard;
+    let bestValue = 0;
+    let player: Player;
+    let trickSuit: Suit;
+    if (cards.length > 0) {
+        trickSuit = cards[0].card.suit;
+    }
 
     for (var i = 0; i < cards.length; i++) {
-        value = getCardValue(cards[i].card, trump);
-        if (value > bestValue) {
-            bestCard = cards[i].card;
-            player = i;
-            bestValue = value;
+        if (!trickSuit || cards[i].card.suit === trickSuit) {
+            let value = getCardValue(cards[i].card, trump);
+            if (value > bestValue) {
+                bestCard = cards[i].card;
+                player = i;
+                bestValue = value;
+            }
         }
     }
     return { player: player, card: bestCard };
 }
 
-function getBestCardInHand(hand: Card[], trickSuit: Suit, trump: Suit): PlayedCard {
-    var bestCard;
-    var bestValue = 0;
-    var value;
-    var player: Player;
+function getBestCardInHand(hand: Card[], trickSuit: Suit, trump: Suit): Card {
+    let bestCard: Card;
+    let bestValue = 0;
+    let player: Player;
 
     for (var i = 0; i < hand.length; i++) {
-        value = getCardValue(hand[i], trump);
-        if (value > bestValue) {
-            bestCard = hand[i];
-            player = i;
-            bestValue = value;
+        if (!trickSuit || hand[i].suit === trickSuit) {
+            let value = getCardValue(hand[i], trump);
+            if (value > bestValue) {
+                bestCard = hand[i];
+                player = i;
+                bestValue = value;
+            }
         }
     }
     return bestCard;
@@ -181,10 +187,10 @@ function getFirstLegalCard(hand: Card[]): Card {
     }
 }
 
-function me() : Player{
-	return game.getCurrentPlayer();
+function me(): Player {
+    return game.getCurrentPlayer();
 }
 
 function isDealer(player: Player): boolean {
-	return player === game.getDealer();
+    return player === game.getDealer();
 }

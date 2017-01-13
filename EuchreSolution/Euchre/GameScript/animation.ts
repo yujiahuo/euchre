@@ -4,7 +4,7 @@
 
 //TODO: make all the card elements at once instead of making them as we deal
 
-function makeCardElem(cardID, flippedUp) {
+function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
     var card;
 
     card = document.createElement("div");
@@ -23,29 +23,27 @@ function makeCardElem(cardID, flippedUp) {
     return card;
 }
 
-function animMoveCard(cardID, top, left, z?) {
-    var elem;
-
-    elem = document.getElementById(cardID);
-    elem.style.top = top;
-    elem.style.left = left;
+function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
+    var div = document.getElementById(cardID) as HTMLDivElement;
+    div.style.top = top;
+    div.style.left = left;
     if (z) {
-        elem.style.zIndex = z;
+        div.style.zIndex = z;
     }
     else {
-        elem.style.zIndex = zIndex;
+        div.style.zIndex = zIndex.toString();
     }
     zIndex++;
 }
 
-function animDeal(hands) {
+function animDeal(hands: Card[][]): void {
     if (game.isStatMode()) return;
 
-    var player;
-    var delay; //delay to second round deal
-    var cardID;
-    var flippedUp;
-    var dealer;
+    var player: Player;
+    var delay: number; //delay to second round deal
+    var cardID: string;
+    var flippedUp: boolean;
+    var dealer: Player;
 
     dealer = game.getDealer();
     player = nextPlayer(dealer);
@@ -82,7 +80,7 @@ function animDeal(hands) {
     setTimeout(animFlipCard, 1000, game.getTrumpCandidateCard().id);
 }
 
-function animDealSingle(player: Player, cardID: string, cardPos: number) {
+function animDealSingle(player: Player, cardID: string, cardPos: number): void {
     var top;
     var left;
 
@@ -109,7 +107,7 @@ function animDealSingle(player: Player, cardID: string, cardPos: number) {
 }
 
 //gives trump to the dealer
-function animTakeTrump(toDiscardID) {
+function animTakeTrump(toDiscardID: string): void {
     if (game.isStatMode()) return;
 
     var top;
@@ -135,7 +133,7 @@ function animTakeTrump(toDiscardID) {
 
 }
 
-function animPlaceDealerButt() {
+function animPlaceDealerButt(): void {
     if (game.isStatMode()) return;
 
     var button;
@@ -168,13 +166,13 @@ function animPlaceDealerButt() {
 
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
-function animSortHand(hand) {
+function animSortHand(hand: Card[]): void {
     if (game.isStatMode()) return;
 
-    var sortedDict = [];
-    var key;
-    var suit;
-    var pos;
+    var sortedDict: string[] = [];
+    var key: number;
+    var suit: Suit;
+    var pos: number;
 
     for (var i = 0; i < 5; i++) {
         key = 0;
@@ -200,17 +198,17 @@ function animSortHand(hand) {
     }
 
     pos = 0;
-    for (key in sortedDict) {
+    for (let key in sortedDict) {
         setTimeout(animDealSingle, 300, Player.South, sortedDict[key], pos);
         pos++;
     }
 }
 
-function animPlayCard(player: Player, cardID: string, flipCard: boolean) {
+function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
     if (game.isStatMode()) return;
 
-    var top;
-    var left;
+    var top: string;
+    var left: string;
 
     if (flipCard && !game.isOpenHands()) animFlipCard(cardID);
 
@@ -237,13 +235,13 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean) {
 
 //check for class list and flip the other way too
 //correct this in doBidding
-function animFlipCard(cardID) {
+function animFlipCard(cardID: string): void {
     if (game.isStatMode()) return;
 
     document.getElementById(cardID).classList.toggle("cardBack");
 }
 
-function animWinTrick(player: Player, cards: Card[]) {
+function animWinTrick(player: Player, cards: Card[]): void {
     if (game.isStatMode()) return;
 
     var cardElem;
@@ -281,7 +279,7 @@ function animWinTrick(player: Player, cards: Card[]) {
     }
 }
 
-function animRemoveKitty() {
+function animRemoveKitty(): void {
     if (game.isStatMode()) return;
 
     var elem;
@@ -296,7 +294,7 @@ function animRemoveKitty() {
     }
 }
 
-function animHidePartnerHand(hands) {
+function animHidePartnerHand(hands: Card[][]): void {
     if (game.isStatMode()) return;
 
     var player = getPartner(game.getAlonePlayer());
@@ -305,19 +303,19 @@ function animHidePartnerHand(hands) {
     }
 }
 
-function animHideCard(cardElem) {
+function animHideCard(cardElem: HTMLElement): void {
     if (game.isStatMode()) return;
 
     cardElem.style.display = "none";
 }
 
-function animClearTable() {
+function animClearTable(): void {
     if (game.isStatMode()) return;
     document.getElementById("cardsContainer").innerHTML = "";
 }
 
 //let human player poke the buttons
-function animEnableBidding(hand) {
+function animEnableBidding(hand: Card[]): void {
     if (game.isStatMode()) return;
 
     document.getElementById("orderUpPrompt").style.display = "inline";
@@ -347,7 +345,7 @@ function animEnableBidding(hand) {
     }
 }
 
-function animDisableBidding() {
+function animDisableBidding(): void {
     if (game.isStatMode()) return;
 
     document.getElementById("orderUpPrompt").style.display = "none";
@@ -364,7 +362,7 @@ function animDisableBidding() {
 
 //flips a button on or off
 //needs to be generic but for now flips the 'go alone' button
-function animFlipButton(on) {
+function animFlipButton(on: boolean): void {
     if (game.isStatMode()) return;
 
     if (on) {
@@ -375,11 +373,11 @@ function animFlipButton(on) {
     }
 }
 
-function animShowScore() {
+function animShowScore(): void {
     animShowText("You: " + game.getNsScore() + "  Them: " + game.getEwScore());
 }
 
-function animShowText(text: string, nest?: number, overwrite?: boolean) {
+function animShowText(text: string, nest?: number, overwrite?: boolean): void {
     var div = document.getElementById("sidebarText");
     if (overwrite) {
         div.innerHTML = "";
@@ -388,13 +386,13 @@ function animShowText(text: string, nest?: number, overwrite?: boolean) {
         nest = 0;
     }
     for (var i = 0; i < nest; i++) {
-        div.innerHTML += "&nbsp&nbsp";
+        div.innerHTML += "&nbsp;&nbsp;";
     }
     div.innerHTML += text + "<br>";
     div.scrollTop = div.scrollHeight;
 }
 
-function animShowTextTop(text, overwrite) {
+function animShowTextTop(text: string, overwrite?: boolean): void {
     var div = document.getElementById("sidebarTop");
     if (overwrite) {
         div.innerHTML = "";
@@ -402,10 +400,10 @@ function animShowTextTop(text, overwrite) {
     div.innerHTML += text + "<br>";
 }
 
-function disableActions() {
+function disableActions(): void {
     document.getElementById("blanket").style.display = "inline";
 }
 
-function enableActions() {
+function enableActions(): void {
     document.getElementById("blanket").style.display = "none";
 }

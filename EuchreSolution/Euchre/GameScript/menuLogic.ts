@@ -2,30 +2,30 @@
 * What does this button do?
 ***********************************/
 
-function newGame() {
+function newGame(): void {
     document.getElementById("menu").style.display = "none";
     game = new Game();
     game.start();
 }
 
-function settings() {
+function settings(): void {
     disappearMenu("start");
     appearMenu("settings");
 }
 
-function back() {
+function back(): void {
     disappearMenu("settings");
     disappearMenu("howTo");
     appearMenu("start");
 }
 
 //TODO: implement
-function backFromGame() {
+function backFromGame(): void {
     //document.getElementById("cardsContainer").innerHTML = "";
     animShowText("MEOWMEOWMEOW");
 }
 
-function howToPlay() {
+function howToPlay(): void {
     disappearMenu("start");
     appearMenu("howTo");
 }
@@ -33,19 +33,19 @@ function howToPlay() {
 /**********************************
 * Display utilities
 ***********************************/
-function appearMenu(menuName) {
+function appearMenu(menuName: string): void {
     document.getElementById("menu").classList.add(menuName + "Active");
     setTimeout(toggleOpacity, 100, menuName + "MenuItems", 1);
     toggleDisplay(menuName + "MenuItems", 1);
 }
 
-function disappearMenu(menuName) {
+function disappearMenu(menuName: string): void {
     document.getElementById("menu").classList.remove(menuName + "Active");
     document.getElementById(menuName + "MenuItems").style.opacity = "0";
     setTimeout(toggleDisplay, 300, menuName + "MenuItems", 0);
 }
 
-function toggleDisplay(elemID, on) {
+function toggleDisplay(elemID: string, on: boolean): void {
     if (on) {
         document.getElementById(elemID).style.display = "inline";
     }
@@ -54,7 +54,7 @@ function toggleDisplay(elemID, on) {
     }
 }
 
-function toggleOpacity(elemID, on) {
+function toggleOpacity(elemID: string, on: boolean): void {
     if (on) {
         document.getElementById(elemID).style.opacity = "1";
     }

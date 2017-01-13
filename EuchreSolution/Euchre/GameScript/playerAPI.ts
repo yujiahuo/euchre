@@ -10,7 +10,7 @@ function myHand(): Card[] {
 //returns the card that is greater in this trick
 //if a card is undefined, the other card wins
 //if both cards are undefined, return null
-function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit) {
+function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Card {
     if (card1 === undefined) {
         return card2;
     }
@@ -42,7 +42,7 @@ function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit) {
 }
 
 //**TESTED**
-function isValidPlay(hand: Card[], card: Card, trickSuit: Suit) {
+function isValidPlay(hand: Card[], card: Card, trickSuit: Suit): boolean {
     if (card == null) { //double equal will also find undefined
         return false;
     }
@@ -56,12 +56,12 @@ function isValidPlay(hand: Card[], card: Card, trickSuit: Suit) {
 }
 
 //**NOT TESTING**
-function isTrump(card, trump) {
+function isTrump(card: Card, trump: Suit): boolean {
     return card.suit === trump;
 }
 
 //**NOT TESTING**
-function followsSuit(card: Card, trickSuit: Suit) {
+function followsSuit(card: Card, trickSuit: Suit): boolean {
     if (!trickSuit) {
         return true;
     }
@@ -72,7 +72,7 @@ function followsSuit(card: Card, trickSuit: Suit) {
 }
 
 //**TESTED**
-function hasSuit(hand: Card[], suit: Suit) {
+function hasSuit(hand: Card[], suit: Suit): boolean {
     for (var i = 0; i < hand.length; i++) {
         if (hand[i].suit === suit) return true;
     }
@@ -82,7 +82,7 @@ function hasSuit(hand: Card[], suit: Suit) {
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */
-function canOrderUpSuit(hand: Card[], suit: Suit) {
+function canOrderUpSuit(hand: Card[], suit: Suit): boolean {
     if (game.getGameStage() === GameStage.BidRound1) {
         if (game.getTrumpCandidateCard().suit !== suit) return false;
         if (hasSuit(hand, suit)) return true;
@@ -94,7 +94,7 @@ function canOrderUpSuit(hand: Card[], suit: Suit) {
 }
 
 //how many cards of a given suit you have
-function numCardsOfSuit(hand: Card[], suit: Suit) {
+function numCardsOfSuit(hand: Card[], suit: Suit): number {
     var count = 0;
     for (var i = 0; i < hand.length; i++) {
         if (hand[i].suit === suit) count++;
@@ -103,7 +103,7 @@ function numCardsOfSuit(hand: Card[], suit: Suit) {
 }
 
 //number of suits you're holding
-function countSuits() {
+function countSuits(): number {
     var suitArray = [];
     var hand = myHand();
     for (var i = 0; i < hand.length; i++) {
@@ -112,7 +112,7 @@ function countSuits() {
     return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
 }
 
-function getCardValue(card: Card, trump: Suit) {
+function getCardValue(card: Card, trump: Suit): number {
     var value;
 
     value = card.rank;
@@ -121,7 +121,7 @@ function getCardValue(card: Card, trump: Suit) {
 }
 
 //TODO: do we need this? Rename to worst card in hand and fix?
-function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: boolean) {
+function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: boolean): Card {
     var worstCard;
     var worstValue = 1000;
     var value;

@@ -110,7 +110,7 @@ class Game {
     public isStatMode(): boolean {
         return this.__statMode;
     }
-    public getAIPlayer(player): EuchreAI {
+    public getAIPlayer(player: Player): EuchreAI {
         return (this.__aiPlayers[player]);
     }
     public myHand(): Card[] {
@@ -436,14 +436,14 @@ class Game {
         this.__gameStage = null;
     }
 
-    private addToHand(player, card): void {
+    private addToHand(player: Player, card: Card): void {
         this.__hands[player].push(card);
     }
 
     //finds index of given ID inefficiently
     //splice removes 1 at a given index
     //fails silently if card isn't found, which should never happen
-    private removeFromHand(player, card): void {
+    private removeFromHand(player: Player, card: Card): void {
         var cardID = card.id;
 
         for (var i = 0; i < this.__hands[player].length; i++) {

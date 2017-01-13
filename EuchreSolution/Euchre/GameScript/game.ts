@@ -41,6 +41,8 @@ class Game {
     private __hasHooman: boolean; //if there is a human player
     //#endregion
 
+    public logText = "";
+
     //#region Get functions
     public getGameStage(): GameStage {
         return this.__gameStage;
@@ -132,8 +134,8 @@ class Game {
  	********************************/
 
     private startNewGame(): void {
-        animShowText("STAGE: start");
         this.grabSettings();
+        animShowText("STAGE: start");
         this.initGame();
         this.doStep();
     }
@@ -434,6 +436,9 @@ class Game {
     private endGame(): void {
         animShowText("Final score: " + this.__nsScore + " : " + this.__ewScore);
         this.__gameStage = null;
+        if (this.isStatMode()) {
+            updateLog(this.logText, true);
+        }
     }
 
     private addToHand(player: Player, card: Card): void {

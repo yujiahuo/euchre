@@ -378,17 +378,34 @@ function animShowScore(): void {
 }
 
 function animShowText(text: string, nest?: number, overwrite?: boolean): void {
-    var div = document.getElementById("sidebarText");
-    if (overwrite) {
-        div.innerHTML = "";
-    }
+    let logText = "";
+
     if (!nest) {
         nest = 0;
     }
     for (var i = 0; i < nest; i++) {
-        div.innerHTML += "&nbsp;&nbsp;";
+        logText += "&nbsp;&nbsp;";
     }
-    div.innerHTML += text + "<br>";
+
+    logText += text + "<br>";
+
+    if (game.isStatMode()) {
+        if (overwrite) {
+            game.logText = logText;
+        } else {
+            game.logText += logText
+        }
+    } else {
+        updateLog(logText, overwrite);
+    }
+}
+function updateLog(text: string, overwrite?: boolean): void {
+    var div = document.getElementById("sidebarText");
+    if (overwrite) {
+        div.innerHTML = text;
+    } else {
+        div.innerHTML += text;
+    }
     div.scrollTop = div.scrollHeight;
 }
 

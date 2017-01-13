@@ -36,7 +36,7 @@ function howToPlay(): void {
 function appearMenu(menuName: string): void {
     document.getElementById("menu").classList.add(menuName + "Active");
     setTimeout(toggleOpacity, 100, menuName + "MenuItems", 1);
-    toggleDisplay(menuName + "MenuItems", 1);
+    toggleDisplay(menuName + "MenuItems", true);
 }
 
 function disappearMenu(menuName: string): void {

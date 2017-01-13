@@ -83,12 +83,11 @@ function hasSuit(hand: Card[], suit: Suit) {
    order up a given suit.
    Depends on bidding round */
 function canOrderUpSuit(hand: Card[], suit: Suit) {
-    if (game.getBiddingRound() === 1) {
-        if (game.getTrumpCandidate().suit !== suit) return false;
+    if (game.getGameStage() === GameStage.BidRound1) {
+        if (game.getTrumpCandidateCard().suit !== suit) return false;
         if (hasSuit(hand, suit)) return true;
-    }
-    if (game.getBiddingRound() === 2) {
-        if (game.getTrumpCandidate().suit === suit) return false;
+    } else if (game.getGameStage() === GameStage.BidRound2) {
+        if (game.getTrumpCandidateCard().suit === suit) return false;
         if (hasSuit(hand, suit)) return true;
     }
     return false;

@@ -63,7 +63,7 @@ function animDeal(hands) {
             cardID = hands[player][j].id;
             makeCardElem(cardID, flippedUp);
             if (!game.getAIPlayer(player)) {
-                document.getElementById(cardID).addEventListener("click", game.clickCard);
+                //document.getElementById(cardID).addEventListener("click", game.clickCard);
             }
 
             if (j < 2) {
@@ -118,7 +118,7 @@ function animTakeTrump(toDiscardID) {
     var trumpElem;
     var trumpCandidate;
 
-    trumpCandidate = game.getTrumpCandidate();
+    trumpCandidate = game.getTrumpCandidateCard();
     toDiscardElem = document.getElementById(toDiscardID);
     trumpElem = document.getElementById(trumpCandidate.id);
     top = toDiscardElem.style.top;
@@ -180,7 +180,7 @@ function animSortHand(hand) {
         key = 0;
         suit = hand[i].suit;
         switch (suit) {
-            case game.getTrump():
+            case game.getTrumpSuit():
                 break;
             case Suit.Spades:
                 key += 100;
@@ -287,10 +287,10 @@ function animRemoveKitty() {
     var elem;
     var trumpCandidate;
 
-    trumpCandidate = game.getTrumpCandidate();
+    trumpCandidate = game.getTrumpCandidateCard();
     elem = document.getElementById("deck");
     setTimeout(animHideCard, 300, elem);
-    if (trumpCandidate.suit !== game.getTrump()) { //trump candidate wasn't picked up
+    if (trumpCandidate.suit !== game.getTrumpSuit()) { //trump candidate wasn't picked up
         elem = document.getElementById(trumpCandidate.id);
         setTimeout(animHideCard, 300, elem);
     }
@@ -323,7 +323,7 @@ function animEnableBidding(hand) {
     document.getElementById("orderUpPrompt").style.display = "inline";
     document.getElementById("pass").style.display = "inline";
 
-    if (game.getBiddingRound() === 1 && hasSuit(hand, game.getTrumpCandidate().suit)) {
+    if (game.getGameStage() === GameStage.BidRound1 && hasSuit(hand, game.getTrumpCandidateCard().suit)) {
         document.getElementById("orderUp").style.display = "inline";
         document.getElementById("alone").style.display = "inline";
         return;

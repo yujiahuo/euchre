@@ -4,11 +4,11 @@
 
 class TestAI implements EuchreAI {
 
-    init() {
-    }
+	init() {
+	}
 
-    chooseOrderUp() {
-        return false;
+	chooseOrderUp() {
+		return false;
 	}
 
 	pickDiscard() {
@@ -19,7 +19,7 @@ class TestAI implements EuchreAI {
 	}
 
 	pickTrump() {
-        return Suit.Clubs;
+		return Suit.Clubs;
 	}
 
 	chooseGoAlone() {
@@ -39,7 +39,7 @@ class TestAI implements EuchreAI {
 		return hand[0];
 	}
 
-    trickEnd(): void {
-        return;
-    }
+	trickEnd(): void {
+		return;
+	}
 }

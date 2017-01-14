@@ -3,7 +3,7 @@
 ********************************/
 
 function myHand(): Card[] {
-    return game.myHand();
+	return game.myHand();
 }
 
 //**TESTED**
@@ -11,185 +11,185 @@ function myHand(): Card[] {
 //if a card is undefined, the other card wins
 //if both cards are undefined, return null
 function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Card {
-    if (card1 === undefined) {
-        return card2;
-    }
-    else if (card2 === undefined) {
-        return card1;
-    }
+	if (card1 === undefined) {
+		return card2;
+	}
+	else if (card2 === undefined) {
+		return card1;
+	}
 
-    if (isTrump(card1, trump)) {
-        if (!isTrump(card2, trump)) {
-            return card1;
-        }
-    }
-    else if (isTrump(card2, trump)) {
-        return card2;
-    }
+	if (isTrump(card1, trump)) {
+		if (!isTrump(card2, trump)) {
+			return card1;
+		}
+	}
+	else if (isTrump(card2, trump)) {
+		return card2;
+	}
 
-    if (followsSuit(card1, trickSuit)) {
-        if (!followsSuit(card2, trickSuit)) {
-            return card1;
-        }
-    }
-    else if (followsSuit(card2, trickSuit)) {
-        return card2;
-    }
+	if (followsSuit(card1, trickSuit)) {
+		if (!followsSuit(card2, trickSuit)) {
+			return card1;
+		}
+	}
+	else if (followsSuit(card2, trickSuit)) {
+		return card2;
+	}
 
-    //both/neither are trump and both/neither follows suit
-    if (card1.rank > card2.rank) return card1;
-    else return card2;
+	//both/neither are trump and both/neither follows suit
+	if (card1.rank > card2.rank) return card1;
+	else return card2;
 }
 
 //**TESTED**
 function isValidPlay(hand: Card[], card: Card, trickSuit: Suit): boolean {
-    if (card == null) { //double equal will also find undefined
-        return false;
-    }
-    if (!hasSuit(hand, trickSuit)) {
-        return true;
-    }
-    if (followsSuit(card, trickSuit)) {
-        return true;
-    }
-    return false;
+	if (card == null) { //double equal will also find undefined
+		return false;
+	}
+	if (!hasSuit(hand, trickSuit)) {
+		return true;
+	}
+	if (followsSuit(card, trickSuit)) {
+		return true;
+	}
+	return false;
 }
 
 //**NOT TESTING**
 function isTrump(card: Card, trump: Suit): boolean {
-    return card.suit === trump;
+	return card.suit === trump;
 }
 
 //**NOT TESTING**
 function followsSuit(card: Card, trickSuit: Suit): boolean {
-    if (!trickSuit) {
-        return true;
-    }
-    if (card.suit === trickSuit) {
-        return true;
-    }
-    return false;
+	if (!trickSuit) {
+		return true;
+	}
+	if (card.suit === trickSuit) {
+		return true;
+	}
+	return false;
 }
 
 //**TESTED**
 function hasSuit(hand: Card[], suit: Suit): boolean {
-    for (var i = 0; i < hand.length; i++) {
-        if (hand[i].suit === suit) return true;
-    }
-    return false;
+	for (var i = 0; i < hand.length; i++) {
+		if (hand[i].suit === suit) return true;
+	}
+	return false;
 }
 
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */
 function canOrderUpSuit(hand: Card[], suit: Suit): boolean {
-    if (game.getGameStage() === GameStage.BidRound1) {
-        if (game.getTrumpCandidateCard().suit !== suit) return false;
-        if (hasSuit(hand, suit)) return true;
-    } else if (game.getGameStage() === GameStage.BidRound2) {
-        if (game.getTrumpCandidateCard().suit === suit) return false;
-        if (hasSuit(hand, suit)) return true;
-    }
-    return false;
+	if (game.getGameStage() === GameStage.BidRound1) {
+		if (game.getTrumpCandidateCard().suit !== suit) return false;
+		if (hasSuit(hand, suit)) return true;
+	} else if (game.getGameStage() === GameStage.BidRound2) {
+		if (game.getTrumpCandidateCard().suit === suit) return false;
+		if (hasSuit(hand, suit)) return true;
+	}
+	return false;
 }
 
 //how many cards of a given suit you have
 function numCardsOfSuit(hand: Card[], suit: Suit): number {
-    var count = 0;
-    for (var i = 0; i < hand.length; i++) {
-        if (hand[i].suit === suit) count++;
-    }
-    return count;
+	var count = 0;
+	for (var i = 0; i < hand.length; i++) {
+		if (hand[i].suit === suit) count++;
+	}
+	return count;
 }
 
 //number of suits you're holding
 function countSuits(): number {
-    var suitArray = [];
-    var hand = myHand();
-    for (var i = 0; i < hand.length; i++) {
-        suitArray[hand[i].suit] = 1;
-    }
-    return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
+	var suitArray = [];
+	var hand = myHand();
+	for (var i = 0; i < hand.length; i++) {
+		suitArray[hand[i].suit] = 1;
+	}
+	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
 }
 
 function getCardValue(card: Card, trump: Suit): number {
-    var value;
+	var value;
 
-    value = card.rank;
-    if (isTrump(card, trump)) value += 100;
-    return value;
+	value = card.rank;
+	if (isTrump(card, trump)) value += 100;
+	return value;
 }
 
 //TODO: do we need this? Rename to worst card in hand and fix?
 function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: boolean): Card {
-    var worstCard;
-    var worstValue = 1000;
-    var value;
+	var worstCard;
+	var worstValue = 1000;
+	var value;
 
-    for (var i = 0; i < hand.length; i++) {
-        if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
-        value = getCardValue(hand[i], trump);
-        if (value < worstValue) {
-            worstCard = hand[i];
-            worstValue = value;
-        }
-    }
-    return worstCard;
+	for (var i = 0; i < hand.length; i++) {
+		if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
+		value = getCardValue(hand[i], trump);
+		if (value < worstValue) {
+			worstCard = hand[i];
+			worstValue = value;
+		}
+	}
+	return worstCard;
 }
 
 //returns: the best card and who played it as a PlayedCard
 function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
-    let bestCard;
-    let bestValue = 0;
-    let player: Player;
-    let trickSuit: Suit;
-    if (cards.length > 0) {
-        trickSuit = cards[0].card.suit;
-    }
+	let bestCard;
+	let bestValue = 0;
+	let player: Player;
+	let trickSuit: Suit;
+	if (cards.length > 0) {
+		trickSuit = cards[0].card.suit;
+	}
 
-    for (var i = 0; i < cards.length; i++) {
-        if (!trickSuit || cards[i].card.suit === trickSuit) {
-            let value = getCardValue(cards[i].card, trump);
-            if (value > bestValue) {
-                bestCard = cards[i].card;
-                player = i;
-                bestValue = value;
-            }
-        }
-    }
-    return { player: player, card: bestCard };
+	for (var i = 0; i < cards.length; i++) {
+		if (!trickSuit || cards[i].card.suit === trickSuit) {
+			let value = getCardValue(cards[i].card, trump);
+			if (value > bestValue) {
+				bestCard = cards[i].card;
+				player = i;
+				bestValue = value;
+			}
+		}
+	}
+	return { player: player, card: bestCard };
 }
 
 function getBestCardInHand(hand: Card[], trickSuit: Suit, trump: Suit): Card {
-    let bestCard: Card;
-    let bestValue = 0;
-    let player: Player;
+	let bestCard: Card;
+	let bestValue = 0;
+	let player: Player;
 
-    for (var i = 0; i < hand.length; i++) {
-        if (!trickSuit || hand[i].suit === trickSuit) {
-            let value = getCardValue(hand[i], trump);
-            if (value > bestValue) {
-                bestCard = hand[i];
-                player = i;
-                bestValue = value;
-            }
-        }
-    }
-    return bestCard;
+	for (var i = 0; i < hand.length; i++) {
+		if (!trickSuit || hand[i].suit === trickSuit) {
+			let value = getCardValue(hand[i], trump);
+			if (value > bestValue) {
+				bestCard = hand[i];
+				player = i;
+				bestValue = value;
+			}
+		}
+	}
+	return bestCard;
 }
 
 function getFirstLegalCard(hand: Card[]): Card {
-    for (var i = 0; i < hand.length; i++) {
-        if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
-            return hand[i];
-        }
-    }
+	for (var i = 0; i < hand.length; i++) {
+		if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
+			return hand[i];
+		}
+	}
 }
 
 function me(): Player {
-    return game.getCurrentPlayer();
+	return game.getCurrentPlayer();
 }
 
 function isDealer(player: Player): boolean {
-    return player === game.getDealer();
+	return player === game.getDealer();
 }

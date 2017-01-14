@@ -46,7 +46,7 @@
    */
 
   var queryString = new jasmine.QueryString({
-    getWindowLocation: function() { return window.location; }
+	getWindowLocation: function() { return window.location; }
   });
 
   var catchingExceptions = queryString.getParam("catch");
@@ -60,7 +60,7 @@
 
   var seed = queryString.getParam("seed");
   if (seed) {
-    env.seed(seed);
+	env.seed(seed);
   }
 
   /**
@@ -68,15 +68,15 @@
    * The `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).
    */
   var htmlReporter = new jasmine.HtmlReporter({
-    env: env,
-    onRaiseExceptionsClick: function() { queryString.navigateWithNewParam("catch", !env.catchingExceptions()); },
-    onThrowExpectationsClick: function() { queryString.navigateWithNewParam("throwFailures", !env.throwingExpectationFailures()); },
-    onRandomClick: function() { queryString.navigateWithNewParam("random", !env.randomTests()); },
-    addToExistingQueryString: function(key, value) { return queryString.fullStringWithNewParam(key, value); },
-    getContainer: function() { return document.body; },
-    createElement: function() { return document.createElement.apply(document, arguments); },
-    createTextNode: function() { return document.createTextNode.apply(document, arguments); },
-    timer: new jasmine.Timer()
+	env: env,
+	onRaiseExceptionsClick: function() { queryString.navigateWithNewParam("catch", !env.catchingExceptions()); },
+	onThrowExpectationsClick: function() { queryString.navigateWithNewParam("throwFailures", !env.throwingExpectationFailures()); },
+	onRandomClick: function() { queryString.navigateWithNewParam("random", !env.randomTests()); },
+	addToExistingQueryString: function(key, value) { return queryString.fullStringWithNewParam(key, value); },
+	getContainer: function() { return document.body; },
+	createElement: function() { return document.createElement.apply(document, arguments); },
+	createTextNode: function() { return document.createTextNode.apply(document, arguments); },
+	timer: new jasmine.Timer()
   });
 
   /**
@@ -89,11 +89,11 @@
    * Filter which specs will be run by matching the start of the full name against the `spec` query param.
    */
   var specFilter = new jasmine.HtmlSpecFilter({
-    filterString: function() { return queryString.getParam("spec"); }
+	filterString: function() { return queryString.getParam("spec"); }
   });
 
   env.specFilter = function(spec) {
-    return specFilter.matches(spec.getFullName());
+	return specFilter.matches(spec.getFullName());
   };
 
   /**
@@ -112,19 +112,19 @@
   var currentWindowOnload = window.onload;
 
   window.onload = function() {
-    if (currentWindowOnload) {
-      currentWindowOnload();
-    }
-    htmlReporter.initialize();
-    env.execute();
+	if (currentWindowOnload) {
+	  currentWindowOnload();
+	}
+	htmlReporter.initialize();
+	env.execute();
   };
 
   /**
    * Helper function for readability above.
    */
   function extend(destination, source) {
-    for (var property in source) destination[property] = source[property];
-    return destination;
+	for (var property in source) destination[property] = source[property];
+	return destination;
   }
 
 }());

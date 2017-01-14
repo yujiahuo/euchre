@@ -5,9 +5,9 @@
 
 class IdiotAI implements EuchreAI {
 
-    init() {
-        //just chillin'
-    }
+	init() {
+		//just chillin'
+	}
 
 	chooseOrderUp() {
 		return false;
@@ -28,11 +28,11 @@ class IdiotAI implements EuchreAI {
 		return false;
 	}
 
-    pickCard() {
-        return getFirstLegalCard(myHand());
+	pickCard() {
+		return getFirstLegalCard(myHand());
 	}
 
-    trickEnd(): void {
-        return;
-    }
+	trickEnd(): void {
+		return;
+	}
 }

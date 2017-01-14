@@ -102,7 +102,7 @@ describe("greaterCard", function () {
 describe("isValidPlay", function () {
     var hand = [
         new Card(Suit.Spades, Rank.Nine),
-        new Card(Suit.Spades, Rank.Ten),
+        new Card(Suit.Hearts, Rank.Ten),
         new Card(Suit.Spades, Rank.Jack),
         new Card(Suit.Spades, Rank.Queen),
         new Card(Suit.Spades, Rank.King),
@@ -117,8 +117,7 @@ describe("isValidPlay", function () {
     });
 
     it("has tricksuit, plays invalid", function () {
-        hand[0] = new Card(Suit.Clubs, Rank.Nine);
-        expect(isValidPlay(hand, hand[0], Suit.Spades)).toBe(false);
+        expect(isValidPlay(hand, hand[1], Suit.Spades)).toBe(false);
     });
 });
 

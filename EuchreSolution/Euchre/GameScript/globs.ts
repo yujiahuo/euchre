@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 //the game being played
-var game;
+var game: Game;
 
 //TODO: get rid of none?
 enum Player {

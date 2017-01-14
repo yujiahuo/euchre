@@ -280,7 +280,7 @@ class Game {
 		this.__trickNum = 0;
 
 		this.__dealer = getNextDealer();
-		animPlaceDealerButt()
+		animPlaceDealerButt();
 
 		this.__deck = getShuffledDeck();
 		this.__hands = new Array(4);

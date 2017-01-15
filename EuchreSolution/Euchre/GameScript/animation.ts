@@ -373,12 +373,11 @@ function animFlipButton(on: boolean): void {
 	}
 }
 
-function animShowScore(): void {
-	animShowText("You: " + game.getNsScore() + "  Them: " + game.getEwScore());
-}
-
-function animShowText(text: string, nest?: number, overwrite?: boolean): void {
+function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
+	let allowedLevel: MessageLevel = game.getMessageLevel();
 	let logText = "";
+
+	if (messageLevel < allowedLevel) return;
 
 	if (!nest) {
 		nest = 0;

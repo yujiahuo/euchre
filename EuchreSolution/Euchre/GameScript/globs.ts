@@ -43,6 +43,12 @@ enum GameStage {
 	EndGame,
 }
 
+enum MessageLevel {
+	Step,
+	Game,
+	Multigame,
+}
+
 class Card {
 	public suit: Suit;
 	public rank: Rank;

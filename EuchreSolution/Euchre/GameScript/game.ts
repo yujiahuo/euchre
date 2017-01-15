@@ -37,6 +37,8 @@ class Game {
 	private __noTrump: boolean;
 	private __showTrickHistory: boolean;
 	private __statMode: boolean;
+	private __numGamesToPlay: Number;
+	private __messageLevel: MessageLevel;
 	private __aiPlayers: EuchreAI[];
 	private __hasHooman: boolean; //if there is a human player
 	//#endregion
@@ -112,6 +114,12 @@ class Game {
 	public isStatMode(): boolean {
 		return this.__statMode;
 	}
+	public getNumGamesToPlay(): Number {
+		return this.__numGamesToPlay;
+	}
+	public getMessageLevel(): MessageLevel {
+		return this.__messageLevel;
+	}
 	public getAIPlayer(player: Player): EuchreAI {
 		return (this.__aiPlayers[player]);
 	}
@@ -133,10 +141,9 @@ class Game {
 	 * Private functions
 	 ********************************/
 
-	private startNewGame(): void {
+	private startPlaying(): void {
 		this.grabSettings();
-		animShowText("STAGE: start");
-		this.initGame();
+		this.__gameStage = GameStage.NewGame;
 		this.doStep();
 	}
 
@@ -145,8 +152,11 @@ class Game {
 	private letHumanClickCards(): void { }
 
 	private doStep(): void {
-		animShowText("STAGE: " + GameStage[this.__gameStage]);
+		animShowText("STAGE: " + GameStage[this.__gameStage], MessageLevel.Step);
 		switch (this.__gameStage) {
+			case GameStage.NewGame:
+				this.initGame();
+				break;
 			case GameStage.NewHand:
 				this.initHand();
 				break;
@@ -195,6 +205,9 @@ class Game {
 
 		//ai settings
 		this.__statMode = true //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
+		if (this.__statMode) this.__numGamesToPlay = 10;
+		if (this.__statMode) this.__messageLevel = MessageLevel.Game;
+		//else this.__messageLevel = (document.getElementById("chkStatMode") as HTMLInputElement).checked;
 		this.__aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
 		this.__hasHooman = this.__aiPlayers.indexOf(null) > -1;
 	}
@@ -257,7 +270,6 @@ class Game {
 	private handleBid(): void {
 		let suit;
 		let alone;
-		let discard;
 		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
 
 		//see if AI bids
@@ -267,7 +279,7 @@ class Game {
 			this.endBidding(suit, alone);
 			return;
 		}
-		animShowText(this.__currentPlayer + " passed.", 1);
+		animShowText(this.__currentPlayer + " passed.", MessageLevel.Step, 1);
 		this.advanceBidding();
 	}
 
@@ -288,10 +300,11 @@ class Game {
 	}
 
 	private endBidding(suit: Suit, alone: boolean): void {
-		animShowText(this.__currentPlayer + " " + Suit[suit] + " " + alone, 1);
+		animShowText(this.__currentPlayer + " " + Suit[suit] + " " + alone, MessageLevel.Step, 1);
 		this.setTrump(suit, this.__currentPlayer, alone);
 		//if round 1, dealer also needs to discard
 		if (this.__gameStage === GameStage.BidRound1) {
+			this.__hands[this.__dealer].push(this.__trumpCandidateCard);
 			this.__gameStage = GameStage.Discard;
 		}
 		else {
@@ -322,9 +335,8 @@ class Game {
 	}
 
 	private discardCard(toDiscard: Card): void {
-		animShowText(Player[this.__currentPlayer] + " discarded " + toDiscard.id, 1);
+		animShowText(Player[this.__currentPlayer] + " discarded " + toDiscard.id, MessageLevel.Step, 1);
 		this.removeFromHand(this.__dealer, toDiscard);
-		this.__hands[this.__dealer].push(this.__trumpCandidateCard);
 
 		this.startTricks();
 	}
@@ -379,18 +391,18 @@ class Game {
 	private playCard(player: Player, card: Card): void {
 		this.removeFromHand(player, card);
 		this.__trickPlayedCards.push({ player: player, card: card });
-		animShowText(Player[player] + " played " + card.id, 1);
+		animShowText(Player[player] + " played " + card.id, MessageLevel.Step, 1);
 		//play card, store played card, iterate num players played
 		//check if hand ended, then check if game ended
 	}
 	private scoreTrick(trickWinner: Player): void {
 		if (trickWinner === Player.North || trickWinner === Player.South) {
 			this.__nsTricksWon++;
-			animShowText("NS won this trick", 2);
+			animShowText("NS won this trick", MessageLevel.Step, 2);
 		}
 		else {
 			this.__ewTricksWon++;
-			animShowText("EW won this trick", 2);
+			animShowText("EW won this trick", MessageLevel.Step, 2);
 		}
 	}
 
@@ -430,11 +442,11 @@ class Game {
 			this.__ewScore += calculatePointGain(this.__ewTricksWon, isMaker, alone);
 		}
 
-		animShowText("Score: " + this.__nsScore + " : " + this.__ewScore);
+		animShowText("Score: " + this.__nsScore + " : " + this.__ewScore, MessageLevel.Step);
 	}
 
 	private endGame(): void {
-		animShowText("Final score: " + this.__nsScore + " : " + this.__ewScore);
+		animShowText("Final score: " + this.__nsScore + " : " + this.__ewScore, MessageLevel.Game);
 		this.__gameStage = null;
 		if (this.isStatMode()) {
 			updateLog(this.logText, true);
@@ -464,6 +476,6 @@ class Game {
 	 ********************************/
 
 	public start(): void {
-		this.startNewGame();
+		this.startPlaying();
 	}
 }

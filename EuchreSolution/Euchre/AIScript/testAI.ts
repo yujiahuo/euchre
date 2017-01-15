@@ -12,7 +12,7 @@ class TestAI implements EuchreAI {
 	}
 
 	pickDiscard() {
-		var hand;
+		let hand;
 
 		hand = game.myHand();
 		return hand[0];
@@ -27,10 +27,10 @@ class TestAI implements EuchreAI {
 	}
 
 	pickCard() {
-		var hand;
+		let hand;
 
 		hand = game.myHand();
-		for (var i = 0; i < hand.length; i++) {
+		for (let i = 0; i < hand.length; i++) {
 			if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
 				return hand[i];
 			}

@@ -46,7 +46,7 @@ function getOppositeSuit(suit: Suit): Suit {
 
 //**TESTED**
 function getDealer(prevDealer?: Player): Player {
-	var dealer;
+	let dealer;
 
 	//if we have a dealer, get the next dealer
 	if (prevDealer !== undefined) {
@@ -61,14 +61,14 @@ function getDealer(prevDealer?: Player): Player {
 
 //**TESTED**
 function getShuffledDeck(): Card[] {
-	var deck;
-	var pos;
-	var temp;
-	var size;
+	let deck;
+	let pos;
+	let temp;
+	let size;
 
 	size = SORTEDDECK.length;
 	deck = [];
-	for (var i = 0; i < size; i++) {
+	for (let i = 0; i < size; i++) {
 		deck.splice(Math.floor(Math.random() * (i + 1)), 0, SORTEDDECK[i]);
 	}
 
@@ -77,9 +77,9 @@ function getShuffledDeck(): Card[] {
 
 //**TESTED**
 function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
-	var player, cardPos, card;
+	let player, cardPos, card;
 
-	for (var i = 0; i < 20; i++) {
+	for (let i = 0; i < 20; i++) {
 		player = (dealer + i) % 4;
 
 		cardPos = Math.floor(i / 4);
@@ -91,7 +91,7 @@ function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
 //**NOT TESTING**
 //returns: bid suit
 function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit {
-	var bidSuit;
+	let bidSuit;
 
 	if (stage === GameStage.BidRound1) { //bidding round 1
 		if (aiPlayer.chooseOrderUp()) {

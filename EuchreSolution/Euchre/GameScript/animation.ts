@@ -5,7 +5,7 @@
 //TODO: make all the card elements at once instead of making them as we deal
 
 function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
-	var card;
+	let card;
 
 	card = document.createElement("div");
 	card.className = "card";
@@ -24,7 +24,7 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 }
 
 function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
-	var div = document.getElementById(cardID) as HTMLDivElement;
+	let div = document.getElementById(cardID) as HTMLDivElement;
 	div.style.top = top;
 	div.style.left = left;
 	if (z) {
@@ -39,11 +39,11 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 function animDeal(hands: Card[][]): void {
 	if (game.isStatMode()) return;
 
-	var player: Player;
-	var delay: number; //delay to second round deal
-	var cardID: string;
-	var flippedUp: boolean;
-	var dealer: Player;
+	let player: Player;
+	let delay: number; //delay to second round deal
+	let cardID: string;
+	let flippedUp: boolean;
+	let dealer: Player;
 
 	dealer = game.getDealer();
 	player = nextPlayer(dealer);
@@ -52,12 +52,12 @@ function animDeal(hands: Card[][]): void {
 	makeCardElem("deck", false);
 	makeCardElem(game.getTrumpCandidateCard().id, false);
 
-	for (var i = 0; i < hands.length; i++) {
+	for (let i = 0; i < hands.length; i++) {
 		flippedUp = (!game.getAIPlayer(player) || game.isOpenHands());
 		if (i % 2 === dealer % 2) delay = 1;
 		else delay = 0;
 
-		for (var j = 0; j < hands[i].length; j++) {
+		for (let j = 0; j < hands[i].length; j++) {
 			cardID = hands[player][j].id;
 			makeCardElem(cardID, flippedUp);
 			if (!game.getAIPlayer(player)) {
@@ -81,8 +81,8 @@ function animDeal(hands: Card[][]): void {
 }
 
 function animDealSingle(player: Player, cardID: string, cardPos: number): void {
-	var top;
-	var left;
+	let top;
+	let left;
 
 	switch (player) {
 		case Player.South:
@@ -110,11 +110,11 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 function animTakeTrump(toDiscardID: string): void {
 	if (game.isStatMode()) return;
 
-	var top;
-	var left;
-	var toDiscardElem;
-	var trumpElem;
-	var trumpCandidate;
+	let top;
+	let left;
+	let toDiscardElem;
+	let trumpElem;
+	let trumpCandidate;
 
 	trumpCandidate = game.getTrumpCandidateCard();
 	toDiscardElem = document.getElementById(toDiscardID);
@@ -136,7 +136,7 @@ function animTakeTrump(toDiscardID: string): void {
 function animPlaceDealerButt(): void {
 	if (game.isStatMode()) return;
 
-	var button;
+	let button;
 
 	button = document.getElementById("dealerButton");
 	if (button === null) {
@@ -169,12 +169,12 @@ function animPlaceDealerButt(): void {
 function animSortHand(hand: Card[]): void {
 	if (game.isStatMode()) return;
 
-	var sortedDict: string[] = [];
-	var key: number;
-	var suit: Suit;
-	var pos: number;
+	let sortedDict: string[] = [];
+	let key: number;
+	let suit: Suit;
+	let pos: number;
 
-	for (var i = 0; i < 5; i++) {
+	for (let i = 0; i < 5; i++) {
 		key = 0;
 		suit = hand[i].suit;
 		switch (suit) {
@@ -207,8 +207,8 @@ function animSortHand(hand: Card[]): void {
 function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 	if (game.isStatMode()) return;
 
-	var top: string;
-	var left: string;
+	let top: string;
+	let left: string;
 
 	if (flipCard && !game.isOpenHands()) animFlipCard(cardID);
 
@@ -244,9 +244,9 @@ function animFlipCard(cardID: string): void {
 function animWinTrick(player: Player, cards: Card[]): void {
 	if (game.isStatMode()) return;
 
-	var cardElem;
-	var top;
-	var left;
+	let cardElem;
+	let top;
+	let left;
 
 	switch (player) {
 		case Player.South:
@@ -267,7 +267,7 @@ function animWinTrick(player: Player, cards: Card[]): void {
 			break;
 	}
 
-	for (var i = 0; i < 4; i++) {
+	for (let i = 0; i < 4; i++) {
 		if (cards[i] === null) {
 			continue;
 		}
@@ -282,8 +282,8 @@ function animWinTrick(player: Player, cards: Card[]): void {
 function animRemoveKitty(): void {
 	if (game.isStatMode()) return;
 
-	var elem;
-	var trumpCandidate;
+	let elem;
+	let trumpCandidate;
 
 	trumpCandidate = game.getTrumpCandidateCard();
 	elem = document.getElementById("deck");
@@ -297,8 +297,8 @@ function animRemoveKitty(): void {
 function animHidePartnerHand(hands: Card[][]): void {
 	if (game.isStatMode()) return;
 
-	var player = getPartner(game.getAlonePlayer());
-	for (var i = 0; i < hands[player].length; i++) {
+	let player = getPartner(game.getAlonePlayer());
+	for (let i = 0; i < hands[player].length; i++) {
 		animHideCard(document.getElementById(hands[player][i].id));
 	}
 }
@@ -383,7 +383,7 @@ function animShowText(text: string, nest?: number, overwrite?: boolean): void {
 	if (!nest) {
 		nest = 0;
 	}
-	for (var i = 0; i < nest; i++) {
+	for (let i = 0; i < nest; i++) {
 		logText += "&nbsp;&nbsp;";
 	}
 
@@ -400,7 +400,7 @@ function animShowText(text: string, nest?: number, overwrite?: boolean): void {
 	}
 }
 function updateLog(text: string, overwrite?: boolean): void {
-	var div = document.getElementById("sidebarText");
+	let div = document.getElementById("sidebarText");
 	if (overwrite) {
 		div.innerHTML = text;
 	} else {
@@ -410,7 +410,7 @@ function updateLog(text: string, overwrite?: boolean): void {
 }
 
 function animShowTextTop(text: string, overwrite?: boolean): void {
-	var div = document.getElementById("sidebarTop");
+	let div = document.getElementById("sidebarTop");
 	if (overwrite) {
 		div.innerHTML = "";
 	}

@@ -84,11 +84,11 @@ class Game {
 		return this.__trickSuitLead;
 	}
 	public getTrickPlayedCards(): PlayedCard[] {
-		var playedCards: PlayedCard[] = [];
-		var card: Card;
-		var cardCopy: Card;
+		let playedCards: PlayedCard[] = [];
+		let card: Card;
+		let cardCopy: Card;
 
-		for (var i = 0; i < this.__trickPlayedCards.length; i++) {
+		for (let i = 0; i < this.__trickPlayedCards.length; i++) {
 			card = this.__trickPlayedCards[i].card;
 
 			//make deep copy of cards
@@ -116,10 +116,10 @@ class Game {
 		return (this.__aiPlayers[player]);
 	}
 	public myHand(): Card[] {
-		var hand = [];
-		var card;
+		let hand = [];
+		let card;
 
-		for (var i = 0; i < this.__hands[this.__currentPlayer].length; i++) {
+		for (let i = 0; i < this.__hands[this.__currentPlayer].length; i++) {
 			card = this.__hands[this.__currentPlayer][i];
 			hand[i] = new Card(card.suit, card.rank, card.id);
 		}
@@ -223,7 +223,7 @@ class Game {
 
 		this.__deck = getShuffledDeck();
 		this.__hands = new Array(4);
-		for (i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			this.__hands[i] = new Array(5);
 		}
 
@@ -234,7 +234,7 @@ class Game {
 		animDeal(this.__hands);
 
 		//let AIs initialize
-		for (i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			this.__currentPlayer = i;
 			if (this.__aiPlayers[i] !== null) {
 				this.__aiPlayers[i].init();
@@ -255,10 +255,10 @@ class Game {
 
 	//get a bid
 	private handleBid(): void {
-		var suit;
-		var alone;
-		var discard;
-		var aiPlayer = this.__aiPlayers[this.__currentPlayer];
+		let suit;
+		let alone;
+		let discard;
+		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
 
 		//see if AI bids
 		suit = getAIBid(aiPlayer, this.__gameStage);
@@ -301,8 +301,8 @@ class Game {
 
 	//sets trumpSuit, left/right nonsense, maker, and alone player
 	private setTrump(suit: Suit, player: Player, alone: boolean): void {
-		var rightID;
-		var leftID;
+		let rightID;
+		let leftID;
 
 		this.__trumpSuit = suit;
 
@@ -335,8 +335,8 @@ class Game {
 	}
 
 	private playTrickStep(): void {
-		var card: Card;
-		var hand: Card[] = this.__hands[this.__currentPlayer];
+		let card: Card;
+		let hand: Card[] = this.__hands[this.__currentPlayer];
 
 		card = this.__aiPlayers[this.__currentPlayer].pickCard();
 
@@ -359,7 +359,7 @@ class Game {
 	}
 
 	private endTrick(): void {
-		for (i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			if (this.__aiPlayers[i] !== null) {
 				this.__aiPlayers[i].trickEnd();
 			}
@@ -406,8 +406,8 @@ class Game {
 	}
 
 	private resetJacks(): void {
-		var rightID;
-		var leftID;
+		let rightID;
+		let leftID;
 
 		rightID = Suit[this.__trumpSuit] + Rank.Jack;
 		DECKDICT[rightID].rank = Rank.Jack;
@@ -417,8 +417,8 @@ class Game {
 	}
 
 	private updateScore(): void {
-		var isMaker;
-		var alone = (this.__alonePlayer !== null);
+		let isMaker;
+		let alone = (this.__alonePlayer !== null);
 
 		if (this.__nsTricksWon > this.__ewTricksWon) {
 			isMaker = (this.__maker === Player.North || this.__maker === Player.South);
@@ -449,9 +449,9 @@ class Game {
 	//splice removes 1 at a given index
 	//fails silently if card isn't found, which should never happen
 	private removeFromHand(player: Player, card: Card): void {
-		var cardID = card.id;
+		let cardID = card.id;
 
-		for (var i = 0; i < this.__hands[player].length; i++) {
+		for (let i = 0; i < this.__hands[player].length; i++) {
 			if (this.__hands[player][i].id === cardID) {
 				this.__hands[player].splice(i, 1);
 			}

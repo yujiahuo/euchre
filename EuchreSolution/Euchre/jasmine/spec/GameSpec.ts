@@ -8,7 +8,7 @@
 /// <reference path="../../AIScript/idiotAI.ts" />
 
 describe("getDealer", function () {
-	var result;
+	let result;
 
 	it("current player = south", function () {
 		result = getDealer(Player.South);
@@ -28,7 +28,7 @@ describe("getDealer", function () {
 });
 
 describe("getShuffledDeck", function () {
-	var result;
+	let result;
 
 	result = getShuffledDeck();
 
@@ -39,11 +39,11 @@ describe("getShuffledDeck", function () {
 });
 
 describe("dealHands", function () {
-	var deck;
-	var hands;
+	let deck;
+	let hands;
 
 	hands = new Array(4);
-	for (i = 0; i < 4; i++) {
+	for (let i = 0; i < 4; i++) {
 		hands[i] = new Array(5);
 	}
 
@@ -51,8 +51,8 @@ describe("dealHands", function () {
 	dealHands(deck, hands, 0);
 
 	it("deals hands out", function () {
-		for (var i = 0; i < 4; i++) {
-			for (var j = 0; j < 5; j++) {
+		for (let i = 0; i < 4; i++) {
+			for (let j = 0; j < 5; j++) {
 				expect(hands[i][j]).not.toBe(null);
 			}
 		}
@@ -60,10 +60,10 @@ describe("dealHands", function () {
 });
 
 describe("greaterCard", function () {
-	var card1;
-	var card2;
-	var trickSuit;
-	var trump;
+	let card1;
+	let card2;
+	let trickSuit;
+	let trump;
 
 	trickSuit = Suit.Spades;
 	trump = Suit.Hearts;
@@ -100,7 +100,7 @@ describe("greaterCard", function () {
 });
 
 describe("isValidPlay", function () {
-	var hand = [
+	let hand = [
 		new Card(Suit.Spades, Rank.Nine),
 		new Card(Suit.Hearts, Rank.Ten),
 		new Card(Suit.Spades, Rank.Jack),
@@ -122,7 +122,7 @@ describe("isValidPlay", function () {
 });
 
 describe("hasSuit", function () {
-	var hand = [
+	let hand = [
 		new Card(Suit.Spades, Rank.Nine),
 		new Card(Suit.Spades, Rank.Ten),
 		new Card(Suit.Spades, Rank.Jack),

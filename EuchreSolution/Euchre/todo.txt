@@ -1,8 +1,8 @@
+Bugs
+- Need to pick up first, then call AI discard
+
 ToDo
-- Fix up How-To page
-- Implement easy game modes
-	- No trump
-- Implement stat mode
+- Add thing that lets you play a ton of games at once and tells you the number of wins and total score
 - Implement defend alone
 - Enforce rules
 	- When playing a card, make sure the card exists in their hand and that they can legally play it

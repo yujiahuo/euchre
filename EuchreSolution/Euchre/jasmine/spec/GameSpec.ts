@@ -10,17 +10,17 @@
 describe("getDealer", function () {
 	let result;
 
-	it("current player = south", function () {
+	it("CURRENT PLAYER: south", function () {
 		result = getDealer(Player.South);
 		expect(result).toBe(Player.West);
 	});
 
-	it("current player = east", function () {
+	it("CURRENT PLAYER: east", function () {
 		result = getDealer(Player.East);
 		expect(result).toBe(Player.South);
 	});
 
-	it("current player = no one", function () {
+	it("CURRENT PLAYER: no one", function () {
 		result = getDealer();
 		expect(result).toBeGreaterThan(-1);
 		expect(result).toBeLessThan(4);
@@ -140,40 +140,179 @@ describe("hasSuit", function () {
 });
 
 describe("getBestCardPlayed", function () {
+	let playedCards: PlayedCard[]
+	let trumpSuit: Suit = Suit.Spades
+	let result: PlayedCard;
+
 	it("first player nails it, everyone follows suit", function () {
-		let playedCards = [];
-		//playedCards.push({ player: player, card: card });
+		playedCards = [];
+		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Ace) });
+		playedCards.push({ player: Player.West, card: new Card(Suit.Hearts, Rank.Nine) });
+		playedCards.push({ player: Player.North, card: new Card(Suit.Hearts, Rank.Ten) });
+		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
+
+		result = getBestCardPlayed(playedCards, trumpSuit);
+		expect(result.player).toBe(Player.South);
 	});
 
 	it("no one can follow suit or trump", function () {
+		playedCards = [];
+		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Ace) });
+		playedCards.push({ player: Player.West, card: new Card(Suit.Diamonds, Rank.Nine) });
+		playedCards.push({ player: Player.North, card: new Card(Suit.Diamonds, Rank.Ten) });
+		playedCards.push({ player: Player.East, card: new Card(Suit.Diamonds, Rank.Jack) });
 
+		result = getBestCardPlayed(playedCards, trumpSuit);
+		expect(result.player).toBe(Player.South);
 	});
 
 	it("someone follows suit with higher card", function () {
+		playedCards = [];
+		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Nine) });
+		playedCards.push({ player: Player.West, card: new Card(Suit.Hearts, Rank.Ten) });
+		playedCards.push({ player: Player.North, card: new Card(Suit.Diamonds, Rank.Ace) });
+		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Ten) });
 
+		result = getBestCardPlayed(playedCards, trumpSuit);
+		expect(result.player).toBe(Player.West);
 	});
 
 	it("someone trumps", function () {
+		playedCards = [];
+		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Ace) });
+		playedCards.push({ player: Player.West, card: new Card(Suit.Spades, Rank.Nine) });
+		playedCards.push({ player: Player.North, card: new Card(Suit.Hearts, Rank.Ten) });
+		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
+		result = getBestCardPlayed(playedCards, trumpSuit);
+		expect(result.player).toBe(Player.West);
 	});
 
 	it("someone overtrumps", function () {
+		playedCards = [];
+		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Ace) });
+		playedCards.push({ player: Player.West, card: new Card(Suit.Spades, Rank.Nine) });
+		playedCards.push({ player: Player.North, card: new Card(Suit.Spades, Rank.Ten) });
+		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
+		result = getBestCardPlayed(playedCards, trumpSuit);
+		expect(result.player).toBe(Player.North);
 	});
 
+	it("players play in different order", function () {
+		playedCards = [];
+		playedCards.push({ player: Player.West, card: new Card(Suit.Hearts, Rank.Ace) });
+		playedCards.push({ player: Player.North, card: new Card(Suit.Spades, Rank.Nine) });
+		playedCards.push({ player: Player.East, card: new Card(Suit.Spades, Rank.Ten) });
+		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Jack) });
+
+		result = getBestCardPlayed(playedCards, trumpSuit);
+		expect(result.player).toBe(Player.East);
+	});
+
+});
+
+describe("getBestCardInHand", function () {
+	let hand: Card[];
+	let result: Card;
+
+	it("all same suit hand", function () {
+		hand = [
+			new Card(Suit.Spades, Rank.Nine),
+			new Card(Suit.Spades, Rank.Ten),
+			new Card(Suit.Spades, Rank.Jack),
+			new Card(Suit.Spades, Rank.Queen),
+			new Card(Suit.Spades, Rank.King),
+		];
+
+		result = getBestCardInHand(hand);
+		expect(result.id).toBe("Spades13");
+	});
+
+	it("one trump", function () {
+		hand = [
+			new Card(Suit.Diamonds, Rank.Nine),
+			new Card(Suit.Spades, Rank.Ten),
+			new Card(Suit.Spades, Rank.Jack),
+			new Card(Suit.Spades, Rank.Queen),
+			new Card(Suit.Spades, Rank.King),
+		];
+
+		result = getBestCardInHand(hand,null,Suit.Diamonds);
+		expect(result.id).toBe("Diamonds9");
+	});
+
+	it("one card follows suit", function () {
+		hand = [
+			new Card(Suit.Spades, Rank.Nine),
+			new Card(Suit.Hearts, Rank.Ten),
+			new Card(Suit.Spades, Rank.Jack),
+			new Card(Suit.Spades, Rank.Queen),
+			new Card(Suit.Spades, Rank.King),
+		];
+
+		result = getBestCardInHand(hand, Suit.Hearts);
+		expect(result.id).toBe("Hearts10");
+	});
+
+	it("can follow suit and has trump", function () {
+		hand = [
+			new Card(Suit.Diamonds, Rank.Nine),
+			new Card(Suit.Hearts, Rank.Ten),
+			new Card(Suit.Spades, Rank.Jack),
+			new Card(Suit.Spades, Rank.Queen),
+			new Card(Suit.Spades, Rank.King),
+		];
+
+		result = getBestCardInHand(hand, Suit.Hearts, Suit.Diamonds);
+		expect(result.id).toBe("Diamonds9");
+	});
+
+	it("can't follow suit or trump", function () {
+		hand = [
+			new Card(Suit.Spades, Rank.Nine),
+			new Card(Suit.Spades, Rank.Ten),
+			new Card(Suit.Spades, Rank.Jack),
+			new Card(Suit.Spades, Rank.Queen),
+			new Card(Suit.Spades, Rank.King),
+		];
+
+		result = getBestCardInHand(hand, Suit.Hearts, Suit.Diamonds);
+		expect(result.id).toBe("Spades13");
+	});
+});
+
+describe("getCardValue", function () {
+	let result: Number;
+	let card: Card;
+
+	it("some card", function () {
+		card = new Card(Suit.Spades, Rank.King)
+		result = getCardValue(card);
+		expect(result).toBe(13);
+	});
+
+	it("card that follows suit", function () {
+		card = new Card(Suit.Spades, Rank.King)
+		result = getCardValue(card, Suit.Spades);
+		expect(result).toBe(113);
+	});
+
+	it("card that is trump", function () {
+		card = new Card(Suit.Spades, Rank.King)
+		result = getCardValue(card, null, Suit.Spades);
+		expect(result).toBe(1013);
+	});
+
+	it("card that follows suit and is trump", function () {
+		card = new Card(Suit.Spades, Rank.King)
+		result = getCardValue(card, Suit.Spades, Suit.Spades);
+		expect(result).toBe(1013);
+	});
 });
 
 describe("canOrderUpSuit", function () {
 	it("doesstuff", function () {
-		//TODO: finish this expect().toBe();
 	});
 });
-
-/*
-describe("thing", function () {
-	it("doesstuff", function () {
-		expect().toBe();
-	});
-});
- */
 

@@ -2,8 +2,80 @@
 * Get game properties
 ********************************/
 
+//**NOT TESTING**
 function myHand(): Card[] {
 	return game.myHand();
+}
+
+//**NOT TESTING**
+function me(): Player {
+	return game.getCurrentPlayer();
+}
+
+//**NOT TESTING**
+function isDealer(player: Player): boolean {
+	return player === game.getDealer();
+}
+
+//**NOT TESTING**
+function isTrump(card: Card, trump: Suit): boolean {
+	return card.suit === trump;
+}
+
+//**NOT TESTING**
+function followsSuit(card: Card, trickSuit: Suit): boolean {
+	if (!trickSuit) {
+		return true;
+	}
+	if (card.suit === trickSuit) {
+		return true;
+	}
+	return false;
+}
+
+//**NOT TESTING**
+/* Returns whether or not it is currently legal for the given player to
+   order up a given suit.
+   Depends on bidding round */
+function canOrderUpSuit(hand: Card[], suit: Suit): boolean {
+	if (game.getGameStage() === GameStage.BidRound1) {
+		if (game.getTrumpCandidateCard().suit !== suit) return false;
+		if (hasSuit(hand, suit)) return true;
+	} else if (game.getGameStage() === GameStage.BidRound2) {
+		if (game.getTrumpCandidateCard().suit === suit) return false;
+		if (hasSuit(hand, suit)) return true;
+	}
+	return false;
+}
+
+//**NOT TESTING**
+//how many cards of a given suit you have
+function numCardsOfSuit(hand: Card[], suit: Suit): number {
+	let count = 0;
+	for (let i = 0; i < hand.length; i++) {
+		if (hand[i].suit === suit) count++;
+	}
+	return count;
+}
+
+//**NOT TESTING**
+//number of suits you're holding
+function countSuits(): number {
+	let suitArray = [];
+	let hand = myHand();
+	for (let i = 0; i < hand.length; i++) {
+		suitArray[hand[i].suit] = 1;
+	}
+	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
+}
+
+//**NOT TESTING**
+function getFirstLegalCard(hand: Card[]): Card {
+	for (let i = 0; i < hand.length; i++) {
+		if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
+			return hand[i];
+		}
+	}
 }
 
 //**TESTED**
@@ -55,22 +127,6 @@ function isValidPlay(hand: Card[], card: Card, trickSuit: Suit): boolean {
 	return false;
 }
 
-//**NOT TESTING**
-function isTrump(card: Card, trump: Suit): boolean {
-	return card.suit === trump;
-}
-
-//**NOT TESTING**
-function followsSuit(card: Card, trickSuit: Suit): boolean {
-	if (!trickSuit) {
-		return true;
-	}
-	if (card.suit === trickSuit) {
-		return true;
-	}
-	return false;
-}
-
 //**TESTED**
 function hasSuit(hand: Card[], suit: Suit): boolean {
 	for (let i = 0; i < hand.length; i++) {
@@ -79,117 +135,73 @@ function hasSuit(hand: Card[], suit: Suit): boolean {
 	return false;
 }
 
-/* Returns whether or not it is currently legal for the given player to
-   order up a given suit.
-   Depends on bidding round */
-function canOrderUpSuit(hand: Card[], suit: Suit): boolean {
-	if (game.getGameStage() === GameStage.BidRound1) {
-		if (game.getTrumpCandidateCard().suit !== suit) return false;
-		if (hasSuit(hand, suit)) return true;
-	} else if (game.getGameStage() === GameStage.BidRound2) {
-		if (game.getTrumpCandidateCard().suit === suit) return false;
-		if (hasSuit(hand, suit)) return true;
-	}
-	return false;
-}
-
-//how many cards of a given suit you have
-function numCardsOfSuit(hand: Card[], suit: Suit): number {
-	let count = 0;
-	for (let i = 0; i < hand.length; i++) {
-		if (hand[i].suit === suit) count++;
-	}
-	return count;
-}
-
-//number of suits you're holding
-function countSuits(): number {
-	let suitArray = [];
-	let hand = myHand();
-	for (let i = 0; i < hand.length; i++) {
-		suitArray[hand[i].suit] = 1;
-	}
-	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
-}
-
-function getCardValue(card: Card, trump: Suit): number {
+//**TESTED**
+function getCardValue(card: Card, trickSuit?: Suit, trump?: Suit): number {
 	let value;
 
 	value = card.rank;
-	if (isTrump(card, trump)) value += 100;
+	if (trump && isTrump(card, trump)) value += 1000;
+	else if (trickSuit && followsSuit(card, trickSuit)) value += 100;
 	return value;
 }
 
+//**TESTED**
+//returns: the best card of the trick and who played it as a PlayedCard
+function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
+	if (cards.length === 0) return;
+	if (cards.length === 1) return cards[0];
+
+	let bestCard: Card = cards[0].card;
+	let player: Player = cards[0].player;
+	let trickSuit: Suit = bestCard.suit;
+	let bestValue: Number = getCardValue(bestCard, trickSuit, trump);
+
+	for (let i = 1; i < cards.length; i++) {
+		if (cards[i].card.suit !== trickSuit && cards[i].card.suit !== trump) {
+			continue;
+		}
+		let value = getCardValue(cards[i].card, trickSuit, trump);
+		if (value > bestValue) {
+			bestCard = cards[i].card;
+			player = cards[i].player;
+			bestValue = value;
+		}
+	}
+	return { player: player, card: bestCard };
+}
+
+//**TESTED**
+//returns: the strongest card in your hand as a Card
+function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card {
+	if (hand.length === 0) return;
+	if (hand.length === 1) return hand[0];
+
+	let bestCard: Card = hand[0];
+	let bestValue: Number = getCardValue(bestCard, trickSuit, trump);
+
+	for (let i = 1; i < hand.length; i++) {
+		let value = getCardValue(hand[i], trickSuit, trump);
+		if (value > bestValue) {
+			bestCard = hand[i];
+			bestValue = value;
+		}
+	}
+	return bestCard;
+}
+
 //TODO: do we need this? Rename to worst card in hand and fix?
-function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: boolean): Card {
+function getWorstCard(hand: Card[], trickSuit?: Suit, trump?: Suit, mustBeLegal?: boolean): Card {
 	let worstCard;
 	let worstValue = 1000;
 	let value;
 
 	for (let i = 0; i < hand.length; i++) {
 		if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
-		value = getCardValue(hand[i], trump);
+		value = getCardValue(hand[i], trickSuit, trump);
 		if (value < worstValue) {
 			worstCard = hand[i];
 			worstValue = value;
 		}
 	}
 	return worstCard;
-}
-
-//returns: the best card and who played it as a PlayedCard
-function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
-	let bestCard;
-	let bestValue = 0;
-	let player: Player;
-	let trickSuit: Suit;
-	if (cards.length > 0) {
-		trickSuit = cards[0].card.suit;
-	}
-
-	for (let i = 0; i < cards.length; i++) {
-		if (!trickSuit || cards[i].card.suit === trickSuit) {
-			let value = getCardValue(cards[i].card, trump);
-			if (value > bestValue) {
-				bestCard = cards[i].card;
-				player = i;
-				bestValue = value;
-			}
-		}
-	}
-	return { player: player, card: bestCard };
-}
-
-function getBestCardInHand(hand: Card[], trickSuit: Suit, trump: Suit): Card {
-	let bestCard: Card;
-	let bestValue = 0;
-	let player: Player;
-
-	for (let i = 0; i < hand.length; i++) {
-		if (!trickSuit || hand[i].suit === trickSuit) {
-			let value = getCardValue(hand[i], trump);
-			if (value > bestValue) {
-				bestCard = hand[i];
-				player = i;
-				bestValue = value;
-			}
-		}
-	}
-	return bestCard;
-}
-
-function getFirstLegalCard(hand: Card[]): Card {
-	for (let i = 0; i < hand.length; i++) {
-		if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
-			return hand[i];
-		}
-	}
-}
-
-function me(): Player {
-	return game.getCurrentPlayer();
-}
-
-function isDealer(player: Player): boolean {
-	return player === game.getDealer();
 }

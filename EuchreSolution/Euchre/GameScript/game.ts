@@ -130,8 +130,8 @@ class Game {
 	//#endregion
 
 	/*******************************
- 	* Private functions
- 	********************************/
+	 * Private functions
+	 ********************************/
 
 	private startNewGame(): void {
 		this.grabSettings();
@@ -195,7 +195,7 @@ class Game {
 
 		//ai settings
 		this.__statMode = true //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
-		this.__aiPlayers = [new DecentAI(), new IdiotAI(), new DecentAI(), new IdiotAI()];
+		this.__aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
 		this.__hasHooman = this.__aiPlayers.indexOf(null) > -1;
 	}
 
@@ -460,8 +460,8 @@ class Game {
 
 
 	/*******************************
- 	* Public functions
- 	********************************/
+	 * Public functions
+	 ********************************/
 
 	public start(): void {
 		this.startNewGame();

@@ -1,25 +1,31 @@
+Planning
+- Fix bugs
+- Get all AI stuff working reasonably well
+- Do human stuff
+- Clean up UI or whatever
+
 Bugs
 - Need to pick up first, then call AI discard
 
 ToDo
 - Add thing that lets you play a ton of games at once and tells you the number of wins and total score
-- Implement defend alone
 - Enforce rules
 	- When playing a card, make sure the card exists in their hand and that they can legally play it
 
-
-
-- Fix up sidebar
+- Implement defend alone
 - AI difficulties
 - Rename decentAI to something less flattering
-- Make it clear when it's your turn
+
+
 
 Clean up
 - Use calc css
+- Fix up sidebar
 
 Enhancements
+- Make it clear when it's your turn
 - Cats settings
-- Clean up UI
+- Improve UI
 - Queue up your next card
 	- Get rid of delay at start of player 0's turn
 - Recenter hand after cards are played
@@ -41,10 +47,3 @@ Low priority game modes
 Keyboard stuff
 - ctrl + shift click (go to definition)
 - ctrl + shift + right click (go back)
-
-Progress
-- Just refactored again
-- Every step more or less works for AIs except PLAYTRICKS and END
-- Next step: Finish AI steps and add in animation so AIs can play each other
-- Then: Get human working
-- Then: Stop AI from cheating

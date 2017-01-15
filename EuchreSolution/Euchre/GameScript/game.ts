@@ -232,7 +232,7 @@ class Game {
 			this.__messageLevel = MessageLevel.Multigame;
 		}
 		//else this.__messageLevel = (document.getElementById("chkStatMode") as HTMLInputElement).checked;
-		this.__aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
+		this.__aiPlayers = [new DecentAI(), new IdiotAI(), new DecentAI(), new IdiotAI()];
 		this.__hasHooman = this.__aiPlayers.indexOf(null) > -1;
 	}
 
@@ -470,7 +470,7 @@ class Game {
 
 	private endGame(): void {
 		animShowText("Final score: " + this.__nsScore + " : " + this.__ewScore, MessageLevel.Game);
-		if (this.__nsScore < this.__ewScore) this.__nsGamesWon++;
+		if (this.__nsScore > this.__ewScore) this.__nsGamesWon++;
 		else this.__ewGamesWon++;
 		this.__nsTotalScore += this.__nsScore;
 		this.__ewTotalScore += this.__ewScore;

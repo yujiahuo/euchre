@@ -73,7 +73,7 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
 
 //**TESTED**
 function hasSuit(hand: Card[], suit: Suit): boolean {
-	for (var i = 0; i < hand.length; i++) {
+	for (let i = 0; i < hand.length; i++) {
 		if (hand[i].suit === suit) return true;
 	}
 	return false;
@@ -95,8 +95,8 @@ function canOrderUpSuit(hand: Card[], suit: Suit): boolean {
 
 //how many cards of a given suit you have
 function numCardsOfSuit(hand: Card[], suit: Suit): number {
-	var count = 0;
-	for (var i = 0; i < hand.length; i++) {
+	let count = 0;
+	for (let i = 0; i < hand.length; i++) {
 		if (hand[i].suit === suit) count++;
 	}
 	return count;
@@ -104,16 +104,16 @@ function numCardsOfSuit(hand: Card[], suit: Suit): number {
 
 //number of suits you're holding
 function countSuits(): number {
-	var suitArray = [];
-	var hand = myHand();
-	for (var i = 0; i < hand.length; i++) {
+	let suitArray = [];
+	let hand = myHand();
+	for (let i = 0; i < hand.length; i++) {
 		suitArray[hand[i].suit] = 1;
 	}
 	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
 }
 
 function getCardValue(card: Card, trump: Suit): number {
-	var value;
+	let value;
 
 	value = card.rank;
 	if (isTrump(card, trump)) value += 100;
@@ -122,11 +122,11 @@ function getCardValue(card: Card, trump: Suit): number {
 
 //TODO: do we need this? Rename to worst card in hand and fix?
 function getWorstCard(hand: Card[], trickSuit: Suit, trump: Suit, mustBeLegal?: boolean): Card {
-	var worstCard;
-	var worstValue = 1000;
-	var value;
+	let worstCard;
+	let worstValue = 1000;
+	let value;
 
-	for (var i = 0; i < hand.length; i++) {
+	for (let i = 0; i < hand.length; i++) {
 		if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
 		value = getCardValue(hand[i], trump);
 		if (value < worstValue) {
@@ -147,7 +147,7 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
 		trickSuit = cards[0].card.suit;
 	}
 
-	for (var i = 0; i < cards.length; i++) {
+	for (let i = 0; i < cards.length; i++) {
 		if (!trickSuit || cards[i].card.suit === trickSuit) {
 			let value = getCardValue(cards[i].card, trump);
 			if (value > bestValue) {
@@ -165,7 +165,7 @@ function getBestCardInHand(hand: Card[], trickSuit: Suit, trump: Suit): Card {
 	let bestValue = 0;
 	let player: Player;
 
-	for (var i = 0; i < hand.length; i++) {
+	for (let i = 0; i < hand.length; i++) {
 		if (!trickSuit || hand[i].suit === trickSuit) {
 			let value = getCardValue(hand[i], trump);
 			if (value > bestValue) {
@@ -179,7 +179,7 @@ function getBestCardInHand(hand: Card[], trickSuit: Suit, trump: Suit): Card {
 }
 
 function getFirstLegalCard(hand: Card[]): Card {
-	for (var i = 0; i < hand.length; i++) {
+	for (let i = 0; i < hand.length; i++) {
 		if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
 			return hand[i];
 		}

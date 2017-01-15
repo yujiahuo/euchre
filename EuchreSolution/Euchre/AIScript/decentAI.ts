@@ -55,15 +55,15 @@ class DecentAI implements EuchreAI {
 	}
 
 	pickCard(): Card {
-		var numPlayersPlayed;
-		var playedCards;
-		var lowestWinningCard = null;
-		var lowestWinningValue = 1000;
-		var winningValue = 0;
-		var value;
-		var i;
-		var trickSuit = game.getTrickSuit();
-		var trumpSuit = game.getTrumpSuit();
+		let numPlayersPlayed;
+		let playedCards;
+		let lowestWinningCard = null;
+		let lowestWinningValue = 1000;
+		let winningValue = 0;
+		let value;
+		let i;
+		let trickSuit = game.getTrickSuit();
+		let trumpSuit = game.getTrumpSuit();
 
 		this.hand = game.myHand(); //you need to do this or else
 
@@ -114,7 +114,7 @@ class DecentAI implements EuchreAI {
 	}
 	//Whatever just count trump
 	calculateHandStrength = function (trumpSuit) {
-		var smartlyCalculatedValue;
+		let smartlyCalculatedValue;
 
 		smartlyCalculatedValue = numCardsOfSuit(this.hand, trumpSuit);
 		if (this.theyHaveTheLeft(trumpSuit)) {
@@ -126,7 +126,7 @@ class DecentAI implements EuchreAI {
 	}
 
 	theyHaveTheLeft = function (trumpSuit) {
-		for (var i = 0; i < this.hand.length; i++) {
+		for (let i = 0; i < this.hand.length; i++) {
 			if (this.hand[i].rank === Rank.Jack
 				&& this.hand[i].suit === getOppositeSuit(trumpSuit)) {
 				return true;

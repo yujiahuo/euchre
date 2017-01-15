@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 //the game being played
-var game: Game;
+let game: Game;
 
 //TODO: get rid of none?
 enum Player {
@@ -20,7 +20,7 @@ enum Suit {
 	Spades,
 }
 
-var suitsArray: Suit[] = [Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades];
+let suitsArray: Suit[] = [Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades];
 
 enum Rank {
 	Nine = 9,
@@ -81,12 +81,12 @@ function buildSortedDeck(): Card[] {
 
 //dictionary of cards, keyed by card ID
 //points to the cards we made for the sorted deck
-var DECKDICT: Card[] = [];
-for (var i = 0; i < DECKSIZE; i++) {
+let DECKDICT: Card[] = [];
+for (let i = 0; i < DECKSIZE; i++) {
 	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
 }
 
-var zIndex = 0; //iterated to make sure recently moved cards end up on top
+let zIndex = 0; //iterated to make sure recently moved cards end up on top
 
 /*****************************************************************************
  * Card object

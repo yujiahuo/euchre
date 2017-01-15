@@ -14,7 +14,7 @@ class IdiotAI implements EuchreAI {
 	}
 
 	pickDiscard() {
-		var hand;
+		let hand;
 
 		hand = game.myHand();
 		return hand[0];

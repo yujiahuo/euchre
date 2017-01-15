@@ -283,7 +283,7 @@ describe("getBestCardInHand", function () {
 });
 
 describe("getCardValue", function () {
-	let result: Number;
+	let result: number;
 	let card: Card;
 
 	it("some card", function () {

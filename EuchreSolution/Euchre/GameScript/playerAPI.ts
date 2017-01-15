@@ -13,6 +13,11 @@ function me(): Player {
 }
 
 //**NOT TESTING**
+function amDealer(): boolean {
+	return game.getCurrentPlayer() === game.getDealer();
+}
+
+//**NOT TESTING**
 function isDealer(player: Player): boolean {
 	return player === game.getDealer();
 }
@@ -154,7 +159,7 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
 	let bestCard: Card = cards[0].card;
 	let player: Player = cards[0].player;
 	let trickSuit: Suit = bestCard.suit;
-	let bestValue: Number = getCardValue(bestCard, trickSuit, trump);
+	let bestValue: number = getCardValue(bestCard, trickSuit, trump);
 
 	for (let i = 1; i < cards.length; i++) {
 		if (cards[i].card.suit !== trickSuit && cards[i].card.suit !== trump) {
@@ -177,7 +182,7 @@ function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card {
 	if (hand.length === 1) return hand[0];
 
 	let bestCard: Card = hand[0];
-	let bestValue: Number = getCardValue(bestCard, trickSuit, trump);
+	let bestValue: number = getCardValue(bestCard, trickSuit, trump);
 
 	for (let i = 1; i < hand.length; i++) {
 		let value = getCardValue(hand[i], trickSuit, trump);

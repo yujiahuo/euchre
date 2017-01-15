@@ -37,7 +37,8 @@ class Game {
 	private __noTrump: boolean;
 	private __showTrickHistory: boolean;
 	private __statMode: boolean;
-	private __numGamesToPlay: Number;
+	private __numGamesToPlay: number;
+	private __gameCounter: number;
 	private __messageLevel: MessageLevel;
 	private __aiPlayers: EuchreAI[];
 	private __hasHooman: boolean; //if there is a human player
@@ -114,8 +115,11 @@ class Game {
 	public isStatMode(): boolean {
 		return this.__statMode;
 	}
-	public getNumGamesToPlay(): Number {
+	public getNumGamesToPlay(): number {
 		return this.__numGamesToPlay;
+	}
+	public getGameCounter(): number {
+		return this.__gameCounter;
 	}
 	public getMessageLevel(): MessageLevel {
 		return this.__messageLevel;
@@ -142,9 +146,16 @@ class Game {
 	 ********************************/
 
 	private startPlaying(): void {
+		let playGame: boolean = true;
+
 		this.grabSettings();
 		this.__gameStage = GameStage.NewGame;
-		this.doStep();
+		while (playGame) {
+			this.doStep();
+			if (this.__gameStage === null) {
+				playGame = false
+			}
+		}
 	}
 
 	//TODO: implement these!
@@ -189,9 +200,8 @@ class Game {
 				this.playTrickStep();
 				break;
 			default:
-				return;
+				break;
 		}
-		this.doStep();
 	}
 
 	//#region Setup
@@ -205,8 +215,11 @@ class Game {
 
 		//ai settings
 		this.__statMode = true //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
-		if (this.__statMode) this.__numGamesToPlay = 10;
-		if (this.__statMode) this.__messageLevel = MessageLevel.Game;
+		if (this.__statMode) {
+			this.__numGamesToPlay = 1000;
+			this.__gameCounter = 1;
+			this.__messageLevel = MessageLevel.Game;
+		}
 		//else this.__messageLevel = (document.getElementById("chkStatMode") as HTMLInputElement).checked;
 		this.__aiPlayers = [new DecentAI(), new DecentAI(), new DecentAI(), new DecentAI()];
 		this.__hasHooman = this.__aiPlayers.indexOf(null) > -1;
@@ -447,9 +460,15 @@ class Game {
 
 	private endGame(): void {
 		animShowText("Final score: " + this.__nsScore + " : " + this.__ewScore, MessageLevel.Game);
-		this.__gameStage = null;
-		if (this.isStatMode()) {
+		if (this.isStatMode() && this.__messageLevel < MessageLevel.Multigame) {
 			updateLog(this.logText, true);
+		}
+		if (this.__numGamesToPlay > this.__gameCounter) {
+			this.__gameCounter++;
+			this.__gameStage = GameStage.NewGame;
+		}
+		else {
+			this.__gameStage = null;
 		}
 	}
 

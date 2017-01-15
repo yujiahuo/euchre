@@ -13,11 +13,6 @@ function me(): Player {
 }
 
 //**NOT TESTING**
-function amDealer(): boolean {
-	return game.getCurrentPlayer() === game.getDealer();
-}
-
-//**NOT TESTING**
 function isDealer(player: Player): boolean {
 	return player === game.getDealer();
 }

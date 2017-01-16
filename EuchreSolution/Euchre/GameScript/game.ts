@@ -298,7 +298,7 @@ class Game {
 
 		//see if AI bids
 		suit = getAIBid(aiPlayer, this.__gameStage);
-		if (suit !== null) {
+		if (suit !== null && hasSuit(this.__hands[this.__currentPlayer], suit)) {
 			alone = aiPlayer.chooseGoAlone();
 			this.endBidding(suit, alone);
 			return;
@@ -328,7 +328,7 @@ class Game {
 		this.setTrump(suit, this.__currentPlayer, alone);
 		//if round 1, dealer also needs to discard
 		if (this.__gameStage === GameStage.BidRound1) {
-			this.__hands[this.__dealer].push(this.__trumpCandidateCard);
+			this.addToHand(this.__dealer, this.__trumpCandidateCard);
 			this.__gameStage = GameStage.Discard;
 		}
 		else {
@@ -359,9 +359,14 @@ class Game {
 	}
 
 	private discardCard(toDiscard: Card): void {
-		animShowText(Player[this.__currentPlayer] + " discarded " + toDiscard.id, MessageLevel.Step, 1);
-		this.removeFromHand(this.__dealer, toDiscard);
+		let card: Card;
 
+		if (toDiscard === null || !isInHand(this.__hands[this.__dealer], toDiscard)) {
+			card = this.__hands[this.__dealer][0];
+		}
+		this.removeFromHand(this.__dealer, card);
+
+		animShowText(Player[this.__currentPlayer] + " discarded " + card.id, MessageLevel.Step, 1);
 		this.startTricks();
 	}
 
@@ -376,7 +381,7 @@ class Game {
 
 		card = this.__aiPlayers[this.__currentPlayer].pickCard();
 
-		if (!isValidPlay(hand, card, this.__trickSuitLead)) {
+		if (!isInHand(hand, card) || !isValidPlay(hand, card, this.__trickSuitLead)) {
 			card = getFirstLegalCard(hand);
 		}
 		this.playCard(this.__currentPlayer, card);

@@ -22,7 +22,6 @@ function back(): void {
 //TODO: implement
 function backFromGame(): void {
 	//document.getElementById("cardsContainer").innerHTML = "";
-	animShowText("MEOWMEOWMEOW");
 }
 
 function howToPlay(): void {

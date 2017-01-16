@@ -5,10 +5,10 @@ Planning
 - Clean up UI or whatever
 
 Bugs
-
+- bowers need to be promoted before discard
+- you still apparently have 5 cards when you're discarding. the wrong player is being asked to discard somehow?
 
 ToDo
-- Add thing that lets you play a ton of games at once and tells you the number of wins and total score
 - Enforce rules
 	- When playing a card, make sure the card exists in their hand and that they can legally play it
 - Fix decent AI problems

@@ -58,7 +58,7 @@ class DecentAI implements EuchreAI {
 		let numPlayersPlayed;
 		let playedCards;
 		let lowestWinningCard = null;
-		let lowestWinningValue = 1000;
+		let lowestWinningValue = 9999;
 		let winningValue = 0;
 		let value;
 		let i;

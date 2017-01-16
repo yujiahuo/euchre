@@ -189,10 +189,19 @@ function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card {
 	return bestCard;
 }
 
+function isInHand(hand: Card[], card: Card): boolean {
+	if (!hand || !card) return false;
+
+	for (let i = 1; i < hand.length; i++) {
+		if (hand[i].id === card.id) return true;
+	}
+	return false;
+}
+
 //TODO: do we need this? Rename to worst card in hand and fix?
 function getWorstCard(hand: Card[], trickSuit?: Suit, trump?: Suit, mustBeLegal?: boolean): Card {
 	let worstCard;
-	let worstValue = 1000;
+	let worstValue = 9999;
 	let value;
 
 	for (let i = 0; i < hand.length; i++) {

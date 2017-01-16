@@ -69,18 +69,12 @@ class DecentAI implements EuchreAI {
 
 		numPlayersPlayed = game.getTrickPlayersPlayed();
 		if (numPlayersPlayed === 0) {
-			return getBestCardInHand(this.hand, trickSuit, trumpSuit)[0];
+			return getBestCardInHand(this.hand, trickSuit, trumpSuit);
 		}
 
 		//Find currently winning value
 		playedCards = game.getTrickPlayedCards();
 		winningValue = getCardValue(getBestCardPlayed(playedCards, trumpSuit).card, trumpSuit);
-
-		//I'm the last player
-		if (numPlayersPlayed === 3) {
-			//if partner is winning, sluff
-			//Implement later
-		}
 
 		//If not last player, play the lowest card that can win
 		//If we can't win, then sluff

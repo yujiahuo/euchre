@@ -197,6 +197,7 @@ class Game {
 				this.handleBid();
 				break;
 			case GameStage.Discard:
+				this.__currentPlayer = this.__dealer;
 				if (!this.__aiPlayers[this.__dealer]) {
 					this.letHumanClickCards();
 					return;
@@ -227,7 +228,7 @@ class Game {
 		//ai settings
 		this.__statMode = true //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
 		if (this.__statMode) {
-			this.__numGamesToPlay = 1000;
+			this.__numGamesToPlay = 1;
 			this.__gameCounter = 1;
 			this.__messageLevel = MessageLevel.Multigame;
 		}
@@ -347,7 +348,10 @@ class Game {
 		//for the duration of the hand.
 		//Note: The cards' IDs stay the same
 		rightID = Suit[this.__trumpSuit] + Rank.Jack;
+		console.log(rightID);
+		console.log(DECKDICT[rightID]);
 		DECKDICT[rightID].rank = Rank.Right;
+		console.log(DECKDICT[rightID]);
 		leftID = Suit[getOppositeSuit(this.__trumpSuit)] + Rank.Jack;
 		DECKDICT[leftID].suit = this.__trumpSuit;
 		DECKDICT[leftID].rank = Rank.Left;

@@ -38,11 +38,12 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
    order up a given suit.
    Depends on bidding round */
 function canOrderUpSuit(hand: Card[], suit: Suit): boolean {
+	let trumpCandidateCard = game.getTrumpCandidateCard() as Card;
 	if (game.getGameStage() === GameStage.BidRound1) {
-		if (game.getTrumpCandidateCard().suit !== suit) return false;
+		if (trumpCandidateCard.suit !== suit) return false;
 		if (hasSuit(hand, suit)) return true;
 	} else if (game.getGameStage() === GameStage.BidRound2) {
-		if (game.getTrumpCandidateCard().suit === suit) return false;
+		if (trumpCandidateCard.suit === suit) return false;
 		if (hasSuit(hand, suit)) return true;
 	}
 	return false;
@@ -61,7 +62,7 @@ function numCardsOfSuit(hand: Card[], suit: Suit): number {
 //**NOT TESTING**
 //number of suits you're holding
 function countSuits(): number {
-	let suitArray = [];
+	let suitArray: Suit[] = [];
 	let hand = myHand();
 	for (let i = 0; i < hand.length; i++) {
 		suitArray[hand[i].suit] = 1;
@@ -70,7 +71,7 @@ function countSuits(): number {
 }
 
 //**NOT TESTING**
-function getFirstLegalCard(hand: Card[], suitLead: Suit): Card {
+function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | undefined {
 	for (let i = 0; i < hand.length; i++) {
 		if (isValidPlay(hand, hand[i], suitLead)) {
 			return hand[i];
@@ -125,9 +126,12 @@ function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Ca
 }
 
 //**TESTED**
-function isValidPlay(hand: Card[], card: Card, trickSuit: Suit): boolean {
-	if (card == null) { //double equal will also find undefined
+function isValidPlay(hand: Card[], card?: Card, trickSuit?: Suit): boolean {
+	if (!card) {
 		return false;
+	}
+	if (!trickSuit) {
+		return true;
 	}
 	if (!hasSuit(hand, trickSuit)) {
 		return true;
@@ -158,8 +162,8 @@ function getCardValue(card: Card, trickSuit?: Suit, trump?: Suit): number {
 
 //**TESTED**
 //returns: the best card of the trick and who played it as a PlayedCard
-function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
-	if (cards.length === 0) return;
+function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null {
+	if (cards.length === 0) return null;
 	if (cards.length === 1) return cards[0];
 
 	let bestCard: Card = cards[0].card;
@@ -183,8 +187,8 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard {
 
 //**TESTED**
 //returns: the strongest card in your hand as a Card
-function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card {
-	if (hand.length === 0) return;
+function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card | null {
+	if (hand.length === 0) return null;
 	if (hand.length === 1) return hand[0];
 
 	let bestCard: Card = hand[0];

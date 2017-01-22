@@ -202,6 +202,7 @@ class Game {
 					this.letHumanClickCards();
 					return;
 				}
+				console.log(this.__hands[this.__dealer]);
 				this.discardCard(this.__aiPlayers[this.__dealer].pickDiscard());
 				break;
 			case GameStage.PlayTricks:
@@ -230,7 +231,7 @@ class Game {
 		if (this.__statMode) {
 			this.__numGamesToPlay = 1;
 			this.__gameCounter = 1;
-			this.__messageLevel = MessageLevel.Multigame;
+			this.__messageLevel = MessageLevel.Step;
 		}
 		//else this.__messageLevel = (document.getElementById("chkStatMode") as HTMLInputElement).checked;
 		this.__aiPlayers = [new DecentAI(), new IdiotAI(), new DecentAI(), new IdiotAI()];
@@ -329,6 +330,7 @@ class Game {
 		this.setTrump(suit, this.__currentPlayer, alone);
 		//if round 1, dealer also needs to discard
 		if (this.__gameStage === GameStage.BidRound1) {
+			console.log("meh");
 			this.addToHand(this.__dealer, this.__trumpCandidateCard);
 			this.__gameStage = GameStage.Discard;
 		}
@@ -348,10 +350,7 @@ class Game {
 		//for the duration of the hand.
 		//Note: The cards' IDs stay the same
 		rightID = Suit[this.__trumpSuit] + Rank.Jack;
-		console.log(rightID);
-		console.log(DECKDICT[rightID]);
 		DECKDICT[rightID].rank = Rank.Right;
-		console.log(DECKDICT[rightID]);
 		leftID = Suit[getOppositeSuit(this.__trumpSuit)] + Rank.Jack;
 		DECKDICT[leftID].suit = this.__trumpSuit;
 		DECKDICT[leftID].rank = Rank.Left;
@@ -365,6 +364,7 @@ class Game {
 	private discardCard(toDiscard: Card): void {
 		let card: Card;
 
+		console.log("meh");
 		if (toDiscard === null || !isInHand(this.__hands[this.__dealer], toDiscard)) {
 			card = this.__hands[this.__dealer][0];
 		}

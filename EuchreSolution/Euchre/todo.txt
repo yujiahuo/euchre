@@ -3,14 +3,19 @@ Planning
 - Get all AI stuff working reasonably well
 - Do human stuff
 - Clean up UI or whatever
+- Do enhancements
 
 Bugs
+- ai only bids in round 2
 - bowers need to be promoted before discard
 - you still apparently have 5 cards when you're discarding. the wrong player is being asked to discard somehow?
+- make sure uuuh i forgot what i was writing here
 
 ToDo
 - Enforce rules
 	- When playing a card, make sure the card exists in their hand and that they can legally play it
+- Move and rename init
+- Pass useful stuff to AIs as params
 - Fix decent AI problems
 
 - Implement defend alone

@@ -99,7 +99,6 @@ for (let i = 0; i < DECKSIZE; i++) {
 
 let zIndex = 0; //iterated to make sure recently moved cards end up on top
 
-/*****************************************************************************
- * Card object
- *****************************************************************************/
-
+let seed = Math.floor(Math.random() * (2 ** 32 - 1));
+console.log("Random seed: " + seed);
+let rng = new XorGen(seed);

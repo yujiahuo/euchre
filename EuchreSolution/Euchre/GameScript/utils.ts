@@ -50,7 +50,7 @@ function getNextDealer(prevDealer?: Player): Player {
 	}
 	//otherwise just randomly grab one
 	else {
-		dealer = Math.floor(Math.random() * 4);
+		dealer = rng.nextInRange(0, 3);
 	}
 	return dealer;
 }
@@ -65,7 +65,7 @@ function getShuffledDeck(): Card[] {
 	size = SORTEDDECK.length;
 	deck = [];
 	for (let i = 0; i < size; i++) {
-		deck.splice(Math.floor(Math.random() * (i + 1)), 0, SORTEDDECK[i]);
+		deck.splice(rng.nextInRange(0, i), 0, SORTEDDECK[i]);
 	}
 
 	return deck;

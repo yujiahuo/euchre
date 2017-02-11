@@ -45,7 +45,7 @@ function getOppositeSuit(suit: Suit): Suit {
 }
 
 //**TESTED**
-function getDealer(prevDealer?: Player): Player {
+function getNextDealer(prevDealer?: Player): Player {
 	let dealer;
 
 	//if we have a dealer, get the next dealer

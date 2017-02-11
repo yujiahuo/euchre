@@ -70,11 +70,22 @@ function countSuits(): number {
 }
 
 //**NOT TESTING**
-function getFirstLegalCard(hand: Card[]): Card {
+function getFirstLegalCard(hand: Card[], suitLead: Suit): Card {
 	for (let i = 0; i < hand.length; i++) {
-		if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
+		if (isValidPlay(hand, hand[i], suitLead)) {
 			return hand[i];
 		}
+	}
+}
+
+function getTeam(player: Player): Team {
+	switch (player) {
+		case Player.North:
+		case Player.South:
+			return Team.NorthSouth;
+		case Player.East:
+		case Player.West:
+			return Team.EastWest;
 	}
 }
 

@@ -7,21 +7,21 @@
 /// <reference path="../../AIScript/decentAI.ts" />
 /// <reference path="../../AIScript/idiotAI.ts" />
 
-describe("getDealer", function () {
+describe("getNextDealer", function () {
 	let result;
 
 	it("CURRENT PLAYER: south", function () {
-		result = getDealer(Player.South);
+		result = getNextDealer(Player.South);
 		expect(result).toBe(Player.West);
 	});
 
 	it("CURRENT PLAYER: east", function () {
-		result = getDealer(Player.East);
+		result = getNextDealer(Player.East);
 		expect(result).toBe(Player.South);
 	});
 
 	it("CURRENT PLAYER: no one", function () {
-		result = getDealer();
+		result = getNextDealer();
 		expect(result).toBeGreaterThan(-1);
 		expect(result).toBeLessThan(4);
 	});

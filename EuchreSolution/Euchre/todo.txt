@@ -21,6 +21,7 @@ ToDo
 - Implement defend alone
 - AI difficulties
 - Rename decentAI to something less flattering
+- rename PlayedCards to CardPlayed?
 
 
 

@@ -5,12 +5,16 @@
 //the game being played
 let game: Game;
 
-//TODO: get rid of none?
 enum Player {
 	South,
 	West,
 	North,
 	East,
+}
+
+enum Team {
+	NorthSouth,
+	EastWest,
 }
 
 enum Suit {

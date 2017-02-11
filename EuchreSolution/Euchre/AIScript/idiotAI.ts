@@ -14,10 +14,7 @@ class IdiotAI implements EuchreAI {
 	}
 
 	pickDiscard() {
-		let hand;
-
-		hand = game.myHand();
-		return hand[0];
+		return null;
 	}
 
 	pickTrump() {
@@ -29,7 +26,7 @@ class IdiotAI implements EuchreAI {
 	}
 
 	pickCard() {
-		return getFirstLegalCard(myHand());
+		return null;
 	}
 
 	trickEnd(): void {

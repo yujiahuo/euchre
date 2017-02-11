@@ -60,9 +60,12 @@
     <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="euchre.html" />
     <TypeScriptCompile Include="AIScript\idiotAI.ts" />
+    <TypeScriptCompile Include="GameScript\controller.ts" />
     <TypeScriptCompile Include="GameScript\game.ts" />
+    <TypeScriptCompile Include="GameScript\hand.ts" />
     <TypeScriptCompile Include="GameScript\globs.ts" />
     <TypeScriptCompile Include="GameScript\menuLogic.ts" />
+    <TypeScriptCompile Include="GameScript\trick.ts" />
     <TypeScriptCompile Include="GameScript\utils.ts" />
     <Content Include="Images\cardBack.png" />
     <Content Include="Images\cards.png" />

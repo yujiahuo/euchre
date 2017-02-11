@@ -33,10 +33,8 @@ class Game {
 	private __ewTricksWon: number;
 
 	//trick
+	private __trick: Trick;
 	private __trickNum: number; //what trick we're on
-	private __trickPlayersPlayed: number; //how many players have played this trick
-	private __trickSuitLead: Suit; //the suit that was lead
-	private __trickPlayedCards: PlayedCard[]; //array of cards that have been played this trick so far
 
 	//settings
 	private __sound: boolean;
@@ -87,22 +85,24 @@ class Game {
 		return this.__trickNum;
 	}
 	public getTrickPlayersPlayed(): number {
-		return this.__trickPlayersPlayed;
+		if(this.__trick) return this.__trick.playersPlayed();
 	}
 	public getTrickSuit(): Suit {
-		return this.__trickSuitLead;
+		if (this.__trick) return this.__trick.suitLead();
 	}
 	public getTrickPlayedCards(): PlayedCard[] {
 		let playedCards: PlayedCard[] = [];
 		let card: Card;
 		let cardCopy: Card;
 
-		for (let i = 0; i < this.__trickPlayedCards.length; i++) {
-			card = this.__trickPlayedCards[i].card;
+		if (!this.__trick) return null;
+
+		for (let i = 0; i < this.__trick.cardsPlayed().length; i++) {
+			card = this.__trick.cardsPlayed()[i].card;
 
 			//make deep copy of cards
 			cardCopy = new Card(card.suit, card.rank);
-			playedCards.push({ player: this.__trickPlayedCards[i].player, card: cardCopy });
+			playedCards.push({ player: this.__trick.cardsPlayed()[i].player, card: cardCopy });
 		}
 		return playedCards;
 	}
@@ -202,7 +202,6 @@ class Game {
 					this.letHumanClickCards();
 					return;
 				}
-				console.log(this.__hands[this.__dealer]);
 				this.discardCard(this.__aiPlayers[this.__dealer].pickDiscard());
 				break;
 			case GameStage.PlayTricks:
@@ -210,7 +209,10 @@ class Game {
 					this.letHumanClickCards();
 					return;
 				}
-				this.playTrickStep();
+				if (this.__trick.isFinished()){
+					this.endTrick();
+				}
+				this.__trick.playTrickStep(this.__currentPlayer);
 				break;
 			default:
 				break;
@@ -257,7 +259,7 @@ class Game {
 		this.__ewTricksWon = 0;
 		this.__trickNum = 0;
 
-		this.__dealer = getDealer();
+		this.__dealer = getNextDealer();
 		animPlaceDealerButt()
 
 		this.__deck = getShuffledDeck();
@@ -282,13 +284,6 @@ class Game {
 
 		this.__currentPlayer = nextPlayer(this.__dealer);
 		this.__gameStage = GameStage.BidRound1;
-	}
-
-	//called at the beginning of each trick
-	private initTrick(): void {
-		this.__trickPlayersPlayed = 0;
-		this.__trickSuitLead = null;
-		this.__trickPlayedCards = [];
 	}
 	//#endregion
 
@@ -330,7 +325,6 @@ class Game {
 		this.setTrump(suit, this.__currentPlayer, alone);
 		//if round 1, dealer also needs to discard
 		if (this.__gameStage === GameStage.BidRound1) {
-			console.log("meh");
 			this.addToHand(this.__dealer, this.__trumpCandidateCard);
 			this.__gameStage = GameStage.Discard;
 		}
@@ -364,9 +358,11 @@ class Game {
 	private discardCard(toDiscard: Card): void {
 		let card: Card;
 
-		console.log("meh");
 		if (toDiscard === null || !isInHand(this.__hands[this.__dealer], toDiscard)) {
 			card = this.__hands[this.__dealer][0];
+		}
+		else {
+			card = toDiscard;
 		}
 		this.removeFromHand(this.__dealer, card);
 
@@ -376,31 +372,7 @@ class Game {
 
 	private startTricks(): void {
 		this.__gameStage = GameStage.PlayTricks;
-		this.initTrick();
-	}
-
-	private playTrickStep(): void {
-		let card: Card;
-		let hand: Card[] = this.__hands[this.__currentPlayer];
-
-		card = this.__aiPlayers[this.__currentPlayer].pickCard();
-
-		if (!isInHand(hand, card) || !isValidPlay(hand, card, this.__trickSuitLead)) {
-			card = getFirstLegalCard(hand);
-		}
-		this.playCard(this.__currentPlayer, card);
-
-		this.advanceTrick();
-	}
-
-	private advanceTrick(): void {
-		this.__trickPlayersPlayed++;
-		this.__currentPlayer = nextPlayer(this.__currentPlayer);
-
-		//everyone played, end trick
-		if (this.__trickPlayersPlayed >= 4) {
-			this.endTrick();
-		}
+		this.__trick = new Trick(this.__trumpSuit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
 	}
 
 	private endTrick(): void {
@@ -409,27 +381,19 @@ class Game {
 				this.__aiPlayers[i].trickEnd();
 			}
 		}
-		let trickWinner = getBestCardPlayed(this.__trickPlayedCards, this.__trumpSuit).player;
-		this.scoreTrick(trickWinner);
+		this.scoreTrick();
 		if (this.__trickNum >= 4) {
 			this.endHand();
 		}
 		else {
-			this.initTrick();
-			this.__currentPlayer = trickWinner;
+			this.__currentPlayer = this.__trick.winner();
+			this.__trick = new Trick(this.__trumpSuit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
 			this.__trickNum++;
 		}
 	}
 
-	private playCard(player: Player, card: Card): void {
-		this.removeFromHand(player, card);
-		this.__trickPlayedCards.push({ player: player, card: card });
-		animShowText(Player[player] + " played " + card.id, MessageLevel.Step, 1);
-		//play card, store played card, iterate num players played
-		//check if hand ended, then check if game ended
-	}
-	private scoreTrick(trickWinner: Player): void {
-		if (trickWinner === Player.North || trickWinner === Player.South) {
+	private scoreTrick(): void {
+		if (this.__trick.winningTeam() === Team.NorthSouth) {
 			this.__nsTricksWon++;
 			animShowText("NS won this trick", MessageLevel.Step, 2);
 		}

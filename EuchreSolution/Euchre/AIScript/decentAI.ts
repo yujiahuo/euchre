@@ -6,14 +6,9 @@
 class DecentAI implements EuchreAI {
 	private hand: Card[];
 	private handStrength: number;
-	private trickSuit: Suit;
-	private trumpSuit: Suit;
 
 	init(): void {
 		this.hand = game.myHand();
-		this.trickSuit = game.getTrickSuit();
-		this.trumpSuit = game.getTrumpSuit();
-		this.handStrength = this.calculateHandStrength(this.trumpSuit);
 	}
 
 	chooseOrderUp(): boolean {
@@ -22,26 +17,28 @@ class DecentAI implements EuchreAI {
 	}
 
 	pickDiscard(): Card {
-		return getWorstCard(this.hand, this.trickSuit, this.trumpSuit);
+		let trumpSuit = game.getTrumpSuit();
+		return getWorstCard(this.hand, null, trumpSuit);
 	}
 
 	pickTrump(): Suit {
-		if (this.trumpSuit !== Suit.Clubs) {
+		let trumpCandidateSuit = game.getTrumpCandidateCard().suit;
+		if (trumpCandidateSuit !== Suit.Clubs) {
 			this.handStrength = this.calculateHandStrength(Suit.Clubs);
 			if (this.handStrength > 2) return Suit.Clubs;
 		}
 
-		if (this.trumpSuit !== Suit.Diamonds) {
+		if (trumpCandidateSuit !== Suit.Diamonds) {
 			this.handStrength = this.calculateHandStrength(Suit.Diamonds);
 			if (this.handStrength > 2) return Suit.Diamonds;
 		}
 
-		if (this.trumpSuit !== Suit.Spades) {
+		if (trumpCandidateSuit !== Suit.Spades) {
 			this.handStrength = this.calculateHandStrength(Suit.Spades);
 			if (this.handStrength > 2) return Suit.Spades;
 		}
 
-		if (this.trumpSuit !== Suit.Hearts) {
+		if (trumpCandidateSuit !== Suit.Hearts) {
 			this.handStrength = this.calculateHandStrength(Suit.Hearts);
 			if (this.handStrength > 2) return Suit.Hearts;
 		}

@@ -51,7 +51,7 @@ class DecentAI implements EuchreAI {
 	}
 
 	chooseGoAlone(): boolean {
-		if (this.handStrength > 150) return true;
+		if (this.handStrength > 4) return true;
 		return false;
 	}
 

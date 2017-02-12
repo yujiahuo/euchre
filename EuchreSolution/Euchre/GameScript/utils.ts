@@ -75,6 +75,22 @@ function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
 	}
 }
 
+//function createHands(idArray: string[][]) {
+
+//}
+
+//function createHand(idArray: string[]) {
+//	let hand: Card[][];
+//	let id: string;
+//	let suit: Suit;
+//	let rank: Rank;
+
+//	for (id of idArray) {
+
+//	}
+	
+//}
+
 //**NOT TESTING**
 //returns: bid suit
 function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit | null {

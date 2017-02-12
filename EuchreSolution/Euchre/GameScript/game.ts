@@ -227,7 +227,11 @@ class Game {
 				if (this.__trick.isFinished()) {
 					this.endTrick();
 				}
-				this.__trick.playTrickStep(this.__currentPlayer);
+
+				let card = aiPlayer.pickCard();
+				card = this.__trick.playTrickStep(this.__currentPlayer, card);
+				this.removeFromHand(this.__currentPlayer, card);
+				this.__currentPlayer = nextPlayer(this.__currentPlayer);
 				break;
 			default:
 				break;

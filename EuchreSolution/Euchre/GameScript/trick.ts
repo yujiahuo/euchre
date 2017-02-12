@@ -38,41 +38,30 @@
 
 	/* Private functions */
 	private playCard(player: Player, card: Card): void {
-		let hand: Card[] = this.__hands[player];
-
 		if (this.isFinished()) return;
-
-		if (!isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
-			card = getFirstLegalCard(hand, this.__suitLead) as Card;
-		}
 		this.__playedCards.push({ player: player, card: card });
 
 		animShowText(Player[player] + " played " + card.id, MessageLevel.Step, 1);
 	}
 
 	/* Public functions */
-	public playTrickStep(player: Player): void {
-		let card: Card | null;
+	public playTrickStep(player: Player, card: Card | null): Card {
 		let hand: Card[] = this.__hands[player];
-
-		if (this.isFinished()) return;
-
-		let aiPlayer = this.__aiPlayers[player];
-		if (aiPlayer) {
-			card = aiPlayer.pickCard();
-		} else {
-			//TODO: implement this
-			card = null;
-		}
 
 		if (!card || !isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
 			card = getFirstLegalCard(hand, this.__suitLead) as Card;
 		}
+
+		if (this.__playedCards.length === 0) {
+			this.__suitLead = card.suit;
+		}
 		this.playCard(player, card);
+
+		return card;
 	}
 
 	public isFinished(): boolean {
-		if (this.__alone) return this.__playedCards.length >= 4;
+		if (!this.__alone) return this.__playedCards.length >= 4;
 		else return this.__playedCards.length >= 3;
 	}
 

@@ -1,6 +1,5 @@
 /******************************************************
-/* Never bids
-/* Plays its first legal move
+/* Actually it's just lazy
 /*******************************************************/
 
 class IdiotAI implements EuchreAI {

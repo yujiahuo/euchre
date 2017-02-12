@@ -18,7 +18,7 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 	let cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
 	cardsContainer.appendChild(card);
 
-	card.style.zIndex = zIndex;
+	card.style.zIndex = zIndex.toString();
 	zIndex++;
 
 	return card;
@@ -103,6 +103,8 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 			top = "252px";
 			left = (cardPos * 20) + (600) + "px";
 			break;
+		default:
+			return;
 	}
 
 	animMoveCard(cardID, top, left);
@@ -112,17 +114,11 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 function animTakeTrump(toDiscardID: string): void {
 	if (game.isStatMode()) return;
 
-	let top;
-	let left;
-	let toDiscardElem;
-	let trumpElem;
-	let trumpCandidate;
-
-	trumpCandidate = game.getTrumpCandidateCard();
-	toDiscardElem = document.getElementById(toDiscardID);
-	trumpElem = document.getElementById(trumpCandidate.id);
-	top = toDiscardElem.style.top;
-	left = toDiscardElem.style.left;
+	let trumpCandidate = game.getTrumpCandidateCard() as Card;
+	let toDiscardElem = document.getElementById(toDiscardID) as HTMLElement;
+	let trumpElem = document.getElementById(trumpCandidate.id) as HTMLElement;
+	let top = toDiscardElem.style.top;
+	let left = toDiscardElem.style.left;
 
 	toDiscardElem.classList.add("cardBack");
 	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
@@ -271,13 +267,15 @@ function animWinTrick(player: Player, cards: Card[]): void {
 			top = "252px";
 			left = "600px";
 			break;
+		default:
+			return;
 	}
 
 	for (let i = 0; i < 4; i++) {
 		if (cards[i] === null) {
 			continue;
 		}
-		cardElem = document.getElementById(cards[i].id);
+		cardElem = document.getElementById(cards[i].id) as HTMLElement;
 		cardElem.style.top = top;
 		cardElem.style.left = left;
 		cardElem.classList.add("cardBack");
@@ -291,7 +289,7 @@ function animRemoveKitty(): void {
 	let elem;
 	let trumpCandidate;
 
-	trumpCandidate = game.getTrumpCandidateCard();
+	trumpCandidate = game.getTrumpCandidateCard() as Card;
 	elem = document.getElementById("deck");
 	setTimeout(animHideCard, 300, elem);
 	if (trumpCandidate.suit !== game.getTrumpSuit()) { //trump candidate wasn't picked up

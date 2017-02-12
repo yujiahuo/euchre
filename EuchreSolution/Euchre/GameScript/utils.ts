@@ -57,14 +57,9 @@ function getNextDealer(prevDealer?: Player): Player {
 
 //**TESTED**
 function getShuffledDeck(): Card[] {
-	let deck;
-	let pos;
-	let temp;
-	let size;
+	let deck: Card[] = [];
 
-	size = SORTEDDECK.length;
-	deck = [];
-	for (let i = 0; i < size; i++) {
+	for (let i = 0; i < SORTEDDECK.length; i++) {
 		deck.splice(rng.nextInRange(0, i), 0, SORTEDDECK[i]);
 	}
 
@@ -73,14 +68,10 @@ function getShuffledDeck(): Card[] {
 
 //**TESTED**
 function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
-	let player, cardPos, card;
-
 	for (let i = 0; i < 20; i++) {
-		player = (dealer + i) % 4;
-
-		cardPos = Math.floor(i / 4);
-		card = deck.pop();
-		hands[player][cardPos] = card;
+		let player = (dealer + i) % 4;
+		let cardPos = Math.floor(i / 4);
+		hands[player][cardPos] = deck.pop() as Card;
 	}
 }
 

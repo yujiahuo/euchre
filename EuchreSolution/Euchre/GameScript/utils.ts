@@ -59,8 +59,12 @@ function getNextDealer(prevDealer?: Player): Player {
 function getShuffledDeck(): Card[] {
 	let deck: Card[] = [];
 
-	for (let i = 0; i < SORTEDDECK.length; i++) {
-		deck.splice(rng.nextInRange(0, i), 0, SORTEDDECK[i]);
+	for (let i = 0; i < DECKSIZE; i++) {
+		let j = rng.nextInRange(0, i);
+		if (j !== i) {
+			deck[i] = deck[j];
+		}
+		deck[j] = SORTEDDECK[i];
 	}
 
 	return deck;

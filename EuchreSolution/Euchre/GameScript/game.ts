@@ -13,6 +13,8 @@ class Game {
 	private __nsTotalScore: number;
 	private __ewTotalScore: number;
 
+	private __startTime: number;
+
 	//game
 	private __currentPlayer: Player;
 	private __nsScore: number; //north south
@@ -467,6 +469,7 @@ class Game {
 			this.__gameStage = GameStage.OutsideGame;
 			animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
 			animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
+			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
 		}
 	}
 
@@ -493,6 +496,7 @@ class Game {
 	 ********************************/
 
 	public start(): void {
+		this.__startTime = performance.now();
 		this.startPlaying();
 	}
 }

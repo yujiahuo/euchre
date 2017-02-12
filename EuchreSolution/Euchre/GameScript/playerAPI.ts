@@ -214,8 +214,8 @@ function isInHand(hand: Card[], card: Card): boolean {
 }
 
 //TODO: do we need this? Rename to worst card in hand and fix?
-function getWorstCard(hand: Card[], trickSuit?: Suit, trump?: Suit, mustBeLegal?: boolean): Card {
-	let worstCard;
+function getWorstCard(hand: Card[], trickSuit?: Suit, trump?: Suit, mustBeLegal?: boolean): Card | null {
+	let worstCard = null;
 	let worstValue = 9999;
 	let value;
 

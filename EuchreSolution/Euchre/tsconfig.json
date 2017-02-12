@@ -2,6 +2,10 @@
 	"compilerOptions": {
 		"target": "es5",
 		"sourceMap": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"alwaysStrict": true,
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true
 	}
 }

@@ -5,11 +5,11 @@
 	"command": "tsc",
 	"isShellCommand": true,
 	"args": [
-		"-w",
-		"-p",
+		"--watch",
+		"--project",
 		"./EuchreSolution/Euchre"
 	],
 	"showOutput": "silent",
-	"isWatching": true,
+	"isBackground": true,
 	"problemMatcher": "$tsc-watch"
 }

@@ -175,7 +175,11 @@ class Game {
 	}
 
 	//TODO: implement these!
-	private letHumanBid(param: any): void { }
+	private letHumanBid(stage: GameStage.BidRound1 | GameStage.BidRound2): void {
+		if (stage == GameStage.BidRound1) {
+
+		}
+	}
 	private letHumanClickCards(): void { }
 
 	private doStep(): void {
@@ -192,7 +196,7 @@ class Game {
 			case GameStage.BidRound1:
 				aiPlayer = this.__aiPlayers[this.__currentPlayer];
 				if (!aiPlayer) {
-					this.letHumanBid(1);
+					this.letHumanBid(GameStage.BidRound1);
 					return;
 				}
 				this.handleBid(aiPlayer);
@@ -200,7 +204,7 @@ class Game {
 			case GameStage.BidRound2:
 				aiPlayer = this.__aiPlayers[this.__currentPlayer];
 				if (!aiPlayer) {
-					this.letHumanBid(2);
+					this.letHumanBid(GameStage.BidRound2);
 					return;
 				}
 				this.handleBid(aiPlayer);

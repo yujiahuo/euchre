@@ -1,6 +1,6 @@
 ﻿class Hand {
-	private __deck: Card[]; //contains the shuffled deck or what's left of it after dealing
-	private __hands: Card[][]; //2d array of everyone's hands
+	//private __deck: Card[]; //contains the shuffled deck or what's left of it after dealing
+	//private __hands: Card[][]; //2d array of everyone's hands
 	private __trickNum: number; //what trick we're on
 	private __gameStage: GameStage; //bidding round 1, bidding round 2, or trick playing
 	private __playersBid: number; //number of players who have bid so far

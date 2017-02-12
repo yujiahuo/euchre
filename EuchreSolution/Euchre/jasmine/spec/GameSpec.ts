@@ -28,9 +28,7 @@ describe("getNextDealer", function () {
 });
 
 describe("getShuffledDeck", function () {
-	let result;
-
-	result = getShuffledDeck();
+	let result = getShuffledDeck();
 
 	it("gets right size deck", function () {
 		expect(result.length).toBe(24);
@@ -39,15 +37,12 @@ describe("getShuffledDeck", function () {
 });
 
 describe("dealHands", function () {
-	let deck;
-	let hands;
-
-	hands = new Array(4);
+	let hands = new Array(4);
 	for (let i = 0; i < 4; i++) {
 		hands[i] = new Array(5);
 	}
 
-	deck = getShuffledDeck();
+	let deck = getShuffledDeck();
 	dealHands(deck, hands, 0);
 
 	it("deals hands out", function () {
@@ -62,11 +57,8 @@ describe("dealHands", function () {
 describe("greaterCard", function () {
 	let card1;
 	let card2;
-	let trickSuit;
-	let trump;
-
-	trickSuit = Suit.Spades;
-	trump = Suit.Hearts;
+	let trickSuit = Suit.Spades;
+	let trump = Suit.Hearts;
 
 	it("FOLLOW SUIT: neither, TRUMP: neither", function () {
 		card1 = new Card(Suit.Clubs, Rank.Nine);

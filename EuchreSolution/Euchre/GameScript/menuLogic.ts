@@ -3,7 +3,10 @@
 ***********************************/
 
 function newGame(): void {
-	document.getElementById("menu").style.display = "none";
+	let menu = document.getElementById("menu");
+	if (menu) {
+		menu.style.display = "none";
+	}
 	game = new Game();
 	game.start();
 }
@@ -33,31 +36,48 @@ function howToPlay(): void {
 * Display utilities
 ***********************************/
 function appearMenu(menuName: string): void {
-	document.getElementById("menu").classList.add(menuName + "Active");
+	let menu = document.getElementById("menu");
+	if (menu) {
+		menu.classList.add(menuName + "Active");
+	}
 	setTimeout(toggleOpacity, 100, menuName + "MenuItems", 1);
 	toggleDisplay(menuName + "MenuItems", true);
 }
 
 function disappearMenu(menuName: string): void {
-	document.getElementById("menu").classList.remove(menuName + "Active");
-	document.getElementById(menuName + "MenuItems").style.opacity = "0";
+	let menu = document.getElementById("menu");
+	if (menu) {
+		menu.classList.remove(menuName + "Active");
+	}
+	let menuItems = document.getElementById(menuName + "MenuItems");
+	if (menuItems) {
+		menuItems.style.opacity = "0";
+	}
 	setTimeout(toggleDisplay, 300, menuName + "MenuItems", 0);
 }
 
 function toggleDisplay(elemID: string, on: boolean): void {
+	let element = document.getElementById(elemID);
+	if (!element) {
+		return;
+	}
 	if (on) {
-		document.getElementById(elemID).style.display = "inline";
+		element.style.display = "inline";
 	}
 	else {
-		document.getElementById(elemID).style.display = "none";
+		element.style.display = "none";
 	}
 }
 
 function toggleOpacity(elemID: string, on: boolean): void {
+	let element = document.getElementById(elemID);
+	if (!element) {
+		return;
+	}
 	if (on) {
-		document.getElementById(elemID).style.opacity = "1";
+		element.style.opacity = "1";
 	}
 	else {
-		document.getElementById(elemID).style.opacity = "0";
+		element.style.opacity = "0";
 	}
 }

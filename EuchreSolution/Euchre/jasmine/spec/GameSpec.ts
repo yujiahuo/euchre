@@ -142,7 +142,7 @@ describe("hasSuit", function () {
 describe("getBestCardPlayed", function () {
 	let playedCards: PlayedCard[]
 	let trumpSuit: Suit = Suit.Spades
-	let result: PlayedCard;
+	let result: PlayedCard | null;
 
 	it("first player nails it, everyone follows suit", function () {
 		playedCards = [];
@@ -152,7 +152,10 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
 		result = getBestCardPlayed(playedCards, trumpSuit);
-		expect(result.player).toBe(Player.South);
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.player).toBe(Player.South);
+		}
 	});
 
 	it("no one can follow suit or trump", function () {
@@ -163,7 +166,10 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.East, card: new Card(Suit.Diamonds, Rank.Jack) });
 
 		result = getBestCardPlayed(playedCards, trumpSuit);
-		expect(result.player).toBe(Player.South);
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.player).toBe(Player.South);
+		}
 	});
 
 	it("someone follows suit with higher card", function () {
@@ -174,7 +180,10 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Ten) });
 
 		result = getBestCardPlayed(playedCards, trumpSuit);
-		expect(result.player).toBe(Player.West);
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.player).toBe(Player.West);
+		}
 	});
 
 	it("someone trumps", function () {
@@ -185,7 +194,10 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
 		result = getBestCardPlayed(playedCards, trumpSuit);
-		expect(result.player).toBe(Player.West);
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.player).toBe(Player.West);
+		}
 	});
 
 	it("someone overtrumps", function () {
@@ -196,7 +208,10 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
 		result = getBestCardPlayed(playedCards, trumpSuit);
-		expect(result.player).toBe(Player.North);
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.player).toBe(Player.North);
+		}
 	});
 
 	it("players play in different order", function () {
@@ -207,14 +222,17 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Jack) });
 
 		result = getBestCardPlayed(playedCards, trumpSuit);
-		expect(result.player).toBe(Player.East);
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.player).toBe(Player.East);
+		}
 	});
 
 });
 
 describe("getBestCardInHand", function () {
 	let hand: Card[];
-	let result: Card;
+	let result: Card | null;
 
 	it("all same suit hand", function () {
 		hand = [
@@ -226,7 +244,10 @@ describe("getBestCardInHand", function () {
 		];
 
 		result = getBestCardInHand(hand);
-		expect(result.id).toBe("Spades13");
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.id).toBe("Spades13");
+		}
 	});
 
 	it("one trump", function () {
@@ -238,8 +259,11 @@ describe("getBestCardInHand", function () {
 			new Card(Suit.Spades, Rank.King),
 		];
 
-		result = getBestCardInHand(hand,null,Suit.Diamonds);
-		expect(result.id).toBe("Diamonds9");
+		result = getBestCardInHand(hand, undefined, Suit.Diamonds);
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.id).toBe("Diamonds9");
+		}
 	});
 
 	it("one card follows suit", function () {
@@ -252,7 +276,10 @@ describe("getBestCardInHand", function () {
 		];
 
 		result = getBestCardInHand(hand, Suit.Hearts);
-		expect(result.id).toBe("Hearts10");
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.id).toBe("Hearts10");
+		}
 	});
 
 	it("can follow suit and has trump", function () {
@@ -265,7 +292,10 @@ describe("getBestCardInHand", function () {
 		];
 
 		result = getBestCardInHand(hand, Suit.Hearts, Suit.Diamonds);
-		expect(result.id).toBe("Diamonds9");
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.id).toBe("Diamonds9");
+		}
 	});
 
 	it("can't follow suit or trump", function () {
@@ -278,7 +308,10 @@ describe("getBestCardInHand", function () {
 		];
 
 		result = getBestCardInHand(hand, Suit.Hearts, Suit.Diamonds);
-		expect(result.id).toBe("Spades13");
+		expect(result).toBeDefined();
+		if (result) {
+			expect(result.id).toBe("Spades13");
+		}
 	});
 });
 
@@ -300,7 +333,7 @@ describe("getCardValue", function () {
 
 	it("card that is trump", function () {
 		card = new Card(Suit.Spades, Rank.King)
-		result = getCardValue(card, null, Suit.Spades);
+		result = getCardValue(card, undefined, Suit.Spades);
 		expect(result).toBe(1013);
 	});
 

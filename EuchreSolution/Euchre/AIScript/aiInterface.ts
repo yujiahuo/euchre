@@ -19,12 +19,12 @@ interface EuchreAI {
 	//Bidding round 1, if trump is ordered up to you, pick a card to discard
 	//Params: none
 	//Returns: Card or null
-	pickDiscard(): Card;
+	pickDiscard(): Card | null;
 
 	//Bidding round 2, choose from the remaining suits or pass
 	//Params: none
 	//Returns: Suit or null
-	pickTrump(): Suit;
+	pickTrump(): Suit | null;
 
 	//Called at any bidding round after you've determined trump
 	//Return true if going alone
@@ -35,7 +35,7 @@ interface EuchreAI {
 	//Your turn to play a card
 	//Params: none
 	//Returns: Card or null
-	pickCard(): Card;
+	pickCard(): Card | null;
 
 	//Called at the end of each trick
 	//Params: An array of players and the cards they played, in play order

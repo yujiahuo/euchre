@@ -9,8 +9,6 @@ function nextPlayer(currentPlayer: Player): Player {
 			return Player.East;
 		case Player.East:
 			return Player.South;
-		default:
-			return null;
 	}
 }
 
@@ -25,8 +23,6 @@ function getPartner(player: Player): Player {
 			return Player.South;
 		case Player.East:
 			return Player.West;
-		default:
-			return null;
 	}
 }
 
@@ -90,17 +86,18 @@ function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
 
 //**NOT TESTING**
 //returns: bid suit
-function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit {
+function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit | null {
 	let bidSuit;
 
 	if (stage === GameStage.BidRound1) { //bidding round 1
 		if (aiPlayer.chooseOrderUp()) {
-			return game.getTrumpCandidateCard().suit;
+			let trumpCandidateCard = game.getTrumpCandidateCard() as Card;
+			return trumpCandidateCard.suit;
 		}
 	}
 	else if (stage === GameStage.BidRound2) { //bidding round 2
 		bidSuit = aiPlayer.pickTrump();
-		if (bidSuit !== undefined) {
+		if (bidSuit) {
 			return bidSuit;
 		}
 	}

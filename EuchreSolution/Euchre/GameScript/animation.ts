@@ -15,7 +15,8 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 		card.classList.add("cardBack");
 	}
 
-	document.getElementById("cardsContainer").appendChild(card);
+	let cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
+	cardsContainer.appendChild(card);
 
 	card.style.zIndex = zIndex;
 	zIndex++;
@@ -44,13 +45,14 @@ function animDeal(hands: Card[][]): void {
 	let cardID: string;
 	let flippedUp: boolean;
 	let dealer: Player;
+	let trumpCandidateCard = game.getTrumpCandidateCard() as Card
 
 	dealer = game.getDealer();
 	player = nextPlayer(dealer);
 	delay = 0;
 
 	makeCardElem("deck", false);
-	makeCardElem(game.getTrumpCandidateCard().id, false);
+	makeCardElem(trumpCandidateCard.id, false);
 
 	for (let i = 0; i < hands.length; i++) {
 		flippedUp = (!game.getAIPlayer(player) || game.isOpenHands());
@@ -77,7 +79,7 @@ function animDeal(hands: Card[][]): void {
 		player = (player + 1) % 4;
 	}
 
-	setTimeout(animFlipCard, 1000, game.getTrumpCandidateCard().id);
+	setTimeout(animFlipCard, 1000, trumpCandidateCard.id);
 }
 
 function animDealSingle(player: Player, cardID: string, cardPos: number): void {
@@ -142,7 +144,8 @@ function animPlaceDealerButt(): void {
 	if (button === null) {
 		button = document.createElement("div");
 		button.id = "dealerButton";
-		document.getElementById("gameSpace").appendChild(button);
+		let gameSpace = document.getElementById("gameSpace") as HTMLElement;
+		gameSpace.appendChild(button);
 	}
 	switch (game.getDealer()) {
 		case Player.South:
@@ -207,8 +210,8 @@ function animSortHand(hand: Card[]): void {
 function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 	if (game.isStatMode()) return;
 
-	let top: string;
-	let left: string;
+	let top = "";
+	let left = "";
 
 	if (flipCard && !game.isOpenHands()) animFlipCard(cardID);
 
@@ -238,7 +241,10 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 function animFlipCard(cardID: string): void {
 	if (game.isStatMode()) return;
 
-	document.getElementById(cardID).classList.toggle("cardBack");
+	let cardElement = document.getElementById(cardID);
+	if (cardElement) {
+		cardElement.classList.toggle("cardBack");
+	}
 }
 
 function animWinTrick(player: Player, cards: Card[]): void {
@@ -294,12 +300,12 @@ function animRemoveKitty(): void {
 	}
 }
 
-function animHidePartnerHand(hands: Card[][]): void {
+function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 	if (game.isStatMode()) return;
 
-	let player = getPartner(game.getAlonePlayer());
+	let player = getPartner(alonePlayer);
 	for (let i = 0; i < hands[player].length; i++) {
-		animHideCard(document.getElementById(hands[player][i].id));
+		animHideCard(document.getElementById(hands[player][i].id) as HTMLElement);
 	}
 }
 
@@ -311,9 +317,14 @@ function animHideCard(cardElem: HTMLElement): void {
 
 function animClearTable(): void {
 	if (game.isStatMode()) return;
-	document.getElementById("cardsContainer").innerHTML = "";
+
+	let cardsContainer = document.getElementById("cardsContainer")
+	if (cardsContainer) {
+		cardsContainer.innerHTML = "";
+	}
 }
 
+/*
 //let human player poke the buttons
 function animEnableBidding(hand: Card[]): void {
 	if (game.isStatMode()) return;
@@ -360,6 +371,7 @@ function animDisableBidding(): void {
 	document.getElementById("alone").style.backgroundColor = "green";
 }
 
+
 //flips a button on or off
 //needs to be generic but for now flips the 'go alone' button
 function animFlipButton(on: boolean): void {
@@ -372,6 +384,7 @@ function animFlipButton(on: boolean): void {
 		document.getElementById("alone").style.backgroundColor = "green";
 	}
 }
+*/
 
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
 	let allowedLevel: MessageLevel = game.getMessageLevel();
@@ -400,6 +413,9 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 }
 function updateLog(text: string, overwrite?: boolean): void {
 	let div = document.getElementById("sidebarText");
+	if (!div) {
+		return;
+	}
 	if (overwrite) {
 		div.innerHTML = text;
 	} else {
@@ -410,6 +426,9 @@ function updateLog(text: string, overwrite?: boolean): void {
 
 function animShowTextTop(text: string, overwrite?: boolean): void {
 	let div = document.getElementById("sidebarTop");
+	if (!div) {
+		return;
+	}
 	if (overwrite) {
 		div.innerHTML = "";
 	}
@@ -417,9 +436,15 @@ function animShowTextTop(text: string, overwrite?: boolean): void {
 }
 
 function disableActions(): void {
-	document.getElementById("blanket").style.display = "inline";
+	let blanket = document.getElementById("blanket");
+	if (blanket) {
+		blanket.style.display = "inline";
+	}
 }
 
 function enableActions(): void {
-	document.getElementById("blanket").style.display = "none";
+	let blanket = document.getElementById("blanket");
+	if (blanket) {
+		blanket.style.display = "none";
+	}
 }

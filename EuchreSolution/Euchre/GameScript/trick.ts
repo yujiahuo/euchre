@@ -1,16 +1,16 @@
 ﻿class Trick {
-	private __suitLead: Suit = null; //the suit that was lead
+	private __suitLead: Suit | undefined = undefined; //the suit that was lead
 	private __playedCards: PlayedCard[] = []; //array of cards that have been played this trick so far
-	private __trumpSuit: Suit = null; //set in constructor
+	private __trumpSuit: Suit; //set in constructor
 	private __alone: boolean = false; //set in constructor
 	private __hands: Card[][];
-	private __aiPlayers: EuchreAI[];
+	private __aiPlayers: (EuchreAI | null)[];
 
 	/* Properties */
 	public playersPlayed(): number {
 		return this.__playedCards.length;
 	}
-	public suitLead(): Suit {
+	public suitLead(): Suit | undefined {
 		return this.__suitLead;
 	}
 	public cardsPlayed(): PlayedCard[] {
@@ -29,7 +29,7 @@
 	}
 
 	/* constructor */
-	constructor(trumpSuit: Suit, alone: boolean, hands: Card[][], aiPlayers: EuchreAI[]) {
+	constructor(trumpSuit: Suit, alone: boolean, hands: Card[][], aiPlayers: (EuchreAI | null)[]) {
 		this.__trumpSuit = trumpSuit;
 		this.__alone = alone;
 		this.__hands = hands;
@@ -43,7 +43,7 @@
 		if (this.isFinished()) return;
 
 		if (!isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
-			card = getFirstLegalCard(hand, this.__suitLead);
+			card = getFirstLegalCard(hand, this.__suitLead) as Card;
 		}
 		this.__playedCards.push({ player: player, card: card });
 
@@ -52,16 +52,21 @@
 
 	/* Public functions */
 	public playTrickStep(player: Player): void {
-		let card: Card;
+		let card: Card | null;
 		let hand: Card[] = this.__hands[player];
 
 		if (this.isFinished()) return;
 
+		let aiPlayer = this.__aiPlayers[player];
+		if (aiPlayer) {
+			card = aiPlayer.pickCard();
+		} else {
+			//TODO: implement this
+			card = null;
+		}
 
-		card = this.__aiPlayers[player].pickCard();
-
-		if (!isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
-			card = getFirstLegalCard(hand, this.__suitLead);
+		if (!card || !isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
+			card = getFirstLegalCard(hand, this.__suitLead) as Card;
 		}
 		this.playCard(player, card);
 	}
@@ -71,14 +76,21 @@
 		else return this.__playedCards.length >= 3;
 	}
 
-	public winningTeam(): Team {
-		let winningPlayer: Player;
+	public winningTeam(): Team | null {
+		let bestCardPlayed = getBestCardPlayed(this.__playedCards, this.__trumpSuit);
+		if (!bestCardPlayed) {
+			return null;
+		}
 
-		winningPlayer = getBestCardPlayed(this.__playedCards, this.__trumpSuit).player;
-		return getTeam(winningPlayer);
+		return getTeam(bestCardPlayed.player);
 	}
 
-	public winner(): Player {
-		return getBestCardPlayed(this.__playedCards, this.__trumpSuit).player;
+	public winner(): Player | null {
+		let bestCardPlayed = getBestCardPlayed(this.__playedCards, this.__trumpSuit);
+		if (!bestCardPlayed) {
+			return null;
+		}
+
+		return bestCardPlayed.player;
 	}
 }

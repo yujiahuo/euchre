@@ -23,11 +23,11 @@ class Game {
 	private __gameStage: GameStage; //bidding round 1, bidding round 2, or trick playing
 	private __playersBid: number; //number of players who have bid so far
 	private __hands: Card[][]; //2d array of everyone's hands
-	private __trumpCandidateCard: Card; //turned up card
-	private __trumpSuit: Suit;	//current trump suit
+	private __trumpCandidateCard: Card | undefined; //turned up card
+	private __trumpSuit: Suit | undefined;	//current trump suit
 	private __dealer: Player;
-	private __maker: Player; //player who called trump
-	private __alonePlayer: Player;
+	private __maker: Player | undefined; //player who called trump
+	private __alonePlayer: Player | undefined;
 	private __numPlayers: number; //players playing this hand; this is usually 4 but can be 3 or 2 depending on loners
 	private __nsTricksWon: number;
 	private __ewTricksWon: number;
@@ -44,7 +44,7 @@ class Game {
 	private __showTrickHistory: boolean;
 	private __statMode: boolean;
 	private __messageLevel: MessageLevel;
-	private __aiPlayers: EuchreAI[];
+	private __aiPlayers: (EuchreAI | null)[];
 	private __hasHooman: boolean; //if there is a human player
 	//#endregion
 
@@ -63,19 +63,22 @@ class Game {
 	public getEwScore(): number {
 		return this.__ewScore;
 	}
-	public getTrumpCandidateCard(): Card {
+	public getTrumpCandidateCard(): Card | undefined {
+		if (!this.__trumpCandidateCard) {
+			return;
+		}
 		return new Card(this.__trumpCandidateCard.suit, this.__trumpCandidateCard.rank);
 	}
-	public getTrumpSuit(): Suit {
+	public getTrumpSuit(): Suit | undefined {
 		return this.__trumpSuit;
 	}
 	public getDealer(): Player {
 		return this.__dealer;
 	}
-	public getMaker(): Player {
+	public getMaker(): Player | undefined {
 		return this.__maker;
 	}
-	public getAlonePlayer(): Player {
+	public getAlonePlayer(): Player | undefined {
 		return this.__alonePlayer;
 	}
 	public getNumPlayers(): number {
@@ -84,10 +87,10 @@ class Game {
 	public getTrickNum(): number {
 		return this.__trickNum;
 	}
-	public getTrickPlayersPlayed(): number {
-		if(this.__trick) return this.__trick.playersPlayed();
+	public getTrickPlayersPlayed(): number | undefined {
+		if (this.__trick) return this.__trick.playersPlayed();
 	}
-	public getTrickSuit(): Suit {
+	public getTrickSuit(): Suit | undefined {
 		if (this.__trick) return this.__trick.suitLead();
 	}
 	public getTrickPlayedCards(): PlayedCard[] {
@@ -95,7 +98,7 @@ class Game {
 		let card: Card;
 		let cardCopy: Card;
 
-		if (!this.__trick) return null;
+		if (!this.__trick) return [];
 
 		for (let i = 0; i < this.__trick.cardsPlayed().length; i++) {
 			card = this.__trick.cardsPlayed()[i].card;
@@ -124,11 +127,11 @@ class Game {
 	public getMessageLevel(): MessageLevel {
 		return this.__messageLevel;
 	}
-	public getAIPlayer(player: Player): EuchreAI {
+	public getAIPlayer(player: Player): EuchreAI | null {
 		return (this.__aiPlayers[player]);
 	}
 	public myHand(): Card[] {
-		let hand = [];
+		let hand: Card[] = [];
 		let card;
 
 		for (let i = 0; i < this.__hands[this.__currentPlayer].length; i++) {
@@ -151,8 +154,8 @@ class Game {
 		this.initPlay();
 		while (playGame) {
 			this.doStep();
-			if (this.__gameStage === null) {
-				playGame = false
+			if (this.__gameStage === GameStage.OutsideGame) {
+				playGame = false;
 			}
 		}
 		if (this.isStatMode()) {
@@ -174,6 +177,8 @@ class Game {
 	private letHumanClickCards(): void { }
 
 	private doStep(): void {
+		let aiPlayer: EuchreAI | null;
+
 		animShowText("STAGE: " + GameStage[this.__gameStage], MessageLevel.Step);
 		switch (this.__gameStage) {
 			case GameStage.NewGame:
@@ -183,33 +188,37 @@ class Game {
 				this.initHand();
 				break;
 			case GameStage.BidRound1:
-				if (!this.__aiPlayers[this.__currentPlayer]) {
+				aiPlayer = this.__aiPlayers[this.__currentPlayer];
+				if (!aiPlayer) {
 					this.letHumanBid(1);
 					return;
 				}
-				this.handleBid();
+				this.handleBid(aiPlayer);
 				break;
 			case GameStage.BidRound2:
-				if (!this.__aiPlayers[this.__currentPlayer]) {
+				aiPlayer = this.__aiPlayers[this.__currentPlayer];
+				if (!aiPlayer) {
 					this.letHumanBid(2);
 					return;
 				}
-				this.handleBid();
+				this.handleBid(aiPlayer);
 				break;
 			case GameStage.Discard:
 				this.__currentPlayer = this.__dealer;
-				if (!this.__aiPlayers[this.__dealer]) {
+				aiPlayer = this.__aiPlayers[this.__dealer];
+				if (!aiPlayer) {
 					this.letHumanClickCards();
 					return;
 				}
-				this.discardCard(this.__aiPlayers[this.__dealer].pickDiscard());
+				this.discardCard(aiPlayer.pickDiscard());
 				break;
 			case GameStage.PlayTricks:
-				if (!this.__aiPlayers[this.__currentPlayer]) {
+				aiPlayer = this.__aiPlayers[this.__currentPlayer];
+				if (!aiPlayer) {
 					this.letHumanClickCards();
 					return;
 				}
-				if (this.__trick.isFinished()){
+				if (this.__trick.isFinished()) {
 					this.endTrick();
 				}
 				this.__trick.playTrickStep(this.__currentPlayer);
@@ -250,10 +259,10 @@ class Game {
 	//resets variables, gets dealer, shuffles deck, inits empty hands, sets currentplayer to left of dealer
 	private initHand(): void {
 		this.__playersBid = 0;
-		this.__trumpCandidateCard = null;
-		this.__trumpSuit = null;
-		this.__maker = null;
-		this.__alonePlayer = null;
+		this.__trumpCandidateCard = undefined;
+		this.__trumpSuit = undefined;
+		this.__maker = undefined;
+		this.__alonePlayer = undefined;
 		this.__numPlayers = 0;
 		this.__nsTricksWon = 0;
 		this.__ewTricksWon = 0;
@@ -277,8 +286,9 @@ class Game {
 		//let AIs initialize
 		for (let i = 0; i < 4; i++) {
 			this.__currentPlayer = i;
-			if (this.__aiPlayers[i] !== null) {
-				this.__aiPlayers[i].init();
+			let aiPlayer = this.__aiPlayers[i];
+			if (aiPlayer !== null) {
+				aiPlayer.init();
 			}
 		}
 
@@ -288,10 +298,9 @@ class Game {
 	//#endregion
 
 	//get a bid
-	private handleBid(): void {
+	private handleBid(aiPlayer: EuchreAI): void {
 		let suit;
 		let alone;
-		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
 
 		//see if AI bids
 		suit = getAIBid(aiPlayer, this.__gameStage);
@@ -325,7 +334,7 @@ class Game {
 		this.setTrump(suit, this.__currentPlayer, alone);
 		//if round 1, dealer also needs to discard
 		if (this.__gameStage === GameStage.BidRound1) {
-			this.addToHand(this.__dealer, this.__trumpCandidateCard);
+			this.addToHand(this.__dealer, this.__trumpCandidateCard as Card);
 			this.__gameStage = GameStage.Discard;
 		}
 		else {
@@ -355,10 +364,10 @@ class Game {
 		}
 	}
 
-	private discardCard(toDiscard: Card): void {
+	private discardCard(toDiscard: Card | null): void {
 		let card: Card;
 
-		if (toDiscard === null || !isInHand(this.__hands[this.__dealer], toDiscard)) {
+		if (!toDiscard || !isInHand(this.__hands[this.__dealer], toDiscard)) {
 			card = this.__hands[this.__dealer][0];
 		}
 		else {
@@ -372,13 +381,15 @@ class Game {
 
 	private startTricks(): void {
 		this.__gameStage = GameStage.PlayTricks;
-		this.__trick = new Trick(this.__trumpSuit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
+		this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
+
 	}
 
 	private endTrick(): void {
 		for (let i = 0; i < 4; i++) {
-			if (this.__aiPlayers[i] !== null) {
-				this.__aiPlayers[i].trickEnd();
+			let aiPlayer = this.__aiPlayers[i];
+			if (aiPlayer !== null) {
+				aiPlayer.trickEnd();
 			}
 		}
 		this.scoreTrick();
@@ -386,8 +397,8 @@ class Game {
 			this.endHand();
 		}
 		else {
-			this.__currentPlayer = this.__trick.winner();
-			this.__trick = new Trick(this.__trumpSuit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
+			this.__currentPlayer = this.__trick.winner() as Player;
+			this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
 			this.__trickNum++;
 		}
 	}
@@ -404,7 +415,7 @@ class Game {
 	}
 
 	private endHand(): void {
-		this.resetJacks();
+		this.resetJacks(this.__trumpSuit as Suit);
 		this.updateScore();
 		if (this.__nsScore >= 10 || this.__ewScore >= 10) {
 			this.endGame();
@@ -414,14 +425,14 @@ class Game {
 		}
 	}
 
-	private resetJacks(): void {
+	private resetJacks(trumpSuit: Suit): void {
 		let rightID;
 		let leftID;
 
-		rightID = Suit[this.__trumpSuit] + Rank.Jack;
+		rightID = Suit[trumpSuit] + Rank.Jack;
 		DECKDICT[rightID].rank = Rank.Jack;
-		leftID = Suit[getOppositeSuit(this.__trumpSuit)] + Rank.Jack;
-		DECKDICT[leftID].suit = getOppositeSuit(this.__trumpSuit);
+		leftID = Suit[getOppositeSuit(trumpSuit)] + Rank.Jack;
+		DECKDICT[leftID].suit = getOppositeSuit(trumpSuit);
 		DECKDICT[leftID].rank = Rank.Jack;
 	}
 
@@ -453,7 +464,7 @@ class Game {
 			this.__gameStage = GameStage.NewGame;
 		}
 		else {
-			this.__gameStage = null;
+			this.__gameStage = GameStage.OutsideGame;
 			animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
 			animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
 		}

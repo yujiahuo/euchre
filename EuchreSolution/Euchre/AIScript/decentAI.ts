@@ -18,11 +18,15 @@ class DecentAI implements EuchreAI {
 
 	pickDiscard(): Card {
 		let trumpSuit = game.getTrumpSuit();
-		return getWorstCard(this.hand, null, trumpSuit);
+		return getWorstCard(this.hand, undefined, trumpSuit);
 	}
 
-	pickTrump(): Suit {
-		let trumpCandidateSuit = game.getTrumpCandidateCard().suit;
+	pickTrump(): Suit | null {
+		let trumpCandidate = game.getTrumpCandidateCard();
+		if (!trumpCandidate) {
+			return null;
+		}
+		let trumpCandidateSuit = trumpCandidate.suit;
 		if (trumpCandidateSuit !== Suit.Clubs) {
 			this.handStrength = this.calculateHandStrength(Suit.Clubs);
 			if (this.handStrength > 2) return Suit.Clubs;
@@ -51,16 +55,16 @@ class DecentAI implements EuchreAI {
 		return false;
 	}
 
-	pickCard(): Card {
+	pickCard(): Card | null {
 		let numPlayersPlayed;
 		let playedCards;
-		let lowestWinningCard = null;
+		let lowestWinningCard: Card | null = null;
 		let lowestWinningValue = 9999;
 		let winningValue = 0;
 		let value;
 		let i;
 		let trickSuit = game.getTrickSuit();
-		let trumpSuit = game.getTrumpSuit();
+		let trumpSuit = game.getTrumpSuit() as Suit;
 
 		this.hand = game.myHand(); //you need to do this or else
 
@@ -71,7 +75,8 @@ class DecentAI implements EuchreAI {
 
 		//Find currently winning value
 		playedCards = game.getTrickPlayedCards();
-		winningValue = getCardValue(getBestCardPlayed(playedCards, trumpSuit).card, trumpSuit);
+		let bestPlayedCard = getBestCardPlayed(playedCards, trumpSuit) as PlayedCard;
+		winningValue = getCardValue(bestPlayedCard.card, trumpSuit);
 
 		//If not last player, play the lowest card that can win
 		//If we can't win, then sluff
@@ -119,6 +124,4 @@ class DecentAI implements EuchreAI {
 		}
 		return false;
 	}
-
-
 }

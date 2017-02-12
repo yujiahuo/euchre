@@ -99,6 +99,23 @@ for (let i = 0; i < DECKSIZE; i++) {
 
 let zIndex = 0; //iterated to make sure recently moved cards end up on top
 
-let seed = Math.floor(Math.random() * (2 ** 32 - 1));
-console.log("Random seed: " + seed);
-let rng = new XorGen(seed);
+let rng: XorGen;
+{
+	let seed = new Uint16Array(128);
+	if (!seed.join) {
+		seed.join = Array.prototype.join;
+	}
+	let cryptoObj = window.crypto || ((window as any).msCrypto as Crypto);
+	if (cryptoObj && cryptoObj.getRandomValues) {
+		cryptoObj.getRandomValues(seed);
+	} else {
+		// Not as good, but we can't actually end up with enough randomness
+		// unless we include something outside of just Math.random
+		seed[0] = new Date().getTime() % (2 ** 16);
+		for (let i = 1; i < seed.length; i++) {
+			seed[i] = Math.floor(Math.random() * (2 ** 16));
+		}
+	}
+	console.log("Random seed: " + seed.join(", "));
+	rng = new XorGen(seed);
+}

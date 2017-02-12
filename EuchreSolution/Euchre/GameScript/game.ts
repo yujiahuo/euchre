@@ -391,7 +391,7 @@ class Game {
 
 	private startTricks(): void {
 		this.__gameStage = GameStage.PlayTricks;
-		this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
+		this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== undefined), this.__hands, this.__aiPlayers);
 
 	}
 
@@ -408,7 +408,7 @@ class Game {
 		}
 		else {
 			this.__currentPlayer = this.__trick.winner() as Player;
-			this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== null), this.__hands, this.__aiPlayers);
+			this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== undefined), this.__hands, this.__aiPlayers);
 			this.__trickNum++;
 		}
 	}
@@ -448,7 +448,7 @@ class Game {
 
 	private updateScore(): void {
 		let isMaker;
-		let alone = (this.__alonePlayer !== null);
+		let alone = (this.__alonePlayer !== undefined);
 
 		if (this.__nsTricksWon > this.__ewTricksWon) {
 			isMaker = (this.__maker === Player.North || this.__maker === Player.South);

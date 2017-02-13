@@ -273,6 +273,7 @@ function animWinTrick(player: Player, cards: Card[]): void {
 
 	for (let i = 0; i < 4; i++) {
 		if (cards[i] === null) {
+			//TODO: either mark the parameter as (Card | null)[], or remove this check
 			continue;
 		}
 		cardElem = document.getElementById(cards[i].id) as HTMLElement;

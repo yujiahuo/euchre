@@ -386,7 +386,7 @@ function animFlipButton(on: boolean): void {
 */
 
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
-	let allowedLevel: MessageLevel = game.getMessageLevel();
+	let allowedLevel: MessageLevel = game && game.getMessageLevel() || MessageLevel.Step;
 	let logText = "";
 
 	if (messageLevel < allowedLevel) return;
@@ -400,7 +400,7 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 
 	logText += text + "<br>";
 
-	if (game.isStatMode()) {
+	if (game && game.isStatMode()) {
 		if (overwrite) {
 			game.logText = logText;
 		} else {

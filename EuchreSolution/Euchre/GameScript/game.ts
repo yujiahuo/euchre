@@ -219,15 +219,16 @@ class Game {
 				this.discardCard(aiPlayer.pickDiscard());
 				break;
 			case GameStage.PlayTricks:
+				if (this.__trick.isFinished()) {
+					this.endTrick();
+					return;
+				}
+
 				aiPlayer = this.__aiPlayers[this.__currentPlayer];
 				if (!aiPlayer) {
 					this.letHumanClickCards();
 					return;
 				}
-				if (this.__trick.isFinished()) {
-					this.endTrick();
-				}
-
 				let card = aiPlayer.pickCard();
 				card = this.__trick.playTrickStep(this.__currentPlayer, card);
 				this.removeFromHand(this.__currentPlayer, card);

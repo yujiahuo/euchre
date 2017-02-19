@@ -6,6 +6,7 @@ Planning
 - Do enhancements
 
 Bugs
+- bidder's hand should match the real state (6 cards when discarding, trump already updated, etc.)
 - ai only bids in round 2
 - bowers need to be promoted before discard
 - you still apparently have 5 cards when you're discarding. the wrong player is being asked to discard somehow?

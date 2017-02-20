@@ -9,5 +9,11 @@
 		"**/*.js": true,
 		"**/*.js.map": true
 	},
-	"html.format.enable": false
+	"html.format.enable": false,
+	"lcov": {
+		"branchCoverage": "full",
+		"path": [
+			"coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcovonly"
+		]
+	}
 }

@@ -3,6 +3,9 @@
 EuchreSolution/Euchre/AIScript/*.js
 EuchreSolution/Euchre/GameScript/*.js
 EuchreSolution/Euchre/jasmine/spec/*.js
+node_modules/
+coverage/
+_Chutzpah.coverage.html
 
 
 #################

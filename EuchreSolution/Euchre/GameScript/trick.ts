@@ -66,12 +66,12 @@
 	}
 
 	public winningTeam(): Team | null {
-		let bestCardPlayed = getBestCardPlayed(this.__playedCards, this.__trumpSuit);
-		if (!bestCardPlayed) {
+		let winner = this.winner();
+		if (winner === null) {
 			return null;
 		}
 
-		return getTeam(bestCardPlayed.player);
+		return getTeam(winner);
 	}
 
 	public winner(): Player | null {

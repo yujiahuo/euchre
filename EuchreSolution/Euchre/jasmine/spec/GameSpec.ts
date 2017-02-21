@@ -8,3 +8,5 @@
 /// <reference path="../../GameScript/animation.ts" />
 /// <reference path="../../AIScript/decentAI.ts" />
 /// <reference path="../../AIScript/idiotAI.ts" />
+
+describe("Empty", function() {});

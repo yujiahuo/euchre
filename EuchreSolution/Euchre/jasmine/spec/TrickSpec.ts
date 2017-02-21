@@ -199,7 +199,7 @@ describe("Trick", function () {
 
 		it("Enforces the right play order", function () {
 			expect(trick.playTrickStep(Player.South, new Card(Suit.Spades, Rank.Ace))).toEqual(new Card(Suit.Spades, Rank.Ace));
-			expect(trick.playTrickStep(Player.East, new Card(Suit.Clubs, Rank.Ace))).toThrow();
+			expect(function () { trick.playTrickStep(Player.East, new Card(Suit.Clubs, Rank.Ace)) }).toThrow();
 		});
 	});
 

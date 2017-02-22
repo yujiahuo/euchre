@@ -15,20 +15,19 @@ module.exports = function (config) {
 		files: [
 			'GameScript/xor4096.ts',
 			'GameScript/*.ts',
-			'AIScript/*.ts',
-			'jasmine/spec/*.ts',
+			'**/*.ts',
 		],
 
 		// list of files to exclude
 		exclude: [
 			'AIScript/aiInterface.ts',
+			'**/*.d.ts',
 		],
 
 		// preprocess matching files before serving them to the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
-			'*Script/*.ts': ['karma-typescript'],
-			'jasmine/spec/*.ts': ['karma-typescript'],
+			'**/*.ts': ['karma-typescript'],
 		},
 
 		// test results reporter to use

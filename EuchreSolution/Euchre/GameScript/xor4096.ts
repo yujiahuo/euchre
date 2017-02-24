@@ -14,7 +14,7 @@ class XorGen {
 	private X: number[];
 	private i: number;
 
-	constructor(seed: number | string) {
+	constructor(seed: Uint16Array) {
 		var t: number;
 		let v: number;
 		let i: number;
@@ -22,21 +22,12 @@ class XorGen {
 		let w: number = 0;
 		let X: number[] = [];
 		let limit = 128;
-		if (typeof (seed) === "number") {
-			// Numeric seeds initialize v, which is used to generates X.
-			v = seed;
-		} else {
-			// String seeds are mixed into v and X one character at a time.
-			seed = seed + '\0';
-			v = 0;
-			limit = Math.max(limit, seed.length);
-		}
+		v = 0;
+		limit = Math.max(limit, seed.length);
 		// Initialize circular array and weyl value.
 		for (i = 0, j = -32; j < limit; ++j) {
-			// Put the unicode characters into the array, and shuffle them.
-			if (typeof (seed) == "string") {
-				v ^= seed.charCodeAt((j + 32) % seed.length);
-			}
+			// Put the seed fragments into the array, and shuffle them.
+			v ^= seed[j + 32];
 			// After 32 shuffles, take v as the starting w value.
 			if (j === 0) w = v;
 			v ^= v << 10;
@@ -51,11 +42,7 @@ class XorGen {
 		}
 		// We have detected all zeroes; make the key nonzero.
 		if (i >= 128) {
-			if (typeof (seed) == "number") {
-				X[0] = -1;
-			} else {
-				X[seed.length & 127] = -1;
-			}
+			X[seed.length & 127] = -1;
 		}
 		// Run the generator 512 times to further mix the state before using it.
 		// Factoring this as a function slows the main generator, so it is just
@@ -97,7 +84,7 @@ class XorGen {
 		return (v + (w ^ (w >>> 16))) | 0;
 	}
 
-	public nextInRange(minimum: number, maximum: number) {
+	public nextInRange(minimum: number, maximum: number): number {
 		var size = maximum - minimum + 1;
 		var next = this.next() % size;
 		if (next < 0) {

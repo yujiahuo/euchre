@@ -59,11 +59,38 @@ class Card {
 	public rank: Rank;
 	public id: string;
 
-	constructor(suit: Suit, rank: Rank, id?: string) {
-		this.suit = suit;
-		this.rank = rank;
-		if (id) this.id = id;
-		else this.id = Suit[suit] + rank;
+	constructor(suit: Suit, rank: Rank)
+	constructor(card: Card)
+	constructor(suitOrCard: Suit | Card, rank?: Rank) {
+		if (typeof suitOrCard === "number") {
+			let suit = suitOrCard as Suit;
+			this.suit = suit;
+			this.rank = rank as Rank;
+		} else {
+			let card = suitOrCard;
+			this.suit = card.suit;
+			this.rank = card.rank;
+		}
+
+		let suitForId = this.suit;
+		let rankForId = this.rank;
+		if (rankForId === Rank.Right) {
+			rankForId = Rank.Jack;
+		} else if (rankForId === Rank.Left) {
+			rankForId = Rank.Jack;
+			suitForId = getOppositeSuit(suitForId);
+		}
+		this.id = Suit[suitForId] + rankForId;
+	}
+
+	static safeCard(card: Card): Card
+	static safeCard(card: null): null
+	static safeCard(card: Card | null): Card | null
+	static safeCard(card: Card | null): Card | null {
+		if (card) {
+			return new Card(card);
+		}
+		return null;
 	}
 }
 

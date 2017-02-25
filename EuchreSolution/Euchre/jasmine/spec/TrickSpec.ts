@@ -176,6 +176,31 @@ describe("Trick", function () {
 			expect(cardsPlayed[0].card).toEqual(new Card(Suit.Spades, Rank.Ace));
 			expect(cardsPlayed[0].player).toBe(Player.South);
 		});
+
+		it("Correctly copies the right", function () {
+			let right = new Card(Suit.Spades, Rank.Jack);
+			right.rank = Rank.Right;
+			let cardsPlayed: PlayedCard[];
+
+			trick.playTrickStep(Player.South, right);
+			cardsPlayed = trick.cardsPlayed();
+			expect(cardsPlayed.length).toBe(1);
+			expect(cardsPlayed[0].card).toEqual(right);
+			expect(cardsPlayed[0].player).toBe(Player.South);
+		});
+
+		it("Correctly copies the left", function () {
+			let left = new Card(Suit.Clubs, Rank.Jack);
+			left.rank = Rank.Left;
+			left.suit = Suit.Spades;
+			let cardsPlayed: PlayedCard[];
+
+			trick.playTrickStep(Player.South, left);
+			cardsPlayed = trick.cardsPlayed();
+			expect(cardsPlayed.length).toBe(1);
+			expect(cardsPlayed[0].card).toEqual(left);
+			expect(cardsPlayed[0].player).toBe(Player.South);
+		});
 	});
 
 	describe("playTrickStep", function () {

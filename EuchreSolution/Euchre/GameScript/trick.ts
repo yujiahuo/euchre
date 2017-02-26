@@ -15,15 +15,13 @@
 	}
 	public cardsPlayed(): PlayedCard[] {
 		let playedCards: PlayedCard[] = [];
-		let card: Card;
-		let cardCopy: Card;
 
 		for (let i = 0; i < this.__playedCards.length; i++) {
-			card = this.__playedCards[i].card;
+			let card = this.__playedCards[i].card;
+			let player = this.__playedCards[i].player;
 
 			//make deep copy of cards
-			cardCopy = new Card(card.suit, card.rank);
-			playedCards.push({ player: this.__playedCards[i].player, card: cardCopy });
+			playedCards.push({ player: player, card: new Card(card) });
 		}
 		return playedCards;
 	}

@@ -69,7 +69,7 @@ class Game {
 		if (!this.__trumpCandidateCard) {
 			return;
 		}
-		return new Card(this.__trumpCandidateCard.suit, this.__trumpCandidateCard.rank);
+		return new Card(this.__trumpCandidateCard);
 	}
 	public getTrumpSuit(): Suit | undefined {
 		return this.__trumpSuit;
@@ -96,20 +96,11 @@ class Game {
 		if (this.__trick) return this.__trick.suitLead();
 	}
 	public getTrickPlayedCards(): PlayedCard[] {
-		let playedCards: PlayedCard[] = [];
-		let card: Card;
-		let cardCopy: Card;
-
-		if (!this.__trick) return [];
-
-		for (let i = 0; i < this.__trick.cardsPlayed().length; i++) {
-			card = this.__trick.cardsPlayed()[i].card;
-
-			//make deep copy of cards
-			cardCopy = new Card(card.suit, card.rank);
-			playedCards.push({ player: this.__trick.cardsPlayed()[i].player, card: cardCopy });
+		if (!this.__trick) {
+			return [];
 		}
-		return playedCards;
+
+		return this.__trick.cardsPlayed();
 	}
 	public getCurrentPlayer(): Player {
 		return this.__currentPlayer;
@@ -138,7 +129,7 @@ class Game {
 
 		for (let i = 0; i < this.__hands[this.__currentPlayer].length; i++) {
 			card = this.__hands[this.__currentPlayer][i];
-			hand[i] = new Card(card.suit, card.rank, card.id);
+			hand[i] = new Card(card);
 		}
 		return hand;
 	}
@@ -229,7 +220,7 @@ class Game {
 					this.letHumanClickCards();
 					return;
 				}
-				let card = aiPlayer.pickCard();
+				let card = Card.safeCard(aiPlayer.pickCard());
 				card = this.__trick.playTrickStep(this.__currentPlayer, card);
 				this.removeFromHand(this.__currentPlayer, card);
 				this.__currentPlayer = nextPlayer(this.__currentPlayer);

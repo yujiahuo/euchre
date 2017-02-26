@@ -344,3 +344,48 @@ describe("canOrderUpSuit", function () {
 	});
 });
 
+describe("isInHand", function () {
+	let hand = [
+		new Card(Suit.Hearts, Rank.Ace),
+		new Card(Suit.Hearts, Rank.King),
+		new Card(Suit.Diamonds, Rank.Ace),
+		new Card(Suit.Diamonds, Rank.Queen),
+		new Card(Suit.Spades, Rank.Jack),
+		new Card(Suit.Clubs, Rank.Jack),
+	];
+
+	it("Handles the first card (same object)", function () {
+		expect(isInHand(hand, hand[0])).toBe(true);
+	});
+
+	it("Handles the middle cards (same object)", function () {
+		for (let i = 1; i < hand.length - 1; i++) {
+			expect(isInHand(hand, hand[i])).toBe(true);
+		}
+	});
+
+	it("Handles the last card (same object)", function () {
+		expect(isInHand(hand, hand[hand.length - 1])).toBe(true);
+	});
+
+	it("Handles the first card (copy of object)", function () {
+		let card = new Card(hand[0].suit, hand[0].rank)
+		expect(isInHand(hand, card)).toBe(true);
+	});
+
+	it("Handles the middle cards (copy of object)", function () {
+		for (let i = 1; i < hand.length - 1; i++) {
+			let card = new Card(hand[i].suit, hand[i].rank)
+			expect(isInHand(hand, card)).toBe(true);
+		}
+	});
+
+	it("Handles the last card (copy of object)", function () {
+		let card = new Card(hand[hand.length - 1].suit, hand[hand.length - 1].rank)
+		expect(isInHand(hand, card)).toBe(true);
+	});
+
+	it("Doesn't find other cards", function () {
+		expect(isInHand(hand, new Card(Suit.Spades, Rank.Ace))).toBe(false);
+	});
+});

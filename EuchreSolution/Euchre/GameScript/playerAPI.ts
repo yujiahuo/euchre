@@ -204,11 +204,11 @@ function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card |
 	return bestCard;
 }
 
+//**TESTED**
+//returns: whether the card is in the hand
 function isInHand(hand: Card[], card: Card): boolean {
-	if (!hand || !card) return false;
-
-	for (let i = 1; i < hand.length; i++) {
-		if (hand[i].id === card.id) return true;
+	for (let handCard of hand) {
+		if (handCard.id === card.id) return true;
 	}
 	return false;
 }

@@ -221,8 +221,8 @@ class Game {
 					return;
 				}
 				let card = Card.safeCard(aiPlayer.pickCard());
-				card = this.__trick.playTrickStep(this.__currentPlayer, card);
-				this.removeFromHand(this.__currentPlayer, card);
+				card = this.__trick.playCard(card);
+				this.removeFromHand(this.__currentPlayer, card as Card);
 				this.__currentPlayer = nextPlayer(this.__currentPlayer);
 				break;
 			default:
@@ -383,7 +383,7 @@ class Game {
 
 	private startTricks(): void {
 		this.__gameStage = GameStage.PlayTricks;
-		this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== undefined), this.__hands, this.__aiPlayers);
+		this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== undefined), this.__hands, this.__aiPlayers, nextPlayer(this.__dealer));
 
 	}
 
@@ -400,7 +400,7 @@ class Game {
 		}
 		else {
 			this.__currentPlayer = this.__trick.winner() as Player;
-			this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== undefined), this.__hands, this.__aiPlayers);
+			this.__trick = new Trick(this.__trumpSuit as Suit, (this.__alonePlayer !== undefined), this.__hands, this.__aiPlayers, this.__currentPlayer);
 			this.__trickNum++;
 		}
 	}

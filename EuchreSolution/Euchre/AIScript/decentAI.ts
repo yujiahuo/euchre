@@ -103,7 +103,7 @@ class DecentAI implements EuchreAI {
 		return;
 	}
 	//Whatever just count trump
-	calculateHandStrength = function (trumpSuit: Suit) {
+	calculateHandStrength(trumpSuit: Suit) {
 		let smartlyCalculatedValue;
 
 		smartlyCalculatedValue = numCardsOfSuit(this.hand, trumpSuit);
@@ -115,7 +115,7 @@ class DecentAI implements EuchreAI {
 		return smartlyCalculatedValue;
 	}
 
-	theyHaveTheLeft = function (trumpSuit: Suit) {
+	theyHaveTheLeft(trumpSuit: Suit) {
 		for (let i = 0; i < this.hand.length; i++) {
 			if (this.hand[i].rank === Rank.Jack
 				&& this.hand[i].suit === getOppositeSuit(trumpSuit)) {

@@ -13,7 +13,6 @@
 	private __alonePlayer: Player;
 
 	//Playing related
-	private __trick: Trick;
 	private __trickNum: number = 0; //what trick we're on
 	private __numPlayers: number = 0; //players playing this hand; this is usually 4 but can be 3 or 2 depending on loners
 	private __nsTricksWon: number= 0;

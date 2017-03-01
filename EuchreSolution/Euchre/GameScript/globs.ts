@@ -41,11 +41,28 @@ enum GameStage {
 	OutsideGame,
 	NewGame,
 	NewHand,
-	BidRound1,
+	PlayingHand,
+}
+
+enum HandStage {
+	Bidding,
 	Discard,
-	BidRound2,
 	PlayTricks,
-	EndGame,
+	HandFinished,
+}
+
+enum BidStage {
+	BidRound1,
+	BidRound2,
+	BidFinished,
+}
+
+interface BidResult {
+	success: boolean;
+	trumpSuit: Suit | null;
+	maker: Player | null;
+	alone: boolean | null;
+	bidStage: BidStage | null;
 }
 
 enum MessageLevel {

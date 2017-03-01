@@ -71,11 +71,11 @@ function getShuffledDeck(): Card[] {
 }
 
 //**TESTED**
-function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
+function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 	for (let i = 0; i < 20; i++) {
 		let player = (dealer + i) % 4;
 		let cardPos = Math.floor(i / 4);
-		hands[player][cardPos] = deck.pop() as Card;
+		playerHands[player][cardPos] = deck.pop() as Card;
 	}
 }
 
@@ -97,16 +97,16 @@ function dealHands(deck: Card[], hands: Card[][], dealer: Player): void {
 
 //**NOT TESTING**
 //returns: bid suit
-function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit | null {
+function getAIBid(aiPlayer: EuchreAI, stage: BidStage, trumpCandidateCard?: Card): Suit | null {
 	let bidSuit;
 
-	if (stage === GameStage.BidRound1) { //bidding round 1
+	if (stage === BidStage.BidRound1) { //bidding round 1
 		if (aiPlayer.chooseOrderUp()) {
-			let trumpCandidateCard = game.getTrumpCandidateCard() as Card;
-			return trumpCandidateCard.suit;
+			//TODO: deal with trumpCandidateCard not being passed in
+			if(trumpCandidateCard) return trumpCandidateCard.suit as Suit;
 		}
 	}
-	else if (stage === GameStage.BidRound2) { //bidding round 2
+	else if (stage === BidStage.BidRound2) { //bidding round 2
 		bidSuit = aiPlayer.pickTrump();
 		if (bidSuit) {
 			return bidSuit;
@@ -115,7 +115,7 @@ function getAIBid(aiPlayer: EuchreAI, stage: GameStage): Suit | null {
 	return null;
 }
 
-function calculatePointGain(tricksTaken: number, maker: boolean, alone: boolean, defendingAlone?: boolean): number {
+function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean, defendingAlone?: boolean): number {
 	if (maker) {
 		if (tricksTaken === 5) {
 			return alone ? 4 : 2;

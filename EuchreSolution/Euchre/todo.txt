@@ -18,6 +18,7 @@ ToDo
 - Move and rename init
 - Pass useful stuff to AIs as params
 - Fix decent AI problems
+- Move message printing and animations to the controller
 
 - Implement defend alone
 - AI difficulties

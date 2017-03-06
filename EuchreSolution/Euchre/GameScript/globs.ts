@@ -38,18 +38,17 @@ enum Rank {
 }
 
 enum GameStage {
-	OutsideGame,
-	NewGame,
-	NewHand,
-	PlayingHand,
-}
-
-enum HandStage {
-	Bidding,
+	Bid,
 	Discard,
 	PlayTricks,
-	HandFinished,
 }
+
+//enum HandStage {
+//	Bidding,
+//	Discard,
+//	PlayTricks,
+//	HandFinished,
+//}
 
 enum BidStage {
 	BidRound1,

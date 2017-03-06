@@ -36,30 +36,37 @@ class Bid {
 		this.__currentPlayer = firstPlayer;
 		this.__bidStage = BidStage.BidRound1;
 		this.__trumpCandidateCard = trumpCandidateCard;
-		this.__bidResult = { success: false, trumpSuit: null, maker: null, alone: null, bidStage: null }
+		this.__bidResult = { trumpSuit: null, maker: null, alone: null, bidStage: null }
 	}
 
-	/* Public functions */
+	private advanceBid(): void {
+		let aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
+		let bidSuccessful: boolean = false;
+		let bidResult: BidResult = {
+			trumpSuit: null, maker: null, alone: null, bidStage: null
+		};
 
-	//get a bid
-	public advanceBid(hasBid: boolean, suit?: Suit, alone?: boolean): void {
 		if (this.isFinished()) return;
 
-		if (hasBid && suit !== undefined) {
-			if (alone === undefined) alone = false;
-			this.__bidResult = { success: true, trumpSuit: suit, maker: this.__currentPlayer, alone: alone, bidStage: this.__bidStage }
+		if (aiPlayer) {
+			bidResult = getAIBid(this.__currentPlayer, aiPlayer, this.__bidStage, this.__trumpCandidateCard);
+		}
+
+		if (bidResult.trumpSuit !== null) {
+			bidSuccessful = true;
+			this.__bidResult = bidResult;
 			this.__bidStage = BidStage.BidFinished;
-			animShowText(this.__currentPlayer + " " + Suit[suit] + " " + alone, MessageLevel.Step, 1);
+			animShowText(this.__currentPlayer + " " + Suit[bidResult.trumpSuit] + " " + bidResult.alone, MessageLevel.Step, 1);
 		}
 		else {
 			animShowText(this.__currentPlayer + " passed.", MessageLevel.Step, 1);
 		}
-		
+
 		this.__playersBid++;
 		this.__currentPlayer = nextPlayer(this.__currentPlayer);
 
 		//everyone bid, round is over
-		if (!hasBid && this.__playersBid >= 4) {
+		if (!bidSuccessful && this.__playersBid >= 4) {
 			if (this.__bidStage === BidStage.BidRound1) {
 				this.__playersBid = 0;
 				this.__bidStage = BidStage.BidRound2;
@@ -68,6 +75,14 @@ class Bid {
 				this.__bidStage = BidStage.BidFinished;
 			}
 		}
+	}
+
+	/* Public functions */
+	public doBidding(): BidResult {
+		while (!this.isFinished()) {
+			this.advanceBid();
+		}
+		return this.__bidResult;
 	}
 
 	public isFinished(): boolean {

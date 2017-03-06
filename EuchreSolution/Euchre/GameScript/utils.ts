@@ -97,22 +97,33 @@ function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 
 //**NOT TESTING**
 //returns: bid suit
-function getAIBid(aiPlayer: EuchreAI, stage: BidStage, trumpCandidateCard?: Card): Suit | null {
+function getAIBid(currentPlayer: Player, aiPlayer: EuchreAI, stage: BidStage, trumpCandidateCard?: Card): BidResult {
 	let bidSuit;
+	let bidResult: BidResult = {
+		trumpSuit: null, maker: null, alone: false, bidStage: stage
+	};
 
 	if (stage === BidStage.BidRound1) { //bidding round 1
 		if (aiPlayer.chooseOrderUp()) {
 			//TODO: deal with trumpCandidateCard not being passed in
-			if(trumpCandidateCard) return trumpCandidateCard.suit as Suit;
+			if (trumpCandidateCard) {
+				bidResult.trumpSuit = trumpCandidateCard.suit as Suit;
+			}
 		}
 	}
 	else if (stage === BidStage.BidRound2) { //bidding round 2
 		bidSuit = aiPlayer.pickTrump();
 		if (bidSuit) {
-			return bidSuit;
+			bidResult.trumpSuit = bidSuit;
 		}
 	}
-	return null;
+
+	if (bidResult.trumpSuit !== null) {
+		bidResult.maker = currentPlayer;
+		bidResult.alone = aiPlayer.chooseGoAlone();
+	}
+	
+	return bidResult;
 }
 
 function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean, defendingAlone?: boolean): number {

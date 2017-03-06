@@ -64,7 +64,7 @@ function getShuffledDeck(): Card[] {
 		if (j !== i) {
 			deck[i] = deck[j];
 		}
-		deck[j] = SORTEDDECK[i];
+		deck[j] = new Card(SORTEDDECK[i]);
 	}
 
 	return deck;

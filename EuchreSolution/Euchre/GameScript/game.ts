@@ -266,3 +266,23 @@ class Game {
 //animShowText(this.__currentPlayer + " passed.", MessageLevel.Step, 1);
 //this.advanceBidding();
 //	}
+
+//public playerHand(player: Player): Card[] {
+//	let hand: Card[] = [];
+//	let card;
+
+//	for (let i = 0; i < this.__playerHands[player].length; i++) {
+//		card = this.__playerHands[player][i];
+//		hand[i] = new Card(card);
+//	}
+//	return hand;
+//}
+
+//let AIs initialize
+//for (let i = 0; i < 4; i++) {
+//	this.__currentPlayer = i;
+//	let aiPlayer = this.__aiPlayers[i];
+//	if (aiPlayer !== null) {
+//		aiPlayer.init();
+//	}
+//}

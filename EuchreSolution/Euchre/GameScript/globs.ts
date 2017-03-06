@@ -37,18 +37,19 @@ enum Rank {
 	Right = 16,
 }
 
-enum GameStage {
-	Bid,
-	Discard,
-	PlayTricks,
-}
-
-//enum HandStage {
-//	Bidding,
+//enum GameStage {
+//	Bid,
 //	Discard,
 //	PlayTricks,
-//	HandFinished,
+//	GameFinished,
 //}
+
+enum HandStage {
+	Bidding,
+	Discard,
+	PlayTricks,
+	HandFinished,
+}
 
 enum BidStage {
 	BidRound1,
@@ -57,7 +58,6 @@ enum BidStage {
 }
 
 interface BidResult {
-	success: boolean;
 	trumpSuit: Suit | null;
 	maker: Player | null;
 	alone: boolean | null;

@@ -6,7 +6,7 @@ class Bid {
 	private __bidStage: BidStage;
 	private __playersBid: number = 0; //number of players who have bid so far
 	private __trumpCandidateCard: Card; //turned up card
-	private __bidResult: BidResult;
+	private __bidResult: BidResult | null = null;
 
 	/* Properties */
 	public currentPlayer(): Player {
@@ -21,11 +21,7 @@ class Bid {
 		return this.__playersBid;
 	}
 
-	public trumpCandidateCard(): Card {
-		return this.__trumpCandidateCard;
-	}
-
-	public bidResult(): BidResult {
+	public bidResult(): BidResult | null {
 		return this.__bidResult;
 	}
 
@@ -36,23 +32,24 @@ class Bid {
 		this.__currentPlayer = firstPlayer;
 		this.__bidStage = BidStage.BidRound1;
 		this.__trumpCandidateCard = trumpCandidateCard;
-		this.__bidResult = { trumpSuit: null, maker: null, alone: null, bidStage: null }
 	}
 
 	private advanceBid(): void {
 		let aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
-		let bidSuccessful: boolean = false;
-		let bidResult: BidResult = {
-			trumpSuit: null, maker: null, alone: null, bidStage: null
-		};
-
-		if (this.isFinished()) return;
+		let bidSuccessful = false;
+		let bidResult: BidResult | null = null;
 
 		if (aiPlayer) {
 			bidResult = getAIBid(this.__currentPlayer, aiPlayer, this.__bidStage, this.__trumpCandidateCard);
 		}
 
-		if (bidResult.trumpSuit !== null) {
+		if (bidResult) {
+			if (!hasSuit(this.__playerHands[this.__currentPlayer], bidResult.trumpSuit)) {
+				bidResult = null;
+			}
+		}
+
+		if (bidResult) {
 			bidSuccessful = true;
 			this.__bidResult = bidResult;
 			this.__bidStage = BidStage.BidFinished;
@@ -78,7 +75,7 @@ class Bid {
 	}
 
 	/* Public functions */
-	public doBidding(): BidResult {
+	public doBidding(): BidResult | null {
 		while (!this.isFinished()) {
 			this.advanceBid();
 		}

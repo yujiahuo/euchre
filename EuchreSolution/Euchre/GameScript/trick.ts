@@ -39,8 +39,19 @@ class Trick {
 		this.__currentPlayer = firstPlayer;
 	}
 
-	/* Public functions */
-	public playCard(card: Card | null): Card | null {
+	protected advanceTrick(): void {
+		let card: Card | null = null;
+		let aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
+
+		if (this.isFinished()) return;
+
+		if (aiPlayer) {
+			card = aiPlayer.pickCard();
+		}
+		this.playCard(card);
+	}
+
+	protected playCard(card: Card | null): Card | null {
 		if (this.isFinished()) return null;
 			
 		let hand: Card[] = this.__playerHands[this.__currentPlayer];
@@ -53,12 +64,32 @@ class Trick {
 			this.__suitLead = card.suit;
 		}
 		this.__playedCards.push({ player: this.__currentPlayer, card: card });
+		this.removeFromHand(this.__currentPlayer, card)
 
 		animShowText(Player[this.__currentPlayer] + " played " + card.id, MessageLevel.Step, 1);
 
 		this.__currentPlayer = nextPlayer(this.__currentPlayer);
 
 		return card;
+	}
+
+	private removeFromHand(player: Player, card: Card): void {
+		let cardID = card.id;
+
+		//TODO: do for x of y
+		for (let i = 0; i < this.__playerHands[player].length; i++) {
+			if (this.__playerHands[player][i].id === cardID) {
+				this.__playerHands[player].splice(i, 1);
+			}
+		}
+	}
+
+	/* Public functions */
+	public doTrick(): boolean {
+		while (!this.isFinished()) {
+			this.advanceTrick();
+		}
+		return true;
 	}
 
 	public isFinished(): boolean {

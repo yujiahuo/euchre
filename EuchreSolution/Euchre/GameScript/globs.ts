@@ -58,10 +58,10 @@ enum BidStage {
 }
 
 interface BidResult {
-	trumpSuit: Suit | null;
-	maker: Player | null;
-	alone: boolean | null;
-	bidStage: BidStage | null;
+	trumpSuit: Suit;
+	maker: Player;
+	alone: boolean;
+	bidStage: BidStage;
 }
 
 enum MessageLevel {

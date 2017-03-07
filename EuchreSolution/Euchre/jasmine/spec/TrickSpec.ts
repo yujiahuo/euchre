@@ -10,7 +10,7 @@
 /// <reference path="../../AIScript/idiotAI.ts" />
 
 describe("Trick", function () {
-	let trick: Trick;
+	let trick: TestTrick;
 	let aiPlayers: IdiotAI[];
 	let hands: Card[][];
 
@@ -46,7 +46,7 @@ describe("Trick", function () {
 			],
 		];
 		aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
-		trick = new Trick(Suit.Spades, false, hands, aiPlayers, Player.South);
+		trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South);
 	});
 
 	describe("playersPlayed", function () {
@@ -205,15 +205,17 @@ describe("Trick", function () {
 
 	describe("playCard", function () {
 		beforeEach(function () {
-			trick = new Trick(Suit.Spades, false, hands, aiPlayers, Player.West);
+			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.West);
 		});
 
 		it("Handles a null card", function () {
-			expect(trick.playCard(null)).toEqual(hands[Player.West][0]);
+			let firstCard = hands[Player.West][0];
+			expect(trick.playCard(null)).toEqual(firstCard);
 		});
 
 		it("Handles a non-null card that's not in the player's hand", function () {
-			expect(trick.playCard(new Card(Suit.Clubs, Rank.Ace))).toEqual(hands[Player.West][0]);
+			let firstCard = hands[Player.West][0];
+			expect(trick.playCard(new Card(Suit.Clubs, Rank.Ace))).toEqual(firstCard);
 		});
 
 		it("Handles a card that's in the player's hand but not legal to play", function () {
@@ -276,7 +278,7 @@ describe("Trick", function () {
 
 		describe("Alone", function () {
 			beforeEach(function () {
-				trick = new Trick(Suit.Spades, true, hands, aiPlayers, Player.South);
+				trick = new TestTrick(Suit.Spades, true, hands, aiPlayers, Player.South);
 			});
 
 			it("Starts not finished", function () {
@@ -300,7 +302,7 @@ describe("Trick", function () {
 		});
 
 		it("Updates correctly", function () {
-			trick = new Trick(Suit.Spades, false, hands, aiPlayers, Player.West);
+			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.West);
 
 			trick.playCard(null);
 			expect(trick.winningTeam()).toBe(Team.EastWest);
@@ -313,3 +315,13 @@ describe("Trick", function () {
 		});
 	});
 });
+
+class TestTrick extends Trick {
+	public advanceTrick(): void {
+		super.advanceTrick();
+	}
+
+	public playCard(card: Card | null): Card | null {
+		return super.playCard(card);
+	}
+}

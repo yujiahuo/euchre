@@ -18,7 +18,6 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
 	return false;
 }
 
-//**NOT TESTING**
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */

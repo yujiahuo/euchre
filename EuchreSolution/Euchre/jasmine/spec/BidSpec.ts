@@ -1,10 +1,10 @@
-function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player, trumpCandidate: Card, maker: Player, trump: Suit, stage: BidStage, alone: boolean) {
+function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | null)[], dealer: Player, trumpCandidate: Card, maker: Player, trump: Suit, stage: BidStage, alone: boolean) {
 	let bid: Bid;
 	let bidResult: BidResult | null;
 
 	describe(description, function () {
 		beforeEach(function () {
-			bid = new Bid(hands, aiPlayers, firstPlayer, trumpCandidate);
+			bid = new Bid(hands, aiPlayers, dealer, trumpCandidate);
 			bid.doBidding();
 			bidResult = bid.bidResult();
 		});
@@ -18,7 +18,11 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 		});
 
 		it("playersBid", function () {
-			expect(bid.playersBid()).toBe((4 + (maker - firstPlayer)) % 4 + 1);
+			let expectedResult = (4 + (maker - dealer)) % 4;
+			if (expectedResult === 0) {
+				expectedResult = 4;
+			}
+			expect(bid.playersBid()).toBe(expectedResult);
 		});
 
 		describe("bidResult", function () {
@@ -99,7 +103,7 @@ describe("Bid", function () {
 	];
 
 	describe("Initial state", function () {
-		let bid = new Bid([], [], Player.South, new Card(Suit.Clubs, Rank.Nine));
+		let bid = new Bid([], [], Player.East, new Card(Suit.Clubs, Rank.Nine));
 		it("currentPlayer", function () {
 			expect(bid.currentPlayer()).toBe(Player.South);
 		});
@@ -125,7 +129,7 @@ describe("Bid", function () {
 		"Enforces suits for ordering up (has suit)",
 		hands,
 		[ordersItUpAI, ordersItUpAI, ordersItUpAI, ordersItUpAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Hearts, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
@@ -137,7 +141,7 @@ describe("Bid", function () {
 		"First player orders it up",
 		hands,
 		[ordersItUpAI, ordersItUpAI, ordersItUpAI, ordersItUpAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.South,
 		Suit.Clubs,
@@ -149,7 +153,7 @@ describe("Bid", function () {
 		"Second player orders it up",
 		hands,
 		[doesNothingAI, ordersItUpAI, ordersItUpAI, ordersItUpAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Diamonds, Rank.Nine),
 		Player.West,
 		Suit.Diamonds,
@@ -161,7 +165,7 @@ describe("Bid", function () {
 		"Third player orders it up",
 		hands,
 		[doesNothingAI, doesNothingAI, ordersItUpAI, ordersItUpAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Hearts, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
@@ -173,7 +177,7 @@ describe("Bid", function () {
 		"Fourth player orders it up",
 		hands,
 		[doesNothingAI, doesNothingAI, doesNothingAI, ordersItUpAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.East,
 		Suit.Clubs,
@@ -185,7 +189,7 @@ describe("Bid", function () {
 		"Enforces suits for calling (has suit)",
 		hands,
 		[callsHeartsAI, callsHeartsAI, callsHeartsAI, callsHeartsAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
@@ -197,7 +201,7 @@ describe("Bid", function () {
 		"Enforces suits for calling (wasn't trump suit)",
 		hands,
 		[callsSpadesAI, callsDiamondsAI, callsHeartsAI, callsClubsAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Spades, Rank.Nine),
 		Player.West,
 		Suit.Diamonds,
@@ -209,7 +213,7 @@ describe("Bid", function () {
 		"First player calls Spades",
 		hands,
 		[callsSpadesAI, callsDiamondsAI, callsHeartsAI, callsClubsAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.South,
 		Suit.Spades,
@@ -221,7 +225,7 @@ describe("Bid", function () {
 		"Second player calls Diamonds",
 		hands,
 		[doesNothingAI, callsDiamondsAI, callsHeartsAI, callsClubsAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.West,
 		Suit.Diamonds,
@@ -233,7 +237,7 @@ describe("Bid", function () {
 		"Third player calls Hearts",
 		hands,
 		[doesNothingAI, doesNothingAI, callsHeartsAI, callsClubsAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
@@ -245,7 +249,7 @@ describe("Bid", function () {
 		"Fourth player calls Clubs",
 		hands,
 		[doesNothingAI, doesNothingAI, doesNothingAI, callsClubsAI],
-		Player.South,
+		Player.East,
 		new Card(Suit.Spades, Rank.Nine),
 		Player.East,
 		Suit.Clubs,
@@ -255,7 +259,7 @@ describe("Bid", function () {
 
 	describe("No one bids", function () {
 		let aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let bid = new Bid(hands, aiPlayers, Player.South, new Card(Suit.Clubs, Rank.Nine));
+		let bid = new Bid(hands, aiPlayers, Player.East, new Card(Suit.Clubs, Rank.Nine));
 		bid.doBidding();
 
 		it("currentPlayer", function () {

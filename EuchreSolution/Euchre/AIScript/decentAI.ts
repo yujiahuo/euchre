@@ -7,22 +7,20 @@ class DecentAI implements EuchreAI {
 	private hand: Card[];
 	private handStrength: number;
 
-	init(): void {
-		this.hand = game.myHand();
-	}
+	init(_me: Player): void { }
 
-	chooseOrderUp(): boolean {
+	chooseOrderUp(hand: Card[], trumpCandidate: Card, _dealer: Player): boolean {
+		this.hand = hand;
+		this.handStrength = this.calculateHandStrength(trumpCandidate.suit);
 		if (this.handStrength > 2) return true;
 		return false;
 	}
 
-	pickDiscard(): Card | null {
-		let trump = game.getTrump();
+	pickDiscard(_hand: Card[], trump: Suit): Card | null {
 		return getWorstCard(this.hand, undefined, trump);
 	}
 
-	pickTrump(): Suit | null {
-		let trumpCandidate = game.getTrumpCandidate();
+	pickTrump(_hand: Card[], trumpCandidate: Card): Suit | null {
 		if (!trumpCandidate) {
 			return null;
 		}
@@ -50,32 +48,28 @@ class DecentAI implements EuchreAI {
 		return null;
 	}
 
-	chooseGoAlone(): boolean {
-		if (this.handStrength > 4) return true;
-		return false;
+	chooseGoAlone(_hand: Card[], _trump: Suit): boolean {
+		return this.handStrength > 4;
 	}
 
-	pickCard(): Card | null {
+	pickCard(hand: Card[], _maker: Player, trump: Suit, trickSoFar: PlayedCard[]): Card | null {
 		let numPlayersPlayed;
-		let playedCards;
 		let lowestWinningCard: Card | null = null;
 		let lowestWinningValue = 9999;
 		let winningValue = 0;
 		let value;
 		let i;
-		let trickSuit = game.getTrickSuit();
-		let trump = game.getTrump() as Suit;
 
-		this.hand = game.myHand(); //you need to do this or else
+		this.hand = hand; //you need to do this or else
 
-		numPlayersPlayed = game.getTrickPlayersPlayed();
+		numPlayersPlayed = trickSoFar.length;
 		if (numPlayersPlayed === 0) {
-			return getBestCardInHand(this.hand, trickSuit, trump);
+			return getBestCardInHand(this.hand, undefined, trump);
 		}
 
+		let trickSuit = trickSoFar[0].card.suit;
 		//Find currently winning value
-		playedCards = game.getTrickPlayedCards();
-		let bestPlayedCard = getBestCardPlayed(playedCards, trump) as PlayedCard;
+		let bestPlayedCard = getBestCardPlayed(trickSoFar, trump) as PlayedCard;
 		winningValue = getCardValue(bestPlayedCard.card, trump);
 
 		//If not last player, play the lowest card that can win
@@ -99,9 +93,8 @@ class DecentAI implements EuchreAI {
 		}
 	}
 
-	trickEnd(): void {
-		return;
-	}
+	trickEnd(_playedCardsCallback: () => PlayedCard[]): void { }
+
 	//Whatever just count trump
 	calculateHandStrength(trump: Suit) {
 		let smartlyCalculatedValue;

@@ -4,34 +4,32 @@
 
 class TestAI implements EuchreAI {
 
-	init() {
+	init(_me: Player) {
 	}
 
-	chooseOrderUp() {
+	chooseOrderUp(_hand: Card[], _trumpCandidate: Card, _dealer: Player) {
 		return false;
 	}
 
-	pickDiscard() {
-		let hand;
-
-		hand = game.myHand();
+	pickDiscard(hand: Card[], _trump: Suit) {
 		return hand[0];
 	}
 
-	pickTrump() {
+	pickTrump(_hand: Card[], _trumpCandidate: Card) {
 		return Suit.Clubs;
 	}
 
-	chooseGoAlone() {
+	chooseGoAlone(_hand: Card[], _trump: Suit) {
 		return false;
 	}
 
-	pickCard() {
-		let hand;
-
-		hand = game.myHand();
+	pickCard(hand: Card[], _maker: Player, _trump: Suit, trickSoFar: PlayedCard[]) {
+		if (trickSoFar.length === 0) {
+			return hand[0];
+		}
+		let trickSuit = trickSoFar[0].card.suit
 		for (let i = 0; i < hand.length; i++) {
-			if (isValidPlay(hand, hand[i], game.getTrickSuit())) {
+			if (isValidPlay(hand, hand[i], trickSuit)) {
 				return hand[i];
 			}
 		}
@@ -39,7 +37,5 @@ class TestAI implements EuchreAI {
 		return hand[0];
 	}
 
-	trickEnd(): void {
-		return;
-	}
+	trickEnd(_playedCardsCallback: () => PlayedCard[]): void { }
 }

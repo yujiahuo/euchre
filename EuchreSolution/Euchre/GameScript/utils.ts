@@ -99,12 +99,12 @@ function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 function getAIBid(currentPlayer: Player, aiPlayer: EuchreAI, stage: BidStage, trumpCandidateCard: Card): BidResult | null {
 	let trumpSuit: Suit | null = null;
 
-	if (stage === BidStage.BidRound1) {
+	if (stage === BidStage.Round1) {
 		if (aiPlayer.chooseOrderUp()) {
 			trumpSuit = trumpCandidateCard.suit;
 		}
 	}
-	else if (stage === BidStage.BidRound2) {
+	else if (stage === BidStage.Round2) {
 		trumpSuit = aiPlayer.pickTrump();
 	}
 

@@ -30,7 +30,7 @@ class Bid {
 		this.__playerHands = hands;
 		this.__aiPlayers = aiPlayers;
 		this.__currentPlayer = firstPlayer;
-		this.__bidStage = BidStage.BidRound1;
+		this.__bidStage = BidStage.Round1;
 		this.__trumpCandidateCard = trumpCandidateCard;
 	}
 
@@ -44,7 +44,7 @@ class Bid {
 		}
 
 		if (bidResult) {
-			if (bidResult.bidStage === BidStage.BidRound2 && bidResult.trumpSuit === this.__trumpCandidateCard.suit) {
+			if (bidResult.bidStage === BidStage.Round2 && bidResult.trumpSuit === this.__trumpCandidateCard.suit) {
 				bidResult = null;
 			} else if (!hasSuit(this.__playerHands[this.__currentPlayer], bidResult.trumpSuit)) {
 				bidResult = null;
@@ -54,7 +54,7 @@ class Bid {
 		if (bidResult) {
 			bidSuccessful = true;
 			this.__bidResult = bidResult;
-			this.__bidStage = BidStage.BidFinished;
+			this.__bidStage = BidStage.Finished;
 			animShowText(this.__currentPlayer + " " + Suit[bidResult.trumpSuit] + " " + bidResult.alone, MessageLevel.Step, 1);
 		}
 		else {
@@ -66,12 +66,12 @@ class Bid {
 
 		//everyone bid, round is over
 		if (!bidSuccessful && this.__playersBid >= 4) {
-			if (this.__bidStage === BidStage.BidRound1) {
+			if (this.__bidStage === BidStage.Round1) {
 				this.__playersBid = 0;
-				this.__bidStage = BidStage.BidRound2;
+				this.__bidStage = BidStage.Round2;
 			}
 			else {
-				this.__bidStage = BidStage.BidFinished;
+				this.__bidStage = BidStage.Finished;
 			}
 		}
 	}
@@ -85,6 +85,6 @@ class Bid {
 	}
 
 	public isFinished(): boolean {
-		return this.__bidStage === BidStage.BidFinished;
+		return this.__bidStage === BidStage.Finished;
 	}
 }

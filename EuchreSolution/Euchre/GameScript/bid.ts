@@ -44,7 +44,9 @@ class Bid {
 		}
 
 		if (bidResult) {
-			if (!hasSuit(this.__playerHands[this.__currentPlayer], bidResult.trumpSuit)) {
+			if (bidResult.bidStage === BidStage.BidRound2 && bidResult.trumpSuit === this.__trumpCandidateCard.suit) {
+				bidResult = null;
+			} else if (!hasSuit(this.__playerHands[this.__currentPlayer], bidResult.trumpSuit)) {
 				bidResult = null;
 			}
 		}
@@ -83,7 +85,6 @@ class Bid {
 	}
 
 	public isFinished(): boolean {
-		if (this.__bidStage === BidStage.BidFinished) return true;
-		else return false;
+		return this.__bidStage === BidStage.BidFinished;
 	}
 }

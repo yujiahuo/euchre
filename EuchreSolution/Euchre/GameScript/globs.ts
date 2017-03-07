@@ -41,11 +41,4 @@ function buildSortedDeck(): Card[] {
 	return deck;
 }
 
-//dictionary of cards, keyed by card ID
-//points to the cards we made for the sorted deck
-let DECKDICT: { [index: string]: Card } = {};
-for (let i = 0; i < DECKSIZE; i++) {
-	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
-}
-
 let zIndex = 0; //iterated to make sure recently moved cards end up on top

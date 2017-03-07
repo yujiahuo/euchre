@@ -1,13 +1,15 @@
 class BiddingTestAI implements BiddingAI {
 	private __orderUp: boolean;
+	private __discard: Card | null;
 	private __trump: Suit | null;
 	private __goAlone: boolean;
 
-	public constructor(orderUp: true, trump: null, goAlone: boolean);
+	public constructor(orderUp: true, trump: null, goAlone: boolean, discard?: Card);
 	public constructor(orderUp: false, trump: Suit, goAlone: boolean);
 	public constructor(orderUp: false, trump: null, goAlone: false);
-	public constructor(orderUp: boolean, trump: Suit | null, goAlone: boolean) {
+	public constructor(orderUp: boolean, trump: Suit | null, goAlone: boolean, discard?: Card) {
 		this.__orderUp = orderUp;
+		this.__discard = discard || null;
 		this.__trump = trump;
 		this.__goAlone = goAlone;
 	}
@@ -18,8 +20,8 @@ class BiddingTestAI implements BiddingAI {
 		return this.__orderUp;
 	}
 
-	public pickDiscard(): null {
-		return null;
+	public pickDiscard(): Card | null {
+		return this.__discard;
 	}
 
 	public pickTrump(): Suit | null {

@@ -10,8 +10,9 @@ type ShuffleResult = {
 	jacks: Card[],
 };
 
-function getShuffledDeck(): Card[] {
+function getShuffledDeck(): ShuffleResult {
 	let deck: Card[] = [];
+	let jacks: Card[] = [];
 
 	for (let i = 0; i < DECKSIZE; i++) {
 		let j = rng.nextInRange(0, i);
@@ -19,15 +20,22 @@ function getShuffledDeck(): Card[] {
 			deck[i] = deck[j];
 		}
 		deck[j] = new Card(SORTEDDECK[i]);
+		if (deck[j].rank === Rank.Jack) {
+			jacks[deck[j].suit] = deck[j];
+		}
 	}
 
-	return deck;
+	return {
+		deck: deck,
+		jacks: jacks,
+	};
 }
 
 function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 	for (let i = 0; i < 20; i++) {
 		let player = (dealer + i) % 4;
 		let cardPos = Math.floor(i / 4);
+		//TODO: see if skipping the pop makes things faster
 		playerHands[player][cardPos] = deck.pop() as Card;
 	}
 }
@@ -51,7 +59,6 @@ function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean
 class Hand {
 	//General stuff
 	private __dealer: Player;
-	private __deck: Card[]; //contains the shuffled deck or what's left of it after dealing
 	private __playerHands: Card[][]; //2d array of everyone's hands
 	private __aiPlayers: (EuchreAI | null)[];
 	private __handStage: HandStage;
@@ -69,6 +76,7 @@ class Hand {
 	private __ewTricksWon = 0;
 	private __nsPointsWon = 0;
 	private __ewPointsWon = 0;
+	private __jacks: Card[] = [];
 
 	/* Properties */
 	public handStage(): HandStage {
@@ -95,25 +103,24 @@ class Hand {
 	public ewTricksWon(): number {
 		return this.__ewTricksWon;
 	}
+	public nsPointsWon(): number {
+		return this.__nsPointsWon;
+	}
+	public ewPointsWon(): number {
+		return this.__ewPointsWon;
+	}
 
 	/* constructor */
 	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[]) {
 		this.__dealer = dealer;
 		this.__aiPlayers = aiPlayers;
-		this.initHand();
-	}
 
-	/* Private functions */
-
-	private initHand(): void {
-		//set up the deck and everyone's hands'
-		this.__deck = getShuffledDeck();
-		this.__playerHands = new Array(4);
-		for (let i = 0; i < 4; i++) {
-			this.__playerHands[i] = new Array(5);
-		}
-		dealHands(this.__deck, this.__playerHands, this.__dealer);
-		this.__trumpCandidate = this.__deck.pop() as Card;
+		//set up the deck and everyone's hands
+		let {deck, jacks} = getShuffledDeck();
+		this.__playerHands = [[], [], [], []];
+		this.__jacks = jacks;
+		dealHands(deck, this.__playerHands, this.__dealer);
+		this.__trumpCandidate = deck.pop() as Card;
 
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
@@ -147,18 +154,23 @@ class Hand {
 	}
 
 	private endBidding(bidResult: BidResult): void {
-		let rightID;
-		let leftID;
-		let trump = bidResult.trump as Suit;
+
+		if (bidResult.alone) {
+			this.__numPlayers--;
+			/*if (bidResult.defendAlone) {
+				this.__numPlayers--;
+			}*/
+		}
 
 		//This chunk is for changing the rank and suit of the right and left bowers
 		//for the duration of the hand.
 		//Note: The cards' IDs stay the same
-		rightID = Suit[trump] + Rank.Jack;
-		DECKDICT[rightID].rank = Rank.Right;
-		leftID = Suit[getOppositeSuit(trump)] + Rank.Jack;
-		DECKDICT[leftID].suit = trump;
-		DECKDICT[leftID].rank = Rank.Left;
+		let trump = bidResult.trump;
+		let right = this.__jacks[trump];
+		right.rank = Rank.Right;
+		let left = this.__jacks[getOppositeSuit(trump)];
+		left.suit = trump;
+		left.rank = Rank.Left;
 
 		if (bidResult.stage === BidStage.Round1) {
 			this.addToHand(this.__dealer, this.__trumpCandidate);
@@ -204,17 +216,16 @@ class Hand {
 	}
 
 	private endHand(completed: boolean): void {
-		if (!completed) return; //TODO: deal with bid failing
-		if (!this.__bidResult) return;
+		if (!completed || !this.__bidResult) {
+			this.__handStage = HandStage.Finished;
+			return; //TODO: deal with no one bidding
+		}
 
-		let isMaker = (this.__bidResult.maker === Player.North || this.__bidResult.maker === Player.South)
+		let isMaker = (this.__bidResult.maker === Player.North || this.__bidResult.maker === Player.South);
 		this.__nsPointsWon = calculatePointGain(this.__nsTricksWon, isMaker, this.__bidResult.alone);
 		this.__ewPointsWon = calculatePointGain(this.__ewTricksWon, !isMaker, this.__bidResult.alone);
 
-		this.resetJacks(this.__bidResult.trump);
-
 		this.__handStage = HandStage.Finished;
-
 	}
 
 	private addToHand(player: Player, card: Card): void {
@@ -234,17 +245,6 @@ class Hand {
 		}
 	}
 
-	private resetJacks(trump: Suit): void {
-		let rightID;
-		let leftID;
-
-		rightID = Suit[trump] + Rank.Jack;
-		DECKDICT[rightID].rank = Rank.Jack;
-		leftID = Suit[getOppositeSuit(trump)] + Rank.Jack;
-		DECKDICT[leftID].suit = getOppositeSuit(trump);
-		DECKDICT[leftID].rank = Rank.Jack;
-	}
-
 	/* Public functions */
 	public doHand(): void {
 		while (!this.isFinished()) {
@@ -254,7 +254,6 @@ class Hand {
 	}
 
 	public isFinished(): boolean {
-		if (this.__handStage === HandStage.Finished) return true;
-		else return false;
+		return this.__handStage === HandStage.Finished;
 	}
 }

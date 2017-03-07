@@ -48,7 +48,8 @@ class Trick {
 		if (this.isFinished()) return;
 
 		if (aiPlayer) {
-			card = aiPlayer.pickCard(this.__playerHands[this.__currentPlayer], this.__maker, this.__trump, this.cardsPlayed());
+			let hand = this.__playerHands[this.__currentPlayer];
+			card = aiPlayer.pickCard(copyHand(hand), this.__maker, this.__trump, this.cardsPlayed());
 		}
 		this.playCard(card);
 		if (this.isFinished()) {
@@ -78,6 +79,9 @@ class Trick {
 		animShowText(Player[this.__currentPlayer] + " played " + card.id, MessageLevel.Step, 1);
 
 		this.__currentPlayer = nextPlayer(this.__currentPlayer);
+		if (this.__alone && this.__currentPlayer === getPartner(this.__maker)) {
+			this.__currentPlayer = nextPlayer(this.__currentPlayer);
+		}
 
 		return card;
 	}
@@ -88,6 +92,7 @@ class Trick {
 		for (let i = 0; i < this.__playerHands[player].length; i++) {
 			if (this.__playerHands[player][i].id === cardID) {
 				this.__playerHands[player].splice(i, 1);
+				break;
 			}
 		}
 	}
@@ -101,8 +106,8 @@ class Trick {
 	}
 
 	public isFinished(): boolean {
-		if (!this.__alone) return this.__playedCards.length >= 4;
-		else return this.__playedCards.length >= 3;
+		if (this.__alone) return this.__playedCards.length >= 3;
+		else return this.__playedCards.length >= 4;
 	}
 
 	public winningTeam(): Team | null {

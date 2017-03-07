@@ -59,7 +59,7 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 	});
 }
 
-describe("Bid", function () {
+describe("BidSpec", function () {
 	let ordersItUpBiddingAI = new BiddingTestAI(true, null, false);
 	let doesNothingAI = new IdiotAI();
 	let ordersItUpAI = new MultiAI(ordersItUpBiddingAI, doesNothingAI);

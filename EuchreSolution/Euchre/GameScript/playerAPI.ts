@@ -269,3 +269,11 @@ function getNextDealer(prevDealer?: Player): Player {
 	}
 	return dealer;
 }
+
+function copyHand(hand: Card[]): Card[] {
+	let newHand: Card[] = [];
+	for (let card of hand) {
+		newHand.push(new Card(card));
+	}
+	return newHand;
+}

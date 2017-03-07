@@ -62,6 +62,7 @@
     <TypeScriptCompile Include="AIScript\idiotAI.ts" />
     <TypeScriptCompile Include="GameScript\controller.ts" />
     <TypeScriptCompile Include="GameScript\game.ts" />
+    <TypeScriptCompile Include="GameScript\bid.ts" />
     <TypeScriptCompile Include="GameScript\hand.ts" />
     <TypeScriptCompile Include="GameScript\globs.ts" />
     <TypeScriptCompile Include="GameScript\menuLogic.ts" />
@@ -78,6 +79,7 @@
     <Content Include="jasmine\lib\jasmine-2.5.2\jasmine_favicon.png" />
     <Content Include="jasmine\SpecRunner.html" />
     <TypeScriptCompile Include="jasmine\spec\APISpec.ts" />
+    <TypeScriptCompile Include="jasmine\spec\BidSpec.ts" />
     <TypeScriptCompile Include="jasmine\spec\HandSpec.ts" />
     <TypeScriptCompile Include="jasmine\spec\TrickSpec.ts" />
     <TypeScriptCompile Include="jasmine\spec\GameSpec.ts" />

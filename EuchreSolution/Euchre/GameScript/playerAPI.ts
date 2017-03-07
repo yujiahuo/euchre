@@ -37,24 +37,24 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */
-function canOrderUpSuit(hand: Card[], suit: Suit): boolean {
+function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
 	let trumpCandidateCard = game.getTrumpCandidateCard() as Card;
-	if (game.getGameStage() === GameStage.BidRound1) {
+	if (game.getGameStage() === HandStage.BidRound1) {
 		if (trumpCandidateCard.suit !== suit) return false;
-		if (hasSuit(hand, suit)) return true;
-	} else if (game.getGameStage() === GameStage.BidRound2) {
+		if (hasSuit(playerHand, suit)) return true;
+	} else if (game.getGameStage() === HandStage.BidRound2) {
 		if (trumpCandidateCard.suit === suit) return false;
-		if (hasSuit(hand, suit)) return true;
+		if (hasSuit(playerHand, suit)) return true;
 	}
 	return false;
 }
 
 //**NOT TESTING**
 //how many cards of a given suit you have
-function numCardsOfSuit(hand: Card[], suit: Suit): number {
+function numCardsOfSuit(playerHand: Card[], suit: Suit): number {
 	let count = 0;
-	for (let i = 0; i < hand.length; i++) {
-		if (hand[i].suit === suit) count++;
+	for (let i = 0; i < playerHand.length; i++) {
+		if (playerHand[i].suit === suit) count++;
 	}
 	return count;
 }
@@ -63,18 +63,18 @@ function numCardsOfSuit(hand: Card[], suit: Suit): number {
 //number of suits you're holding
 function countSuits(): number {
 	let suitArray: Suit[] = [];
-	let hand = myHand();
-	for (let i = 0; i < hand.length; i++) {
-		suitArray[hand[i].suit] = 1;
+	let playerHand = myHand();
+	for (let i = 0; i < playerHand.length; i++) {
+		suitArray[playerHand[i].suit] = 1;
 	}
 	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
 }
 
 //**NOT TESTING**
-function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | undefined {
-	for (let i = 0; i < hand.length; i++) {
-		if (isValidPlay(hand, hand[i], suitLead)) {
-			return hand[i];
+function getFirstLegalCard(playerHand: Card[], suitLead?: Suit): Card | undefined {
+	for (let i = 0; i < playerHand.length; i++) {
+		if (isValidPlay(playerHand, playerHand[i], suitLead)) {
+			return playerHand[i];
 		}
 	}
 }
@@ -126,14 +126,14 @@ function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Ca
 }
 
 //**TESTED**
-function isValidPlay(hand: Card[], card?: Card, trickSuit?: Suit): boolean {
+function isValidPlay(playerHand: Card[], card?: Card, trickSuit?: Suit): boolean {
 	if (!card) {
 		return false;
 	}
 	if (!trickSuit) {
 		return true;
 	}
-	if (!hasSuit(hand, trickSuit)) {
+	if (!hasSuit(playerHand, trickSuit)) {
 		return true;
 	}
 	if (followsSuit(card, trickSuit)) {

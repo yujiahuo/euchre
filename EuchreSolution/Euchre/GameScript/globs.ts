@@ -37,15 +37,31 @@ enum Rank {
 	Right = 16,
 }
 
-enum GameStage {
-	OutsideGame,
-	NewGame,
-	NewHand,
-	BidRound1,
+//enum GameStage {
+//	Bid,
+//	Discard,
+//	PlayTricks,
+//	GameFinished,
+//}
+
+enum HandStage {
+	Bidding,
 	Discard,
-	BidRound2,
 	PlayTricks,
-	EndGame,
+	HandFinished,
+}
+
+enum BidStage {
+	BidRound1,
+	BidRound2,
+	BidFinished,
+}
+
+interface BidResult {
+	trumpSuit: Suit;
+	maker: Player;
+	alone: boolean;
+	bidStage: BidStage;
 }
 
 enum MessageLevel {

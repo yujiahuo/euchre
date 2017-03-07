@@ -5,6 +5,7 @@ class Trick {
 	private __alone: boolean;
 	private __playerHands: Card[][];
 	private __aiPlayers: (EuchreAI | null)[];
+	private __maker: Player;
 	private __currentPlayer: Player;
 
 	/* Properties */
@@ -31,11 +32,12 @@ class Trick {
 	}
 
 	/* constructor */
-	constructor(trump: Suit, alone: boolean, hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player) {
+	constructor(trump: Suit, alone: boolean, hands: Card[][], aiPlayers: (EuchreAI | null)[], maker: Player, firstPlayer: Player) {
 		this.__trump = trump;
 		this.__alone = alone;
 		this.__playerHands = hands;
 		this.__aiPlayers = aiPlayers;
+		this.__maker = maker;
 		this.__currentPlayer = firstPlayer;
 	}
 
@@ -46,9 +48,16 @@ class Trick {
 		if (this.isFinished()) return;
 
 		if (aiPlayer) {
-			card = aiPlayer.pickCard();
+			card = aiPlayer.pickCard(this.__playerHands[this.__currentPlayer], this.__maker, this.__trump, this.cardsPlayed());
 		}
 		this.playCard(card);
+		if (this.isFinished()) {
+			for (let ai of this.__aiPlayers) {
+				if (ai) {
+					ai.trickEnd(this.cardsPlayed);
+				}
+			}
+		}
 	}
 
 	protected playCard(card: Card | null): Card | null {
@@ -76,7 +85,6 @@ class Trick {
 	private removeFromHand(player: Player, card: Card): void {
 		let cardID = card.id;
 
-		//TODO: do for x of y
 		for (let i = 0; i < this.__playerHands[player].length; i++) {
 			if (this.__playerHands[player][i].id === cardID) {
 				this.__playerHands[player].splice(i, 1);

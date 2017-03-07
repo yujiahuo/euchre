@@ -13,6 +13,7 @@ interface BidResult {
 
 class Bid {
 	private __playerHands: Card[][]; //2d array of everyone's hands
+	private __dealer: Player;
 	private __currentPlayer: Player;
 	private __aiPlayers: (EuchreAI | null)[];
 	private __stage: BidStage;
@@ -38,10 +39,11 @@ class Bid {
 	}
 
 	/* constructor */
-	constructor(hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player, trumpCandidate: Card) {
+	constructor(hands: Card[][], aiPlayers: (EuchreAI | null)[], dealer: Player, trumpCandidate: Card) {
 		this.__playerHands = hands;
 		this.__aiPlayers = aiPlayers;
-		this.__currentPlayer = firstPlayer;
+		this.__dealer = dealer;
+		this.__currentPlayer = nextPlayer(dealer);
 		this.__stage = BidStage.Round1;
 		this.__trumpCandidate = trumpCandidate;
 	}
@@ -52,7 +54,7 @@ class Bid {
 		let bidResult: BidResult | null = null;
 
 		if (aiPlayer) {
-			bidResult = getAIBid(this.__currentPlayer, aiPlayer, this.__stage, this.__trumpCandidate);
+			bidResult = this.getAIBid(this.__currentPlayer, aiPlayer, this.__stage, this.__trumpCandidate);
 		}
 
 		if (bidResult) {
@@ -88,6 +90,30 @@ class Bid {
 		}
 	}
 
+	private getAIBid(currentPlayer: Player, aiPlayer: EuchreAI, stage: BidStage, trumpCandidate: Card): BidResult | null {
+		let trump: Suit | null = null;
+
+		if (stage === BidStage.Round1) {
+			if (aiPlayer.chooseOrderUp(this.__playerHands[currentPlayer], trumpCandidate, this.__dealer)) {
+				trump = trumpCandidate.suit;
+			}
+		}
+		else if (stage === BidStage.Round2) {
+			trump = aiPlayer.pickTrump(this.__playerHands[currentPlayer], trumpCandidate);
+		}
+
+		if (trump === null) {
+			return null;
+		}
+
+		return {
+			trump: trump,
+			maker: currentPlayer,
+			alone: aiPlayer.chooseGoAlone(this.__playerHands[currentPlayer], trump),
+			stage: stage,
+		}
+	}
+
 	/* Public functions */
 	public doBidding(): BidResult | null {
 		while (!this.isFinished()) {
@@ -98,29 +124,5 @@ class Bid {
 
 	public isFinished(): boolean {
 		return this.__stage === BidStage.Finished;
-	}
-}
-
-function getAIBid(currentPlayer: Player, aiPlayer: EuchreAI, stage: BidStage, trumpCandidate: Card): BidResult | null {
-	let trump: Suit | null = null;
-
-	if (stage === BidStage.Round1) {
-		if (aiPlayer.chooseOrderUp()) {
-			trump = trumpCandidate.suit;
-		}
-	}
-	else if (stage === BidStage.Round2) {
-		trump = aiPlayer.pickTrump();
-	}
-
-	if (trump === null) {
-		return null;
-	}
-
-	return {
-		trump: trump,
-		maker: currentPlayer,
-		alone: aiPlayer.chooseGoAlone(),
-		stage: stage,
 	}
 }

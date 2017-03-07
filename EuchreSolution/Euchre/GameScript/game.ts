@@ -240,7 +240,7 @@ class Game {
 
 //this.setTrump(suit, this.__currentPlayer, alone);
 ////if round 1, dealer also needs to discard
-//if (this.__gameStage === BidStage.BidRound1) {
+//if (this.__gameStage === BidStage.Round1) {
 //	this.addToHand(this.__dealer, this.__trumpCandidateCard as Card);
 //	this.__gameStage = HandStage.Discard;
 //}

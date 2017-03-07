@@ -52,9 +52,9 @@ enum HandStage {
 }
 
 enum BidStage {
-	BidRound1,
-	BidRound2,
-	BidFinished,
+	Round1,
+	Round2,
+	Finished,
 }
 
 interface BidResult {

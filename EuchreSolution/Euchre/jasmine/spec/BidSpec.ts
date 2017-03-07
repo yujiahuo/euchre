@@ -47,7 +47,7 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 		});
 
 		it("bidStage", function () {
-			expect(bid.bidStage()).toBe(BidStage.BidFinished);
+			expect(bid.bidStage()).toBe(BidStage.Finished);
 		});
 
 		it("playersBid", function () {
@@ -138,7 +138,7 @@ describe("Bid", function () {
 		});
 
 		it("bidStage", function () {
-			expect(bid.bidStage()).toBe(BidStage.BidRound1);
+			expect(bid.bidStage()).toBe(BidStage.Round1);
 		});
 
 		it("playersBid", function () {
@@ -162,7 +162,7 @@ describe("Bid", function () {
 		new Card(Suit.Hearts, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
-		BidStage.BidRound1,
+		BidStage.Round1,
 		false,
 	);
 
@@ -174,7 +174,7 @@ describe("Bid", function () {
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.South,
 		Suit.Clubs,
-		BidStage.BidRound1,
+		BidStage.Round1,
 		false,
 	);
 
@@ -186,7 +186,7 @@ describe("Bid", function () {
 		new Card(Suit.Diamonds, Rank.Nine),
 		Player.West,
 		Suit.Diamonds,
-		BidStage.BidRound1,
+		BidStage.Round1,
 		false,
 	);
 
@@ -198,7 +198,7 @@ describe("Bid", function () {
 		new Card(Suit.Hearts, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
-		BidStage.BidRound1,
+		BidStage.Round1,
 		false,
 	);
 
@@ -210,7 +210,7 @@ describe("Bid", function () {
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.East,
 		Suit.Clubs,
-		BidStage.BidRound1,
+		BidStage.Round1,
 		false,
 	);
 
@@ -222,7 +222,7 @@ describe("Bid", function () {
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
-		BidStage.BidRound2,
+		BidStage.Round2,
 		false,
 	);
 
@@ -234,7 +234,7 @@ describe("Bid", function () {
 		new Card(Suit.Spades, Rank.Nine),
 		Player.West,
 		Suit.Diamonds,
-		BidStage.BidRound2,
+		BidStage.Round2,
 		false,
 	);
 
@@ -246,7 +246,7 @@ describe("Bid", function () {
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.South,
 		Suit.Spades,
-		BidStage.BidRound2,
+		BidStage.Round2,
 		false,
 	);
 
@@ -258,7 +258,7 @@ describe("Bid", function () {
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.West,
 		Suit.Diamonds,
-		BidStage.BidRound2,
+		BidStage.Round2,
 		false,
 	);
 
@@ -270,7 +270,7 @@ describe("Bid", function () {
 		new Card(Suit.Clubs, Rank.Nine),
 		Player.North,
 		Suit.Hearts,
-		BidStage.BidRound2,
+		BidStage.Round2,
 		false,
 	);
 
@@ -282,7 +282,7 @@ describe("Bid", function () {
 		new Card(Suit.Spades, Rank.Nine),
 		Player.East,
 		Suit.Clubs,
-		BidStage.BidRound2,
+		BidStage.Round2,
 		false,
 	);
 
@@ -296,7 +296,7 @@ describe("Bid", function () {
 		});
 
 		it("bidStage", function () {
-			expect(bid.bidStage()).toBe(BidStage.BidFinished);
+			expect(bid.bidStage()).toBe(BidStage.Finished);
 		});
 
 		it("playersBid", function () {

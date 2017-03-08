@@ -111,7 +111,7 @@
 		DECKDICT[leftID].suit = trumpSuit;
 		DECKDICT[leftID].rank = Rank.Left;
 
-		if (bidResult.bidStage === BidStage.BidRound1) {
+		if (bidResult.bidStage === BidStage.Round1) {
 			this.addToHand(this.__dealer, this.__trumpCandidateCard);
 			this.__handStage = HandStage.Discard;
 		}

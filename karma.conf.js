@@ -5,7 +5,7 @@ module.exports = function (config) {
 	config.set({
 
 		// base path that will be used to resolve all patterns (eg. files, exclude)
-		basePath: 'EuchreSolution/Euchre/',
+		basePath: 'EuchreSolution/',
 
 		// frameworks to use
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -13,14 +13,14 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'GameScript/xor4096.ts',
-			'GameScript/*.ts',
+			'Euchre/GameScript/xor4096.ts',
+			'Euchre/GameScript/*.ts',
 			'**/*.ts',
 		],
 
 		// list of files to exclude
 		exclude: [
-			'AIScript/aiInterface.ts',
+			'Euchre/AIScript/aiInterface.ts',
 			'**/*.d.ts',
 		],
 

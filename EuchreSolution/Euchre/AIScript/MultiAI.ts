@@ -1,23 +1,3 @@
-interface BiddingAI {
-	init(): void;
-
-	chooseOrderUp(): boolean;
-
-	pickDiscard(): Card | null;
-
-	pickTrump(): Suit | null;
-
-	chooseGoAlone(): boolean;
-}
-
-interface PlayingAI {
-	init(): void;
-
-	pickCard(): Card | null;
-
-	trickEnd(): void;
-}
-
 class MultiAI implements EuchreAI {
 	private biddingAI: BiddingAI;
 	private playingAI: PlayingAI;

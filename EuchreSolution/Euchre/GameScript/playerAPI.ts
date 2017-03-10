@@ -213,3 +213,60 @@ function getWorstCard(hand: Card[], trickSuit?: Suit, trump?: Suit, mustBeLegal?
 	}
 	return worstCard;
 }
+
+//**NOT TESTING**
+function nextPlayer(currentPlayer: Player): Player {
+	switch (currentPlayer) {
+		case Player.South:
+			return Player.West;
+		case Player.West:
+			return Player.North;
+		case Player.North:
+			return Player.East;
+		case Player.East:
+			return Player.South;
+	}
+}
+
+//**NOT TESTING**
+function getPartner(player: Player): Player {
+	switch (player) {
+		case Player.South:
+			return Player.North;
+		case Player.West:
+			return Player.East;
+		case Player.North:
+			return Player.South;
+		case Player.East:
+			return Player.West;
+	}
+}
+
+//**NOT TESTING**
+function getOppositeSuit(suit: Suit): Suit {
+	switch (suit) {
+		case Suit.Clubs:
+			return Suit.Spades;
+		case Suit.Diamonds:
+			return Suit.Hearts;
+		case Suit.Hearts:
+			return Suit.Diamonds;
+		case Suit.Spades:
+			return Suit.Clubs;
+	}
+}
+
+//**TESTED**
+function getNextDealer(prevDealer?: Player): Player {
+	let dealer;
+
+	//if we have a dealer, get the next dealer
+	if (prevDealer !== undefined) {
+		dealer = nextPlayer(prevDealer);
+	}
+	//otherwise just randomly grab one
+	else {
+		dealer = rng.nextInRange(0, 3);
+	}
+	return dealer;
+}

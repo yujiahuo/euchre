@@ -1,3 +1,53 @@
+enum HandStage {
+	Bidding,
+	Discard,
+	PlayTricks,
+	Finished,
+}
+
+type ShuffleResult = {
+	deck: Card[],
+	jacks: Card[],
+};
+
+function getShuffledDeck(): Card[] {
+	let deck: Card[] = [];
+
+	for (let i = 0; i < DECKSIZE; i++) {
+		let j = rng.nextInRange(0, i);
+		if (j !== i) {
+			deck[i] = deck[j];
+		}
+		deck[j] = new Card(SORTEDDECK[i]);
+	}
+
+	return deck;
+}
+
+function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
+	for (let i = 0; i < 20; i++) {
+		let player = (dealer + i) % 4;
+		let cardPos = Math.floor(i / 4);
+		playerHands[player][cardPos] = deck.pop() as Card;
+	}
+}
+
+function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean, defendingAlone?: boolean): number {
+	if (tricksTaken < 3) return 0;
+
+	if (maker) {
+		if (tricksTaken === 5) {
+			return alone ? 4 : 2;
+		}
+		else {
+			return 1;
+		}
+	}
+	else {
+		return alone && defendingAlone ? 4 : 2;
+	}
+}
+
 class Hand {
 	//General stuff
 	private __dealer: Player;

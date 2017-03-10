@@ -1,6 +1,5 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 /// <reference path="../../GameScript/globs.ts" />
-/// <reference path="../../GameScript/utils.ts" />
 /// <reference path="../../GameScript/playerAPI.ts" />
 /// <reference path="../../GameScript/trick.ts" />
 /// <reference path="../../GameScript/hand.ts" />

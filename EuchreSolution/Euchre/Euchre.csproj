@@ -67,7 +67,6 @@
     <TypeScriptCompile Include="GameScript\globs.ts" />
     <TypeScriptCompile Include="GameScript\menuLogic.ts" />
     <TypeScriptCompile Include="GameScript\trick.ts" />
-    <TypeScriptCompile Include="GameScript\utils.ts" />
     <Content Include="Images\cardBack.png" />
     <Content Include="Images\cards.png" />
     <Content Include="Images\dealerButton.png" />

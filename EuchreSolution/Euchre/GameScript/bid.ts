@@ -1,4 +1,16 @@
-//returns: [trump, alonePlayer, maker, bidRound]
+enum BidStage {
+	Round1,
+	Round2,
+	Finished,
+}
+
+interface BidResult {
+	trump: Suit;
+	maker: Player;
+	alone: boolean;
+	stage: BidStage;
+}
+
 class Bid {
 	private __playerHands: Card[][]; //2d array of everyone's hands
 	private __currentPlayer: Player;
@@ -86,5 +98,29 @@ class Bid {
 
 	public isFinished(): boolean {
 		return this.__stage === BidStage.Finished;
+	}
+}
+
+function getAIBid(currentPlayer: Player, aiPlayer: EuchreAI, stage: BidStage, trumpCandidate: Card): BidResult | null {
+	let trump: Suit | null = null;
+
+	if (stage === BidStage.Round1) {
+		if (aiPlayer.chooseOrderUp()) {
+			trump = trumpCandidate.suit;
+		}
+	}
+	else if (stage === BidStage.Round2) {
+		trump = aiPlayer.pickTrump();
+	}
+
+	if (trump === null) {
+		return null;
+	}
+
+	return {
+		trump: trump,
+		maker: currentPlayer,
+		alone: aiPlayer.chooseGoAlone(),
+		stage: stage,
 	}
 }

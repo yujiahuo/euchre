@@ -1,6 +1,5 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 /// <reference path="../../GameScript/globs.ts" />
-/// <reference path="../../GameScript/utils.ts" />
 /// <reference path="../../GameScript/playerAPI.ts" />
 /// <reference path="../../GameScript/trick.ts" />
 /// <reference path="../../GameScript/hand.ts" />
@@ -9,4 +8,4 @@
 /// <reference path="../../AIScript/decentAI.ts" />
 /// <reference path="../../AIScript/idiotAI.ts" />
 
-describe("Empty", function() {});
+describe("Empty", function () { });

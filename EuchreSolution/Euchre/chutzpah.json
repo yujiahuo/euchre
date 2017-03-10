@@ -4,7 +4,6 @@
 		{ "Path": "GameScript/globs.js" },
 		{ "Path": "GameScript/animation.js" },
 		{ "Path": "GameScript/menuLogic.js" },
-		{ "Path": "GameScript/utils.js" },
 		{ "Path": "GameScript/playerAPI.js" },
 		{ "Path": "GameScript/trick.js" },
 		{ "Path": "GameScript/bid.js" },
@@ -14,12 +13,11 @@
 		{ "Path": "AIScript/idiotAI.js" },
 		{ "Path": "AIScript/testAI.js" }
 	],
-
 	"Tests": [
 		{ "Path": "jasmine/spec/APISpec.js" },
 		{ "Path": "jasmine/spec/GameSpec.js" },
 		{ "Path": "jasmine/spec/HandSpec.js" },
 		{ "Path": "jasmine/spec/TrickSpec.js" },
-		{ "Path": "jasmine/spec/BidSpec.js" },
+		{ "Path": "jasmine/spec/BidSpec.js" }
 	]
 }

@@ -5,40 +5,32 @@
 /* All other functions and vars are "private"
 *******************************************************/
 
-interface EuchreAI {
+interface BiddingAI {
 	//Called once hands have been dealt and the trump candidate is revealed
-	//Params: none
-	//Returns: none
 	init(): void;
 
 	//Bidding round 1, choose whether to order up or pass
-	//Params: none
-	//Returns: boolean
 	chooseOrderUp(): boolean;
 
 	//Bidding round 1, if trump is ordered up to you, pick a card to discard
-	//Params: none
-	//Returns: Card or null
 	pickDiscard(): Card | null;
 
 	//Bidding round 2, choose from the remaining suits or pass
-	//Params: none
-	//Returns: Suit or null
 	pickTrump(): Suit | null;
 
 	//Called at any bidding round after you've determined trump
-	//Return true if going alone
-	//Params: none
-	//Returns: boolean
 	chooseGoAlone(): boolean;
+}
+
+interface PlayingAI {
+	//Called once hands have been dealt and the trump candidate is revealed
+	init(): void;
 
 	//Your turn to play a card
-	//Params: none
-	//Returns: Card or null
 	pickCard(): Card | null;
 
 	//Called at the end of each trick
-	//Params: An array of players and the cards they played, in play order
-	//Returns: none
 	trickEnd(): void;
 }
+
+interface EuchreAI extends BiddingAI, PlayingAI { }

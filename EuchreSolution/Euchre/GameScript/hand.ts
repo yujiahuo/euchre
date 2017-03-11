@@ -1,4 +1,4 @@
-﻿class Hand {
+class Hand {
 	//General stuff
 	private __dealer: Player;
 	private __deck: Card[]; //contains the shuffled deck or what's left of it after dealing
@@ -15,7 +15,7 @@
 	private __trick: Trick;
 	private __numTricksPlayed: number = 0;
 	private __numPlayers: number = 0; //players playing this hand; this is usually 4 but can be 3 or 2 depending on loners
-	private __nsTricksWon: number= 0;
+	private __nsTricksWon: number = 0;
 	private __ewTricksWon: number = 0;
 	private __nsPointsWon: number = 0;
 	private __ewPointsWon: number = 0;
@@ -145,7 +145,7 @@
 			animShowText("EW won this trick", MessageLevel.Step, 2);
 		}
 		this.__numTricksPlayed++;
-		if (this.__numTricksPlayed >= 5){
+		if (this.__numTricksPlayed >= 5) {
 			this.endHand(true);
 		}
 	}

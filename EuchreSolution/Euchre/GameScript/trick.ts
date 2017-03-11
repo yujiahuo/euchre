@@ -1,4 +1,4 @@
-﻿class Trick {
+class Trick {
 	private __suitLead: Suit | undefined = undefined; //the suit that was lead
 	private __playedCards: PlayedCard[] = []; //array of cards that have been played this trick so far
 	private __trumpSuit: Suit; //set in constructor

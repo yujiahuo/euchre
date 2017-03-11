@@ -1,2 +1,2 @@
-﻿class Controller {
+class Controller {
 }

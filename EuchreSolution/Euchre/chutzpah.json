@@ -1,4 +1,4 @@
-﻿{
+{
 	"References": [
 		{ "Path": "GameScript/xor4096.js" },
 		{ "Path": "GameScript/globs.js" },

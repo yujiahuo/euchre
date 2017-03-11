@@ -1,4 +1,4 @@
-﻿//**NOT TESTING**
+//**NOT TESTING**
 function nextPlayer(currentPlayer: Player): Player {
 	switch (currentPlayer) {
 		case Player.South:

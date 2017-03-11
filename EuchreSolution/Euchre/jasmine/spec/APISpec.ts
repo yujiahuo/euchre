@@ -136,7 +136,7 @@ describe("hasSuit", function () {
 
 describe("getBestCardPlayed", function () {
 	let playedCards: PlayedCard[]
-	let trumpSuit: Suit = Suit.Spades
+	let trump: Suit = Suit.Spades
 	let result: PlayedCard | null;
 
 	it("first player nails it, everyone follows suit", function () {
@@ -146,7 +146,7 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.North, card: new Card(Suit.Hearts, Rank.Ten) });
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
-		result = getBestCardPlayed(playedCards, trumpSuit);
+		result = getBestCardPlayed(playedCards, trump);
 		expect(result).toBeDefined();
 		if (result) {
 			expect(result.player).toBe(Player.South);
@@ -160,7 +160,7 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.North, card: new Card(Suit.Diamonds, Rank.Ten) });
 		playedCards.push({ player: Player.East, card: new Card(Suit.Diamonds, Rank.Jack) });
 
-		result = getBestCardPlayed(playedCards, trumpSuit);
+		result = getBestCardPlayed(playedCards, trump);
 		expect(result).toBeDefined();
 		if (result) {
 			expect(result.player).toBe(Player.South);
@@ -174,7 +174,7 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.North, card: new Card(Suit.Diamonds, Rank.Ace) });
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Ten) });
 
-		result = getBestCardPlayed(playedCards, trumpSuit);
+		result = getBestCardPlayed(playedCards, trump);
 		expect(result).toBeDefined();
 		if (result) {
 			expect(result.player).toBe(Player.West);
@@ -188,7 +188,7 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.North, card: new Card(Suit.Hearts, Rank.Ten) });
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
-		result = getBestCardPlayed(playedCards, trumpSuit);
+		result = getBestCardPlayed(playedCards, trump);
 		expect(result).toBeDefined();
 		if (result) {
 			expect(result.player).toBe(Player.West);
@@ -202,7 +202,7 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.North, card: new Card(Suit.Spades, Rank.Ten) });
 		playedCards.push({ player: Player.East, card: new Card(Suit.Hearts, Rank.Jack) });
 
-		result = getBestCardPlayed(playedCards, trumpSuit);
+		result = getBestCardPlayed(playedCards, trump);
 		expect(result).toBeDefined();
 		if (result) {
 			expect(result.player).toBe(Player.North);
@@ -216,7 +216,7 @@ describe("getBestCardPlayed", function () {
 		playedCards.push({ player: Player.East, card: new Card(Suit.Spades, Rank.Ten) });
 		playedCards.push({ player: Player.South, card: new Card(Suit.Hearts, Rank.Jack) });
 
-		result = getBestCardPlayed(playedCards, trumpSuit);
+		result = getBestCardPlayed(playedCards, trump);
 		expect(result).toBeDefined();
 		if (result) {
 			expect(result.player).toBe(Player.East);

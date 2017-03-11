@@ -1,8 +1,8 @@
 class Trick {
 	private __suitLead: Suit | undefined = undefined; //the suit that was lead
 	private __playedCards: PlayedCard[] = []; //array of cards that have been played this trick so far
-	private __trumpSuit: Suit; //set in constructor
-	private __alone: boolean = false; //set in constructor
+	private __trump: Suit;
+	private __alone: boolean;
 	private __playerHands: Card[][];
 	private __aiPlayers: (EuchreAI | null)[];
 	private __currentPlayer: Player;
@@ -31,8 +31,8 @@ class Trick {
 	}
 
 	/* constructor */
-	constructor(trumpSuit: Suit, alone: boolean, hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player) {
-		this.__trumpSuit = trumpSuit;
+	constructor(trump: Suit, alone: boolean, hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player) {
+		this.__trump = trump;
 		this.__alone = alone;
 		this.__playerHands = hands;
 		this.__aiPlayers = aiPlayers;
@@ -53,7 +53,7 @@ class Trick {
 
 	protected playCard(card: Card | null): Card | null {
 		if (this.isFinished()) return null;
-			
+
 		let hand: Card[] = this.__playerHands[this.__currentPlayer];
 
 		if (!card || !isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
@@ -107,7 +107,7 @@ class Trick {
 	}
 
 	public winner(): Player | null {
-		let bestCardPlayed = getBestCardPlayed(this.__playedCards, this.__trumpSuit);
+		let bestCardPlayed = getBestCardPlayed(this.__playedCards, this.__trump);
 		if (!bestCardPlayed) {
 			return null;
 		}

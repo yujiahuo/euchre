@@ -9,7 +9,7 @@ class Hand {
 	//Bidding related
 	private __bid: Bid;
 	private __bidResult: BidResult | null;
-	private __trumpCandidateCard: Card; //turned up card
+	private __trumpCandidate: Card; //turned up card
 
 	//Playing related
 	private __trick: Trick;
@@ -30,8 +30,8 @@ class Hand {
 	public playerHands(): Card[][] {
 		return this.__playerHands;
 	}
-	public trumpCandidateCard(): Card | undefined {
-		return this.__trumpCandidateCard;
+	public trumpCandidate(): Card | undefined {
+		return this.__trumpCandidate;
 	}
 	public numTricksPlayed(): number {
 		return this.__numTricksPlayed;
@@ -63,11 +63,11 @@ class Hand {
 			this.__playerHands[i] = new Array(5);
 		}
 		dealHands(this.__deck, this.__playerHands, this.__dealer);
-		this.__trumpCandidateCard = this.__deck.pop() as Card;
+		this.__trumpCandidate = this.__deck.pop() as Card;
 
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
-		this.__bid = new Bid(this.__playerHands, this.__aiPlayers, nextPlayer(this.__dealer), this.__trumpCandidateCard);
+		this.__bid = new Bid(this.__playerHands, this.__aiPlayers, nextPlayer(this.__dealer), this.__trumpCandidate);
 	}
 
 	private advanceHand(): void {
@@ -85,7 +85,7 @@ class Hand {
 				this.discard();
 				this.__handStage = HandStage.PlayTricks;
 				if (this.__bidResult) {
-					this.__trick = new Trick(this.__bidResult.trumpSuit as Suit, this.__bidResult.alone as boolean, this.__playerHands, this.__aiPlayers, nextPlayer(this.__dealer));
+					this.__trick = new Trick(this.__bidResult.trump as Suit, this.__bidResult.alone as boolean, this.__playerHands, this.__aiPlayers, nextPlayer(this.__dealer));
 				}
 				break;
 			case HandStage.PlayTricks:
@@ -100,24 +100,24 @@ class Hand {
 	private endBidding(bidResult: BidResult): void {
 		let rightID;
 		let leftID;
-		let trumpSuit = bidResult.trumpSuit as Suit;
+		let trump = bidResult.trump as Suit;
 
 		//This chunk is for changing the rank and suit of the right and left bowers
 		//for the duration of the hand.
 		//Note: The cards' IDs stay the same
-		rightID = Suit[trumpSuit] + Rank.Jack;
+		rightID = Suit[trump] + Rank.Jack;
 		DECKDICT[rightID].rank = Rank.Right;
-		leftID = Suit[getOppositeSuit(trumpSuit)] + Rank.Jack;
-		DECKDICT[leftID].suit = trumpSuit;
+		leftID = Suit[getOppositeSuit(trump)] + Rank.Jack;
+		DECKDICT[leftID].suit = trump;
 		DECKDICT[leftID].rank = Rank.Left;
 
-		if (bidResult.bidStage === BidStage.Round1) {
-			this.addToHand(this.__dealer, this.__trumpCandidateCard);
+		if (bidResult.stage === BidStage.Round1) {
+			this.addToHand(this.__dealer, this.__trumpCandidate);
 			this.__handStage = HandStage.Discard;
 		}
 		else {
 			this.__handStage = HandStage.PlayTricks;
-			this.__trick = new Trick(bidResult.trumpSuit as Suit, bidResult.alone as boolean, this.__playerHands, this.__aiPlayers, nextPlayer(this.__dealer));
+			this.__trick = new Trick(bidResult.trump as Suit, bidResult.alone as boolean, this.__playerHands, this.__aiPlayers, nextPlayer(this.__dealer));
 		}
 	}
 
@@ -158,9 +158,9 @@ class Hand {
 		this.__nsPointsWon = calculatePointGain(this.__nsTricksWon, isMaker, this.__bidResult.alone);
 		this.__ewPointsWon = calculatePointGain(this.__ewTricksWon, !isMaker, this.__bidResult.alone);
 
-		this.resetJacks(this.__bidResult.trumpSuit);
+		this.resetJacks(this.__bidResult.trump);
 
-		this.__handStage = HandStage.HandFinished;
+		this.__handStage = HandStage.Finished;
 
 	}
 
@@ -181,14 +181,14 @@ class Hand {
 		}
 	}
 
-	private resetJacks(trumpSuit: Suit): void {
+	private resetJacks(trump: Suit): void {
 		let rightID;
 		let leftID;
 
-		rightID = Suit[trumpSuit] + Rank.Jack;
+		rightID = Suit[trump] + Rank.Jack;
 		DECKDICT[rightID].rank = Rank.Jack;
-		leftID = Suit[getOppositeSuit(trumpSuit)] + Rank.Jack;
-		DECKDICT[leftID].suit = getOppositeSuit(trumpSuit);
+		leftID = Suit[getOppositeSuit(trump)] + Rank.Jack;
+		DECKDICT[leftID].suit = getOppositeSuit(trump);
 		DECKDICT[leftID].rank = Rank.Jack;
 	}
 
@@ -201,7 +201,7 @@ class Hand {
 	}
 
 	public isFinished(): boolean {
-		if (this.__handStage === HandStage.HandFinished) return true;
+		if (this.__handStage === HandStage.Finished) return true;
 		else return false;
 	}
 }

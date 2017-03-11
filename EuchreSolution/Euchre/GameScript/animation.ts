@@ -45,14 +45,14 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 	let cardID: string;
 	let flippedUp: boolean;
 	let dealer: Player;
-	let trumpCandidateCard = game.getTrumpCandidateCard() as Card
+	let trumpCandidate = game.getTrumpCandidate() as Card
 
 	dealer = game.getDealer();
 	player = nextPlayer(dealer);
 	delay = 0;
 
 	makeCardElem("deck", false);
-	makeCardElem(trumpCandidateCard.id, false);
+	makeCardElem(trumpCandidate.id, false);
 
 	for (let i = 0; i < hands.length; i++) {
 		flippedUp = (!game.getAIPlayer(player) || game.isOpenHands());
@@ -79,7 +79,7 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 		player = (player + 1) % 4;
 	}
 
-	setTimeout(animFlipCard, 1000, trumpCandidateCard.id);
+	setTimeout(animFlipCard, 1000, trumpCandidate.id);
 }*/
 
 function animDealSingle(player: Player, cardID: string, cardPos: number): void {
@@ -114,7 +114,7 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 /*function animTakeTrump(toDiscardID: string): void {
 	if (game.isStatMode()) return;
 
-	let trumpCandidate = game.getTrumpCandidateCard() as Card;
+	let trumpCandidate = game.getTrumpCandidate() as Card;
 	let toDiscardElem = document.getElementById(toDiscardID) as HTMLElement;
 	let trumpElem = document.getElementById(trumpCandidate.id) as HTMLElement;
 	let top = toDiscardElem.style.top;
@@ -177,7 +177,7 @@ function animSortHand(hand: Card[]): void {
 		key = 0;
 		suit = hand[i].suit;
 		switch (suit) {
-			/*case game.getTrumpSuit():
+			/*case game.getTrump():
 				break;*/
 			case Suit.Spades:
 				key += 100;
@@ -290,10 +290,10 @@ function animWinTrick(player: Player, cards: Card[]): void {
 	let elem;
 	let trumpCandidate;
 
-	trumpCandidate = game.getTrumpCandidateCard() as Card;
+	trumpCandidate = game.getTrumpCandidate() as Card;
 	elem = document.getElementById("deck");
 	setTimeout(animHideCard, 300, elem);
-	if (trumpCandidate.suit !== game.getTrumpSuit()) { //trump candidate wasn't picked up
+	if (trumpCandidate.suit !== game.getTrump()) { //trump candidate wasn't picked up
 		elem = document.getElementById(trumpCandidate.id);
 		setTimeout(animHideCard, 300, elem);
 	}
@@ -331,7 +331,7 @@ function animEnableBidding(hand: Card[]): void {
 	document.getElementById("orderUpPrompt").style.display = "inline";
 	document.getElementById("pass").style.display = "inline";
 
-	if (game.getGameStage() === GameStage.BidRound1 && hasSuit(hand, game.getTrumpCandidateCard().suit)) {
+	if (game.getGameStage() === GameStage.BidRound1 && hasSuit(hand, game.getTrumpCandidate().suit)) {
 		document.getElementById("orderUp").style.display = "inline";
 		document.getElementById("alone").style.display = "inline";
 		return;

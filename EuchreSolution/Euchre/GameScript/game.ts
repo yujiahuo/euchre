@@ -229,7 +229,7 @@ class Game {
 //this.setTrump(suit, this.__currentPlayer, alone);
 ////if round 1, dealer also needs to discard
 //if (this.__gameStage === BidStage.Round1) {
-//	this.addToHand(this.__dealer, this.__trumpCandidateCard as Card);
+//	this.addToHand(this.__dealer, this.__trumpCandidate as Card);
 //	this.__gameStage = HandStage.Discard;
 //}
 
@@ -244,7 +244,7 @@ class Game {
 //	if(!aiPlayer) return;
 
 ////see if AI bids
-//suit = getAIBid(aiPlayer, this.__bidStage, this.__trumpCandidateCard);
+//suit = getAIBid(aiPlayer, this.__bidStage, this.__trumpCandidate);
 //if (suit !== null && hasSuit(this.__playerHands[this.__currentPlayer], suit)) {
 //	alone = aiPlayer.chooseGoAlone();
 //	this.endBidSuccess(suit, alone);

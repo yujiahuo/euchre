@@ -96,27 +96,27 @@ function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 //}
 
 //**NOT TESTING**
-function getAIBid(currentPlayer: Player, aiPlayer: EuchreAI, stage: BidStage, trumpCandidateCard: Card): BidResult | null {
-	let trumpSuit: Suit | null = null;
+function getAIBid(currentPlayer: Player, aiPlayer: EuchreAI, stage: BidStage, trumpCandidate: Card): BidResult | null {
+	let trump: Suit | null = null;
 
 	if (stage === BidStage.Round1) {
 		if (aiPlayer.chooseOrderUp()) {
-			trumpSuit = trumpCandidateCard.suit;
+			trump = trumpCandidate.suit;
 		}
 	}
 	else if (stage === BidStage.Round2) {
-		trumpSuit = aiPlayer.pickTrump();
+		trump = aiPlayer.pickTrump();
 	}
 
-	if (trumpSuit === null) {
+	if (trump === null) {
 		return null;
 	}
 
 	return {
-		trumpSuit: trumpSuit,
+		trump: trump,
 		maker: currentPlayer,
 		alone: aiPlayer.chooseGoAlone(),
-		bidStage: stage,
+		stage: stage,
 	}
 }
 

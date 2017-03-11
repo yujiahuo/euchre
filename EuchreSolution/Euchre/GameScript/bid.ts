@@ -1,11 +1,11 @@
-//returns: [trumpSuit, alonePlayer, maker, bidRound]
+//returns: [trump, alonePlayer, maker, bidRound]
 class Bid {
 	private __playerHands: Card[][]; //2d array of everyone's hands
 	private __currentPlayer: Player;
 	private __aiPlayers: (EuchreAI | null)[];
-	private __bidStage: BidStage;
+	private __stage: BidStage;
 	private __playersBid: number = 0; //number of players who have bid so far
-	private __trumpCandidateCard: Card; //turned up card
+	private __trumpCandidate: Card; //turned up card
 	private __bidResult: BidResult | null = null;
 
 	/* Properties */
@@ -13,8 +13,8 @@ class Bid {
 		return this.__currentPlayer;
 	}
 
-	public bidStage(): BidStage {
-		return this.__bidStage;
+	public stage(): BidStage {
+		return this.__stage;
 	}
 
 	public playersBid(): number {
@@ -26,12 +26,12 @@ class Bid {
 	}
 
 	/* constructor */
-	constructor(hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player, trumpCandidateCard: Card) {
+	constructor(hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player, trumpCandidate: Card) {
 		this.__playerHands = hands;
 		this.__aiPlayers = aiPlayers;
 		this.__currentPlayer = firstPlayer;
-		this.__bidStage = BidStage.Round1;
-		this.__trumpCandidateCard = trumpCandidateCard;
+		this.__stage = BidStage.Round1;
+		this.__trumpCandidate = trumpCandidate;
 	}
 
 	private advanceBid(): void {
@@ -40,13 +40,13 @@ class Bid {
 		let bidResult: BidResult | null = null;
 
 		if (aiPlayer) {
-			bidResult = getAIBid(this.__currentPlayer, aiPlayer, this.__bidStage, this.__trumpCandidateCard);
+			bidResult = getAIBid(this.__currentPlayer, aiPlayer, this.__stage, this.__trumpCandidate);
 		}
 
 		if (bidResult) {
-			if (bidResult.bidStage === BidStage.Round2 && bidResult.trumpSuit === this.__trumpCandidateCard.suit) {
+			if (bidResult.stage === BidStage.Round2 && bidResult.trump === this.__trumpCandidate.suit) {
 				bidResult = null;
-			} else if (!hasSuit(this.__playerHands[this.__currentPlayer], bidResult.trumpSuit)) {
+			} else if (!hasSuit(this.__playerHands[this.__currentPlayer], bidResult.trump)) {
 				bidResult = null;
 			}
 		}
@@ -54,8 +54,8 @@ class Bid {
 		if (bidResult) {
 			bidSuccessful = true;
 			this.__bidResult = bidResult;
-			this.__bidStage = BidStage.Finished;
-			animShowText(this.__currentPlayer + " " + Suit[bidResult.trumpSuit] + " " + bidResult.alone, MessageLevel.Step, 1);
+			this.__stage = BidStage.Finished;
+			animShowText(this.__currentPlayer + " " + Suit[bidResult.trump] + " " + bidResult.alone, MessageLevel.Step, 1);
 		}
 		else {
 			animShowText(this.__currentPlayer + " passed.", MessageLevel.Step, 1);
@@ -66,12 +66,12 @@ class Bid {
 
 		//everyone bid, round is over
 		if (!bidSuccessful && this.__playersBid >= 4) {
-			if (this.__bidStage === BidStage.Round1) {
+			if (this.__stage === BidStage.Round1) {
 				this.__playersBid = 0;
-				this.__bidStage = BidStage.Round2;
+				this.__stage = BidStage.Round2;
 			}
 			else {
-				this.__bidStage = BidStage.Finished;
+				this.__stage = BidStage.Finished;
 			}
 		}
 	}
@@ -85,6 +85,6 @@ class Bid {
 	}
 
 	public isFinished(): boolean {
-		return this.__bidStage === BidStage.Finished;
+		return this.__stage === BidStage.Finished;
 	}
 }

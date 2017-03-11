@@ -23,12 +23,12 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
    order up a given suit.
    Depends on bidding round */
 /*function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
-	let trumpCandidateCard = game.getTrumpCandidateCard() as Card;
+	let trumpCandidate = game.getTrumpCandidate() as Card;
 	if (game.getGameStage() === HandStage.BidRound1) {
-		if (trumpCandidateCard.suit !== suit) return false;
+		if (trumpCandidate.suit !== suit) return false;
 		if (hasSuit(playerHand, suit)) return true;
 	} else if (game.getGameStage() === HandStage.BidRound2) {
-		if (trumpCandidateCard.suit === suit) return false;
+		if (trumpCandidate.suit === suit) return false;
 		if (hasSuit(playerHand, suit)) return true;
 	}
 	return false;

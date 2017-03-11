@@ -1,12 +1,31 @@
-function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | null)[], dealer: Player, trumpCandidate: Card, maker: Player, trump: Suit, stage: BidStage, alone: boolean) {
+function copyHands(hands: Card[][]): { hands: Card[][], jacks: Card[] } {
+	let playerHands: Card[][] = [[], [], [], []];
+	let jacks: Card[] = [];
+	for (let i = 0; i < hands.length; i++) {
+		for (let j = 0; j < hands[i].length; j++) {
+			let card = new Card(hands[i][j]);
+			playerHands[i].push(card);
+			if (card.rank === Rank.Jack) {
+				jacks[card.suit] = card;
+			}
+		}
+	}
+	return {
+		hands: playerHands,
+		jacks: jacks,
+	}
+}
+
+function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | null)[],
+	dealer: Player, trumpCandidate: Card, maker: Player, trump: Suit,
+	stage: BidStage, alone: boolean) {
 	let bid: Bid;
-	let bidResult: BidResult | null;
 
 	describe(description, function () {
 		beforeEach(function () {
-			bid = new Bid(hands, aiPlayers, dealer, trumpCandidate);
+			let {hands: playerHands, jacks} = copyHands(hands);
+			bid = new Bid(playerHands, jacks, aiPlayers, dealer, trumpCandidate);
 			bid.doBidding();
-			bidResult = bid.bidResult();
 		});
 
 		it("currentPlayer", function () {
@@ -33,7 +52,7 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 			});
 
 			it("is non-null", function () {
-				expect(bidResult).toBeDefined();
+				expect(bidResult).not.toBeNull();
 			})
 
 			it("maker", function () {
@@ -61,16 +80,26 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 
 describe("BidSpec", function () {
 	let ordersItUpBiddingAI = new BiddingTestAI(true, null, false);
+	let ordersItUpAloneBiddingAI = new BiddingTestAI(true, null, true);
 	let doesNothingAI = new IdiotAI();
 	let ordersItUpAI = new MultiAI(ordersItUpBiddingAI, doesNothingAI);
+	let ordersItUpAloneAI = new MultiAI(ordersItUpAloneBiddingAI, doesNothingAI);
 	let callsClubsBiddingAI = new BiddingTestAI(false, Suit.Clubs, false);
 	let callsClubsAI = new MultiAI(callsClubsBiddingAI, doesNothingAI);
+	let callsClubsAloneBiddingAI = new BiddingTestAI(false, Suit.Clubs, true);
+	let callsClubsAloneAI = new MultiAI(callsClubsAloneBiddingAI, doesNothingAI);
 	let callsDiamondsBiddingAI = new BiddingTestAI(false, Suit.Diamonds, false);
 	let callsDiamondsAI = new MultiAI(callsDiamondsBiddingAI, doesNothingAI);
+	let callsDiamondsAloneBiddingAI = new BiddingTestAI(false, Suit.Diamonds, true);
+	let callsDiamondsAloneAI = new MultiAI(callsDiamondsAloneBiddingAI, doesNothingAI);
 	let callsHeartsBiddingAI = new BiddingTestAI(false, Suit.Hearts, false);
 	let callsHeartsAI = new MultiAI(callsHeartsBiddingAI, doesNothingAI);
+	let callsHeartsAloneBiddingAI = new BiddingTestAI(false, Suit.Hearts, true);
+	let callsHeartsAloneAI = new MultiAI(callsHeartsAloneBiddingAI, doesNothingAI);
 	let callsSpadesBiddingAI = new BiddingTestAI(false, Suit.Spades, false);
 	let callsSpadesAI = new MultiAI(callsSpadesBiddingAI, doesNothingAI);
+	let callsSpadesAloneBiddingAI = new BiddingTestAI(false, Suit.Spades, true);
+	let callsSpadesAloneAI = new MultiAI(callsSpadesAloneBiddingAI, doesNothingAI);
 	let hands = [
 		[
 			new Card(Suit.Spades, Rank.Jack),
@@ -103,7 +132,7 @@ describe("BidSpec", function () {
 	];
 
 	describe("Initial state", function () {
-		let bid = new Bid([], [], Player.East, new Card(Suit.Clubs, Rank.Nine));
+		let bid = new Bid([], [], [], Player.East, new Card(Suit.Clubs, Rank.Nine));
 		it("currentPlayer", function () {
 			expect(bid.currentPlayer()).toBe(Player.South);
 		});
@@ -186,6 +215,54 @@ describe("BidSpec", function () {
 	);
 
 	testBid(
+		"First player orders it up alone",
+		hands,
+		[ordersItUpAloneAI, ordersItUpAloneAI, ordersItUpAloneAI, ordersItUpAloneAI],
+		Player.East,
+		new Card(Suit.Clubs, Rank.Nine),
+		Player.South,
+		Suit.Clubs,
+		BidStage.Round1,
+		true,
+	);
+
+	testBid(
+		"Second player orders it up alone",
+		hands,
+		[doesNothingAI, ordersItUpAloneAI, ordersItUpAloneAI, ordersItUpAloneAI],
+		Player.East,
+		new Card(Suit.Diamonds, Rank.Nine),
+		Player.West,
+		Suit.Diamonds,
+		BidStage.Round1,
+		true,
+	);
+
+	testBid(
+		"Third player orders it up alone",
+		hands,
+		[doesNothingAI, doesNothingAI, ordersItUpAloneAI, ordersItUpAloneAI],
+		Player.East,
+		new Card(Suit.Hearts, Rank.Nine),
+		Player.North,
+		Suit.Hearts,
+		BidStage.Round1,
+		true,
+	);
+
+	testBid(
+		"Fourth player orders it up alone",
+		hands,
+		[doesNothingAI, doesNothingAI, doesNothingAI, ordersItUpAloneAI],
+		Player.East,
+		new Card(Suit.Clubs, Rank.Nine),
+		Player.East,
+		Suit.Clubs,
+		BidStage.Round1,
+		true,
+	);
+
+	testBid(
 		"Enforces suits for calling (has suit)",
 		hands,
 		[callsHeartsAI, callsHeartsAI, callsHeartsAI, callsHeartsAI],
@@ -257,10 +334,63 @@ describe("BidSpec", function () {
 		false,
 	);
 
+	testBid(
+		"First player calls Spades alone",
+		hands,
+		[callsSpadesAloneAI, callsDiamondsAloneAI, callsHeartsAloneAI, callsClubsAloneAI],
+		Player.East,
+		new Card(Suit.Clubs, Rank.Nine),
+		Player.South,
+		Suit.Spades,
+		BidStage.Round2,
+		true,
+	);
+
+	testBid(
+		"Second player calls Diamonds alone",
+		hands,
+		[doesNothingAI, callsDiamondsAloneAI, callsHeartsAloneAI, callsClubsAloneAI],
+		Player.East,
+		new Card(Suit.Clubs, Rank.Nine),
+		Player.West,
+		Suit.Diamonds,
+		BidStage.Round2,
+		true,
+	);
+
+	testBid(
+		"Third player calls Hearts alone",
+		hands,
+		[doesNothingAI, doesNothingAI, callsHeartsAloneAI, callsClubsAloneAI],
+		Player.East,
+		new Card(Suit.Clubs, Rank.Nine),
+		Player.North,
+		Suit.Hearts,
+		BidStage.Round2,
+		true,
+	);
+
+	testBid(
+		"Fourth player calls Clubs alone",
+		hands,
+		[doesNothingAI, doesNothingAI, doesNothingAI, callsClubsAloneAI],
+		Player.East,
+		new Card(Suit.Spades, Rank.Nine),
+		Player.East,
+		Suit.Clubs,
+		BidStage.Round2,
+		true,
+	);
+
 	describe("No one bids", function () {
 		let aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let bid = new Bid(hands, aiPlayers, Player.East, new Card(Suit.Clubs, Rank.Nine));
-		bid.doBidding();
+		let {hands: playerHands, jacks} = copyHands(hands);
+		let trumpCandidate = new Card(Suit.Clubs, Rank.Nine);
+		let bid: Bid;
+		beforeEach(function () {
+			bid = new Bid(playerHands, jacks, aiPlayers, Player.East, trumpCandidate);
+			bid.doBidding();
+		});
 
 		it("currentPlayer", function () {
 			expect(bid.currentPlayer()).toBe(Player.South);

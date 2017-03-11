@@ -1,12 +1,13 @@
 describe("HandSpec", function () {
 	let hand: Hand;
+	let aiPlayers: EuchreAI[];
 	let playerHands: Card[][];
 	let trumpCandidate: Card;
 	let bid: Bid;
 
 	beforeEach(function () {
 		let dealer = Player.South;
-		let aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
+		aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
 		hand = new Hand(dealer, aiPlayers);
 		playerHands = [
 			[
@@ -45,10 +46,9 @@ describe("HandSpec", function () {
 			playerHands[2][4],
 			playerHands[0][0],
 		];
-		(hand as any).__jacks = jacks;
 		trumpCandidate = new Card(Suit.Spades, Rank.Ten);
 		(hand as any).__trumpCandidate = trumpCandidate;
-		bid = new Bid(playerHands, aiPlayers, Player.South, trumpCandidate);
+		bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		(hand as any).__bid = bid;
 	});
 
@@ -67,9 +67,6 @@ describe("HandSpec", function () {
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(0);
-		});
-		it("numPlayers", function () {
-			expect(hand.numPlayers()).toBe(4);
 		});
 		it("nsTricksWon", function () {
 			expect(hand.nsTricksWon()).toBe(0);
@@ -90,7 +87,6 @@ describe("HandSpec", function () {
 
 	describe("No one bids", function () {
 		beforeEach(function () {
-			spyOn(bid, "doBidding").and.returnValue(null);
 			hand.doHand();
 		});
 		it("handStage", function () {
@@ -107,9 +103,6 @@ describe("HandSpec", function () {
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(0);
-		});
-		it("numPlayers", function () {
-			expect(hand.numPlayers()).toBe(4);
 		});
 		it("nsTricksWon", function () {
 			expect(hand.nsTricksWon()).toBe(0);
@@ -130,12 +123,7 @@ describe("HandSpec", function () {
 
 	describe("Actually play a hand (ordered up)", function () {
 		beforeEach(function () {
-			spyOn(bid, "doBidding").and.returnValue({
-				trump: trumpCandidate.suit,
-				maker: Player.South,
-				alone: false,
-				stage: BidStage.Round1,
-			});
+			spyOn(aiPlayers[0], "chooseOrderUp").and.returnValue(true);
 			hand.doHand();
 		});
 		it("handStage", function () {
@@ -152,9 +140,6 @@ describe("HandSpec", function () {
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(5);
-		});
-		it("numPlayers", function () {
-			expect(hand.numPlayers()).toBe(4);
 		});
 		it("nsTricksWon", function () {
 			expect(hand.nsTricksWon()).toBe(5);
@@ -175,12 +160,8 @@ describe("HandSpec", function () {
 
 	describe("Actually play a hand (ordered up alone)", function () {
 		beforeEach(function () {
-			spyOn(bid, "doBidding").and.returnValue({
-				trump: trumpCandidate.suit,
-				maker: Player.South,
-				alone: true,
-				stage: BidStage.Round1,
-			});
+			spyOn(aiPlayers[0], "chooseOrderUp").and.returnValue(true);
+			spyOn(aiPlayers[0], "chooseGoAlone").and.returnValue(true);
 			hand.doHand();
 		});
 		it("handStage", function () {
@@ -197,9 +178,6 @@ describe("HandSpec", function () {
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(5);
-		});
-		it("numPlayers", function () {
-			expect(hand.numPlayers()).toBe(3);
 		});
 		it("nsTricksWon", function () {
 			expect(hand.nsTricksWon()).toBe(5);
@@ -220,12 +198,7 @@ describe("HandSpec", function () {
 
 	describe("Actually play a hand (called)", function () {
 		beforeEach(function () {
-			spyOn(bid, "doBidding").and.returnValue({
-				trump: Suit.Diamonds,
-				maker: Player.West,
-				alone: false,
-				stage: BidStage.Round2,
-			});
+			spyOn(aiPlayers[1], "pickTrump").and.returnValue(Suit.Diamonds);
 			hand.doHand();
 		});
 		it("handStage", function () {
@@ -242,9 +215,6 @@ describe("HandSpec", function () {
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(5);
-		});
-		it("numPlayers", function () {
-			expect(hand.numPlayers()).toBe(4);
 		});
 		it("nsTricksWon", function () {
 			expect(hand.nsTricksWon()).toBe(0);
@@ -265,12 +235,8 @@ describe("HandSpec", function () {
 
 	describe("Actually play a hand (called alone)", function () {
 		beforeEach(function () {
-			spyOn(bid, "doBidding").and.returnValue({
-				trump: Suit.Diamonds,
-				maker: Player.West,
-				alone: true,
-				stage: BidStage.Round2,
-			});
+			spyOn(aiPlayers[1], "pickTrump").and.returnValue(Suit.Diamonds);
+			spyOn(aiPlayers[1], "chooseGoAlone").and.returnValue(true);
 			hand.doHand();
 		});
 		it("handStage", function () {
@@ -287,9 +253,6 @@ describe("HandSpec", function () {
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(5);
-		});
-		it("numPlayers", function () {
-			expect(hand.numPlayers()).toBe(3);
 		});
 		it("nsTricksWon", function () {
 			expect(hand.nsTricksWon()).toBe(0);

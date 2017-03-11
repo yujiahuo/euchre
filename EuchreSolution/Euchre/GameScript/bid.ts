@@ -1,4 +1,4 @@
-﻿//returns: [trumpSuit, alonePlayer, maker, bidRound]
+//returns: [trumpSuit, alonePlayer, maker, bidRound]
 class Bid {
 	private __playerHands: Card[][]; //2d array of everyone's hands
 	private __currentPlayer: Player;

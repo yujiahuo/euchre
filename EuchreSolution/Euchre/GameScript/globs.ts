@@ -41,7 +41,7 @@ enum HandStage {
 	Bidding,
 	Discard,
 	PlayTricks,
-	HandFinished,
+	Finished,
 }
 
 enum BidStage {
@@ -51,10 +51,10 @@ enum BidStage {
 }
 
 interface BidResult {
-	trumpSuit: Suit;
+	trump: Suit;
 	maker: Player;
 	alone: boolean;
-	bidStage: BidStage;
+	stage: BidStage;
 }
 
 enum MessageLevel {

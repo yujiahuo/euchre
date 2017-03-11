@@ -1,14 +1,14 @@
 class BiddingTestAI implements BiddingAI {
 	private __orderUp: boolean;
-	private __trumpSuit: Suit | null;
+	private __trump: Suit | null;
 	private __goAlone: boolean;
 
-	public constructor(orderUp: true, trumpSuit: null, goAlone: boolean);
-	public constructor(orderUp: false, trumpSuit: Suit, goAlone: boolean);
-	public constructor(orderUp: false, trumpSuit: null, goAlone: false);
-	public constructor(orderUp: boolean, trumpSuit: Suit | null, goAlone: boolean) {
+	public constructor(orderUp: true, trump: null, goAlone: boolean);
+	public constructor(orderUp: false, trump: Suit, goAlone: boolean);
+	public constructor(orderUp: false, trump: null, goAlone: false);
+	public constructor(orderUp: boolean, trump: Suit | null, goAlone: boolean) {
 		this.__orderUp = orderUp;
-		this.__trumpSuit = trumpSuit;
+		this.__trump = trump;
 		this.__goAlone = goAlone;
 	}
 
@@ -23,7 +23,7 @@ class BiddingTestAI implements BiddingAI {
 	}
 
 	public pickTrump(): Suit | null {
-		return this.__trumpSuit;
+		return this.__trump;
 	}
 
 	public chooseGoAlone(): boolean {
@@ -31,13 +31,13 @@ class BiddingTestAI implements BiddingAI {
 	}
 }
 
-function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player, trumpCandidateCard: Card, maker: Player, trumpSuit: Suit, bidStage: BidStage, alone: boolean) {
+function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player, trumpCandidate: Card, maker: Player, trump: Suit, stage: BidStage, alone: boolean) {
 	let bid: Bid;
 	let bidResult: BidResult | null;
 
 	describe(description, function () {
 		beforeEach(function () {
-			bid = new Bid(hands, aiPlayers, firstPlayer, trumpCandidateCard);
+			bid = new Bid(hands, aiPlayers, firstPlayer, trumpCandidate);
 			bid.doBidding();
 			bidResult = bid.bidResult();
 		});
@@ -46,8 +46,8 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 			expect(bid.currentPlayer()).toBe(nextPlayer(maker));
 		});
 
-		it("bidStage", function () {
-			expect(bid.bidStage()).toBe(BidStage.Finished);
+		it("stage", function () {
+			expect(bid.stage()).toBe(BidStage.Finished);
 		});
 
 		it("playersBid", function () {
@@ -69,12 +69,12 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 				expect(bidResult.maker).toBe(maker);
 			});
 
-			it("trumpSuit", function () {
-				expect(bidResult.trumpSuit).toBe(trumpSuit);
+			it("trump", function () {
+				expect(bidResult.trump).toBe(trump);
 			});
 
-			it("bidStage", function () {
-				expect(bidResult.bidStage).toBe(bidStage);
+			it("stage", function () {
+				expect(bidResult.stage).toBe(stage);
 			});
 
 			it("alone", function () {
@@ -137,8 +137,8 @@ describe("Bid", function () {
 			expect(bid.currentPlayer()).toBe(Player.South);
 		});
 
-		it("bidStage", function () {
-			expect(bid.bidStage()).toBe(BidStage.Round1);
+		it("stage", function () {
+			expect(bid.stage()).toBe(BidStage.Round1);
 		});
 
 		it("playersBid", function () {
@@ -295,8 +295,8 @@ describe("Bid", function () {
 			expect(bid.currentPlayer()).toBe(Player.South);
 		});
 
-		it("bidStage", function () {
-			expect(bid.bidStage()).toBe(BidStage.Finished);
+		it("stage", function () {
+			expect(bid.stage()).toBe(BidStage.Finished);
 		});
 
 		it("playersBid", function () {

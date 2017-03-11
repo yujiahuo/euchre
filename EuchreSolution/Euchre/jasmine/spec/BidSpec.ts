@@ -20,60 +20,33 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 	dealer: Player, trumpCandidate: Card, maker: Player, trump: Suit,
 	stage: BidStage, alone: boolean) {
 	let bid: Bid;
+	let bidResult: BidResult
 
 	describe(description, function () {
 		beforeEach(function () {
 			let {hands: playerHands, jacks} = copyHands(hands);
 			bid = new Bid(playerHands, jacks, aiPlayers, dealer, trumpCandidate);
-			bid.doBidding();
+			bidResult = bid.doBidding() as BidResult;
 		});
 
-		it("currentPlayer", function () {
-			expect(bid.currentPlayer()).toBe(nextPlayer(maker));
+		it("bid result is non-null", function () {
+			expect(bidResult).not.toBeNull();
+		})
+
+		it("maker", function () {
+			expect(bidResult.maker).toBe(maker);
+		});
+
+		it("trump", function () {
+			expect(bidResult.trump).toBe(trump);
 		});
 
 		it("stage", function () {
-			expect(bid.stage()).toBe(BidStage.Finished);
+			expect(bidResult.stage).toBe(stage);
 		});
 
-		it("playersBid", function () {
-			let expectedResult = (4 + (maker - dealer)) % 4;
-			if (expectedResult === 0) {
-				expectedResult = 4;
-			}
-			expect(bid.playersBid()).toBe(expectedResult);
-		});
-
-		describe("bidResult", function () {
-			let bidResult: BidResult;
-
-			beforeEach(function () {
-				bidResult = bid.bidResult() as BidResult;
-			});
-
-			it("is non-null", function () {
-				expect(bidResult).not.toBeNull();
-			})
-
-			it("maker", function () {
-				expect(bidResult.maker).toBe(maker);
-			});
-
-			it("trump", function () {
-				expect(bidResult.trump).toBe(trump);
-			});
-
-			it("stage", function () {
-				expect(bidResult.stage).toBe(stage);
-			});
-
-			it("alone", function () {
-				expect(bidResult.alone).toBe(alone);
-			});
-		});
-
-		it("isFinished", function () {
-			expect(bid.isFinished()).toBe(true);
+		it("alone", function () {
+			expect(bidResult.alone).toBe(alone);
 		});
 	});
 }
@@ -130,29 +103,6 @@ describe("BidSpec", function () {
 			new Card(Suit.Spades, Rank.Ten),
 		],
 	];
-
-	describe("Initial state", function () {
-		let bid = new Bid([], [], [], Player.East, new Card(Suit.Clubs, Rank.Nine));
-		it("currentPlayer", function () {
-			expect(bid.currentPlayer()).toBe(Player.South);
-		});
-
-		it("stage", function () {
-			expect(bid.stage()).toBe(BidStage.Round1);
-		});
-
-		it("playersBid", function () {
-			expect(bid.playersBid()).toBe(0);
-		});
-
-		it("bidResult", function () {
-			expect(bid.bidResult()).toBeNull();
-		});
-
-		it("isFinished", function () {
-			expect(bid.isFinished()).toBe(false);
-		});
-	});
 
 	testBid(
 		"Enforces suits for ordering up (has suit)",
@@ -387,29 +337,14 @@ describe("BidSpec", function () {
 		let {hands: playerHands, jacks} = copyHands(hands);
 		let trumpCandidate = new Card(Suit.Clubs, Rank.Nine);
 		let bid: Bid;
+		let bidResult: BidResult | null;
 		beforeEach(function () {
 			bid = new Bid(playerHands, jacks, aiPlayers, Player.East, trumpCandidate);
-			bid.doBidding();
+			bidResult = bid.doBidding();
 		});
 
-		it("currentPlayer", function () {
-			expect(bid.currentPlayer()).toBe(Player.South);
-		});
-
-		it("stage", function () {
-			expect(bid.stage()).toBe(BidStage.Finished);
-		});
-
-		it("playersBid", function () {
-			expect(bid.playersBid()).toBe(4);
-		});
-
-		it("bidResult", function () {
-			expect(bid.bidResult()).toBeNull();
-		});
-
-		it("isFinished", function () {
-			expect(bid.isFinished()).toBe(true);
+		it("Returns null", function () {
+			expect(bidResult).toBeNull();
 		});
 	});
 });

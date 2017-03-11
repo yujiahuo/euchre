@@ -28,23 +28,6 @@ class Bid {
 	private __trumpCandidate: Card; //turned up card
 	private __bidResult: BidResult | null = null;
 
-	/* Properties */
-	public currentPlayer(): Player {
-		return this.__currentPlayer;
-	}
-
-	public stage(): BidStage {
-		return this.__stage;
-	}
-
-	public playersBid(): number {
-		return this.__playersBid;
-	}
-
-	public bidResult(): BidResult | null {
-		return this.__bidResult;
-	}
-
 	/* constructor */
 	constructor(hands: Card[][], jacks: Card[], aiPlayers: (EuchreAI | null)[],
 		dealer: Player, trumpCandidate: Card) {
@@ -171,15 +154,15 @@ class Bid {
 		return this.__playersBid === 4;
 	}
 
+	private isFinished(): boolean {
+		return this.__stage === BidStage.Finished;
+	}
+
 	/* Public functions */
 	public doBidding(): BidResult | null {
 		while (!this.isFinished()) {
 			this.advanceBid();
 		}
 		return this.__bidResult;
-	}
-
-	public isFinished(): boolean {
-		return this.__stage === BidStage.Finished;
 	}
 }

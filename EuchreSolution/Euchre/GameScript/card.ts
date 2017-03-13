@@ -52,10 +52,10 @@ class Card {
 		this.id = Suit[suitForId] + rankForId;
 	}
 
-	static safeCard(card: Card): Card
-	static safeCard(card: null): null
-	static safeCard(card: Card | null): Card | null
-	static safeCard(card: Card | null): Card | null {
+	public static safeCard(card: Card): Card
+	public static safeCard(card: null): null
+	public static safeCard(card: Card | null): Card | null
+	public static safeCard(card: Card | null): Card | null {
 		if (card) {
 			return new Card(card);
 		}

@@ -9,9 +9,6 @@ function isTrump(card: Card, trump: Suit): boolean {
 
 //**NOT TESTING**
 function followsSuit(card: Card, trickSuit: Suit): boolean {
-	if (!trickSuit) {
-		return true;
-	}
 	if (card.suit === trickSuit) {
 		return true;
 	}
@@ -109,17 +106,14 @@ function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Ca
 }
 
 //**TESTED**
-function isValidPlay(playerHand: Card[], card?: Card, trickSuit?: Suit): boolean {
-	if (!card) {
-		return false;
-	}
-	if (!trickSuit) {
-		return true;
-	}
-	if (!hasSuit(playerHand, trickSuit)) {
+function isValidPlay(playerHand: Card[], card: Card, trickSuit?: Suit): boolean {
+	if (trickSuit === undefined) {
 		return true;
 	}
 	if (followsSuit(card, trickSuit)) {
+		return true;
+	}
+	if (!hasSuit(playerHand, trickSuit)) {
 		return true;
 	}
 	return false;

@@ -1,5 +1,3 @@
-//TODO: copy everything before passing to the AIs
-
 enum BidStage {
 	Round1,
 	Discard,
@@ -112,7 +110,7 @@ class Bid {
 		let aiPlayer = this.__aiPlayers[bidResult.maker];
 		if (aiPlayer) {
 			let hand = this.__playerHands[bidResult.maker];
-			bidResult.alone = aiPlayer.chooseGoAlone(hand, bidResult.trump);
+			bidResult.alone = aiPlayer.chooseGoAlone(copyHand(hand), bidResult.trump);
 		} else {
 			bidResult.alone = false;
 		}
@@ -124,7 +122,7 @@ class Bid {
 		let hand = this.__playerHands[dealer];
 		let discard: Card | null = null;
 		if (aiPlayer) {
-			discard = aiPlayer.pickDiscard(hand, this.__trumpCandidate.suit);
+			discard = aiPlayer.pickDiscard(copyHand(hand), this.__trumpCandidate.suit);
 		}
 		if (!discard || !isInHand(hand, discard)) {
 			discard = hand[0];

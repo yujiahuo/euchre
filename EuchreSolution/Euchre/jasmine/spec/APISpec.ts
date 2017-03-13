@@ -57,24 +57,35 @@ describe("API", function () {
 	});
 
 	describe("isValidPlay", function () {
-		let hand = [
-			new Card(Suit.Spades, Rank.Nine),
-			new Card(Suit.Hearts, Rank.Ten),
-			new Card(Suit.Spades, Rank.Jack),
-			new Card(Suit.Spades, Rank.Queen),
-			new Card(Suit.Spades, Rank.King),
-		];
+		let hand: Card[];
+		beforeEach(function () {
+			hand = [
+				new Card(Suit.Spades, Rank.Nine),
+				new Card(Suit.Clubs, Rank.Ten),
+				new Card(Suit.Spades, Rank.Jack),
+				new Card(Suit.Spades, Rank.Queen),
+				new Card(Suit.Spades, Rank.King),
+			];
+		});
 
+		it("Empty hand", function () {
+			expect(isValidPlay([], hand[0], Suit.Diamonds)).toBe(true);
+			expect(isValidPlay([], hand[0], Suit.Spades)).toBe(true);
+			expect(isValidPlay([], hand[0])).toBe(true);
+		});
 		it("has tricksuit, play tricksuit", function () {
 			expect(isValidPlay(hand, hand[0], Suit.Spades)).toBe(true);
 		});
 
 		it("doesn't have tricksuit", function () {
-			expect(isValidPlay(hand, hand[0], Suit.Clubs)).toBe(true);
+			expect(isValidPlay(hand, hand[0], Suit.Diamonds)).toBe(true);
 		});
 
 		it("has tricksuit, plays invalid", function () {
 			expect(isValidPlay(hand, hand[1], Suit.Spades)).toBe(false);
+		});
+		it("False-y trick suit", function () {
+			expect(isValidPlay(hand, hand[0], Suit.Clubs)).toBe(false);
 		});
 	});
 

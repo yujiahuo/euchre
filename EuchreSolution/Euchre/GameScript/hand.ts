@@ -1,4 +1,4 @@
-﻿class Hand {
+class Hand {
 	//private __deck: Card[]; //contains the shuffled deck or what's left of it after dealing
 	//private __hands: Card[][]; //2d array of everyone's hands
 	private __trickNum: number; //what trick we're on

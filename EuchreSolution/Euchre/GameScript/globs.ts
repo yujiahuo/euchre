@@ -37,13 +37,6 @@ enum Rank {
 	Right = 16,
 }
 
-//enum GameStage {
-//	Bid,
-//	Discard,
-//	PlayTricks,
-//	GameFinished,
-//}
-
 enum HandStage {
 	Bidding,
 	Discard,

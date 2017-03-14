@@ -37,7 +37,7 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 	zIndex++;
 }
 
-function animDeal(hands: Card[][]): void {
+/*function animDeal(hands: Card[][]): void {
 	if (game.isStatMode()) return;
 
 	let player: Player;
@@ -80,7 +80,7 @@ function animDeal(hands: Card[][]): void {
 	}
 
 	setTimeout(animFlipCard, 1000, trumpCandidateCard.id);
-}
+}*/
 
 function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 	let top;
@@ -111,7 +111,7 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 }
 
 //gives trump to the dealer
-function animTakeTrump(toDiscardID: string): void {
+/*function animTakeTrump(toDiscardID: string): void {
 	if (game.isStatMode()) return;
 
 	let trumpCandidate = game.getTrumpCandidateCard() as Card;
@@ -161,7 +161,7 @@ function animPlaceDealerButt(): void {
 			button.style.left = "550px";
 			break;
 	}
-}
+}*/
 
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
@@ -177,8 +177,8 @@ function animSortHand(hand: Card[]): void {
 		key = 0;
 		suit = hand[i].suit;
 		switch (suit) {
-			case game.getTrumpSuit():
-				break;
+			/*case game.getTrumpSuit():
+				break;*/
 			case Suit.Spades:
 				key += 100;
 				break;
@@ -284,7 +284,7 @@ function animWinTrick(player: Player, cards: Card[]): void {
 	}
 }
 
-function animRemoveKitty(): void {
+/*function animRemoveKitty(): void {
 	if (game.isStatMode()) return;
 
 	let elem;
@@ -297,7 +297,7 @@ function animRemoveKitty(): void {
 		elem = document.getElementById(trumpCandidate.id);
 		setTimeout(animHideCard, 300, elem);
 	}
-}
+}*/
 
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 	if (game.isStatMode()) return;

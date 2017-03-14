@@ -317,10 +317,6 @@ describe("Trick", function () {
 });
 
 class TestTrick extends Trick {
-	public advanceTrick(): void {
-		super.advanceTrick();
-	}
-
 	public playCard(card: Card | null): Card | null {
 		return super.playCard(card);
 	}

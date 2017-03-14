@@ -3,21 +3,6 @@
 ********************************/
 
 //**NOT TESTING**
-function myHand(): Card[] {
-	return game.myHand();
-}
-
-//**NOT TESTING**
-function me(): Player {
-	return game.getCurrentPlayer();
-}
-
-//**NOT TESTING**
-function isDealer(player: Player): boolean {
-	return player === game.getDealer();
-}
-
-//**NOT TESTING**
 function isTrump(card: Card, trump: Suit): boolean {
 	return card.suit === trump;
 }
@@ -37,7 +22,7 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */
-function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
+/*function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
 	let trumpCandidateCard = game.getTrumpCandidateCard() as Card;
 	if (game.getGameStage() === HandStage.BidRound1) {
 		if (trumpCandidateCard.suit !== suit) return false;
@@ -47,7 +32,7 @@ function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
 		if (hasSuit(playerHand, suit)) return true;
 	}
 	return false;
-}
+}*/
 
 //**NOT TESTING**
 //how many cards of a given suit you have
@@ -61,11 +46,10 @@ function numCardsOfSuit(playerHand: Card[], suit: Suit): number {
 
 //**NOT TESTING**
 //number of suits you're holding
-function countSuits(): number {
+function countSuits(hand: Card[]): number {
 	let suitArray: Suit[] = [];
-	let playerHand = myHand();
-	for (let i = 0; i < playerHand.length; i++) {
-		suitArray[playerHand[i].suit] = 1;
+	for (let i = 0; i < hand.length; i++) {
+		suitArray[hand[i].suit] = 1;
 	}
 	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
 }

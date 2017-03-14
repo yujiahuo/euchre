@@ -2,6 +2,11 @@
  * Game object
  *****************************************************************************/
 
+enum GameStage {
+	NewGame,
+	OutsideGame,
+};
+
 class Game {
 	//#region Private variables
 
@@ -16,13 +21,12 @@ class Game {
 	private __startTime: number;
 
 	//game
-	private __currentPlayer: Player;
 	private __nsScore: number; //north south
 	private __ewScore: number; //east west
 	private __gameStage: GameStage;
 
 	//hand
-	private __hand: Hand; //a hand of the game
+	//private __hand: Hand; //a hand of the game
 
 	//settings
 	private __sound: boolean;
@@ -44,22 +48,6 @@ class Game {
 	}
 	public getEwScore(): number {
 		return this.__ewScore;
-	}
-	public getTrickNum(): number {
-		return this.__trickNum;
-	}
-	public getTrickPlayersPlayed(): number | undefined {
-		if (this.__trick) return this.__trick.playersPlayed();
-	}
-	public getTrickSuit(): Suit | undefined {
-		if (this.__trick) return this.__trick.suitLead();
-	}
-	public getTrickPlayedCards(): PlayedCard[] {
-		if (!this.__trick) {
-			return [];
-		}
-
-		return this.__trick.cardsPlayed();
 	}
 	public isOpenHands(): boolean {
 		return this.__openHands;
@@ -106,22 +94,22 @@ class Game {
 	}
 
 	//TODO: implement these!
-	private letHumanBid(stage: HandStage.BidRound1 | HandStage.BidRound2): void {
+	/*private letHumanBid(stage: HandStage.BidRound1 | HandStage.BidRound2): void {
 		if (stage == HandStage.BidRound1) {
 
 		}
 	}
-	private letHumanClickCards(): void { }
+	private letHumanClickCards(): void { }*/
 
 	private doStep(): void {
-		let aiPlayer: EuchreAI | null;
+		//let aiPlayer: EuchreAI | null;
 
-		animShowText("STAGE: " + HandStage[this.__gameStage], MessageLevel.Step);
+		animShowText("STAGE: " + GameStage[this.__gameStage], MessageLevel.Step);
 		switch (this.__gameStage) {
 			case GameStage.NewGame:
 				this.initGame();
 				break;
-			case GameStage.NewHand:
+			/*case GameStage.NewHand:
 				this.initHand();
 				break;
 			case HandStage.BidRound1:
@@ -164,7 +152,7 @@ class Game {
 				card = this.__trick.playCard(card);
 				this.removeFromHand(this.__currentPlayer, card as Card);
 				this.__currentPlayer = nextPlayer(this.__currentPlayer);
-				break;
+				break;*/
 			default:
 				break;
 		}
@@ -195,12 +183,12 @@ class Game {
 	private initGame(): void {
 		this.__nsScore = 0;
 		this.__ewScore = 0;
-		this.__gameStage = GameStage.NewHand;
+		this.__gameStage = GameStage.NewGame;
 	}
 	//#endregion
 
 
-	private endGame(): void {
+	/*private endGame(): void {
 		animShowText("Final score: " + this.__nsScore + " : " + this.__ewScore, MessageLevel.Game);
 		if (this.__nsScore > this.__ewScore) this.__nsGamesWon++;
 		else this.__ewGamesWon++;
@@ -217,7 +205,7 @@ class Game {
 			animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
 			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
 		}
-	}
+	}*/
 
 
 	/*******************************

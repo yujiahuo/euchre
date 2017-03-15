@@ -1,6 +1,5 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 /// <reference path="../../GameScript/globs.ts" />
-/// <reference path="../../GameScript/utils.ts" />
 /// <reference path="../../GameScript/playerAPI.ts" />
 /// <reference path="../../GameScript/trick.ts" />
 /// <reference path="../../GameScript/hand.ts" />
@@ -46,7 +45,7 @@ describe("Trick", function () {
 			],
 		];
 		aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
-		trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South);
+		trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.South);
 	});
 
 	describe("playersPlayed", function () {
@@ -205,7 +204,7 @@ describe("Trick", function () {
 
 	describe("playCard", function () {
 		beforeEach(function () {
-			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.West);
+			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
 		});
 
 		it("Handles a null card", function () {
@@ -278,7 +277,7 @@ describe("Trick", function () {
 
 		describe("Alone", function () {
 			beforeEach(function () {
-				trick = new TestTrick(Suit.Spades, true, hands, aiPlayers, Player.South);
+				trick = new TestTrick(Suit.Spades, true, hands, aiPlayers, Player.South, Player.South);
 			});
 
 			it("Starts not finished", function () {
@@ -302,7 +301,7 @@ describe("Trick", function () {
 		});
 
 		it("Updates correctly", function () {
-			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.West);
+			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
 
 			trick.playCard(null);
 			expect(trick.winningTeam()).toBe(Team.EastWest);
@@ -317,10 +316,6 @@ describe("Trick", function () {
 });
 
 class TestTrick extends Trick {
-	public advanceTrick(): void {
-		super.advanceTrick();
-	}
-
 	public playCard(card: Card | null): Card | null {
 		return super.playCard(card);
 	}

@@ -3,51 +3,32 @@
 ********************************/
 
 //**NOT TESTING**
-function myHand(): Card[] {
-	return game.myHand();
-}
-
-//**NOT TESTING**
-function me(): Player {
-	return game.getCurrentPlayer();
-}
-
-//**NOT TESTING**
-function isDealer(player: Player): boolean {
-	return player === game.getDealer();
-}
-
-//**NOT TESTING**
 function isTrump(card: Card, trump: Suit): boolean {
 	return card.suit === trump;
 }
 
 //**NOT TESTING**
 function followsSuit(card: Card, trickSuit: Suit): boolean {
-	if (!trickSuit) {
-		return true;
-	}
 	if (card.suit === trickSuit) {
 		return true;
 	}
 	return false;
 }
 
-//**NOT TESTING**
 /* Returns whether or not it is currently legal for the given player to
    order up a given suit.
    Depends on bidding round */
-function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
-	let trumpCandidateCard = game.getTrumpCandidateCard() as Card;
+/*function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
+	let trumpCandidate = game.getTrumpCandidate() as Card;
 	if (game.getGameStage() === HandStage.BidRound1) {
-		if (trumpCandidateCard.suit !== suit) return false;
+		if (trumpCandidate.suit !== suit) return false;
 		if (hasSuit(playerHand, suit)) return true;
 	} else if (game.getGameStage() === HandStage.BidRound2) {
-		if (trumpCandidateCard.suit === suit) return false;
+		if (trumpCandidate.suit === suit) return false;
 		if (hasSuit(playerHand, suit)) return true;
 	}
 	return false;
-}
+}*/
 
 //**NOT TESTING**
 //how many cards of a given suit you have
@@ -61,11 +42,10 @@ function numCardsOfSuit(playerHand: Card[], suit: Suit): number {
 
 //**NOT TESTING**
 //number of suits you're holding
-function countSuits(): number {
+function countSuits(hand: Card[]): number {
 	let suitArray: Suit[] = [];
-	let playerHand = myHand();
-	for (let i = 0; i < playerHand.length; i++) {
-		suitArray[playerHand[i].suit] = 1;
+	for (let i = 0; i < hand.length; i++) {
+		suitArray[hand[i].suit] = 1;
 	}
 	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
 }
@@ -126,17 +106,14 @@ function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Ca
 }
 
 //**TESTED**
-function isValidPlay(playerHand: Card[], card?: Card, trickSuit?: Suit): boolean {
-	if (!card) {
-		return false;
-	}
-	if (!trickSuit) {
-		return true;
-	}
-	if (!hasSuit(playerHand, trickSuit)) {
+function isValidPlay(playerHand: Card[], card: Card, trickSuit?: Suit): boolean {
+	if (trickSuit === undefined) {
 		return true;
 	}
 	if (followsSuit(card, trickSuit)) {
+		return true;
+	}
+	if (!hasSuit(playerHand, trickSuit)) {
 		return true;
 	}
 	return false;
@@ -228,4 +205,69 @@ function getWorstCard(hand: Card[], trickSuit?: Suit, trump?: Suit, mustBeLegal?
 		}
 	}
 	return worstCard;
+}
+
+//**NOT TESTING**
+function nextPlayer(currentPlayer: Player): Player {
+	switch (currentPlayer) {
+		case Player.South:
+			return Player.West;
+		case Player.West:
+			return Player.North;
+		case Player.North:
+			return Player.East;
+		case Player.East:
+			return Player.South;
+	}
+}
+
+//**NOT TESTING**
+function getPartner(player: Player): Player {
+	switch (player) {
+		case Player.South:
+			return Player.North;
+		case Player.West:
+			return Player.East;
+		case Player.North:
+			return Player.South;
+		case Player.East:
+			return Player.West;
+	}
+}
+
+//**NOT TESTING**
+function getOppositeSuit(suit: Suit): Suit {
+	switch (suit) {
+		case Suit.Clubs:
+			return Suit.Spades;
+		case Suit.Diamonds:
+			return Suit.Hearts;
+		case Suit.Hearts:
+			return Suit.Diamonds;
+		case Suit.Spades:
+			return Suit.Clubs;
+	}
+}
+
+//**TESTED**
+function getNextDealer(prevDealer?: Player): Player {
+	let dealer;
+
+	//if we have a dealer, get the next dealer
+	if (prevDealer !== undefined) {
+		dealer = nextPlayer(prevDealer);
+	}
+	//otherwise just randomly grab one
+	else {
+		dealer = rng.nextInRange(0, 3);
+	}
+	return dealer;
+}
+
+function copyHand(hand: Card[]): Card[] {
+	let newHand: Card[] = [];
+	for (let card of hand) {
+		newHand.push(new Card(card));
+	}
+	return newHand;
 }

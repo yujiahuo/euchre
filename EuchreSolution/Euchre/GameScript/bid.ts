@@ -1,79 +1,159 @@
-﻿//returns: [trumpSuit, alonePlayer, maker, bidRound]
+enum BidStage {
+	Round1,
+	Discard,
+	Round2,
+	Finished,
+}
+
+interface BidInitialResult {
+	stage: BidStage.Round1 | BidStage.Round2;
+	trump: Suit;
+	maker: Player;
+}
+
+interface BidResult extends BidInitialResult {
+	alone: boolean;
+}
+
 class Bid {
 	private __playerHands: Card[][]; //2d array of everyone's hands
+	private __jacks: Card[];
+	private __dealer: Player;
 	private __currentPlayer: Player;
 	private __aiPlayers: (EuchreAI | null)[];
-	private __bidStage: BidStage;
+	private __stage: BidStage;
 	private __playersBid: number = 0; //number of players who have bid so far
-	private __trumpCandidateCard: Card; //turned up card
+	private __trumpCandidate: Card; //turned up card
 	private __bidResult: BidResult | null = null;
 
-	/* Properties */
-	public currentPlayer(): Player {
-		return this.__currentPlayer;
-	}
-
-	public bidStage(): BidStage {
-		return this.__bidStage;
-	}
-
-	public playersBid(): number {
-		return this.__playersBid;
-	}
-
-	public bidResult(): BidResult | null {
-		return this.__bidResult;
-	}
-
 	/* constructor */
-	constructor(hands: Card[][], aiPlayers: (EuchreAI | null)[], firstPlayer: Player, trumpCandidateCard: Card) {
+	constructor(hands: Card[][], jacks: Card[], aiPlayers: (EuchreAI | null)[],
+		dealer: Player, trumpCandidate: Card) {
 		this.__playerHands = hands;
+		this.__jacks = jacks;
 		this.__aiPlayers = aiPlayers;
-		this.__currentPlayer = firstPlayer;
-		this.__bidStage = BidStage.Round1;
-		this.__trumpCandidateCard = trumpCandidateCard;
+		this.__dealer = dealer;
+		this.__currentPlayer = nextPlayer(dealer);
+		this.__stage = BidStage.Round1;
+		this.__trumpCandidate = trumpCandidate;
 	}
 
 	private advanceBid(): void {
-		let aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
-		let bidSuccessful = false;
-		let bidResult: BidResult | null = null;
+		switch (this.__stage) {
+			case BidStage.Round1:
+			case BidStage.Round2:
+				this.__bidResult = this.doBid(this.__stage);
+				let player = this.__currentPlayer;
+				this.advancePlayer();
+				if (this.__bidResult) {
+					let bidResult = this.__bidResult;
+					this.setTrump(bidResult.trump);
+					if (bidResult.stage === BidStage.Round1) {
+						animShowText(`${Player[bidResult.maker]} ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[bidResult.trump]}${bidResult.alone ? " (alone)" : ""}`, MessageLevel.Step, 1);
+						this.__stage = BidStage.Discard;
+					} else {
+						animShowText(`${Player[bidResult.maker]} called ${Suit[bidResult.trump]}${bidResult.alone ? " (alone)" : ""}`, MessageLevel.Step, 1);
+						this.__stage = BidStage.Finished;
+					}
+				} else {
+					animShowText(`${player} passed.`, MessageLevel.Step, 1);
+					if (this.everyoneBid()) {
+						if (this.__stage === BidStage.Round1) {
+							this.__playersBid = 0;
+							this.__stage = BidStage.Round2;
+						} else {
+							this.__stage = BidStage.Finished;
+						}
+					}
+				}
+				break;
+			case BidStage.Discard:
+				this.doDiscard(this.__dealer);
+				this.__stage = BidStage.Finished;
+				break;
+			default:
+				break;
+		}
+	}
 
+	private doBid(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
+		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
+		if (!aiPlayer) {
+			return null;
+		}
+		let hand = this.__playerHands[this.__currentPlayer];
+		let trumpCandidate = this.__trumpCandidate;
+		let trump: Suit | null = null;
+		if (stage === BidStage.Round1) {
+			let orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
+			if (!orderItUp || !hasSuit(hand, trumpCandidate.suit)) {
+				return null;
+			}
+			trump = trumpCandidate.suit;
+			this.__playerHands[this.__dealer].push(trumpCandidate);
+		} else {
+			trump = aiPlayer.pickTrump(copyHand(hand), new Card(trumpCandidate));
+			if (trump === null || trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
+				return null;
+			}
+		}
+		let bidInitialResult: BidInitialResult = {
+			stage: stage,
+			trump: trump,
+			maker: this.__currentPlayer,
+		}
+		return this.getGoAlone(bidInitialResult);
+	}
+
+	private getGoAlone(bidInitialResult: BidInitialResult): BidResult {
+		let bidResult = bidInitialResult as BidResult;
+		let aiPlayer = this.__aiPlayers[bidResult.maker];
 		if (aiPlayer) {
-			bidResult = getAIBid(this.__currentPlayer, aiPlayer, this.__bidStage, this.__trumpCandidateCard);
+			let hand = this.__playerHands[bidResult.maker];
+			bidResult.alone = aiPlayer.chooseGoAlone(copyHand(hand), bidResult.trump);
+		} else {
+			bidResult.alone = false;
 		}
+		return bidResult;
+	}
 
-		if (bidResult) {
-			if (bidResult.bidStage === BidStage.Round2 && bidResult.trumpSuit === this.__trumpCandidateCard.suit) {
-				bidResult = null;
-			} else if (!hasSuit(this.__playerHands[this.__currentPlayer], bidResult.trumpSuit)) {
-				bidResult = null;
+	private doDiscard(dealer: Player): void {
+		let aiPlayer = this.__aiPlayers[dealer];
+		let hand = this.__playerHands[dealer];
+		let discard: Card | null = null;
+		if (aiPlayer) {
+			discard = aiPlayer.pickDiscard(copyHand(hand), this.__trumpCandidate.suit);
+		}
+		if (!discard || !isInHand(hand, discard)) {
+			discard = hand[0];
+		}
+		for (let i = 0; i < hand.length; i++) {
+			if (hand[i].id === discard.id) {
+				hand.splice(i, 1);
+				break;
 			}
 		}
+	}
 
-		if (bidResult) {
-			bidSuccessful = true;
-			this.__bidResult = bidResult;
-			this.__bidStage = BidStage.Finished;
-			animShowText(this.__currentPlayer + " " + Suit[bidResult.trumpSuit] + " " + bidResult.alone, MessageLevel.Step, 1);
-		}
-		else {
-			animShowText(this.__currentPlayer + " passed.", MessageLevel.Step, 1);
-		}
-
-		this.__playersBid++;
+	private advancePlayer(): void {
 		this.__currentPlayer = nextPlayer(this.__currentPlayer);
+		this.__playersBid++;
+	}
 
-		//everyone bid, round is over
-		if (!bidSuccessful && this.__playersBid >= 4) {
-			if (this.__bidStage === BidStage.Round1) {
-				this.__playersBid = 0;
-				this.__bidStage = BidStage.Round2;
-			}
-			else {
-				this.__bidStage = BidStage.Finished;
-			}
-		}
+	private setTrump(trump: Suit) {
+		let right = this.__jacks[trump];
+		right.rank = Rank.Right;
+		let left = this.__jacks[getOppositeSuit(trump)];
+		left.suit = trump;
+		left.rank = Rank.Left;
+	}
+
+	private everyoneBid() {
+		return this.__playersBid === 4;
+	}
+
+	private isFinished(): boolean {
+		return this.__stage === BidStage.Finished;
 	}
 
 	/* Public functions */
@@ -82,9 +162,5 @@ class Bid {
 			this.advanceBid();
 		}
 		return this.__bidResult;
-	}
-
-	public isFinished(): boolean {
-		return this.__bidStage === BidStage.Finished;
 	}
 }

@@ -1,23 +1,3 @@
-interface BiddingAI {
-	init(): void;
-
-	chooseOrderUp(): boolean;
-
-	pickDiscard(): Card | null;
-
-	pickTrump(): Suit | null;
-
-	chooseGoAlone(): boolean;
-}
-
-interface PlayingAI {
-	init(): void;
-
-	pickCard(): Card | null;
-
-	trickEnd(): void;
-}
-
 class MultiAI implements EuchreAI {
 	private biddingAI: BiddingAI;
 	private playingAI: PlayingAI;
@@ -27,32 +7,32 @@ class MultiAI implements EuchreAI {
 		this.playingAI = playingAI;
 	}
 
-	init(): void {
-		this.biddingAI.init();
-		this.playingAI.init();
+	init(me: Player): void {
+		this.biddingAI.init(me);
+		this.playingAI.init(me);
 	}
 
-	chooseOrderUp(): boolean {
-		return this.biddingAI.chooseOrderUp();
+	chooseOrderUp(hand: Card[], trumpCandidate: Card, dealer: Player): boolean {
+		return this.biddingAI.chooseOrderUp(hand, trumpCandidate, dealer);
 	}
 
-	pickDiscard(): Card | null {
-		return this.biddingAI.pickDiscard();
+	pickDiscard(hand: Card[], trump: Suit): Card | null {
+		return this.biddingAI.pickDiscard(hand, trump);
 	}
 
-	pickTrump(): Suit | null {
-		return this.biddingAI.pickTrump();
+	pickTrump(hand: Card[], trumpCandidate: Card): Suit | null {
+		return this.biddingAI.pickTrump(hand, trumpCandidate);
 	}
 
-	chooseGoAlone(): boolean {
-		return this.biddingAI.chooseGoAlone();
+	chooseGoAlone(hand: Card[], trump: Suit): boolean {
+		return this.biddingAI.chooseGoAlone(hand, trump);
 	}
 
-	pickCard(): Card | null {
-		return this.playingAI.pickCard();
+	pickCard(hand: Card[], maker: Player, trump: Suit, trickSoFar: PlayedCard[]): Card | null {
+		return this.playingAI.pickCard(hand, maker, trump, trickSoFar);
 	}
 
-	trickEnd(): void {
-		this.playingAI.trickEnd();
+	trickEnd(playedCardsCallback: () => PlayedCard[]): void {
+		this.playingAI.trickEnd(playedCardsCallback);
 	}
 }

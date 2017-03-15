@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Globals n stuff
  *****************************************************************************/
 
@@ -17,102 +17,10 @@ enum Team {
 	EastWest,
 }
 
-enum Suit {
-	Clubs,
-	Diamonds,
-	Hearts,
-	Spades,
-}
-
-let suitsArray = [Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades];
-
-enum Rank {
-	Nine = 9,
-	Ten = 10,
-	Jack = 11,
-	Queen = 12,
-	King = 13,
-	Ace = 14,
-	Left = 15,
-	Right = 16,
-}
-
-//enum GameStage {
-//	Bid,
-//	Discard,
-//	PlayTricks,
-//	GameFinished,
-//}
-
-enum HandStage {
-	Bidding,
-	Discard,
-	PlayTricks,
-	HandFinished,
-}
-
-enum BidStage {
-	Round1,
-	Round2,
-	Finished,
-}
-
-interface BidResult {
-	trumpSuit: Suit;
-	maker: Player;
-	alone: boolean;
-	bidStage: BidStage;
-}
-
 enum MessageLevel {
 	Step,
 	Game,
 	Multigame,
-}
-
-class Card {
-	public suit: Suit;
-	public rank: Rank;
-	public id: string;
-
-	constructor(suit: Suit, rank: Rank)
-	constructor(card: Card)
-	constructor(suitOrCard: Suit | Card, rank?: Rank) {
-		if (typeof suitOrCard === "number") {
-			let suit = suitOrCard as Suit;
-			this.suit = suit;
-			this.rank = rank as Rank;
-		} else {
-			let card = suitOrCard;
-			this.suit = card.suit;
-			this.rank = card.rank;
-		}
-
-		let suitForId = this.suit;
-		let rankForId = this.rank;
-		if (rankForId === Rank.Right) {
-			rankForId = Rank.Jack;
-		} else if (rankForId === Rank.Left) {
-			rankForId = Rank.Jack;
-			suitForId = getOppositeSuit(suitForId);
-		}
-		this.id = Suit[suitForId] + rankForId;
-	}
-
-	static safeCard(card: Card): Card
-	static safeCard(card: null): null
-	static safeCard(card: Card | null): Card | null
-	static safeCard(card: Card | null): Card | null {
-		if (card) {
-			return new Card(card);
-		}
-		return null;
-	}
-}
-
-interface PlayedCard {
-	player: Player;
-	card: Card;
 }
 
 const DECKSIZE = 24;
@@ -133,32 +41,4 @@ function buildSortedDeck(): Card[] {
 	return deck;
 }
 
-//dictionary of cards, keyed by card ID
-//points to the cards we made for the sorted deck
-let DECKDICT: { [index: string]: Card } = {};
-for (let i = 0; i < DECKSIZE; i++) {
-	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
-}
-
 let zIndex = 0; //iterated to make sure recently moved cards end up on top
-
-let rng: XorGen;
-{
-	let seed = new Uint16Array(128);
-	if (!seed.join) {
-		seed.join = Array.prototype.join;
-	}
-	let cryptoObj = window.crypto || ((window as any).msCrypto as Crypto);
-	if (cryptoObj && cryptoObj.getRandomValues) {
-		cryptoObj.getRandomValues(seed);
-	} else {
-		// Not as good, but we can't actually end up with enough randomness
-		// unless we include something outside of just Math.random
-		seed[0] = new Date().getTime() % (2 ** 16);
-		for (let i = 1; i < seed.length; i++) {
-			seed[i] = Math.floor(Math.random() * (2 ** 16));
-		}
-	}
-	console.log("Random seed: " + seed.join(", "));
-	rng = new XorGen(seed);
-}

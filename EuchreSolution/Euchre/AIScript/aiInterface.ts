@@ -5,40 +5,41 @@
 /* All other functions and vars are "private"
 *******************************************************/
 
-interface EuchreAI {
-	//Called once hands have been dealt and the trump candidate is revealed
-	//Params: none
-	//Returns: none
-	init(): void;
+interface BiddingAI {
+	//Called at the beginning of each hand
+	init(me: Player): void;
 
 	//Bidding round 1, choose whether to order up or pass
-	//Params: none
-	//Returns: boolean
-	chooseOrderUp(): boolean;
-
-	//Bidding round 1, if trump is ordered up to you, pick a card to discard
-	//Params: none
-	//Returns: Card or null
-	pickDiscard(): Card | null;
+	//Hand is unmodified from deal
+	chooseOrderUp(hand: Card[], trumpCandidate: Card, dealer: Player): boolean;
 
 	//Bidding round 2, choose from the remaining suits or pass
-	//Params: none
-	//Returns: Suit or null
-	pickTrump(): Suit | null;
+	//Hand is unmodified from deal
+	pickTrump(hand: Card[], trumpCandidate: Card): Suit | null;
 
-	//Called at any bidding round after you've determined trump
-	//Return true if going alone
-	//Params: none
-	//Returns: boolean
-	chooseGoAlone(): boolean;
+	//Called in either bidding round after you've determined trump
+	//Hand is updated (6 cards):
+	//- Jacks have become left/right
+	//- Trump candidate is in hand if you're the dealer
+	//- No discard yet (called before pickDiscard)
+	chooseGoAlone(hand: Card[], trump: Suit): boolean;
+
+	//Bidding round 1, if trump is ordered up to you, pick a card to discard
+	//Hand is updated (6 cards):
+	//- Jacks have become left/right
+	//- Trump candidate is in hand if you're the dealer
+	pickDiscard(hand: Card[], trump: Suit): Card | null;
+}
+
+interface PlayingAI {
+	//Called at the beginning of each hand
+	init(me: Player): void;
 
 	//Your turn to play a card
-	//Params: none
-	//Returns: Card or null
-	pickCard(): Card | null;
+	pickCard(hand: Card[], maker: Player, trump: Suit, trickSoFar: PlayedCard[]): Card | null;
 
-	//Called at the end of each trick
-	//Params: An array of players and the cards they played, in play order
-	//Returns: none
-	trickEnd(): void;
+	//Called when the trick is over
+	trickEnd(playedCardsCallback: () => PlayedCard[]): void;
 }
+
+interface EuchreAI extends BiddingAI, PlayingAI { }

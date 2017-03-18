@@ -347,4 +347,102 @@ describe("BidSpec", function () {
 			expect(bidResult).toBeNull();
 		});
 	});
+
+	describe("Jacks are updated when trump is called", function () {
+		let testAI: EuchreAI;
+		let aiPlayers: EuchreAI[];
+		let trumpCandidate: Card;
+		let bid: Bid;
+
+		beforeEach(function () {
+			aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
+			let {hands: playerHands, jacks} = copyHands(hands);
+			trumpCandidate = new Card(Suit.Spades, Rank.Nine);
+			bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
+		});
+
+		it("Does not update the jacks before trump is called", function () {
+			testAI = new IdiotAI();
+			let orderUpSpy = spyOn(testAI, "chooseOrderUp").and.callThrough();
+			let pickTrumpSpy = spyOn(testAI, "pickTrump").and.callThrough();
+			aiPlayers[0] = testAI;
+			bid.doBidding();
+
+			expect(orderUpSpy.calls.count()).toBe(1);
+			let [orderUpHand, orderUpTrumpCandidate] = orderUpSpy.calls.argsFor(0);
+			for (let card of orderUpHand as Card[]) {
+				expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
+			}
+			expect((orderUpTrumpCandidate as Card).rank).toBeLessThanOrEqual(Rank.Ace);
+
+			expect(pickTrumpSpy.calls.count()).toBe(1);
+			let [pickTrumpHand, pickTrumpTrumpCandidate] = orderUpSpy.calls.argsFor(0);
+			for (let card of pickTrumpHand as Card[]) {
+				expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
+			}
+			expect((pickTrumpTrumpCandidate as Card).rank).toBeLessThanOrEqual(Rank.Ace);
+		});
+
+		it("Updates the jacks after it is ordered up", function () {
+			testAI = ordersItUpAI;
+			let chooseGoAloneSpy = spyOn(testAI, "chooseGoAlone").and.callThrough();
+			let pickDiscardSpy = spyOn(testAI, "pickDiscard").and.callThrough();
+			aiPlayers[0] = testAI;
+			bid.doBidding();
+
+			expect(chooseGoAloneSpy.calls.count()).toBe(1);
+			let [goAloneHand, goAloneSuit] = chooseGoAloneSpy.calls.argsFor(0);
+			let rightId = new Card(goAloneSuit, Rank.Jack).id
+			let leftId = new Card(getOppositeSuit(goAloneSuit), Rank.Jack).id
+			for (let card of goAloneHand as Card[]) {
+				if (card.id === rightId) {
+					expect(card.rank).toBe(Rank.Right);
+					expect(card.suit).toBe(goAloneSuit);
+				} else if (card.id === leftId) {
+					expect(card.rank).toBe(Rank.Left);
+					expect(card.suit).toBe(goAloneSuit);
+				} else {
+					expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
+				}
+			}
+
+			expect(pickDiscardSpy.calls.count()).toBe(1);
+			let [discardHand] = chooseGoAloneSpy.calls.argsFor(0);
+			for (let card of discardHand as Card[]) {
+				if (card.id === rightId) {
+					expect(card.rank).toBe(Rank.Right);
+					expect(card.suit).toBe(goAloneSuit);
+				} else if (card.id === leftId) {
+					expect(card.rank).toBe(Rank.Left);
+					expect(card.suit).toBe(goAloneSuit);
+				} else {
+					expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
+				}
+			}
+		});
+
+		it("Updates the jacks after it is called", function () {
+			testAI = callsClubsAI;
+			let trump = Suit.Clubs;
+			let rightId = new Card(trump, Rank.Jack).id
+			let leftId = new Card(getOppositeSuit(trump), Rank.Jack).id
+			let chooseGoAloneSpy = spyOn(testAI, "chooseGoAlone").and.callThrough();
+			aiPlayers[0] = testAI;
+			bid.doBidding();
+
+			expect(chooseGoAloneSpy.calls.count()).toBe(1);
+			let [hand] = chooseGoAloneSpy.calls.argsFor(0);
+			for (let card of hand as Card[]) {
+				if (card.id === rightId) {
+					expect(card.rank).toBe(Rank.Right);
+					expect(card.suit).toBe(trump);
+				} else if (card.id === leftId) {
+					expect(card.rank).toBe(Rank.Left);
+					expect(card.suit).toBe(trump);
+				} else {
+					expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
+				}
+			}
+		});
+	});
 });

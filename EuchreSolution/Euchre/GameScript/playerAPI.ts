@@ -2,12 +2,10 @@
 * Get game properties
 ********************************/
 
-//**NOT TESTING**
 function isTrump(card: Card, trump: Suit): boolean {
 	return card.suit === trump;
 }
 
-//**NOT TESTING**
 function followsSuit(card: Card, trickSuit: Suit): boolean {
 	if (card.suit === trickSuit) {
 		return true;
@@ -72,16 +70,7 @@ function getTeam(player: Player): Team {
 
 //**TESTED**
 //returns the card that is greater in this trick
-//if a card is undefined, the other card wins
-//if both cards are undefined, return null
 function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Card {
-	if (card1 === undefined) {
-		return card2;
-	}
-	else if (card2 === undefined) {
-		return card1;
-	}
-
 	if (isTrump(card1, trump)) {
 		if (!isTrump(card2, trump)) {
 			return card1;
@@ -190,14 +179,12 @@ function isInHand(hand: Card[], card: Card): boolean {
 	return false;
 }
 
-//TODO: do we need this? Rename to worst card in hand and fix?
-function getWorstCard(hand: Card[], trickSuit?: Suit, trump?: Suit, mustBeLegal?: boolean): Card | null {
+function getWorstCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card | null {
 	let worstCard = null;
 	let worstValue = 9999;
 	let value;
 
 	for (let i = 0; i < hand.length; i++) {
-		if (mustBeLegal && !isValidPlay(hand, hand[i], trickSuit)) continue;
 		value = getCardValue(hand[i], trickSuit, trump);
 		if (value < worstValue) {
 			worstCard = hand[i];

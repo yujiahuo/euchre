@@ -17,7 +17,7 @@ class DecentAI implements EuchreAI {
 	}
 
 	pickDiscard(_hand: Card[], trump: Suit): Card | null {
-		return getWorstCard(this.hand, undefined, trump);
+		return getWorstCardInHand(this.hand, undefined, trump);
 	}
 
 	pickTrump(_hand: Card[], trumpCandidate: Card): Suit | null {
@@ -89,7 +89,7 @@ class DecentAI implements EuchreAI {
 			return lowestWinningCard;
 		}
 		else {
-			return getWorstCard(this.hand, trickSuit, trump);
+			return getWorstCardInHand(this.hand, trickSuit, trump);
 		}
 	}
 

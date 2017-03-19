@@ -112,6 +112,14 @@ class Hand {
 	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[]) {
 		this.__dealer = dealer;
 		this.__aiPlayers = aiPlayers;
+		let player = dealer;
+		for (let i = 0; i < 4; i++) {
+			player = nextPlayer(player);
+			let aiPlayer = aiPlayers[player];
+			if (aiPlayer) {
+				aiPlayer.init(player);
+			}
+		}
 
 		//set up the deck and everyone's hands
 		let {deck, jacks} = getShuffledDeck();

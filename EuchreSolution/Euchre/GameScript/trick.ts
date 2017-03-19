@@ -41,11 +41,9 @@ class Trick {
 		this.__currentPlayer = firstPlayer;
 	}
 
-	protected advanceTrick(): void {
+	private advanceTrick(): void {
 		let card: Card | null = null;
 		let aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
-
-		if (this.isFinished()) return;
 
 		if (aiPlayer) {
 			let hand = this.__playerHands[this.__currentPlayer];

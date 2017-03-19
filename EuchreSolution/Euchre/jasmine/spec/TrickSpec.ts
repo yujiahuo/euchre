@@ -1,13 +1,3 @@
-/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
-/// <reference path="../../GameScript/globs.ts" />
-/// <reference path="../../GameScript/playerAPI.ts" />
-/// <reference path="../../GameScript/trick.ts" />
-/// <reference path="../../GameScript/hand.ts" />
-/// <reference path="../../GameScript/game.ts" />
-/// <reference path="../../GameScript/animation.ts" />
-/// <reference path="../../AIScript/decentAI.ts" />
-/// <reference path="../../AIScript/idiotAI.ts" />
-
 describe("Trick", function () {
 	let trick: TestTrick;
 	let aiPlayers: IdiotAI[];
@@ -311,6 +301,41 @@ describe("Trick", function () {
 			expect(trick.winningTeam()).toBe(Team.EastWest);
 			trick.playCard(null);
 			expect(trick.winningTeam()).toBe(Team.NorthSouth);
+		});
+	});
+
+	describe("doTrick", function () {
+		it("Works with all players", function () {
+			let trick = new Trick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
+			expect(trick.doTrick()).toBe(true);
+			expect(trick.currentPlayer()).toBe(Player.West);
+			expect(trick.isFinished()).toBe(true);
+			expect(trick.winner()).toBe(Player.South);
+			expect(trick.winningTeam()).toBe(Team.NorthSouth);
+			expect(trick.suitLead()).toBe(Suit.Diamonds);
+			expect(trick.playersPlayed()).toBe(4);
+			let playedCards = trick.cardsPlayed();
+			expect(playedCards.length).toBe(4);
+			expect(playedCards[0].player).toBe(Player.West);
+			expect(playedCards[1].player).toBe(Player.North);
+			expect(playedCards[2].player).toBe(Player.East);
+			expect(playedCards[3].player).toBe(Player.South);
+		});
+
+		it("Works with a player going alone", function () {
+			let trick = new Trick(Suit.Spades, true, hands, aiPlayers, Player.South, Player.West);
+			expect(trick.doTrick()).toBe(true);
+			expect(trick.currentPlayer()).toBe(Player.West);
+			expect(trick.isFinished()).toBe(true);
+			expect(trick.winner()).toBe(Player.South);
+			expect(trick.winningTeam()).toBe(Team.NorthSouth);
+			expect(trick.suitLead()).toBe(Suit.Diamonds);
+			expect(trick.playersPlayed()).toBe(3);
+			let playedCards = trick.cardsPlayed();
+			expect(playedCards.length).toBe(3);
+			expect(playedCards[0].player).toBe(Player.West);
+			expect(playedCards[1].player).toBe(Player.East);
+			expect(playedCards[2].player).toBe(Player.South);
 		});
 	});
 });

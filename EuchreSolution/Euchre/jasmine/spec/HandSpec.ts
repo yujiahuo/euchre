@@ -393,4 +393,18 @@ describe("HandSpec", function () {
 			expect(calculatePointGain(5, false, false, false)).toBe(2);
 		});
 	});
+
+	describe("Check AI calls", function () {
+		it("Calls init at the beginning", function () {
+			let testAI = new IdiotAI();
+			let initSpy = spyOn(testAI, "init");
+			let aiPlayers = [testAI, testAI, testAI, testAI];
+			new Hand(Player.West, aiPlayers);
+			expect(initSpy.calls.count()).toBe(4);
+			expect(initSpy.calls.argsFor(0)).toEqual([Player.North]);
+			expect(initSpy.calls.argsFor(1)).toEqual([Player.East]);
+			expect(initSpy.calls.argsFor(2)).toEqual([Player.South]);
+			expect(initSpy.calls.argsFor(3)).toEqual([Player.West]);
+		});
+	});
 });

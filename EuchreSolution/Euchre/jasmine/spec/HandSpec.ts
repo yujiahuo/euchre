@@ -337,4 +337,60 @@ describe("HandSpec", function () {
 			}
 		});
 	});
+
+	describe("calculatePointGain", function () {
+		it("Took no tricks", function () {
+			expect(calculatePointGain(0, true, true, true)).toBe(0);
+			expect(calculatePointGain(0, true, true, false)).toBe(0);
+			expect(calculatePointGain(0, true, false, false)).toBe(0);
+			expect(calculatePointGain(0, false, true, true)).toBe(0);
+			expect(calculatePointGain(0, false, true, false)).toBe(0);
+			expect(calculatePointGain(0, false, false, false)).toBe(0);
+		});
+
+		it("Took one trick", function () {
+			expect(calculatePointGain(1, true, true, true)).toBe(0);
+			expect(calculatePointGain(1, true, true, false)).toBe(0);
+			expect(calculatePointGain(1, true, false, false)).toBe(0);
+			expect(calculatePointGain(1, false, true, true)).toBe(0);
+			expect(calculatePointGain(1, false, true, false)).toBe(0);
+			expect(calculatePointGain(1, false, false, false)).toBe(0);
+		});
+
+		it("Took two tricks", function () {
+			expect(calculatePointGain(2, true, true, true)).toBe(0);
+			expect(calculatePointGain(2, true, true, false)).toBe(0);
+			expect(calculatePointGain(2, true, false, false)).toBe(0);
+			expect(calculatePointGain(2, false, true, true)).toBe(0);
+			expect(calculatePointGain(2, false, true, false)).toBe(0);
+			expect(calculatePointGain(2, false, false, false)).toBe(0);
+		});
+
+		it("Took three tricks", function () {
+			expect(calculatePointGain(3, true, true, true)).toBe(1);
+			expect(calculatePointGain(3, true, true, false)).toBe(1);
+			expect(calculatePointGain(3, true, false, false)).toBe(1);
+			expect(calculatePointGain(3, false, true, true)).toBe(4);
+			expect(calculatePointGain(3, false, true, false)).toBe(2);
+			expect(calculatePointGain(3, false, false, false)).toBe(2);
+		});
+
+		it("Took four tricks", function () {
+			expect(calculatePointGain(4, true, true, true)).toBe(1);
+			expect(calculatePointGain(4, true, true, false)).toBe(1);
+			expect(calculatePointGain(4, true, false, false)).toBe(1);
+			expect(calculatePointGain(4, false, true, true)).toBe(4);
+			expect(calculatePointGain(4, false, true, false)).toBe(2);
+			expect(calculatePointGain(4, false, false, false)).toBe(2);
+		});
+
+		it("Took five tricks", function () {
+			expect(calculatePointGain(5, true, true, true)).toBe(4);
+			expect(calculatePointGain(5, true, true, false)).toBe(4);
+			expect(calculatePointGain(5, true, false, false)).toBe(2);
+			expect(calculatePointGain(5, false, true, true)).toBe(4);
+			expect(calculatePointGain(5, false, true, false)).toBe(2);
+			expect(calculatePointGain(5, false, false, false)).toBe(2);
+		});
+	});
 });

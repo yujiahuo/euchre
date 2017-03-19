@@ -39,6 +39,10 @@ function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 	}
 }
 
+function calculatePointGain(tricksTaken: number, maker: boolean): number;
+function calculatePointGain(tricksTaken: number, maker: boolean, alone: boolean): number;
+function calculatePointGain(tricksTaken: number, maker: boolean, alone: true, defendingAlone: boolean): number;
+function calculatePointGain(tricksTaken: number, maker: boolean, alone: false, defendingAlone: false): number;
 function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean, defendingAlone?: boolean): number {
 	if (tricksTaken < 3) return 0;
 

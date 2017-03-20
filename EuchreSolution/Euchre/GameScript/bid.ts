@@ -47,7 +47,6 @@ class Bid {
 				this.advancePlayer();
 				if (this.__bidResult) {
 					let bidResult = this.__bidResult;
-					this.setTrump(bidResult.trump);
 					if (bidResult.stage === BidStage.Round1) {
 						animShowText(`${Player[bidResult.maker]} ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[bidResult.trump]}${bidResult.alone ? " (alone)" : ""}`, MessageLevel.Step, 1);
 						this.__stage = BidStage.Discard;
@@ -97,6 +96,7 @@ class Bid {
 				return null;
 			}
 		}
+		this.setTrump(trump);
 		let bidInitialResult: BidInitialResult = {
 			stage: stage,
 			trump: trump,

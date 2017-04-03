@@ -6,25 +6,16 @@ Planning
 - Do enhancements
 
 Bugs
-- bidder's hand should match the real state (6 cards when discarding, trump already updated, etc.)
-- ai only bids in round 2
-- bowers need to be promoted before discard
-- you still apparently have 5 cards when you're discarding. the wrong player is being asked to discard somehow?
+
 
 ToDo
-- Update AI API to include params
-- Enforce rules
-	- When playing a card, make sure the card exists in their hand and that they can legally play it
-- Move and rename init
-- Pass useful stuff to AIs as params
 - Fix decent AI problems
 - Move message printing and animations to the controller
 
 - Implement defend alone
 - AI difficulties
 - Rename decentAI to something less flattering
-- rename PlayedCards to CardPlayed?
-
+- make sure dealer carries over between games
 
 
 Clean up

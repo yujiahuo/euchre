@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 //the game being played
-let game: Game;
+let controller: Controller;
 
 enum Player {
 	South,

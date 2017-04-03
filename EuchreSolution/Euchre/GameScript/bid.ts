@@ -5,13 +5,10 @@ enum BidStage {
 	Finished,
 }
 
-interface BidInitialResult {
+interface BidResult {
 	stage: BidStage.Round1 | BidStage.Round2;
 	trump: Suit;
 	maker: Player;
-}
-
-interface BidResult extends BidInitialResult {
 	alone: boolean;
 }
 
@@ -97,24 +94,25 @@ class Bid {
 			}
 		}
 		this.setTrump(trump);
-		let bidInitialResult: BidInitialResult = {
+		let bidResult: BidResult = {
 			stage: stage,
 			trump: trump,
 			maker: this.__currentPlayer,
-		}
-		return this.getGoAlone(bidInitialResult);
-	}
-
-	private getGoAlone(bidInitialResult: BidInitialResult): BidResult {
-		let bidResult = bidInitialResult as BidResult;
-		let aiPlayer = this.__aiPlayers[bidResult.maker];
-		if (aiPlayer) {
-			let hand = this.__playerHands[bidResult.maker];
-			bidResult.alone = aiPlayer.chooseGoAlone(copyHand(hand), bidResult.trump);
-		} else {
-			bidResult.alone = false;
+			alone: this.getGoAlone(trump, this.__currentPlayer),
 		}
 		return bidResult;
+	}
+
+	private getGoAlone(trump: Suit, maker: Player): boolean {
+		let alone: boolean;
+		let aiPlayer = this.__aiPlayers[maker];
+		if (aiPlayer) {
+			let hand = this.__playerHands[maker];
+			alone = aiPlayer.chooseGoAlone(copyHand(hand), trump);
+		} else {
+			return false;
+		}
+		return alone;
 	}
 
 	private doDiscard(dealer: Player): void {

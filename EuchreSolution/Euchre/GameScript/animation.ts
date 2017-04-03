@@ -166,7 +166,7 @@ function animPlaceDealerButt(): void {
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
 function animSortHand(hand: Card[]): void {
-	if (game.isStatMode()) return;
+	if (controller.isStatMode()) return;
 
 	let sortedDict: string[] = [];
 	let key: number;
@@ -204,12 +204,12 @@ function animSortHand(hand: Card[]): void {
 }
 
 function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
-	if (game.isStatMode()) return;
+	if (controller.isStatMode()) return;
 
 	let top = "";
 	let left = "";
 
-	if (flipCard && !game.isOpenHands()) animFlipCard(cardID);
+	if (flipCard && !controller.isOpenHands()) animFlipCard(cardID);
 
 	switch (player) {
 		case Player.South:
@@ -235,7 +235,7 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 //check for class list and flip the other way too
 //correct this in doBidding
 function animFlipCard(cardID: string): void {
-	if (game.isStatMode()) return;
+	if (controller.isStatMode()) return;
 
 	let cardElement = document.getElementById(cardID);
 	if (cardElement) {
@@ -244,7 +244,7 @@ function animFlipCard(cardID: string): void {
 }
 
 function animWinTrick(player: Player, cards: Card[]): void {
-	if (game.isStatMode()) return;
+	if (controller.isStatMode()) return;
 
 	let cardElem;
 	let top;
@@ -300,7 +300,7 @@ function animWinTrick(player: Player, cards: Card[]): void {
 }*/
 
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
-	if (game.isStatMode()) return;
+	if (controller.isStatMode()) return;
 
 	let player = getPartner(alonePlayer);
 	for (let i = 0; i < hands[player].length; i++) {
@@ -309,13 +309,13 @@ function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 }
 
 function animHideCard(cardElem: HTMLElement): void {
-	if (game.isStatMode()) return;
+	if (controller.isStatMode()) return;
 
 	cardElem.style.display = "none";
 }
 
 function animClearTable(): void {
-	if (game.isStatMode()) return;
+	if (controller.isStatMode()) return;
 
 	let cardsContainer = document.getElementById("cardsContainer")
 	if (cardsContainer) {
@@ -386,7 +386,7 @@ function animFlipButton(on: boolean): void {
 */
 
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
-	let allowedLevel: MessageLevel = game && game.getMessageLevel() || MessageLevel.Step;
+	let allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
 	let logText = "";
 
 	if (messageLevel < allowedLevel) return;
@@ -400,11 +400,11 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 
 	logText += text + "<br>";
 
-	if (game && game.isStatMode()) {
+	if (controller && controller.isStatMode()) {
 		if (overwrite) {
-			game.logText = logText;
+			controller.logText = logText;
 		} else {
-			game.logText += logText
+			controller.logText += logText
 		}
 	} else {
 		updateLog(logText, overwrite);

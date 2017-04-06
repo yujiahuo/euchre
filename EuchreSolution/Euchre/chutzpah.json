@@ -1,6 +1,7 @@
 {
 	"References": [
 		{ "Path": "GameScript/xor4096.js" },
+		{ "Path": "GameScript/card.js" },
 		{ "Path": "GameScript/globs.js" },
 		{ "Path": "GameScript/animation.js" },
 		{ "Path": "GameScript/menuLogic.js" },
@@ -11,13 +12,16 @@
 		{ "Path": "GameScript/game.js" },
 		{ "Path": "AIScript/decentAI.js" },
 		{ "Path": "AIScript/idiotAI.js" },
-		{ "Path": "AIScript/testAI.js" }
+		{ "Path": "AIScript/testAI.js" },
+		{ "Path": "AIScript/BiddingTestAI.js" },
+		{ "Path": "AIScript/MultiAI.js" }
 	],
 	"Tests": [
 		{ "Path": "jasmine/spec/APISpec.js" },
 		{ "Path": "jasmine/spec/GameSpec.js" },
 		{ "Path": "jasmine/spec/HandSpec.js" },
 		{ "Path": "jasmine/spec/TrickSpec.js" },
-		{ "Path": "jasmine/spec/BidSpec.js" }
+		{ "Path": "jasmine/spec/BidSpec.js" },
+		{ "Path": "jasmine/spec/CardSpec.js" }
 	]
 }

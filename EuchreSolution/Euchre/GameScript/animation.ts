@@ -4,6 +4,8 @@
 
 //TODO: make all the card elements at once instead of making them as we deal
 
+declare var controller: Controller|null;
+
 function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 	let card;
 
@@ -166,7 +168,7 @@ function animPlaceDealerButt(): void {
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
 function animSortHand(hand: Card[]): void {
-	if (controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) return;
 
 	let sortedDict: string[] = [];
 	let key: number;
@@ -204,7 +206,7 @@ function animSortHand(hand: Card[]): void {
 }
 
 function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
-	if (controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) return;
 
 	let top = "";
 	let left = "";
@@ -235,7 +237,7 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 //check for class list and flip the other way too
 //correct this in doBidding
 function animFlipCard(cardID: string): void {
-	if (controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) return;
 
 	let cardElement = document.getElementById(cardID);
 	if (cardElement) {
@@ -244,7 +246,7 @@ function animFlipCard(cardID: string): void {
 }
 
 function animWinTrick(player: Player, cards: Card[]): void {
-	if (controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) return;
 
 	let cardElem;
 	let top;
@@ -300,7 +302,7 @@ function animWinTrick(player: Player, cards: Card[]): void {
 }*/
 
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
-	if (controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) return;
 
 	let player = getPartner(alonePlayer);
 	for (let i = 0; i < hands[player].length; i++) {
@@ -309,13 +311,13 @@ function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 }
 
 function animHideCard(cardElem: HTMLElement): void {
-	if (controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) return;
 
 	cardElem.style.display = "none";
 }
 
 function animClearTable(): void {
-	if (controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) return;
 
 	let cardsContainer = document.getElementById("cardsContainer")
 	if (cardsContainer) {

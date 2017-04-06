@@ -11,7 +11,7 @@ Bugs
 ToDo
 - Fix decent AI problems
 - Move message printing and animations to the controller
-
+- Make html look less dumb
 - Implement defend alone
 - AI difficulties
 - Rename decentAI to something less flattering

@@ -2,8 +2,7 @@
  * Globals n stuff
  *****************************************************************************/
 
-//the game being played
-let controller: Controller;
+var controller: Controller|null = null;
 
 enum Player {
 	South,

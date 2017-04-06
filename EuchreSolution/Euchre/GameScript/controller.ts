@@ -18,8 +18,10 @@ class Controller {
 	private __nsTotalScore: number;
 	private __ewTotalScore: number;
 	private __settings: Settings;
+	private __game: Game;
+	private __startTime: number;
 
-	public logText: string;
+	public logText = "";
 
 	//Who's going to call these?
 	public getNsGamesWon(): number {
@@ -52,9 +54,24 @@ class Controller {
 
 	/* constructor */
 	constructor() {
+		this.__settings = {
+			sound: true,
+			openHands: false,
+			enableDefendAlone: false,
+			enableNoTrump: false,
+			showTrickHistory: false,
+			statMode: false,
+			messageLevel: MessageLevel.Step,
+			aiPlayers: [null, null, null, null],
+			hasHooman: false,
+			numGamesToPlay: 1,
+		};
+		this.__nsTotalScore = 0;
+		this.__ewTotalScore = 0;
+		this.__nsGamesWon = 0;
+		this.__ewGamesWon = 0;
+
 		this.grabSettings();
-		let game: Game = new Game(this.__settings);
-		game.start();
 	}
 
 	/*******************************
@@ -74,29 +91,37 @@ class Controller {
 
 		//statMode
 		this.__settings.statMode = true //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
-		this.__settings.messageLevel = MessageLevel.Step;
-		this.__settings.numGamesToPlay = 1;
+		this.__settings.messageLevel = MessageLevel.Multigame;
+		this.__settings.numGamesToPlay = 1000;
+	}
+
+	private endGame(): void {
+		if (this.__game.nsScore() > this.__game.ewScore()) this.__nsGamesWon++;
+		else this.__ewGamesWon++;
+		this.__nsTotalScore += this.__game.nsScore();
+		this.__ewTotalScore += this.__game.ewScore();
+			
+	}
+
+	/*******************************
+	 * Public functions
+	 ********************************/
+	public playGames(): void {
+		let count: number = 0;
+		this.__startTime = performance.now();
+
+		while (count < this.__settings.numGamesToPlay) {
+			this.__game = new Game(this.__settings);
+			this.__game.start();
+			if (this.__game.isFinished()) {
+				this.endGame();
+				count++;
+			}
+		}
+
+		animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
+		animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
+		animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
+		updateLog(this.logText);
 	}
 }
-
-
-
-
-/*private endGame(): void {
-		animShowText("Final score: " + this.__nsScore + " : " + this.__ewScore, MessageLevel.Game);
-		if (this.__nsScore > this.__ewScore) this.__nsGamesWon++;
-		else this.__ewGamesWon++;
-		this.__nsTotalScore += this.__nsScore;
-		this.__ewTotalScore += this.__ewScore;
-
-		if (this.__numGamesToPlay > this.__gameCounter) {
-			this.__gameCounter++;
-			this.__gameStage = GameStage.NewGame;
-		}
-		else {
-			this.__gameStage = GameStage.OutsideGame;
-			animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
-			animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
-			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
-		}
-	}*/

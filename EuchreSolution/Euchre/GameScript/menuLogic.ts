@@ -2,13 +2,15 @@
 * What does this button do?
 ***********************************/
 
+declare var controller: Controller|null;
+
 function newGame(): void {
 	let menu = document.getElementById("menu");
 	if (menu) {
 		menu.style.display = "none";
 	}
-	game = new Game();
-	game.start();
+	controller = new Controller();
+	controller.playGames();
 }
 
 function settings(): void {

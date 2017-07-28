@@ -45,10 +45,12 @@ class Trick {
 		let card: Card | null = null;
 		let aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
 
-		if (aiPlayer) {
-			let hand = this.__playerHands[this.__currentPlayer];
-			card = aiPlayer.pickCard(copyHand(hand), this.__maker, this.__trump, this.cardsPlayed());
+		if (!aiPlayer) {
+			paused = true;
+			return;
 		}
+		let hand = this.__playerHands[this.__currentPlayer];
+		card = aiPlayer.pickCard(copyHand(hand), this.__maker, this.__trump, this.cardsPlayed());
 		this.playCard(card);
 		if (this.isFinished()) {
 			for (let ai of this.__aiPlayers) {
@@ -97,7 +99,7 @@ class Trick {
 
 	/* Public functions */
 	public doTrick(): boolean {
-		while (!this.isFinished()) {
+		while (!this.isFinished() && !paused) {
 			this.advanceTrick();
 		}
 		return true;

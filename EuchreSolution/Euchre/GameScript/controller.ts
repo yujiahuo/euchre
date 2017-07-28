@@ -80,22 +80,22 @@ class Controller {
 	private grabSettings(): void {
 		//checkbox settings
 		this.__settings.sound = (document.getElementById("chkSound") as HTMLInputElement).checked;
-		this.__settings.openHands = true //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
+		this.__settings.openHands = false //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
 		this.__settings.enableDefendAlone = (document.getElementById("chkDefendAlone") as HTMLInputElement).checked;
 		this.__settings.enableNoTrump = (document.getElementById("chkNoTrump") as HTMLInputElement).checked;
 		this.__settings.showTrickHistory = (document.getElementById("chkShowHistory") as HTMLInputElement).checked;
 
 		//ai settings
-		this.__settings.aiPlayers = [new DecentAI(), new IdiotAI(), new DecentAI(), new IdiotAI()];
+		this.__settings.aiPlayers = [null, new IdiotAI(), new DecentAI(), new IdiotAI()];
 		this.__settings.hasHooman = this.__settings.aiPlayers.indexOf(null) > -1;
 
 		//statMode
-		this.__settings.statMode = true //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
-		this.__settings.messageLevel = MessageLevel.Multigame;
-		this.__settings.numGamesToPlay = 1000;
+		this.__settings.statMode = false //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
+		this.__settings.messageLevel = MessageLevel.Step;
+		this.__settings.numGamesToPlay = 1;
 	}
 
-	private endGame(): void {
+	private handleEndGame(): void {
 		if (this.__game.nsScore() > this.__game.ewScore()) this.__nsGamesWon++;
 		else this.__ewGamesWon++;
 		this.__nsTotalScore += this.__game.nsScore();
@@ -108,20 +108,34 @@ class Controller {
 	 ********************************/
 	public playGames(): void {
 		let count: number = 0;
-		this.__startTime = performance.now();
 
-		while (count < this.__settings.numGamesToPlay) {
+		if (this.__settings.statMode) {
+			this.__startTime = performance.now();
+			while (count < this.__settings.numGamesToPlay) {
+				this.__game = new Game(this.__settings);
+				this.__game.start();
+				if (this.__game.isFinished()) {
+					this.handleEndGame();
+					count++;
+				}
+			}
+		}
+		else {
 			this.__game = new Game(this.__settings);
 			this.__game.start();
-			if (this.__game.isFinished()) {
-				this.endGame();
-				count++;
-			}
 		}
 
 		animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
 		animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
-		animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
-		updateLog(this.logText);
+		if (this.__settings.statMode) {
+			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
+			updateLog(this.logText);
+		}
 	}
+}
+
+function clickCard(): void {
+	alert(this.id);
+	paused = false;
+	controller.__game.doGame();
 }

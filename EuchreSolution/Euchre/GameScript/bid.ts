@@ -40,6 +40,7 @@ class Bid {
 			case BidStage.Round1:
 			case BidStage.Round2:
 				this.__bidResult = this.doBid(this.__stage);
+				if (paused) return;
 				let player = this.__currentPlayer;
 				this.advancePlayer();
 				if (this.__bidResult) {
@@ -75,6 +76,7 @@ class Bid {
 	private doBid(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
 		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
 		if (!aiPlayer) {
+			paused = true;
 			return null;
 		}
 		let hand = this.__playerHands[this.__currentPlayer];
@@ -156,7 +158,7 @@ class Bid {
 
 	/* Public functions */
 	public doBidding(): BidResult | null {
-		while (!this.isFinished()) {
+		while (!this.isFinished() && !paused) {
 			this.advanceBid();
 		}
 		return this.__bidResult;

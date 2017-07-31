@@ -43,7 +43,7 @@ class Game {
 		this.__hand = new Hand(this.__dealer, this.__aiPlayers);
 		this.__hand.doHand();
 		if (this.__hand.isFinished()) {
-			this.endHand();
+			this.handleEndHand();
 			if (this.__nsScore >= 10 || this.__ewScore >= 10) {
 				this.endGame();
 			} else {
@@ -52,7 +52,7 @@ class Game {
 		}
 	}
 
-	private endHand() {
+	private handleEndHand() {
 		this.__nsScore += this.__hand.nsPointsWon();
 		this.__ewScore += this.__hand.ewPointsWon();
 	}
@@ -66,6 +66,7 @@ class Game {
 	 * Public functions
 	 ********************************/
 
+	//TODO: why does this just call doGame? Kind of pointless?
 	public start(): void {
 		this.doGame();
 	}

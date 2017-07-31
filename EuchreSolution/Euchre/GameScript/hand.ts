@@ -61,6 +61,7 @@ function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean
 
 class Hand {
 	//General stuff
+	private __settings: Settings;
 	private __dealer: Player;
 	private __playerHands: Card[][]; //2d array of everyone's hands
 	private __aiPlayers: (EuchreAI | null)[];
@@ -109,7 +110,8 @@ class Hand {
 	}
 
 	/* constructor */
-	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[]) {
+	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[], settings?: Settings) {
+		this.__settings = settings;
 		this.__dealer = dealer;
 		this.__aiPlayers = aiPlayers;
 		let player = dealer;
@@ -127,10 +129,11 @@ class Hand {
 		dealHands(deck, this.__playerHands, this.__dealer);
 		this.__trumpCandidate = deck.pop() as Card;
 
+		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings)
+
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
-		this.__bid = new Bid(this.__playerHands, jacks, this.__aiPlayers, this.__dealer,
-			this.__trumpCandidate);
+		this.__bid = new Bid(this.__playerHands, jacks, this.__aiPlayers, this.__dealer, this.__trumpCandidate);
 	}
 
 	private advanceHand(): void {
@@ -151,13 +154,13 @@ class Hand {
 			case HandStage.Playing:
 				let trickEnded = this.__trick.doTrick();
 				if (trickEnded) {
-					this.endTrick();
+					this.handleEndTrick();
 				}
 				break;
 		}
 	}
 
-	private endTrick(): void {
+	private handleEndTrick(): void {
 		if (this.__trick.winningTeam() === Team.NorthSouth) {
 			this.__nsTricksWon++;
 			animShowText("NS won this trick", MessageLevel.Step, 2);

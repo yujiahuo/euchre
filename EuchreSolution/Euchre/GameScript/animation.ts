@@ -39,17 +39,17 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 	zIndex++;
 }
 
-/*function animDeal(hands: Card[][]): void {
-	if (game.isStatMode()) return;
+function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, settings: Settings): void {
+	if (!controller || controller.isStatMode()) return;
 
 	let player: Player;
 	let delay: number; //delay to second round deal
 	let cardID: string;
 	let flippedUp: boolean;
-	let dealer: Player;
-	let trumpCandidate = game.getTrumpCandidate() as Card
+	let cardElem: HTMLElement | null;
+	let isOpenHands = settings.openHands;
+	let hasHooman = settings.hasHooman;
 
-	dealer = game.getDealer();
 	player = nextPlayer(dealer);
 	delay = 0;
 
@@ -57,15 +57,16 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 	makeCardElem(trumpCandidate.id, false);
 
 	for (let i = 0; i < hands.length; i++) {
-		flippedUp = (!game.getAIPlayer(player) || game.isOpenHands());
+		flippedUp = (isOpenHands || (hasHooman && player === Player.South));
 		if (i % 2 === dealer % 2) delay = 1;
 		else delay = 0;
 
 		for (let j = 0; j < hands[i].length; j++) {
 			cardID = hands[player][j].id;
 			makeCardElem(cardID, flippedUp);
-			if (!game.getAIPlayer(player)) {
-				//document.getElementById(cardID).addEventListener("click", game.clickCard);
+			if (hasHooman && player === Player.South) {
+				cardElem = document.getElementById(cardID);
+				if (cardElem) cardElem.addEventListener("click", clickCard);
 			}
 
 			if (j < 2) {
@@ -82,7 +83,7 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 	}
 
 	setTimeout(animFlipCard, 1000, trumpCandidate.id);
-}*/
+}
 
 function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 	let top;

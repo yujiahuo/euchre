@@ -28,6 +28,13 @@ const DECKSIZE = 24;
 //we create all the card objects used here
 const SORTEDDECK: Card[] = buildSortedDeck();
 
+//I think we deleted this, but I kind of need it for human players clicking cards
+var DECKDICT: { [id: string]: Card } = {};
+for (var i = 0; i < SORTEDDECK.length; i++) {
+	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
+
+}
+
 function buildSortedDeck(): Card[] {
 	let deck: Card[] = [];
 	let ranks: Rank[] = [Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King, Rank.Ace];

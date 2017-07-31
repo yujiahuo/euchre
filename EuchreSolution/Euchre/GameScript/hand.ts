@@ -61,7 +61,6 @@ function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean
 
 class Hand {
 	//General stuff
-	private __settings: Settings;
 	private __dealer: Player;
 	private __playerHands: Card[][]; //2d array of everyone's hands
 	private __aiPlayers: (EuchreAI | null)[];
@@ -110,8 +109,7 @@ class Hand {
 	}
 
 	/* constructor */
-	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[], ?settings: Settings) {
-		this.__settings = settings;
+	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[]) {
 		this.__dealer = dealer;
 		this.__aiPlayers = aiPlayers;
 		let player = dealer;
@@ -129,19 +127,16 @@ class Hand {
 		dealHands(deck, this.__playerHands, this.__dealer);
 		this.__trumpCandidate = deck.pop() as Card;
 
-		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings)
-		console.log(this.__playerHands);
-
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
-		this.__bid = new Bid(this.__playerHands, jacks, this.__aiPlayers, this.__dealer, this.__trumpCandidate);
+		this.__bid = new Bid(this.__playerHands, jacks, this.__aiPlayers, this.__dealer,
+			this.__trumpCandidate);
 	}
 
 	private advanceHand(): void {
 		switch (this.__handStage) {
 			case HandStage.Bidding:
 				let bidResult = this.__bid.doBidding();
-				if (paused) return;
 				this.__bidResult = bidResult;
 				if (bidResult) {
 					this.__trick = new Trick(bidResult.trump, bidResult.alone,
@@ -156,13 +151,13 @@ class Hand {
 			case HandStage.Playing:
 				let trickEnded = this.__trick.doTrick();
 				if (trickEnded) {
-					this.handleEndTrick();
+					this.endTrick();
 				}
 				break;
 		}
 	}
 
-	private handleEndTrick(): void {
+	private endTrick(): void {
 		if (this.__trick.winningTeam() === Team.NorthSouth) {
 			this.__nsTricksWon++;
 			animShowText("NS won this trick", MessageLevel.Step, 2);
@@ -196,7 +191,7 @@ class Hand {
 
 	/* Public functions */
 	public doHand(): void {
-		while (!this.isFinished() && !paused) {
+		while (!this.isFinished()) {
 			this.advanceHand();
 		}
 		return;

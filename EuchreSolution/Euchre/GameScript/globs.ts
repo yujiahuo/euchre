@@ -3,7 +3,6 @@
  *****************************************************************************/
 
 var controller: Controller|null = null;
-var paused: boolean = false;
 
 enum Player {
 	South,
@@ -28,13 +27,6 @@ const DECKSIZE = 24;
 //sorted deck of cards
 //we create all the card objects used here
 const SORTEDDECK: Card[] = buildSortedDeck();
-
-//I think we deleted this, but I kind of need it for human players clicking cards
-var DECKDICT: { [id: string]: Card } = {};
-for (var i = 0; i < SORTEDDECK.length; i++) {
-	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
-
-}
 
 function buildSortedDeck(): Card[] {
 	let deck: Card[] = [];

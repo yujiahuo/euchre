@@ -40,13 +40,10 @@ class Game {
 	 * Private functions
 	 ********************************/
 	private advanceGame(): void {
-		if (!this.__hand || this.__hand.handStage() === HandStage.Finished) {
-			this.__hand = new Hand(this.__dealer, this.__aiPlayers, this.__settings);
-		}
+		this.__hand = new Hand(this.__dealer, this.__aiPlayers);
 		this.__hand.doHand();
-		if (paused) return;
 		if (this.__hand.isFinished()) {
-			this.handleEndHand();
+			this.endHand();
 			if (this.__nsScore >= 10 || this.__ewScore >= 10) {
 				this.endGame();
 			} else {
@@ -55,7 +52,7 @@ class Game {
 		}
 	}
 
-	private handleEndHand() {
+	private endHand() {
 		this.__nsScore += this.__hand.nsPointsWon();
 		this.__ewScore += this.__hand.ewPointsWon();
 	}
@@ -69,13 +66,12 @@ class Game {
 	 * Public functions
 	 ********************************/
 
-	//TODO: why does this just call doGame? Kind of pointless?
 	public start(): void {
 		this.doGame();
 	}
 
 	public doGame(): void {
-		while (!this.isFinished() && !paused) {
+		while (!this.isFinished()) {
 			this.advanceGame();
 		}
 		return;

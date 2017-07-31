@@ -1,15 +1,25 @@
 Planning
+- Fix game bugs
+- Get all AI stuff working reasonably well
 - Do human stuff
 - Clean up UI or whatever
 - Do enhancements
 
+Bugs
+
+
 ToDo
 - Fix decent AI problems
-- Rename decentAI to something less flattering
+- Move message printing and animations to the controller
 - Make html look less dumb
+- Implement defend alone
+- AI difficulties
+- Rename decentAI to something less flattering
 - make sure dealer carries over between games
 
+
 Clean up
+- Validate params
 - Use calc css
 - Fix up sidebar
 

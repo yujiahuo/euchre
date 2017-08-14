@@ -2,7 +2,7 @@
 * What does this button do?
 ***********************************/
 
-declare var controller: Controller|null;
+declare var controller: Controller | null;
 
 function newGame(): void {
 	let menu = document.getElementById("menu");
@@ -65,8 +65,7 @@ function toggleDisplay(elemID: string, on: boolean): void {
 	}
 	if (on) {
 		element.style.display = "inline";
-	}
-	else {
+	} else {
 		element.style.display = "none";
 	}
 }
@@ -78,8 +77,7 @@ function toggleOpacity(elemID: string, on: boolean): void {
 	}
 	if (on) {
 		element.style.opacity = "1";
-	}
-	else {
+	} else {
 		element.style.opacity = "0";
 	}
 }

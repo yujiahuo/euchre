@@ -4,31 +4,32 @@
 
 class IdiotAI implements EuchreAI {
 
-	init() {
+	//tslint:disable-next-line:no-empty
+	public init() {
 		//just chillin'
 	}
 
-	chooseOrderUp() {
+	public chooseOrderUp() {
 		return false;
 	}
 
-	pickDiscard() {
+	public pickDiscard() {
 		return null;
 	}
 
-	pickTrump() {
+	public pickTrump() {
 		return null;
 	}
 
-	chooseGoAlone() {
+	public chooseGoAlone() {
 		return false;
 	}
 
-	pickCard() {
+	public pickCard() {
 		return null;
 	}
 
-	trickEnd(): void {
+	public trickEnd(): void {
 		return;
 	}
 }

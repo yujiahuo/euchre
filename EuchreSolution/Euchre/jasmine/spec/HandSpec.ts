@@ -322,7 +322,7 @@ describe("HandSpec", function () {
 
 		beforeEach(function () {
 			hands = [[], [], [], []];
-			let {deck} = getShuffledDeck();
+			let { deck } = getShuffledDeck();
 			dealHands(deck, hands, Player.South);
 		});
 
@@ -398,7 +398,8 @@ describe("HandSpec", function () {
 		it("Calls init at the beginning", function () {
 			let testAI = new IdiotAI();
 			let initSpy = spyOn(testAI, "init");
-			let aiPlayers = [testAI, testAI, testAI, testAI];
+			aiPlayers = [testAI, testAI, testAI, testAI];
+			//tslint:disable-next-line:no-unused-new
 			new Hand(Player.West, aiPlayers);
 			expect(initSpy.calls.count()).toBe(4);
 			expect(initSpy.calls.argsFor(0)).toEqual([Player.North]);

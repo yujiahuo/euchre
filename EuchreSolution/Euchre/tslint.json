@@ -1,0 +1,45 @@
+{
+	"extends": "tslint:recommended",
+	"rules": {
+		"align": [
+			true,
+			//"elements",
+			//"members",
+			"statements"
+		],
+		"array-type": [
+			true,
+			"array"
+		],
+		"arrow-parens": [
+			true,
+			"ban-single-arg-parens"
+		],
+		"comment-format": [
+			false
+		],
+		"eofline": false,
+		"indent": [
+			true,
+			"tabs"
+		],
+		"interface-name": [
+			true,
+			"never-prefix"
+		],
+		"member-ordering": [
+			false
+		],
+		"object-literal-sort-keys": [
+			false
+		],
+		"only-arrow-functions": [
+			false
+		],
+		"switch-default": false,
+		"variable-name": [
+			true,
+			"ban-keywords"
+		]
+	}
+}

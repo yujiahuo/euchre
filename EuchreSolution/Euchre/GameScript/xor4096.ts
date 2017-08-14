@@ -9,13 +9,15 @@
 // http://arxiv.org/pdf/1004.3115v1.pdf
 //
 
+//tslint:disable:no-bitwise
+
 class XorGen {
 	private w: number;
 	private X: number[];
 	private i: number;
 
 	constructor(seed: Uint16Array) {
-		var t: number;
+		let t: number;
 		let v: number;
 		let i: number;
 		let j: number;
@@ -29,7 +31,7 @@ class XorGen {
 			// Put the seed fragments into the array, and shuffle them.
 			v ^= seed[j + 32];
 			// After 32 shuffles, take v as the starting w value.
-			if (j === 0) w = v;
+			if (j === 0) { w = v; }
 			v ^= v << 10;
 			v ^= v >>> 15;
 			v ^= v << 4;
@@ -37,7 +39,7 @@ class XorGen {
 			if (j >= 0) {
 				w = w + 0x61c88647;           // Weyl.
 				t = (X[j & 127] ^= (v + w));  // Combine xor and weyl to init array.
-				i = (0 == t) ? i + 1 : 0;     // Count zeroes.
+				i = (0 === t) ? i + 1 : 0;     // Count zeroes.
 			}
 		}
 		// We have detected all zeroes; make the key nonzero.
@@ -85,8 +87,8 @@ class XorGen {
 	}
 
 	public nextInRange(minimum: number, maximum: number): number {
-		var size = maximum - minimum + 1;
-		var next = this.next() % size;
+		let size = maximum - minimum + 1;
+		let next = this.next() % size;
 		if (next < 0) {
 			next += size;
 		}
@@ -111,6 +113,7 @@ let rng: XorGen;
 			seed[i] = Math.floor(Math.random() * (2 ** 16));
 		}
 	}
+	//tslint:disable-next-line:no-console
 	console.log("Random seed: " + seed.join(", "));
 	rng = new XorGen(seed);
 }

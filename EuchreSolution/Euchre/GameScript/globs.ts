@@ -2,6 +2,7 @@
  * Globals n stuff
  *****************************************************************************/
 
+//tslint:disable-next-line:no-var-keyword
 var controller: Controller | null = null;
 
 enum Player {
@@ -29,8 +30,8 @@ const DECKSIZE = 24;
 const SORTEDDECK: Card[] = buildSortedDeck();
 
 //I think we deleted this, but I kind of need it for human players clicking cards
-var DECKDICT: { [id: string]: Card } = {};
-for (var i = 0; i < SORTEDDECK.length; i++) {
+let DECKDICT: { [id: string]: Card } = {};
+for (let i = 0; i < SORTEDDECK.length; i++) {
 	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
 
 }

@@ -2,36 +2,36 @@ function copyHands(hands: Card[][]): { hands: Card[][], jacks: Card[] } {
 	let playerHands: Card[][] = [[], [], [], []];
 	let jacks: Card[] = [];
 	for (let i = 0; i < hands.length; i++) {
-		for (let j = 0; j < hands[i].length; j++) {
-			let card = new Card(hands[i][j]);
-			playerHands[i].push(card);
-			if (card.rank === Rank.Jack) {
-				jacks[card.suit] = card;
+		for (let card of hands[i]) {
+			let newCard = new Card(card);
+			playerHands[i].push(newCard);
+			if (newCard.rank === Rank.Jack) {
+				jacks[newCard.suit] = newCard;
 			}
 		}
 	}
 	return {
 		hands: playerHands,
-		jacks: jacks,
-	}
+		jacks,
+	};
 }
 
 function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | null)[],
 	dealer: Player, trumpCandidate: Card, maker: Player, trump: Suit,
 	stage: BidStage, alone: boolean) {
 	let bid: Bid;
-	let bidResult: BidResult
+	let bidResult: BidResult;
 
 	describe(description, function () {
 		beforeEach(function () {
-			let {hands: playerHands, jacks} = copyHands(hands);
+			let { hands: playerHands, jacks } = copyHands(hands);
 			bid = new Bid(playerHands, jacks, aiPlayers, dealer, trumpCandidate);
 			bidResult = bid.doBidding() as BidResult;
 		});
 
 		it("bid result is non-null", function () {
 			expect(bidResult).not.toBeNull();
-		})
+		});
 
 		it("maker", function () {
 			expect(bidResult.maker).toBe(maker);
@@ -109,7 +109,7 @@ describe("BidSpec", function () {
 		let biddingAI = new BiddingTestAI(true, null, false, discard);
 		let testAI = new MultiAI(biddingAI, doesNothingAI);
 		let aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let {hands: playerHands, jacks} = copyHands(hands);
+		let { hands: playerHands, jacks } = copyHands(hands);
 		let trumpCandidate = new Card(Suit.Spades, Rank.Nine);
 		let bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		bid.doBidding();
@@ -121,7 +121,7 @@ describe("BidSpec", function () {
 		let biddingAI = new BiddingTestAI(true, null, false, discard);
 		let testAI = new MultiAI(biddingAI, doesNothingAI);
 		let aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let {hands: playerHands, jacks} = copyHands(hands);
+		let { hands: playerHands, jacks } = copyHands(hands);
 		let trumpCandidate = new Card(Suit.Spades, Rank.Nine);
 		let bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		bid.doBidding();
@@ -136,7 +136,7 @@ describe("BidSpec", function () {
 		let biddingAI = new BiddingTestAI(true, null, false, discard);
 		let testAI = new MultiAI(biddingAI, doesNothingAI);
 		let aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let {hands: playerHands, jacks} = copyHands(hands);
+		let { hands: playerHands, jacks } = copyHands(hands);
 		let trumpCandidate = new Card(Suit.Spades, Rank.Nine);
 		let bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		bid.doBidding();
@@ -376,7 +376,7 @@ describe("BidSpec", function () {
 
 	describe("No one bids", function () {
 		let aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let {hands: playerHands, jacks} = copyHands(hands);
+		let { hands: playerHands, jacks } = copyHands(hands);
 		let trumpCandidate = new Card(Suit.Clubs, Rank.Nine);
 		let bid: Bid;
 		let bidResult: BidResult | null;
@@ -398,7 +398,7 @@ describe("BidSpec", function () {
 
 		beforeEach(function () {
 			aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
-			let {hands: playerHands, jacks} = copyHands(hands);
+			let { hands: playerHands, jacks } = copyHands(hands);
 			trumpCandidate = new Card(Suit.Spades, Rank.Nine);
 			bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		});
@@ -434,8 +434,8 @@ describe("BidSpec", function () {
 
 			expect(chooseGoAloneSpy.calls.count()).toBe(1);
 			let [goAloneHand, goAloneSuit] = chooseGoAloneSpy.calls.argsFor(0);
-			let rightId = new Card(goAloneSuit, Rank.Jack).id
-			let leftId = new Card(getOppositeSuit(goAloneSuit), Rank.Jack).id
+			let rightId = new Card(goAloneSuit, Rank.Jack).id;
+			let leftId = new Card(getOppositeSuit(goAloneSuit), Rank.Jack).id;
 			for (let card of goAloneHand as Card[]) {
 				if (card.id === rightId) {
 					expect(card.rank).toBe(Rank.Right);
@@ -466,8 +466,8 @@ describe("BidSpec", function () {
 		it("Updates the jacks after it is called", function () {
 			testAI = callsClubsAI;
 			let trump = Suit.Clubs;
-			let rightId = new Card(trump, Rank.Jack).id
-			let leftId = new Card(getOppositeSuit(trump), Rank.Jack).id
+			let rightId = new Card(trump, Rank.Jack).id;
+			let leftId = new Card(getOppositeSuit(trump), Rank.Jack).id;
 			let chooseGoAloneSpy = spyOn(testAI, "chooseGoAlone").and.callThrough();
 			aiPlayers[0] = testAI;
 			bid.doBidding();

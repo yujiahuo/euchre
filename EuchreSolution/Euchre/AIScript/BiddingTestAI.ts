@@ -14,6 +14,7 @@ class BiddingTestAI implements BiddingAI {
 		this.__goAlone = goAlone;
 	}
 
+	//tslint:disable-next-line:no-empty
 	public init(): void { }
 
 	public chooseOrderUp(): boolean {

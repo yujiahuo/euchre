@@ -18,12 +18,12 @@ class Trick {
 	public cardsPlayed(): PlayedCard[] {
 		let playedCards: PlayedCard[] = [];
 
-		for (let i = 0; i < this.__playedCards.length; i++) {
-			let card = this.__playedCards[i].card;
-			let player = this.__playedCards[i].player;
+		for (let playedCard of this.__playedCards) {
+			let card = playedCard.card;
+			let player = playedCard.player;
 
 			//make deep copy of cards
-			playedCards.push({ player: player, card: new Card(card) });
+			playedCards.push({ player, card: new Card(card) });
 		}
 		return playedCards;
 	}
@@ -32,7 +32,8 @@ class Trick {
 	}
 
 	/* constructor */
-	constructor(trump: Suit, alone: boolean, hands: Card[][], aiPlayers: (EuchreAI | null)[], maker: Player, firstPlayer: Player) {
+	constructor(trump: Suit, alone: boolean, hands: Card[][],
+		aiPlayers: (EuchreAI | null)[], maker: Player, firstPlayer: Player) {
 		this.__trump = trump;
 		this.__alone = alone;
 		this.__playerHands = hands;
@@ -60,7 +61,7 @@ class Trick {
 	}
 
 	protected playCard(card: Card | null): Card | null {
-		if (this.isFinished()) return null;
+		if (this.isFinished()) { return null; }
 
 		let hand: Card[] = this.__playerHands[this.__currentPlayer];
 
@@ -71,8 +72,8 @@ class Trick {
 		if (this.__playedCards.length === 0) {
 			this.__suitLead = card.suit;
 		}
-		this.__playedCards.push({ player: this.__currentPlayer, card: card });
-		this.removeFromHand(this.__currentPlayer, card)
+		this.__playedCards.push({ player: this.__currentPlayer, card });
+		this.removeFromHand(this.__currentPlayer, card);
 
 		animShowText(Player[this.__currentPlayer] + " played " + card.id, MessageLevel.Step, 1);
 
@@ -104,8 +105,8 @@ class Trick {
 	}
 
 	public isFinished(): boolean {
-		if (this.__alone) return this.__playedCards.length >= 3;
-		else return this.__playedCards.length >= 4;
+		let cardsToPlay = this.__alone ? 3 : 4;
+		return this.__playedCards.length >= cardsToPlay;
 	}
 
 	public winningTeam(): Team | null {

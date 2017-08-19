@@ -110,7 +110,7 @@ class Hand {
 	}
 
 	/* constructor */
-	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[], settings?: Settings) {
+	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[], settings: Settings) {
 		this.__settings = settings;
 		this.__dealer = dealer;
 		this.__aiPlayers = aiPlayers;

@@ -40,7 +40,7 @@ class Game {
 	 * Private functions
 	 ********************************/
 	private advanceGame(): void {
-		this.__hand = new Hand(this.__dealer, this.__aiPlayers);
+		this.__hand = new Hand(this.__dealer, this.__aiPlayers, this.__settings);
 		this.__hand.doHand();
 		if (this.__hand.isFinished()) {
 			this.handleEndHand();

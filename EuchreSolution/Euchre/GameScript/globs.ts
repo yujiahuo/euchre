@@ -2,7 +2,7 @@
  * Globals n stuff
  *****************************************************************************/
 
-var controller: Controller|null = null;
+var controller: Controller | null = null;
 
 enum Player {
 	South,
@@ -48,3 +48,10 @@ function buildSortedDeck(): Card[] {
 }
 
 let zIndex = 0; //iterated to make sure recently moved cards end up on top
+
+let queuedHoomanBidSuit: Suit | null;
+let queuedHoomanCard: Card | null;
+
+function sleep(ms: number) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}

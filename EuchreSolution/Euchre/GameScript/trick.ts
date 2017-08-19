@@ -126,3 +126,7 @@ class Trick {
 		return bestCardPlayed.player;
 	}
 }
+
+function letHoomanPlay(): void {
+
+}

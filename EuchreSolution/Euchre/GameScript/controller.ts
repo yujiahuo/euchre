@@ -136,6 +136,4 @@ class Controller {
 
 function clickCard(): void {
 	alert(this.id);
-	paused = false;
-	controller.__game.doGame();
 }

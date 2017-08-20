@@ -135,6 +135,6 @@ class Controller {
 	}
 }
 
-function clickCard(): void {
+function clickCard(this: HTMLElement): void {
 	alert(this.id);
 }

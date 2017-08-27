@@ -169,7 +169,7 @@ class Bid {
 }
 
 async function letHoomanBid(): Promise<void> {
-	while (queuedHoomanBidSuit === undefined) {
+	while (queuedHoomanBidSuit === null) {
 		await sleep(1000);
 	}
 }

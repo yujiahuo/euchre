@@ -50,8 +50,8 @@ function buildSortedDeck(): Card[] {
 
 let zIndex = 0; //iterated to make sure recently moved cards end up on top
 
-let queuedHoomanBidSuit: Suit | null;
-let queuedHoomanCard: Card | null;
+let queuedHoomanBidSuit: Suit | null = null;
+let queuedHoomanCard: Card | null = null;
 
 function sleep(ms: number) {
 	return new Promise(resolve => setTimeout(resolve, ms));

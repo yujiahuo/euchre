@@ -29,30 +29,30 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
 }*/
 
 //**NOT TESTING**
-//how many cards of a given suit you have
-function numCardsOfSuit(playerHand: Card[], suit: Suit): number {
+//how many cards of a given suit a hand has
+function numCardsOfSuit(hand: Card[], suit: Suit): number {
 	let count = 0;
-	for (let i = 0; i < playerHand.length; i++) {
-		if (playerHand[i].suit === suit) count++;
+	for (let card of hand) {
+		if (card.suit === suit) { count++; }
 	}
 	return count;
 }
 
 //**NOT TESTING**
-//number of suits you're holding
+//number of suits a hand has
 function countSuits(hand: Card[]): number {
 	let suitArray: Suit[] = [];
-	for (let i = 0; i < hand.length; i++) {
-		suitArray[hand[i].suit] = 1;
+	for (let card of hand) {
+		suitArray[card.suit] = 1;
 	}
 	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
 }
 
 //**NOT TESTING**
-function getFirstLegalCard(playerHand: Card[], suitLead?: Suit): Card | undefined {
-	for (let i = 0; i < playerHand.length; i++) {
-		if (isValidPlay(playerHand, playerHand[i], suitLead)) {
-			return playerHand[i];
+function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | undefined {
+	for (let card of hand) {
+		if (isValidPlay(hand, card, suitLead)) {
+			return card;
 		}
 	}
 }
@@ -75,8 +75,7 @@ function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Ca
 		if (!isTrump(card2, trump)) {
 			return card1;
 		}
-	}
-	else if (isTrump(card2, trump)) {
+	} else if (isTrump(card2, trump)) {
 		return card2;
 	}
 
@@ -84,14 +83,16 @@ function greaterCard(card1: Card, card2: Card, trickSuit: Suit, trump: Suit): Ca
 		if (!followsSuit(card2, trickSuit)) {
 			return card1;
 		}
-	}
-	else if (followsSuit(card2, trickSuit)) {
+	} else if (followsSuit(card2, trickSuit)) {
 		return card2;
 	}
 
 	//both/neither are trump and both/neither follows suit
-	if (card1.rank > card2.rank) return card1;
-	else return card2;
+	if (card1.rank > card2.rank) {
+		return card1;
+	} else {
+		return card2;
+	}
 }
 
 //**TESTED**
@@ -110,8 +111,8 @@ function isValidPlay(playerHand: Card[], card: Card, trickSuit?: Suit): boolean 
 
 //**TESTED**
 function hasSuit(hand: Card[], suit: Suit): boolean {
-	for (let i = 0; i < hand.length; i++) {
-		if (hand[i].suit === suit) return true;
+	for (let card of hand) {
+		if (card.suit === suit) { return true; }
 	}
 	return false;
 }
@@ -121,16 +122,19 @@ function getCardValue(card: Card, trickSuit?: Suit, trump?: Suit): number {
 	let value;
 
 	value = card.rank;
-	if (trump && isTrump(card, trump)) value += 1000;
-	else if (trickSuit && followsSuit(card, trickSuit)) value += 100;
+	if (trump && isTrump(card, trump)) {
+		value += 1000;
+	} else if (trickSuit && followsSuit(card, trickSuit)) {
+		value += 100;
+	}
 	return value;
 }
 
 //**TESTED**
 //returns: the best card of the trick and who played it as a PlayedCard
 function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null {
-	if (cards.length === 0) return null;
-	if (cards.length === 1) return cards[0];
+	if (cards.length === 0) { return null; }
+	if (cards.length === 1) { return cards[0]; }
 
 	let bestCard: Card = cards[0].card;
 	let player: Player = cards[0].player;
@@ -148,14 +152,14 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null 
 			bestValue = value;
 		}
 	}
-	return { player: player, card: bestCard };
+	return { player, card: bestCard };
 }
 
 //**TESTED**
 //returns: the strongest card in your hand as a Card
 function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card | null {
-	if (hand.length === 0) return null;
-	if (hand.length === 1) return hand[0];
+	if (hand.length === 0) { return null; }
+	if (hand.length === 1) { return hand[0]; }
 
 	let bestCard: Card = hand[0];
 	let bestValue: number = getCardValue(bestCard, trickSuit, trump);
@@ -174,7 +178,7 @@ function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card |
 //returns: whether the card is in the hand
 function isInHand(hand: Card[], card: Card): boolean {
 	for (let handCard of hand) {
-		if (handCard.id === card.id) return true;
+		if (handCard.id === card.id) { return true; }
 	}
 	return false;
 }
@@ -240,12 +244,11 @@ function getOppositeSuit(suit: Suit): Suit {
 function getNextDealer(prevDealer?: Player): Player {
 	let dealer;
 
-	//if we have a dealer, get the next dealer
 	if (prevDealer !== undefined) {
+		//if we have a dealer, get the next dealer
 		dealer = nextPlayer(prevDealer);
-	}
-	//otherwise just randomly grab one
-	else {
+	} else {
+		//otherwise just randomly grab one
 		dealer = rng.nextInRange(0, 3);
 	}
 	return dealer;

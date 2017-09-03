@@ -44,13 +44,18 @@ class Bid {
 				this.advancePlayer();
 				if (this.__bidResult) {
 					let bidResult = this.__bidResult;
+					let message = `${Player[bidResult.maker]} `;
 					if (bidResult.stage === BidStage.Round1) {
-						animShowText(`${Player[bidResult.maker]} ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[bidResult.trump]}${bidResult.alone ? " (alone)" : ""}`, MessageLevel.Step, 1);
+						message += `ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[bidResult.trump]}`;
 						this.__stage = BidStage.Discard;
 					} else {
-						animShowText(`${Player[bidResult.maker]} called ${Suit[bidResult.trump]}${bidResult.alone ? " (alone)" : ""}`, MessageLevel.Step, 1);
+						message += `called ${Suit[bidResult.trump]}`;
 						this.__stage = BidStage.Finished;
 					}
+					if (bidResult.alone) {
+						message += " (alone)";
+					}
+					animShowText(message, MessageLevel.Step, 1);
 				} else {
 					animShowText(`${player} passed.`, MessageLevel.Step, 1);
 					if (this.everyoneBid()) {
@@ -95,13 +100,12 @@ class Bid {
 			}
 		}
 		this.setTrump(trump);
-		let bidResult: BidResult = {
-			stage: stage,
-			trump: trump,
+		return {
+			stage,
+			trump,
 			maker: this.__currentPlayer,
 			alone: this.getGoAlone(trump, this.__currentPlayer),
 		};
-		return bidResult;
 	}
 
 	private getGoAlone(trump: Suit, maker: Player): boolean {
@@ -165,7 +169,7 @@ class Bid {
 }
 
 async function letHoomanBid(): Promise<void> {
-	while (queuedHoomanBidSuit === undefined) {
+	while (queuedHoomanBidSuit === null) {
 		await sleep(1000);
 	}
 }
@@ -176,11 +180,11 @@ function getHoomanBidResult(stage: BidStage.Round1 | BidStage.Round2): BidResult
 	}
 
 	let bidResult: BidResult = {
-		stage: stage,
+		stage,
 		trump: queuedHoomanBidSuit,
 		maker: Player.South,
 		alone: false,
 	};
-		
+
 	return bidResult;
 }

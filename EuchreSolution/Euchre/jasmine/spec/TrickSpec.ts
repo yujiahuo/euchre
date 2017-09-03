@@ -306,7 +306,7 @@ describe("Trick", function () {
 
 	describe("doTrick", function () {
 		it("Works with all players", function () {
-			let trick = new Trick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
+			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
 			expect(trick.doTrick()).toBe(true);
 			expect(trick.currentPlayer()).toBe(Player.West);
 			expect(trick.isFinished()).toBe(true);
@@ -323,7 +323,7 @@ describe("Trick", function () {
 		});
 
 		it("Works with a player going alone", function () {
-			let trick = new Trick(Suit.Spades, true, hands, aiPlayers, Player.South, Player.West);
+			trick = new TestTrick(Suit.Spades, true, hands, aiPlayers, Player.South, Player.West);
 			expect(trick.doTrick()).toBe(true);
 			expect(trick.currentPlayer()).toBe(Player.West);
 			expect(trick.isFinished()).toBe(true);

@@ -3,39 +3,40 @@
 /*******************************************************/
 
 class TestAI implements EuchreAI {
-
-	init(_me: Player) {
+	//tslint:disable-next-line:no-empty
+	public init(_me: Player) {
 	}
 
-	chooseOrderUp(_hand: Card[], _trumpCandidate: Card, _dealer: Player) {
+	public chooseOrderUp(_hand: Card[], _trumpCandidate: Card, _dealer: Player) {
 		return false;
 	}
 
-	pickDiscard(hand: Card[], _trump: Suit) {
+	public pickDiscard(hand: Card[], _trump: Suit) {
 		return hand[0];
 	}
 
-	pickTrump(_hand: Card[], _trumpCandidate: Card) {
+	public pickTrump(_hand: Card[], _trumpCandidate: Card) {
 		return Suit.Clubs;
 	}
 
-	chooseGoAlone(_hand: Card[], _trump: Suit) {
+	public chooseGoAlone(_hand: Card[], _trump: Suit) {
 		return false;
 	}
 
-	pickCard(hand: Card[], _maker: Player, _trump: Suit, trickSoFar: PlayedCard[]) {
+	public pickCard(hand: Card[], _maker: Player, _trump: Suit, trickSoFar: PlayedCard[]) {
 		if (trickSoFar.length === 0) {
 			return hand[0];
 		}
-		let trickSuit = trickSoFar[0].card.suit
-		for (let i = 0; i < hand.length; i++) {
-			if (isValidPlay(hand, hand[i], trickSuit)) {
-				return hand[i];
+		let trickSuit = trickSoFar[0].card.suit;
+		for (let card of hand) {
+			if (isValidPlay(hand, card, trickSuit)) {
+				return card;
 			}
 		}
 		//we will never reach this but just in case
 		return hand[0];
 	}
 
-	trickEnd(_playedCardsCallback: () => PlayedCard[]): void { }
+	//tslint:disable-next-line:no-empty
+	public trickEnd(_playedCardsCallback: () => PlayedCard[]): void { }
 }

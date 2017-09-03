@@ -13,7 +13,7 @@ describe("GameSpec", function () {
 			aiPlayers: [new TestAI(), new TestAI(), new TestAI(), new TestAI()],
 			hasHooman: false,
 			numGamesToPlay: 1,
-		}
+		};
 
 		game = new Game(settings);
 	});

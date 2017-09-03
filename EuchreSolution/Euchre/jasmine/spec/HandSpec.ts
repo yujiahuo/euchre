@@ -8,7 +8,19 @@ describe("HandSpec", function () {
 	beforeEach(function () {
 		let dealer = Player.South;
 		aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
-		hand = new Hand(dealer, aiPlayers);
+		let settings: Settings = {
+			aiPlayers,
+			enableDefendAlone: false,
+			enableNoTrump: false,
+			hasHooman: false,
+			messageLevel: MessageLevel.Game,
+			numGamesToPlay: 1,
+			openHands: false,
+			showTrickHistory: false,
+			sound: false,
+			statMode: true,
+		};
+		hand = new Hand(dealer, aiPlayers, settings);
 		playerHands = [
 			[
 				new Card(Suit.Spades, Rank.Jack),
@@ -322,7 +334,7 @@ describe("HandSpec", function () {
 
 		beforeEach(function () {
 			hands = [[], [], [], []];
-			let {deck} = getShuffledDeck();
+			let { deck } = getShuffledDeck();
 			dealHands(deck, hands, Player.South);
 		});
 
@@ -398,8 +410,21 @@ describe("HandSpec", function () {
 		it("Calls init at the beginning", function () {
 			let testAI = new IdiotAI();
 			let initSpy = spyOn(testAI, "init");
-			let aiPlayers = [testAI, testAI, testAI, testAI];
-			new Hand(Player.West, aiPlayers);
+			aiPlayers = [testAI, testAI, testAI, testAI];
+			let settings: Settings = {
+				aiPlayers,
+				enableDefendAlone: false,
+				enableNoTrump: false,
+				hasHooman: false,
+				messageLevel: MessageLevel.Game,
+				numGamesToPlay: 1,
+				openHands: false,
+				showTrickHistory: false,
+				sound: false,
+				statMode: true,
+			};
+			//tslint:disable-next-line:no-unused-new
+			new Hand(Player.West, aiPlayers, settings);
 			expect(initSpy.calls.count()).toBe(4);
 			expect(initSpy.calls.argsFor(0)).toEqual([Player.North]);
 			expect(initSpy.calls.argsFor(1)).toEqual([Player.East]);

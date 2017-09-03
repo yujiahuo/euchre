@@ -1,14 +1,14 @@
 interface Settings {
-	sound: boolean,
-	openHands: boolean,
-	enableDefendAlone: boolean,
-	enableNoTrump: boolean,
-	showTrickHistory: boolean,
-	statMode: boolean,
-	messageLevel: MessageLevel,
-	aiPlayers: (EuchreAI | null)[],
-	hasHooman: boolean,
-	numGamesToPlay: number,
+	sound: boolean;
+	openHands: boolean;
+	enableDefendAlone: boolean;
+	enableNoTrump: boolean;
+	showTrickHistory: boolean;
+	statMode: boolean;
+	messageLevel: MessageLevel;
+	aiPlayers: (EuchreAI | null)[];
+	hasHooman: boolean;
+	numGamesToPlay: number;
 }
 
 class Controller {
@@ -80,7 +80,7 @@ class Controller {
 	private grabSettings(): void {
 		//checkbox settings
 		this.__settings.sound = (document.getElementById("chkSound") as HTMLInputElement).checked;
-		this.__settings.openHands = false //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
+		this.__settings.openHands = false; //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
 		this.__settings.enableDefendAlone = (document.getElementById("chkDefendAlone") as HTMLInputElement).checked;
 		this.__settings.enableNoTrump = (document.getElementById("chkNoTrump") as HTMLInputElement).checked;
 		this.__settings.showTrickHistory = (document.getElementById("chkShowHistory") as HTMLInputElement).checked;
@@ -89,18 +89,20 @@ class Controller {
 		this.__settings.aiPlayers = [null, new IdiotAI(), new DecentAI(), new IdiotAI()];
 		this.__settings.hasHooman = this.__settings.aiPlayers.indexOf(null) > -1;
 
-		//statMode
-		this.__settings.statMode = false //(document.getElementById("chkStatMode") as HTMLInputElement).checked; //4 AIs play against each other
+		//statMode: 4 AIs play against each other
+		this.__settings.statMode = false; //(document.getElementById("chkStatMode") as HTMLInputElement).checked;
 		this.__settings.messageLevel = MessageLevel.Step;
 		this.__settings.numGamesToPlay = 1;
 	}
 
 	private handleEndGame(): void {
-		if (this.__game.nsScore() > this.__game.ewScore()) this.__nsGamesWon++;
-		else this.__ewGamesWon++;
+		if (this.__game.nsScore() > this.__game.ewScore()) {
+			this.__nsGamesWon++;
+		} else {
+			this.__ewGamesWon++;
+		}
 		this.__nsTotalScore += this.__game.nsScore();
 		this.__ewTotalScore += this.__game.ewScore();
-			
 	}
 
 	/*******************************
@@ -119,8 +121,7 @@ class Controller {
 					count++;
 				}
 			}
-		}
-		else {
+		} else {
 			this.__game = new Game(this.__settings);
 			this.__game.start();
 		}
@@ -134,6 +135,6 @@ class Controller {
 	}
 }
 
-function clickCard(): void {
+function clickCard(this: HTMLElement): void {
 	alert(this.id);
 }

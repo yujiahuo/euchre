@@ -7,52 +7,53 @@ class DecentAI implements EuchreAI {
 	private hand: Card[];
 	private handStrength: number;
 
-	init(_me: Player): void { }
+	//tslint:disable-next-line:no-empty
+	public init(_me: Player): void { }
 
-	chooseOrderUp(hand: Card[], trumpCandidate: Card, _dealer: Player): boolean {
+	public chooseOrderUp(hand: Card[], trumpCandidate: Card, _dealer: Player): boolean {
 		this.hand = hand;
 		this.handStrength = this.calculateHandStrength(trumpCandidate.suit);
-		if (this.handStrength > 2) return true;
+		if (this.handStrength > 2) { return true; }
 		return false;
 	}
 
-	pickDiscard(_hand: Card[], trump: Suit): Card | null {
+	public pickDiscard(_hand: Card[], trump: Suit): Card | null {
 		return getWorstCardInHand(this.hand, undefined, trump);
 	}
 
-	pickTrump(_hand: Card[], trumpCandidate: Card): Suit | null {
+	public pickTrump(_hand: Card[], trumpCandidate: Card): Suit | null {
 		if (!trumpCandidate) {
 			return null;
 		}
 		let trumpCandidateSuit = trumpCandidate.suit;
 		if (trumpCandidateSuit !== Suit.Clubs) {
 			this.handStrength = this.calculateHandStrength(Suit.Clubs);
-			if (this.handStrength > 2) return Suit.Clubs;
+			if (this.handStrength > 2) { return Suit.Clubs; }
 		}
 
 		if (trumpCandidateSuit !== Suit.Diamonds) {
 			this.handStrength = this.calculateHandStrength(Suit.Diamonds);
-			if (this.handStrength > 2) return Suit.Diamonds;
+			if (this.handStrength > 2) { return Suit.Diamonds; }
 		}
 
 		if (trumpCandidateSuit !== Suit.Spades) {
 			this.handStrength = this.calculateHandStrength(Suit.Spades);
-			if (this.handStrength > 2) return Suit.Spades;
+			if (this.handStrength > 2) { return Suit.Spades; }
 		}
 
 		if (trumpCandidateSuit !== Suit.Hearts) {
 			this.handStrength = this.calculateHandStrength(Suit.Hearts);
-			if (this.handStrength > 2) return Suit.Hearts;
+			if (this.handStrength > 2) { return Suit.Hearts; }
 		}
 
 		return null;
 	}
 
-	chooseGoAlone(_hand: Card[], _trump: Suit): boolean {
+	public chooseGoAlone(_hand: Card[], _trump: Suit): boolean {
 		return this.handStrength > 4;
 	}
 
-	pickCard(hand: Card[], _maker: Player, trump: Suit, trickSoFar: PlayedCard[]): Card | null {
+	public pickCard(hand: Card[], _maker: Player, trump: Suit, trickSoFar: PlayedCard[]): Card | null {
 		let numPlayersPlayed;
 		let lowestWinningCard: Card | null = null;
 		let lowestWinningValue = 9999;
@@ -75,7 +76,7 @@ class DecentAI implements EuchreAI {
 		//If not last player, play the lowest card that can win
 		//If we can't win, then sluff
 		for (i = 0; i < this.hand.length; i++) {
-			if (!isValidPlay(this.hand, this.hand[i], trickSuit)) continue;
+			if (!isValidPlay(this.hand, this.hand[i], trickSuit)) { continue; }
 			value = getCardValue(this.hand[i], trickSuit, trump);
 			if (value > winningValue) {
 				if (value < lowestWinningValue) {
@@ -87,16 +88,16 @@ class DecentAI implements EuchreAI {
 
 		if (lowestWinningCard) {
 			return lowestWinningCard;
-		}
-		else {
+		} else {
 			return getWorstCardInHand(this.hand, trickSuit, trump);
 		}
 	}
 
-	trickEnd(_playedCardsCallback: () => PlayedCard[]): void { }
+	//tslint:disable-next-line:no-empty
+	public trickEnd(_playedCardsCallback: () => PlayedCard[]): void { }
 
 	//Whatever just count trump
-	calculateHandStrength(trump: Suit) {
+	private calculateHandStrength(trump: Suit) {
 		let smartlyCalculatedValue;
 
 		smartlyCalculatedValue = numCardsOfSuit(this.hand, trump);
@@ -108,10 +109,9 @@ class DecentAI implements EuchreAI {
 		return smartlyCalculatedValue;
 	}
 
-	theyHaveTheLeft(trump: Suit) {
-		for (let i = 0; i < this.hand.length; i++) {
-			if (this.hand[i].rank === Rank.Jack
-				&& this.hand[i].suit === getOppositeSuit(trump)) {
+	private theyHaveTheLeft(trump: Suit) {
+		for (let card of this.hand) {
+			if (card.rank === Rank.Jack && card.suit === getOppositeSuit(trump)) {
 				return true;
 			}
 		}

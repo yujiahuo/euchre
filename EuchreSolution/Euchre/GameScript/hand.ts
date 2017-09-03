@@ -25,8 +25,8 @@ function getShuffledDeck(): ShuffleResult {
 	}
 
 	return {
-		deck: deck,
-		jacks: jacks,
+		deck,
+		jacks,
 	};
 }
 
@@ -44,17 +44,15 @@ function calculatePointGain(tricksTaken: number, maker: boolean, alone: boolean)
 function calculatePointGain(tricksTaken: number, maker: boolean, alone: true, defendingAlone: boolean): number;
 function calculatePointGain(tricksTaken: number, maker: boolean, alone: false, defendingAlone: false): number;
 function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean, defendingAlone?: boolean): number {
-	if (tricksTaken < 3) return 0;
+	if (tricksTaken < 3) { return 0; }
 
 	if (maker) {
 		if (tricksTaken === 5) {
 			return alone ? 4 : 2;
-		}
-		else {
+		} else {
 			return 1;
 		}
-	}
-	else {
+	} else {
 		return alone && defendingAlone ? 4 : 2;
 	}
 }
@@ -124,12 +122,12 @@ class Hand {
 		}
 
 		//set up the deck and everyone's hands
-		let {deck, jacks} = getShuffledDeck();
+		let { deck, jacks } = getShuffledDeck();
 		this.__playerHands = [[], [], [], []];
 		dealHands(deck, this.__playerHands, this.__dealer);
 		this.__trumpCandidate = deck.pop() as Card;
 
-		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings)
+		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings);
 
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
@@ -146,8 +144,7 @@ class Hand {
 						this.__playerHands, this.__aiPlayers, bidResult.maker,
 						nextPlayer(this.__dealer));
 					this.__handStage = HandStage.Playing;
-				}
-				else {
+				} else {
 					this.endHand(false);
 				}
 				break;
@@ -157,6 +154,8 @@ class Hand {
 					this.handleEndTrick();
 				}
 				break;
+			default:
+				break;
 		}
 	}
 
@@ -164,8 +163,7 @@ class Hand {
 		if (this.__trick.winningTeam() === Team.NorthSouth) {
 			this.__nsTricksWon++;
 			animShowText("NS won this trick", MessageLevel.Step, 2);
-		}
-		else {
+		} else {
 			this.__ewTricksWon++;
 			animShowText("EW won this trick", MessageLevel.Step, 2);
 		}

@@ -4,7 +4,7 @@
 
 //TODO: make all the card elements at once instead of making them as we deal
 
-declare var controller: Controller|null;
+declare var controller: Controller | null;
 
 function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 	let card;
@@ -32,15 +32,14 @@ function animMoveCard(cardID: string, top: string, left: string, z?: string): vo
 	div.style.left = left;
 	if (z) {
 		div.style.zIndex = z;
-	}
-	else {
+	} else {
 		div.style.zIndex = zIndex.toString();
 	}
 	zIndex++;
 }
 
 function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, settings: Settings): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
 	let player: Player;
 	let delay: number; //delay to second round deal
@@ -58,24 +57,21 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 
 	for (let i = 0; i < hands.length; i++) {
 		flippedUp = (isOpenHands || (hasHooman && player === Player.South));
-		if (i % 2 === dealer % 2) delay = 1;
-		else delay = 0;
+		delay = (dealer + i + 1) % 2;
 
 		for (let j = 0; j < hands[i].length; j++) {
 			cardID = hands[player][j].id;
 			makeCardElem(cardID, flippedUp);
 			if (hasHooman && player === Player.South) {
 				cardElem = document.getElementById(cardID);
-				if (cardElem) cardElem.addEventListener("click", clickCard);
+				if (cardElem) { cardElem.addEventListener("click", clickCard); }
 			}
 
 			if (j < 2) {
 				setTimeout(animDealSingle, i * 100, player, cardID, j);
-			}
-			else if (j === 2) {
+			} else if (j === 2) {
 				setTimeout(animDealSingle, i * 100 + (delay * 500), player, cardID, j);
-			}
-			else {
+			} else {
 				setTimeout(animDealSingle, i * 100 + 500, player, cardID, j);
 			}
 		}
@@ -169,16 +165,16 @@ function animPlaceDealerButt(): void {
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
 function animSortHand(hand: Card[]): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
 	let sortedDict: string[] = [];
 	let key: number;
 	let suit: Suit;
 	let pos: number;
 
-	for (let i = 0; i < 5; i++) {
+	for (let card of hand) {
 		key = 0;
-		suit = hand[i].suit;
+		suit = card.suit;
 		switch (suit) {
 			/*case game.getTrump():
 				break;*/
@@ -194,25 +190,27 @@ function animSortHand(hand: Card[]): void {
 			case Suit.Hearts:
 				key += 400;
 				break;
+			default:
+				break;
 		}
-		key += (20 - hand[i].rank); //highest ranks come first
-		sortedDict[key] = hand[i].id;
+		key += (20 - card.rank); //highest ranks come first
+		sortedDict[key] = card.id;
 	}
 
 	pos = 0;
-	for (let key in sortedDict) {
-		setTimeout(animDealSingle, 300, Player.South, sortedDict[key], pos);
+	for (let card of sortedDict) {
+		setTimeout(animDealSingle, 300, Player.South, card, pos);
 		pos++;
 	}
 }
 
 function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
 	let top = "";
 	let left = "";
 
-	if (flipCard && !controller.isOpenHands()) animFlipCard(cardID);
+	if (flipCard && !controller.isOpenHands()) { animFlipCard(cardID); }
 
 	switch (player) {
 		case Player.South:
@@ -231,6 +229,8 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 			top = "252px";
 			left = "444px";
 			break;
+		default:
+			return;
 	}
 	animMoveCard(cardID, top, left);
 }
@@ -238,7 +238,7 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 //check for class list and flip the other way too
 //correct this in doBidding
 function animFlipCard(cardID: string): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
 	let cardElement = document.getElementById(cardID);
 	if (cardElement) {
@@ -247,7 +247,7 @@ function animFlipCard(cardID: string): void {
 }
 
 function animWinTrick(player: Player, cards: Card[]): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
 	let cardElem;
 	let top;
@@ -303,24 +303,24 @@ function animWinTrick(player: Player, cards: Card[]): void {
 }*/
 
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
 	let player = getPartner(alonePlayer);
-	for (let i = 0; i < hands[player].length; i++) {
-		animHideCard(document.getElementById(hands[player][i].id) as HTMLElement);
+	for (let card of hands[player]) {
+		animHideCard(document.getElementById(card.id) as HTMLElement);
 	}
 }
 
 function animHideCard(cardElem: HTMLElement): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
 	cardElem.style.display = "none";
 }
 
 function animClearTable(): void {
-	if (!controller || controller.isStatMode()) return;
+	if (!controller || controller.isStatMode()) { return; }
 
-	let cardsContainer = document.getElementById("cardsContainer")
+	let cardsContainer = document.getElementById("cardsContainer");
 	if (cardsContainer) {
 		cardsContainer.innerHTML = "";
 	}
@@ -373,7 +373,6 @@ function animDisableBidding(): void {
 	document.getElementById("alone").style.backgroundColor = "green";
 }
 
-
 //flips a button on or off
 //needs to be generic but for now flips the 'go alone' button
 function animFlipButton(on: boolean): void {
@@ -392,7 +391,7 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 	let allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
 	let logText = "";
 
-	if (messageLevel < allowedLevel) return;
+	if (messageLevel < allowedLevel) { return; }
 
 	if (!nest) {
 		nest = 0;
@@ -407,7 +406,7 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 		if (overwrite) {
 			controller.logText = logText;
 		} else {
-			controller.logText += logText
+			controller.logText += logText;
 		}
 	} else {
 		updateLog(logText, overwrite);

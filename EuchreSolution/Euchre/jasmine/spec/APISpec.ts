@@ -123,8 +123,8 @@ describe("API", function () {
 	});
 
 	describe("getBestCardPlayed", function () {
-		let playedCards: PlayedCard[]
-		let trump: Suit = Suit.Spades
+		let playedCards: PlayedCard[];
+		let trump: Suit = Suit.Spades;
 		let result: PlayedCard | null;
 
 		it("no cards have been played", function () {
@@ -173,7 +173,7 @@ describe("API", function () {
 				{ player: Player.West, card: new Card(Suit.Hearts, Rank.Ten) },
 				{ player: Player.North, card: new Card(Suit.Diamonds, Rank.Ace) },
 				{ player: Player.East, card: new Card(Suit.Hearts, Rank.Ten) },
-			]
+			];
 
 			result = getBestCardPlayed(playedCards, trump);
 			expect(result).not.toBeNull();
@@ -360,25 +360,25 @@ describe("API", function () {
 		let card: Card;
 
 		it("some card", function () {
-			card = new Card(Suit.Spades, Rank.King)
+			card = new Card(Suit.Spades, Rank.King);
 			result = getCardValue(card);
 			expect(result).toBe(13);
 		});
 
 		it("card that follows suit", function () {
-			card = new Card(Suit.Spades, Rank.King)
+			card = new Card(Suit.Spades, Rank.King);
 			result = getCardValue(card, Suit.Spades);
 			expect(result).toBe(113);
 		});
 
 		it("card that is trump", function () {
-			card = new Card(Suit.Spades, Rank.King)
+			card = new Card(Suit.Spades, Rank.King);
 			result = getCardValue(card, undefined, Suit.Spades);
 			expect(result).toBe(1013);
 		});
 
 		it("card that follows suit and is trump", function () {
-			card = new Card(Suit.Spades, Rank.King)
+			card = new Card(Suit.Spades, Rank.King);
 			result = getCardValue(card, Suit.Spades, Suit.Spades);
 			expect(result).toBe(1013);
 		});
@@ -409,19 +409,19 @@ describe("API", function () {
 		});
 
 		it("Handles the first card (copy of object)", function () {
-			let card = new Card(hand[0].suit, hand[0].rank)
+			let card = new Card(hand[0].suit, hand[0].rank);
 			expect(isInHand(hand, card)).toBe(true);
 		});
 
 		it("Handles the middle cards (copy of object)", function () {
 			for (let i = 1; i < hand.length - 1; i++) {
-				let card = new Card(hand[i].suit, hand[i].rank)
+				let card = new Card(hand[i].suit, hand[i].rank);
 				expect(isInHand(hand, card)).toBe(true);
 			}
 		});
 
 		it("Handles the last card (copy of object)", function () {
-			let card = new Card(hand[hand.length - 1].suit, hand[hand.length - 1].rank)
+			let card = new Card(hand[hand.length - 1].suit, hand[hand.length - 1].rank);
 			expect(isInHand(hand, card)).toBe(true);
 		});
 

@@ -80,8 +80,7 @@ class Bid {
 	private doBid(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
 		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
 		if (!aiPlayer) {
-			letHoomanBid();
-			return getHoomanBidResult(stage);
+			return this.getHoomanBidResult(stage);
 		}
 		let hand = this.__playerHands[this.__currentPlayer];
 		let trumpCandidate = this.__trumpCandidate;
@@ -159,6 +158,25 @@ class Bid {
 		return this.__stage === BidStage.Finished;
 	}
 
+	private getHoomanBidResult(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
+		letHoomanBid();
+
+		if (queuedHoomanBidSuit === null) {
+			return null;
+		}
+
+		let bidResult: BidResult = {
+			stage,
+			trump: queuedHoomanBidSuit,
+			maker: Player.South,
+			alone: false,
+		};
+
+		queuedHoomanBidSuit = null;
+
+		return bidResult;
+	}
+
 	/* Public functions */
 	public doBidding(): BidResult | null {
 		while (!this.isFinished()) {
@@ -166,25 +184,4 @@ class Bid {
 		}
 		return this.__bidResult;
 	}
-}
-
-async function letHoomanBid(): Promise<void> {
-	while (queuedHoomanBidSuit === null) {
-		await sleep(1000);
-	}
-}
-
-function getHoomanBidResult(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
-	if (queuedHoomanBidSuit === null) {
-		return null;
-	}
-
-	let bidResult: BidResult = {
-		stage,
-		trump: queuedHoomanBidSuit,
-		maker: Player.South,
-		alone: false,
-	};
-
-	return bidResult;
 }

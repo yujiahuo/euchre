@@ -326,66 +326,66 @@ function animClearTable(): void {
 	}
 }
 
-/*
+
 //let human player poke the buttons
-function animEnableBidding(hand: Card[]): void {
-	if (game.isStatMode()) return;
+//function animEnableBidding(hand: Card[]): void {
+//	if (controller && controller.isStatMode()) return;
 
-	document.getElementById("orderUpPrompt").style.display = "inline";
-	document.getElementById("pass").style.display = "inline";
+//	document.getElementById("orderUpPrompt").style.display = "inline";
+//	document.getElementById("pass").style.display = "inline";
 
-	if (game.getGameStage() === GameStage.BidRound1 && hasSuit(hand, game.getTrumpCandidate().suit)) {
-		document.getElementById("orderUp").style.display = "inline";
-		document.getElementById("alone").style.display = "inline";
-		return;
-	}
+//	if (game.getGameStage() === GameStage.BidRound1 && hasSuit(hand, game.getTrumpCandidate().suit)) {
+//		document.getElementById("orderUp").style.display = "inline";
+//		document.getElementById("alone").style.display = "inline";
+//		return;
+//	}
 
-	if (canOrderUpSuit(hand, Suit.Spades)) {
-		document.getElementById("pickSpades").style.display = "inline";
-		document.getElementById("alone").style.display = "inline";
-	}
-	if (canOrderUpSuit(hand, Suit.Clubs)) {
-		document.getElementById("pickClubs").style.display = "inline";
-		document.getElementById("alone").style.display = "inline";
-	}
-	if (canOrderUpSuit(hand, Suit.Hearts)) {
-		document.getElementById("pickHearts").style.display = "inline";
-		document.getElementById("alone").style.display = "inline";
-	}
-	if (canOrderUpSuit(hand, Suit.Diamonds)) {
-		document.getElementById("pickDiamonds").style.display = "inline";
-		document.getElementById("alone").style.display = "inline";
-	}
-}
+//	if (canOrderUpSuit(hand, Suit.Spades)) {
+//		document.getElementById("pickSpades").style.display = "inline";
+//		document.getElementById("alone").style.display = "inline";
+//	}
+//	if (canOrderUpSuit(hand, Suit.Clubs)) {
+//		document.getElementById("pickClubs").style.display = "inline";
+//		document.getElementById("alone").style.display = "inline";
+//	}
+//	if (canOrderUpSuit(hand, Suit.Hearts)) {
+//		document.getElementById("pickHearts").style.display = "inline";
+//		document.getElementById("alone").style.display = "inline";
+//	}
+//	if (canOrderUpSuit(hand, Suit.Diamonds)) {
+//		document.getElementById("pickDiamonds").style.display = "inline";
+//		document.getElementById("alone").style.display = "inline";
+//	}
+//}
 
-function animDisableBidding(): void {
-	if (game.isStatMode()) return;
+//function animDisableBidding(): void {
+//	if (controller && controller.isStatMode()) return;
 
-	document.getElementById("orderUpPrompt").style.display = "none";
-	document.getElementById("orderUp").style.display = "none";
-	document.getElementById("pass").style.display = "none";
+//	document.getElementById("orderUpPrompt").style.display = "none";
+//	document.getElementById("orderUp").style.display = "none";
+//	document.getElementById("pass").style.display = "none";
 
-	document.getElementById("pickSpades").style.display = "none";
-	document.getElementById("pickClubs").style.display = "none";
-	document.getElementById("pickHearts").style.display = "none";
-	document.getElementById("pickDiamonds").style.display = "none";
-	document.getElementById("alone").style.display = "none";
-	document.getElementById("alone").style.backgroundColor = "green";
-}
+//	document.getElementById("pickSpades").style.display = "none";
+//	document.getElementById("pickClubs").style.display = "none";
+//	document.getElementById("pickHearts").style.display = "none";
+//	document.getElementById("pickDiamonds").style.display = "none";
+//	document.getElementById("alone").style.display = "none";
+//	document.getElementById("alone").style.backgroundColor = "green";
+//}
 
-//flips a button on or off
-//needs to be generic but for now flips the 'go alone' button
-function animFlipButton(on: boolean): void {
-	if (game.isStatMode()) return;
+////flips a button on or off
+////needs to be generic but for now flips the 'go alone' button
+//function animFlipButton(on: boolean): void {
+//	if (controller && controller.isStatMode()) return;
 
-	if (on) {
-		document.getElementById("alone").style.backgroundColor = "red";
-	}
-	else {
-		document.getElementById("alone").style.backgroundColor = "green";
-	}
-}
-*/
+//	if (on) {
+//		document.getElementById("alone").style.backgroundColor = "red";
+//	}
+//	else {
+//		document.getElementById("alone").style.backgroundColor = "green";
+//	}
+//}
+
 
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
 	let allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;

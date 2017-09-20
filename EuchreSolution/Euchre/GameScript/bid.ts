@@ -79,22 +79,45 @@ class Bid {
 
 	private doBid(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
 		const aiPlayer = this.__aiPlayers[this.__currentPlayer];
-		if (!aiPlayer) {
-			return this.getHoomanBidResult(stage);
+
+		// human, go!
+		if (pauseForBid(aiPlayer, stage)) {
+			return null;
 		}
+
 		const hand = this.__playerHands[this.__currentPlayer];
 		const trumpCandidate = this.__trumpCandidate;
 		let trump: Suit | null = null;
-		if (stage === BidStage.Round1) {
-			const orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
-			if (!orderItUp || !hasSuit(hand, trumpCandidate.suit)) {
-				return null;
+		// TODO: factor some of this out
+		if (aiPlayer !== null) {
+			if (stage === BidStage.Round1) {
+				const orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
+				if (!orderItUp || !hasSuit(hand, trumpCandidate.suit)) {
+					return null;
+				}
+				trump = trumpCandidate.suit;
+				this.__playerHands[this.__dealer].push(trumpCandidate);
+			} else {
+				trump = aiPlayer.pickTrump(copyHand(hand), new Card(trumpCandidate));
+				if (trump === null || trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
+					return null;
+				}
 			}
-			trump = trumpCandidate.suit;
-			this.__playerHands[this.__dealer].push(trumpCandidate);
 		} else {
-			trump = aiPlayer.pickTrump(copyHand(hand), new Card(trumpCandidate));
-			if (trump === null || trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
+			if (queuedHoomanBidSuit !== null) {
+				if (stage === BidStage.Round1) {
+					if (!hasSuit(hand, trumpCandidate.suit)) {
+						return null;
+					}
+					trump = trumpCandidate.suit;
+					this.__playerHands[this.__dealer].push(trumpCandidate);
+				} else {
+					trump = queuedHoomanBidSuit;
+					if (trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
+						return null;
+					}
+				}
+			} else {
 				return null;
 			}
 		}

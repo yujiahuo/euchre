@@ -1,4 +1,5 @@
-﻿let queuedHoomanBidSuit: Suit | null = null;
+﻿let pausing: boolean = false;
+let queuedHoomanBidSuit: Suit | null = null;
 let queuedHoomanCard: Card | null = null;
 
 function clickCard(this: HTMLElement): void {
@@ -23,4 +24,26 @@ function letHoomanBid(): void {
 	//while (queuedHoomanBidSuit === null) {
 		setTimeout(doNothing, 1000);
 	//}
+}
+
+function pauseForBid(aiPlayer: EuchreAI | null, stage: BidStage): boolean {
+	if (aiPlayer !== null || queuedHoomanBidSuit !== null) {
+		return false;
+	}
+
+	pausing = true;
+	if (stage === BidStage.Round1 || stage === BidStage.Round2) {
+		//do animation stuff
+	}
+	return true;
+}
+
+function pauseForTrick(aiPlayer: EuchreAI | null): boolean {
+	if (aiPlayer !== null || queuedHoomanCard !== null) {
+		return false;
+	}
+
+	pausing = true;
+	return true;
+	//do animation stuff
 }

@@ -121,16 +121,17 @@ class Controller {
 					count++;
 				}
 			}
+			animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
+			animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
+			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
+			updateLog(this.logText);
 		} else {
 			this.__game = new Game(this.__settings);
 			this.__game.start();
 		}
+	}
 
-		animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
-		animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
-		if (this.__settings.statMode) {
-			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
-			updateLog(this.logText);
-		}
+	public continue(): void {
+		this.__game.doGame();
 	}
 }

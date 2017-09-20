@@ -49,6 +49,11 @@ class Trick {
 		if (aiPlayer) {
 			let hand = this.__playerHands[this.__currentPlayer];
 			card = aiPlayer.pickCard(copyHand(hand), this.__maker, this.__trump, this.cardsPlayed());
+		} else {
+			if (pauseForTrick(aiPlayer)) {
+				return;
+			}
+			card = queuedHoomanCard;
 		}
 		this.playCard(card);
 		if (this.isFinished()) {
@@ -98,7 +103,7 @@ class Trick {
 
 	/* Public functions */
 	public doTrick(): boolean {
-		while (!this.isFinished()) {
+		while (!this.isFinished() && !pausing) {
 			this.advanceTrick();
 		}
 		return true;
@@ -123,11 +128,6 @@ class Trick {
 		if (!bestCardPlayed) {
 			return null;
 		}
-
 		return bestCardPlayed.player;
 	}
-}
-
-function letHoomanPlay(): void {
-
 }

@@ -192,7 +192,7 @@ class Hand {
 
 	/* Public functions */
 	public doHand(): void {
-		while (!this.isFinished()) {
+		while (!this.isFinished() && !pausing) {
 			this.advanceHand();
 		}
 		return;

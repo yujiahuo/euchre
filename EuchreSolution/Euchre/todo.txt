@@ -46,3 +46,13 @@ Low priority game modes
 Keyboard stuff
 - ctrl + shift click (go to definition)
 - ctrl + shift + right click (go back)
+
+
+
+let message = `${Player[bidResult.maker]} `;
+message += `ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[bidResult.trump]}`;
+message += `called ${Suit[bidResult.trump]}`;
+message += " (alone)";
+animShowText(message, MessageLevel.Step, 1);
+
+animShowText(`${player} passed.`, MessageLevel.Step, 1);

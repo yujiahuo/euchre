@@ -6,6 +6,7 @@ let queuedHoomanCard: Card | null = null;
 
 function clickCard(this: HTMLElement): void {
 	queuedHoomanCard = DECKDICT[this.id];
+	unpause();
 }
 
 function clickOrderUp(): void {
@@ -28,6 +29,7 @@ function pauseForBid(aiPlayer: EuchreAI | null, hand: Card[], stage: BidStage, t
 	}
 
 	pausing = true;
+	animShowText("Hooman's turn", MessageLevel.Step);
 	if (stage === BidStage.Round1 || stage === BidStage.Round2) {
 		setTimeout(animEnableBidding(hand, stage, trumpCandidate), 3000);
 	}
@@ -40,11 +42,13 @@ function pauseForTrick(aiPlayer: EuchreAI | null): boolean {
 	}
 
 	pausing = true;
+	animShowText("Hooman's turn", MessageLevel.Step);
 	return true;
 	//do animation stuff
 }
 
 function unpause() {
+	animDisableBidding();
 	pausing = false;
 	if (controller) { controller.continue(); }
 }

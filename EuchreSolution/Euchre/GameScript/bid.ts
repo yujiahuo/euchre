@@ -40,6 +40,9 @@ class Bid {
 			case BidStage.Round1:
 			case BidStage.Round2:
 				this.__bidResult = this.doBid(this.__stage);
+
+				if (pausing) { return; }
+
 				const player = this.__currentPlayer;
 				this.advancePlayer();
 				if (this.__bidResult) {
@@ -81,7 +84,7 @@ class Bid {
 		const aiPlayer = this.__aiPlayers[this.__currentPlayer];
 
 		// human, go!
-		if (pauseForBid(aiPlayer, stage)) {
+		if (pauseForBid(aiPlayer, this.__playerHands[this.__currentPlayer], stage, this.__trumpCandidate)) {
 			return null;
 		}
 
@@ -104,20 +107,21 @@ class Bid {
 				}
 			}
 		} else {
-			if (queuedHoomanBidSuit !== null) {
-				if (stage === BidStage.Round1) {
-					if (!hasSuit(hand, trumpCandidate.suit)) {
-						return null;
-					}
-					trump = trumpCandidate.suit;
-					this.__playerHands[this.__dealer].push(trumpCandidate);
-				} else {
-					trump = queuedHoomanBidSuit;
-					if (trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
-						return null;
-					}
+			if (stage === BidStage.Round1 && queuedHoomanOrderUp === true) {
+				if (!hasSuit(hand, trumpCandidate.suit)) {
+					clearHoomanQueue();
+					return null;
+				}
+				trump = trumpCandidate.suit;
+				this.__playerHands[this.__dealer].push(trumpCandidate);
+			} else if (stage === BidStage.Round2 && queuedHoomanBidSuit !== null) {
+				trump = queuedHoomanBidSuit;
+				if (trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
+					clearHoomanQueue();
+					return null;
 				}
 			} else {
+				clearHoomanQueue();
 				return null;
 			}
 		}
@@ -181,28 +185,9 @@ class Bid {
 		return this.__stage === BidStage.Finished;
 	}
 
-	private getHoomanBidResult(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
-		letHoomanBid();
-
-		if (queuedHoomanBidSuit === null) {
-			return null;
-		}
-
-		const bidResult: BidResult = {
-			stage,
-			trump: queuedHoomanBidSuit,
-			maker: Player.South,
-			alone: false,
-		};
-
-		queuedHoomanBidSuit = null;
-
-		return bidResult;
-	}
-
 	/* Public functions */
 	public doBidding(): BidResult | null {
-		while (!this.isFinished()) {
+		while (!this.isFinished() && !pausing) {
 			this.advanceBid();
 		}
 		return this.__bidResult;

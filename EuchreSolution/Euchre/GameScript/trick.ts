@@ -54,6 +54,7 @@ class Trick {
 				return;
 			}
 			card = queuedHoomanCard;
+			clearHoomanQueue();
 		}
 		this.playCard(card);
 		if (this.isFinished()) {

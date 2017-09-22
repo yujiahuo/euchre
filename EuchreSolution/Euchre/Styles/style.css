@@ -75,6 +75,15 @@ table {
 	display: none;
 }
 
+#orderUpPrompt,
+#orderUp,
+#pickSpades,
+#pickClubs,
+#pickHearts,
+#pickDiamonds {
+	display: none;
+}
+
 #alone {
 	background-color: green;
 	width: 80px;

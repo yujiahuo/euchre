@@ -342,8 +342,10 @@ function animEnableBidding(hand: Card[], bidStage: BidStage, trumpCandidate: Car
 	orderUpPrompt.style.display = "inline";
 
 	// Bidding round 1
-	if (bidStage === BidStage.Round1 && hasSuit(hand, trumpCandidate.suit)) {
-		orderUpButton.style.display = "inline";
+	if (bidStage === BidStage.Round1) {
+		if (hasSuit(hand, trumpCandidate.suit)) {
+			orderUpButton.style.display = "inline";
+		}
 		return;
 	}
 

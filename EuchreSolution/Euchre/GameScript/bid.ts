@@ -43,24 +43,16 @@ class Bid {
 
 				if (pausing) return;
 
-				let player = this.__currentPlayer;
 				this.advancePlayer();
+
 				if (this.__bidResult) {
 					let bidResult = this.__bidResult;
-					let message = `${Player[bidResult.maker]} `;
 					if (bidResult.stage === BidStage.Round1) {
-						message += `ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[bidResult.trump]}`;
 						this.__stage = BidStage.Discard;
 					} else {
-						message += `called ${Suit[bidResult.trump]}`;
 						this.__stage = BidStage.Finished;
 					}
-					if (bidResult.alone) {
-						message += " (alone)";
-					}
-					animShowText(message, MessageLevel.Step, 1);
 				} else {
-					animShowText(`${player} passed.`, MessageLevel.Step, 1);
 					if (this.everyoneBid()) {
 						if (this.__stage === BidStage.Round1) {
 							this.__playersBid = 0;
@@ -82,6 +74,7 @@ class Bid {
 
 	private doBid(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
 		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
+		let message = `${Player[this.__currentPlayer]} `;
 
 		// human, go!
 		if (pauseForBid(aiPlayer, this.__playerHands[this.__currentPlayer], stage, this.__trumpCandidate)) {
@@ -89,51 +82,84 @@ class Bid {
 		}
 
 		let hand = this.__playerHands[this.__currentPlayer];
-		let trumpCandidate = this.__trumpCandidate;
 		let trump: Suit | null = null;
-		// TODO: factor some of this out
+
 		if (aiPlayer !== null) {
-			if (stage === BidStage.Round1) {
-				let orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
-				if (!orderItUp || !hasSuit(hand, trumpCandidate.suit)) {
-					return null;
-				}
-				trump = trumpCandidate.suit;
-				this.__playerHands[this.__dealer].push(trumpCandidate);
-			} else {
-				trump = aiPlayer.pickTrump(copyHand(hand), new Card(trumpCandidate));
-				if (trump === null || trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
-					return null;
-				}
+			trump = this.doBidAI(aiPlayer, stage, hand);
+			if (trump === null) {
+				animShowText(`${this.__currentPlayer} passed.`, MessageLevel.Step, 1);
+				return null;
 			}
 		} else {
-			if (stage === BidStage.Round1 && queuedHoomanOrderUp === true) {
-				if (!hasSuit(hand, trumpCandidate.suit)) {
-					clearHoomanQueue();
-					return null;
-				}
-				trump = trumpCandidate.suit;
-				this.__playerHands[this.__dealer].push(trumpCandidate);
-			}
-			else if (stage === BidStage.Round2 && queuedHoomanBidSuit !== null) {
-				trump = queuedHoomanBidSuit;
-				if (trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
-					clearHoomanQueue();
-					return null;
-				}
-			}
-			else {
-				clearHoomanQueue();
+			trump = this.doBidHooman(stage, hand);
+			if (trump === null) {
+				animShowText(`${this.__currentPlayer} passed.`, MessageLevel.Step, 1);
 				return null;
 			}
 		}
+
 		this.setTrump(trump);
+		if (stage === BidStage.Round1) {
+			message += `ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[this.__trumpCandidate.suit]}`;
+			this.__playerHands[this.__dealer].push(this.__trumpCandidate);
+		}
+		else {
+			message += `called ${Suit[trump]}`;
+		}
+		animShowText(message, MessageLevel.Step, 1);
 		return {
 			stage,
 			trump,
 			maker: this.__currentPlayer,
 			alone: this.getGoAlone(trump, this.__currentPlayer),
 		};
+	}
+
+	//TODO: unit test
+	private doBidHooman(stage: BidStage, hand: Card[]): Suit | null {
+		let trump: Suit | null;
+		let trumpCandidate = this.__trumpCandidate;
+
+		if (stage === BidStage.Round1 && queuedHoomanOrderUp === true) {
+			if (!hasSuit(hand, trumpCandidate.suit)) {
+				clearHoomanQueue();
+				return null;
+			}
+			trump = trumpCandidate.suit;
+		}
+		else if (stage === BidStage.Round2 && queuedHoomanBidSuit !== null) {
+			trump = queuedHoomanBidSuit;
+			if (trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
+				clearHoomanQueue();
+				return null;
+			}
+		}
+		else {
+			clearHoomanQueue();
+			return null;
+		}
+		return trump;
+	}
+
+	//TODO: unit test
+	private doBidAI(aiPlayer: EuchreAI, stage: BidStage, hand: Card[]): Suit | null {
+		let trump: Suit | null;
+		let trumpCandidate = this.__trumpCandidate;
+
+		if (stage === BidStage.Round1) {
+			let orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
+			if (!orderItUp || !hasSuit(hand, trumpCandidate.suit)) {
+				return null;
+			}
+			trump = trumpCandidate.suit;
+		} else {
+			trump = aiPlayer.pickTrump(copyHand(hand), new Card(trumpCandidate));
+			if (trump === null || trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
+				return null;
+			}
+		}
+
+		return trump;
 	}
 
 	private getGoAlone(trump: Suit, maker: Player): boolean {

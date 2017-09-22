@@ -86,11 +86,11 @@ class Controller {
 		this.__settings.showTrickHistory = (document.getElementById("chkShowHistory") as HTMLInputElement).checked;
 
 		//ai settings
-		this.__settings.aiPlayers = [new IdiotAI(), new IdiotAI(), new DecentAI(), new IdiotAI()];
+		this.__settings.aiPlayers = [null, new IdiotAI(), new DecentAI(), new IdiotAI()];
 		this.__settings.hasHooman = this.__settings.aiPlayers.indexOf(null) > -1;
 
 		//statMode: 4 AIs play against each other
-		this.__settings.statMode = true; //(document.getElementById("chkStatMode") as HTMLInputElement).checked;
+		this.__settings.statMode = false; //(document.getElementById("chkStatMode") as HTMLInputElement).checked;
 		this.__settings.messageLevel = MessageLevel.Step;
 		this.__settings.numGamesToPlay = 1;
 	}
@@ -115,7 +115,7 @@ class Controller {
 			this.__startTime = performance.now();
 			while (count < this.__settings.numGamesToPlay) {
 				this.__game = new Game(this.__settings);
-				this.__game.start();
+				this.__game.doGame();
 				if (this.__game.isFinished()) {
 					this.handleEndGame();
 					count++;
@@ -127,7 +127,7 @@ class Controller {
 			updateLog(this.logText);
 		} else {
 			this.__game = new Game(this.__settings);
-			this.__game.start();
+			this.__game.doGame();
 		}
 	}
 

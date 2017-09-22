@@ -13,21 +13,6 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
 	return false;
 }
 
-/* Returns whether or not it is currently legal for the given player to
-   order up a given suit.
-   Depends on bidding round */
-/*function canOrderUpSuit(playerHand: Card[], suit: Suit): boolean {
-	let trumpCandidate = game.getTrumpCandidate() as Card;
-	if (game.getGameStage() === HandStage.BidRound1) {
-		if (trumpCandidate.suit !== suit) return false;
-		if (hasSuit(playerHand, suit)) return true;
-	} else if (game.getGameStage() === HandStage.BidRound2) {
-		if (trumpCandidate.suit === suit) return false;
-		if (hasSuit(playerHand, suit)) return true;
-	}
-	return false;
-}*/
-
 //**NOT TESTING**
 //how many cards of a given suit a hand has
 function numCardsOfSuit(hand: Card[], suit: Suit): number {

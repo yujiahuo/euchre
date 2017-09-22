@@ -128,10 +128,10 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 	}
 	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
 
-}
+}*/
 
-function animPlaceDealerButt(): void {
-	if (game.isStatMode()) return;
+function animPlaceDealerButt(dealer: Player): void {
+	if (!controller || controller.isStatMode()) { return; }
 
 	let button;
 
@@ -142,7 +142,7 @@ function animPlaceDealerButt(): void {
 		let gameSpace = document.getElementById("gameSpace") as HTMLElement;
 		gameSpace.appendChild(button);
 	}
-	switch (game.getDealer()) {
+	switch (dealer) {
 		case Player.South:
 			button.style.top = "470px";
 			button.style.left = "270px";
@@ -160,7 +160,7 @@ function animPlaceDealerButt(): void {
 			button.style.left = "550px";
 			break;
 	}
-}*/
+}
 
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
@@ -328,50 +328,61 @@ function animClearTable(): void {
 
 
 //let human player poke the buttons
-//function animEnableBidding(hand: Card[]): void {
-//	if (controller && controller.isStatMode()) return;
+function animEnableBidding(hand: Card[], bidStage: BidStage, trumpCandidate: Card): void {
+	if (controller && controller.isStatMode()) return;
 
-//	document.getElementById("orderUpPrompt").style.display = "inline";
-//	document.getElementById("pass").style.display = "inline";
+	// Make typescript happy
+	let orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
+	let orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
+	let spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
+	let clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
+	let heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
+	let diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
 
-//	if (game.getGameStage() === GameStage.BidRound1 && hasSuit(hand, game.getTrumpCandidate().suit)) {
-//		document.getElementById("orderUp").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//		return;
-//	}
+	orderUpPrompt.style.display = "inline";
 
-//	if (canOrderUpSuit(hand, Suit.Spades)) {
-//		document.getElementById("pickSpades").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//	if (canOrderUpSuit(hand, Suit.Clubs)) {
-//		document.getElementById("pickClubs").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//	if (canOrderUpSuit(hand, Suit.Hearts)) {
-//		document.getElementById("pickHearts").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//	if (canOrderUpSuit(hand, Suit.Diamonds)) {
-//		document.getElementById("pickDiamonds").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//}
+	// Bidding round 1
+	if (bidStage === BidStage.Round1 && hasSuit(hand, trumpCandidate.suit)) {
+		orderUpButton.style.display = "inline";
+		return;
+	}
 
-//function animDisableBidding(): void {
-//	if (controller && controller.isStatMode()) return;
+	// Bidding round 2
+	if (trumpCandidate.suit !== Suit.Spades && hasSuit(hand, Suit.Spades)) {
+		spadesButton.style.display = "inline";
+	}
+	if (trumpCandidate.suit !== Suit.Clubs && hasSuit(hand, Suit.Clubs)) {
+		clubsButton.style.display = "inline";
+	}
+	if (trumpCandidate.suit !== Suit.Hearts && hasSuit(hand, Suit.Hearts)) {
+		heartsButton.style.display = "inline";
+	}
+	if (trumpCandidate.suit !== Suit.Diamonds && hasSuit(hand, Suit.Diamonds)) {
+		diamondsButton.style.display = "inline";
+	}
+}
 
-//	document.getElementById("orderUpPrompt").style.display = "none";
-//	document.getElementById("orderUp").style.display = "none";
-//	document.getElementById("pass").style.display = "none";
+function animDisableBidding(): void {
+	if (controller && controller.isStatMode()) return;
 
-//	document.getElementById("pickSpades").style.display = "none";
-//	document.getElementById("pickClubs").style.display = "none";
-//	document.getElementById("pickHearts").style.display = "none";
-//	document.getElementById("pickDiamonds").style.display = "none";
-//	document.getElementById("alone").style.display = "none";
-//	document.getElementById("alone").style.backgroundColor = "green";
-//}
+	// Make typescript happy
+	let orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
+	let orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
+	let spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
+	let clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
+	let heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
+	let diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
+	let aloneButton: HTMLElement = document.getElementById("alone") as HTMLElement;
+
+	orderUpPrompt.style.display = "none";
+	orderUpButton.style.display = "none";
+
+	spadesButton.style.display = "none";
+	clubsButton.style.display = "none";
+	heartsButton.style.display = "none";
+	diamondsButton.style.display = "none";
+	aloneButton.style.backgroundColor = "green";
+}
 
 ////flips a button on or off
 ////needs to be generic but for now flips the 'go alone' button
@@ -410,6 +421,7 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 		}
 	} else {
 		updateLog(logText, overwrite);
+		//setTimeout(updateLog, 2000, logText, overwrite);
 	}
 }
 

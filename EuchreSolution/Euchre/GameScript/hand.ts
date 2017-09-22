@@ -128,6 +128,7 @@ class Hand {
 		this.__trumpCandidate = deck.pop() as Card;
 
 		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings);
+		animPlaceDealerButt(this.__dealer);
 
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
@@ -138,6 +139,9 @@ class Hand {
 		switch (this.__handStage) {
 			case HandStage.Bidding:
 				let bidResult = this.__bid.doBidding();
+
+				if (pausing) return;
+
 				this.__bidResult = bidResult;
 				if (bidResult) {
 					this.__trick = new Trick(bidResult.trump, bidResult.alone,
@@ -150,6 +154,9 @@ class Hand {
 				break;
 			case HandStage.Playing:
 				let trickEnded = this.__trick.doTrick();
+
+				if (pausing) return;
+
 				if (trickEnded) {
 					this.handleEndTrick();
 				}

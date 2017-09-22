@@ -44,6 +44,9 @@ class Game {
 			this.__hand = new Hand(this.__dealer, this.__aiPlayers, this.__settings);
 		}
 		this.__hand.doHand();
+
+		if (pausing) return;
+
 		if (this.__hand.isFinished()) {
 			this.handleEndHand();
 			this.__hand = null;
@@ -71,11 +74,6 @@ class Game {
 	/*******************************
 	 * Public functions
 	 ********************************/
-
-	//TODO: why does this just call doGame? Kind of pointless?
-	public start(): void {
-		this.doGame();
-	}
 
 	public doGame(): void {
 		while (!this.isFinished() && !pausing) {

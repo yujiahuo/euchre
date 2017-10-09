@@ -1,7 +1,7 @@
-Planning
-- Do human stuff
-- Clean up UI or whatever
-- Do enhancements
+Next
+- Validate hooman actions nicely
+- Animate hooman
+- Animate AI/text
 
 Bugs
 

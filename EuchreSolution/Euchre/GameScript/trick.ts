@@ -82,6 +82,7 @@ class Trick {
 		this.removeFromHand(this.__currentPlayer, card);
 
 		animShowText(Player[this.__currentPlayer] + " played " + card.id, MessageLevel.Step, 1);
+		animPlayCard(this.__currentPlayer, card.id);
 
 		this.__currentPlayer = nextPlayer(this.__currentPlayer);
 		if (this.__alone && this.__currentPlayer === getPartner(this.__maker)) {

@@ -1,7 +1,7 @@
 Next
 - Validate hooman actions nicely
-- Animate hooman
-- Animate AI/text
+- Make animations actually timed properly and probably factor out all the visual stuff so it doesn't suck
+- Typescriptify anim
 
 Bugs
 

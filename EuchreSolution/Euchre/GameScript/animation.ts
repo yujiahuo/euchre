@@ -28,6 +28,8 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 
 function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
 	const div = document.getElementById(cardID) as HTMLDivElement;
+	if (!div) { return; }
+
 	div.style.top = top;
 	div.style.left = left;
 	if (z) {
@@ -78,6 +80,12 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 		player = (player + 1) % 4;
 	}
 
+	setTimeout(animSortHand, 1000, hands[Player.South], Player.South);
+	if (settings.openHands) {
+		setTimeout(animSortHand, 1000, hands[Player.West], Player.West);
+		setTimeout(animSortHand, 1000, hands[Player.North], Player.North);
+		setTimeout(animSortHand, 1000, hands[Player.East], Player.East);
+	}
 	setTimeout(animFlipCard, 1000, trumpCandidate.id);
 }
 
@@ -164,7 +172,7 @@ function animPlaceDealerButt(dealer: Player): void {
 
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
-function animSortHand(hand: Card[]): void {
+function animSortHand(hand: Card[], player: Player): void {
 	if (!controller || controller.isStatMode()) { return; }
 
 	const sortedDict: string[] = [];
@@ -176,8 +184,6 @@ function animSortHand(hand: Card[]): void {
 		key = 0;
 		suit = card.suit;
 		switch (suit) {
-			/*case game.getTrump():
-				break;*/
 			case Suit.Spades:
 				key += 100;
 				break;
@@ -198,19 +204,23 @@ function animSortHand(hand: Card[]): void {
 	}
 
 	pos = 0;
-	for (const card of sortedDict) {
-		setTimeout(animDealSingle, 300, Player.South, card, pos);
+	// TODO: Isn't there a way to actually loop through values instead of keys?
+	for (const key in sortedDict) {
+		setTimeout(animDealSingle, 300, player, sortedDict[key], pos);
 		pos++;
 	}
 }
 
-function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
+function animPlayCard(player: Player, cardID: string): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let top = "";
-	let left = "";
+	const cardElem: HTMLElement | null = document.getElementById(cardID);
+	if (!cardElem) { return; }
 
-	if (flipCard && !controller.isOpenHands()) { animFlipCard(cardID); }
+	let top: string = "";
+	let left: string = "";
+
+	if (cardElem.classList.contains("cardBack") && !controller.isOpenHands()) { animFlipCard(cardID); }
 
 	switch (player) {
 		case Player.South:

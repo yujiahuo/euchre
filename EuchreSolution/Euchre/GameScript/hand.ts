@@ -194,7 +194,6 @@ class Hand {
 		this.__nsPointsWon = calculatePointGain(this.__nsTricksWon, isMaker, this.__bidResult.alone);
 		this.__ewPointsWon = calculatePointGain(this.__ewTricksWon, !isMaker, this.__bidResult.alone);
 
-		animClearTable();
 		this.__handStage = HandStage.Finished;
 	}
 

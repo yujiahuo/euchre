@@ -58,12 +58,18 @@ class Trick {
 		}
 		this.playCard(card);
 		if (this.isFinished()) {
-			for (let ai of this.__aiPlayers) {
-				if (ai) {
-					ai.trickEnd(this.cardsPlayed);
-				}
+			this.endTrick();
+		}
+	}
+
+	private endTrick(): void {
+		for (let ai of this.__aiPlayers) {
+			if (ai) {
+				ai.trickEnd(this.cardsPlayed);
 			}
 		}
+
+		animWinTrick(this.winner() as Player, this.cardsPlayed());
 	}
 
 	protected playCard(card: Card | null): Card | null {

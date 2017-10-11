@@ -51,6 +51,8 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 	let isOpenHands = settings.openHands;
 	let hasHooman = settings.hasHooman;
 
+	animClearTable();
+
 	player = nextPlayer(dealer);
 	delay = 0;
 
@@ -256,7 +258,7 @@ function animFlipCard(cardID: string): void {
 	}
 }
 
-function animWinTrick(player: Player, cards: Card[]): void {
+function animWinTrick(player: Player, playedCards: PlayedCard[]): void {
 	if (!controller || controller.isStatMode()) { return; }
 
 	let cardElem;
@@ -285,11 +287,11 @@ function animWinTrick(player: Player, cards: Card[]): void {
 	}
 
 	for (let i = 0; i < 4; i++) {
-		if (cards[i] === null) {
+		if (!playedCards[i] || !playedCards[i].card) {
 			//TODO: either mark the parameter as (Card | null)[], or remove this check
 			continue;
 		}
-		cardElem = document.getElementById(cards[i].id) as HTMLElement;
+		cardElem = document.getElementById(playedCards[i].card.id) as HTMLElement;
 		cardElem.style.top = top;
 		cardElem.style.left = left;
 		cardElem.classList.add("cardBack");

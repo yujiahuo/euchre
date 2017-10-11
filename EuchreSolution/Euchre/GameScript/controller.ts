@@ -80,7 +80,7 @@ class Controller {
 	private grabSettings(): void {
 		//checkbox settings
 		this.__settings.sound = (document.getElementById("chkSound") as HTMLInputElement).checked;
-		this.__settings.openHands = false; //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
+		this.__settings.openHands = true; //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
 		this.__settings.enableDefendAlone = (document.getElementById("chkDefendAlone") as HTMLInputElement).checked;
 		this.__settings.enableNoTrump = (document.getElementById("chkNoTrump") as HTMLInputElement).checked;
 		this.__settings.showTrickHistory = (document.getElementById("chkShowHistory") as HTMLInputElement).checked;

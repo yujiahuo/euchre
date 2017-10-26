@@ -1,4 +1,5 @@
 Next
+- Make hooman discard at bidding
 - Validate hooman actions nicely
 - Make animations actually timed properly and probably factor out all the visual stuff so it doesn't suck
 - Typescriptify anim

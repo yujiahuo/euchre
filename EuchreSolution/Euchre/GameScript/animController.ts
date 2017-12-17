@@ -44,24 +44,25 @@ class AnimController {
 
 		for (let i = 0; i < this.queuedAnimations.length; i++) {
 			delay = pauseTime * i;
-			animFunction = this.getAnimFunction(animType, player, cardID);
+			//animFunction = this.getAnimFunction(animType, player, cardID);
 
 
 		}
 	}
 
 	public getAnimFunction(animType: AnimType, player?: Player, cardID?: string): Function {
-		switch (animType){
+		switch (animType) {
 			case AnimType.DealHands:
-				return animDeal();
+				return animDeal;
 			case AnimType.Discard:
 				break;
-			case AnimType.PlayCard;
+			case AnimType.PlayCard:
 				break;
-			case AnimType.WinTrick;
+			case AnimType.WinTrick:
 				break;
 			default:
 				break;
-		}	
+		}
+		return function () { };
 	}
 }

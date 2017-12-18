@@ -137,7 +137,8 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 		trumpElem.classList.add("cardBack");
 	}
 	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
-
+	//TODO: sort the hand again? Probably only if it's visible
+	//TODO: make it look the same even if the picked up card gets discarded
 }*/
 
 function animPlaceDealerButt(dealer: Player): void {

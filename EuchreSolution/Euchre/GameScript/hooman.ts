@@ -53,6 +53,7 @@ function unpause() {
 	if (controller) { controller.continue(); }
 }
 
+//TODO: call this or block queueing up cards before human bidding is done some other way
 function clearHoomanQueue() {
 	queuedHoomanOrderUp = null;
 	queuedHoomanBidSuit = null;

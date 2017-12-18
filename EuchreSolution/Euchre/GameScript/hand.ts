@@ -180,7 +180,7 @@ class Hand {
 		} else {
 			const bidResult = this.__bidResult as BidResult;
 			this.__trick = new Trick(bidResult.trump, bidResult.alone, this.__playerHands,
-				this.__aiPlayers, bidResult.maker, this.__trick.currentPlayer());
+				this.__aiPlayers, bidResult.maker, this.__trick.winner() as Player);
 		}
 	}
 

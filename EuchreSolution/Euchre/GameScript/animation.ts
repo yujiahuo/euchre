@@ -120,26 +120,25 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 }
 
 //gives trump to the dealer
-/*function animTakeTrump(toDiscardID: string): void {
-	if (game.isStatMode()) return;
+function animTakeTrump(trumpCandidate: Card, discard: Card, isAIPlayer: boolean): void {
+	if (!controller || controller.isStatMode()) { return; }
 
-	let trumpCandidate = game.getTrumpCandidate() as Card;
-	let toDiscardElem = document.getElementById(toDiscardID) as HTMLElement;
-	let trumpElem = document.getElementById(trumpCandidate.id) as HTMLElement;
-	let top = toDiscardElem.style.top;
-	let left = toDiscardElem.style.left;
+	const discardElem = document.getElementById(discard.id) as HTMLElement;
+	const trumpElem = document.getElementById(trumpCandidate.id) as HTMLElement;
+	const top = discardElem.style.top;
+	const left = discardElem.style.left;
 
-	toDiscardElem.classList.add("cardBack");
-	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
-	setTimeout(animHideCard, 400, toDiscardElem);
+	discardElem.classList.add("cardBack");
+	setTimeout(animMoveCard, 100, discard.id, "252px", "364px");
+	setTimeout(animHideCard, 400, discardElem);
 
-	if (game.getAIPlayer(game.getDealer()) && !game.isOpenHands()) {
+	if (!isAIPlayer && !controller.isOpenHands()) {
 		trumpElem.classList.add("cardBack");
 	}
-	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
+	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, discardElem.style.zIndex);
 	//TODO: sort the hand again? Probably only if it's visible
 	//TODO: make it look the same even if the picked up card gets discarded
-}*/
+}
 
 function animPlaceDealerButt(dealer: Player): void {
 	if (!controller || controller.isStatMode()) { return; }

@@ -64,6 +64,7 @@ class Bid {
 				}
 				break;
 			case BidStage.Discard:
+				this.__playerHands[this.__dealer].push(this.__trumpCandidate);
 				this.doDiscard(this.__dealer);
 				this.__stage = BidStage.Finished;
 				break;
@@ -101,7 +102,6 @@ class Bid {
 		this.setTrump(trump);
 		if (stage === BidStage.Round1) {
 			message += `ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[this.__trumpCandidate.suit]}`;
-			this.__playerHands[this.__dealer].push(this.__trumpCandidate);
 		} else {
 			message += `called ${Suit[trump]}`;
 		}
@@ -175,8 +175,10 @@ class Bid {
 			discard = hand[0];
 		}
 		for (let i = 0; i < hand.length; i++) {
-			if (hand[i].id === discard.id) {
+			const card = hand[i];
+			if (card.id === discard.id) {
 				hand.splice(i, 1);
+				animTakeTrump(this.__trumpCandidate, card, !!aiPlayer);
 				break;
 			}
 		}

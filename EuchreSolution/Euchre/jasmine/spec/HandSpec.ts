@@ -2,6 +2,7 @@ describe("HandSpec", function () {
 	let hand: Hand;
 	let aiPlayers: EuchreAI[];
 	let playerHands: Card[][];
+	let jacks: Card[];
 	let trumpCandidate: Card;
 	let bid: Bid;
 
@@ -52,7 +53,7 @@ describe("HandSpec", function () {
 			],
 		];
 		(hand as any).__playerHands = playerHands;
-		const jacks = [
+		jacks = [
 			playerHands[0][1],
 			playerHands[1][0],
 			playerHands[2][4],
@@ -301,7 +302,6 @@ describe("HandSpec", function () {
 
 	describe("getShuffledDeck", function () {
 		let deck: Card[];
-		let jacks: Card[];
 
 		beforeEach(function () {
 			const { deck: testDeck, jacks: testJacks } = getShuffledDeck();
@@ -446,6 +446,69 @@ describe("HandSpec", function () {
 			expect(initSpy.calls.argsFor(1)).toEqual([Player.East]);
 			expect(initSpy.calls.argsFor(2)).toEqual([Player.South]);
 			expect(initSpy.calls.argsFor(3)).toEqual([Player.West]);
+		});
+	});
+
+	describe("Human players", function () {
+		describe("Pauses for a human player", function () {
+			beforeEach(function () {
+				const mixedPlayers: Settings["aiPlayers"] = aiPlayers.slice();
+				mixedPlayers[0] = null;
+				const settings: Settings = {
+					aiPlayers: mixedPlayers,
+					enableDefendAlone: false,
+					enableNoTrump: false,
+					hasHooman: true,
+					messageLevel: MessageLevel.Game,
+					numGamesToPlay: 1,
+					openHands: false,
+					showTrickHistory: false,
+					sound: false,
+					statMode: true,
+				};
+				hand = new Hand(Player.North, mixedPlayers, settings);
+				(hand as any).__playerHands = playerHands;
+				(hand as any).__trumpCandidate = trumpCandidate;
+				bid = new Bid(playerHands, jacks, mixedPlayers, Player.North, trumpCandidate);
+				(hand as any).__bid = bid;
+				spyOn(mixedPlayers[3], "chooseOrderUp").and.returnValue(true);
+				hand.doHand();
+			});
+
+			afterEach(function () {
+				pausing = false;
+			});
+
+			it("handStage", function () {
+				expect(hand.handStage()).toBe(HandStage.Playing);
+			});
+			it("dealer", function () {
+				expect(hand.dealer()).toBe(Player.North);
+			});
+			it("playerHands", function () {
+				expect(hand.playerHands()).toBe(playerHands);
+			});
+			it("trumpCandidate", function () {
+				expect(hand.trumpCandidate()).toBe(trumpCandidate);
+			});
+			it("numTricksPlayed", function () {
+				expect(hand.numTricksPlayed()).toBe(0);
+			});
+			it("nsTricksWon", function () {
+				expect(hand.nsTricksWon()).toBe(0);
+			});
+			it("ewTricksWon", function () {
+				expect(hand.ewTricksWon()).toBe(0);
+			});
+			it("nsPointsWon", function () {
+				expect(hand.nsPointsWon()).toBe(0);
+			});
+			it("ewPointsWon", function () {
+				expect(hand.ewPointsWon()).toBe(0);
+			});
+			it("isFinished", function () {
+				expect(hand.isFinished()).toBe(false);
+			});
 		});
 	});
 });

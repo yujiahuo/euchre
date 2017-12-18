@@ -11,8 +11,8 @@ type ShuffleResult = {
 };
 
 function getShuffledDeck(): ShuffleResult {
-	let deck: Card[] = [];
-	let jacks: Card[] = [];
+	const deck: Card[] = [];
+	const jacks: Card[] = [];
 
 	for (let i = 0; i < DECKSIZE; i++) {
 		const j = rng.nextInRange(0, i);
@@ -23,70 +23,6 @@ function getShuffledDeck(): ShuffleResult {
 		if (deck[j].rank === Rank.Jack) {
 			jacks[deck[j].suit] = deck[j];
 		}
-	}
-
-	//TODO: remove hardcoded values (debug code!!)
-	const hands = [
-		[
-			new Card(Suit.Spades, Rank.Jack),
-			new Card(Suit.Spades, Rank.Ace),
-			new Card(Suit.Spades, Rank.King),
-			new Card(Suit.Spades, Rank.Queen),
-			new Card(Suit.Spades, Rank.Ten),
-		],
-		[
-			new Card(Suit.Clubs, Rank.Jack),
-			new Card(Suit.Diamonds, Rank.Ace),
-			new Card(Suit.Diamonds, Rank.King),
-			new Card(Suit.Diamonds, Rank.Queen),
-			new Card(Suit.Clubs, Rank.Ace),
-		],
-		[
-			new Card(Suit.Diamonds, Rank.Jack),
-			new Card(Suit.Diamonds, Rank.Ten),
-			new Card(Suit.Diamonds, Rank.Nine),
-			new Card(Suit.Clubs, Rank.King),
-			new Card(Suit.Hearts, Rank.Ace),
-		],
-		[
-			new Card(Suit.Hearts, Rank.King),
-			new Card(Suit.Hearts, Rank.Queen),
-			new Card(Suit.Clubs, Rank.Queen),
-			new Card(Suit.Hearts, Rank.Ten),
-			new Card(Suit.Hearts, Rank.Nine),
-		],
-	];
-	const kitty = [
-		new Card(Suit.Spades, Rank.Nine),
-		new Card(Suit.Clubs, Rank.Ten),
-		new Card(Suit.Clubs, Rank.Nine),
-		new Card(Suit.Hearts, Rank.Jack),
-	];
-	const { deck: newDeck, jacks: newJacks } = getDeckFromHands(hands, kitty);
-	deck = newDeck;
-	jacks = newJacks;
-	return { deck, jacks };
-}
-
-//TODO: remove (debug code)
-//Assumes East is permadealer
-function getDeckFromHands(hands: Card[][], kitty: Card[]): ShuffleResult {
-	const deck = [];
-	const jacks = [];
-	while (kitty.length > 0) {
-		const card = kitty.pop() as Card;
-		if (card.rank === Rank.Jack) {
-			jacks[card.suit] = card;
-		}
-		deck.push(card);
-	}
-
-	for (let i = 3; hands[i].length > 0; i = (i + 3) % 4) {
-		const card = hands[i].pop() as Card;
-		if (card.rank === Rank.Jack) {
-			jacks[card.suit] = card;
-		}
-		deck.push(card);
 	}
 
 	return { deck, jacks };
@@ -172,7 +108,6 @@ class Hand {
 	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[], settings: Settings) {
 		this.__settings = settings;
 		this.__dealer = dealer;
-		this.__dealer = Player.East;  //TODO: remove (debug code!!)
 		this.__aiPlayers = aiPlayers;
 		let player = dealer;
 		for (let i = 0; i < 4; i++) {

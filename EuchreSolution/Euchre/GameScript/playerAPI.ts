@@ -125,22 +125,18 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null 
 	let player: Player = cards[0].player;
 	const trickSuit: Suit = bestCard.suit;
 	let bestValue: number = getCardValue(bestCard, trickSuit, trump);
-	animShowText("Trump: " + Suit[trump] + ", trick suit: " + Suit[trickSuit], MessageLevel.Game);
-	animShowText("Tested card: " + Rank[bestCard.rank] + " of " + Suit[bestCard.suit] + " by " + Player[player] + ", value " + bestValue, MessageLevel.Game);
 
 	for (let i = 1; i < cards.length; i++) {
 		if (cards[i].card.suit !== trickSuit && cards[i].card.suit !== trump) {
 			continue;
 		}
 		const value = getCardValue(cards[i].card, trickSuit, trump);
-		animShowText("Tested card: " + Rank[cards[i].card.rank] + " of " + Suit[cards[i].card.suit] + " by " + Player[cards[i].player] + ", value " + value, MessageLevel.Game);
 		if (value > bestValue) {
 			bestCard = cards[i].card;
 			player = cards[i].player;
 			bestValue = value;
 		}
 	}
-	animShowText("Best card: " + Rank[bestCard.rank] + " of " + Suit[bestCard.suit] + " by " + Player[player], MessageLevel.Game);
 	return { player, card: bestCard };
 }
 

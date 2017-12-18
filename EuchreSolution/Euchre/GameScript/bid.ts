@@ -116,26 +116,19 @@ class Bid {
 
 	//TODO: unit test
 	private doBidHooman(stage: BidStage, hand: Card[]): Suit | null {
-		let trump: Suit | null;
 		const trumpCandidate = this.__trumpCandidate;
 
 		if (stage === BidStage.Round1 && queuedHoomanOrderUp === true) {
-			if (!hasSuit(hand, trumpCandidate.suit)) {
-				clearHoomanQueue();
-				return null;
+			if (hasSuit(hand, trumpCandidate.suit)) {
+				return trumpCandidate.suit;
 			}
-			trump = trumpCandidate.suit;
 		} else if (stage === BidStage.Round2 && queuedHoomanBidSuit !== null) {
-			trump = queuedHoomanBidSuit;
-			if (trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
-				clearHoomanQueue();
-				return null;
+			if (queuedHoomanBidSuit !== trumpCandidate.suit && hasSuit(hand, queuedHoomanBidSuit)) {
+				return queuedHoomanBidSuit;
 			}
-		} else {
-			clearHoomanQueue();
-			return null;
 		}
-		return trump;
+		clearHoomanQueue();
+		return null;
 	}
 
 	//TODO: unit test

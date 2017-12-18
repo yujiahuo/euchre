@@ -178,15 +178,12 @@ function animPlaceDealerButt(dealer: Player): void {
 function animSortHand(hand: Card[], player: Player): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	const sortedDict: string[] = [];
-	let key: number;
-	let suit: Suit;
-	let pos: number;
+	const cardIds: { [index: number]: string } = {};
+	const keys: number[] = [];
 
 	for (const card of hand) {
-		key = 0;
-		suit = card.suit;
-		switch (suit) {
+		let key = 0;
+		switch (card.suit) {
 			case Suit.Spades:
 				key += 100;
 				break;
@@ -203,13 +200,14 @@ function animSortHand(hand: Card[], player: Player): void {
 				break;
 		}
 		key += (20 - card.rank); //highest ranks come first
-		sortedDict[key] = card.id;
+		keys.push(key);
+		cardIds[key] = card.id;
 	}
 
-	pos = 0;
-	// TODO: Isn't there a way to actually loop through values instead of keys?
-	for (const key in sortedDict) {
-		setTimeout(animDealSingle, 300, player, sortedDict[key], pos);
+	keys.sort();
+	let pos = 0;
+	for (const key of keys) {
+		setTimeout(animDealSingle, 300, player, cardIds[key], pos);
 		pos++;
 	}
 }

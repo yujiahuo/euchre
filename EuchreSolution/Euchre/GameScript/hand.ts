@@ -33,7 +33,7 @@ function getShuffledDeck(): ShuffleResult {
 
 function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 	for (let i = 0; i < 20; i++) {
-		const player = (dealer + i) % 4;
+		const player = (dealer + i + 1) % 4;
 		const cardPos = Math.floor(i / 4);
 		//TODO: see if skipping the pop makes things faster
 		playerHands[player][cardPos] = deck.pop() as Card;

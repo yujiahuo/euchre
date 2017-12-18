@@ -170,6 +170,22 @@ describe("HandSpec", function () {
 		});
 	});
 
+	describe("Trick winner leads next", function () {
+		beforeEach(function () {
+			spyOn(aiPlayers[0], "chooseOrderUp").and.returnValue(true);
+			spyOn(aiPlayers[0], "pickCard").and.callThrough();
+			hand.doHand();
+		});
+		it("Right player leads", function () {
+			const calls = (aiPlayers[0].pickCard as jasmine.Spy).calls;
+			expect(calls.argsFor(0)[3].length).toBe(3);
+			expect(calls.argsFor(1)[3].length).toBe(0);
+			expect(calls.argsFor(2)[3].length).toBe(0);
+			expect(calls.argsFor(3)[3].length).toBe(0);
+			expect(calls.argsFor(4)[3].length).toBe(0);
+		});
+	});
+
 	describe("Actually play a hand (ordered up alone)", function () {
 		beforeEach(function () {
 			spyOn(aiPlayers[0], "chooseOrderUp").and.returnValue(true);

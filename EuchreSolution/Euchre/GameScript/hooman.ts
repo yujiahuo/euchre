@@ -2,10 +2,10 @@
 let animating: boolean = false;
 let queuedHoomanOrderUp: boolean | null = null;
 let queuedHoomanBidSuit: Suit | null = null;
-let queuedHoomanCard: Card | null = null;
+let queuedHoomanCard: string | null = null;
 
 function clickCard(this: HTMLElement): void {
-	queuedHoomanCard = DECKDICT[this.id];
+	queuedHoomanCard = this.id;
 	unpause();
 }
 

@@ -430,6 +430,42 @@ describe("API", function () {
 		});
 	});
 
+	describe("getCardFromHand", function () {
+		const hand = [
+			new Card(Suit.Diamonds, Rank.Ace),
+			new Card(Suit.Spades, Rank.Right),
+			new Card(Suit.Spades, Rank.Left),
+			new Card(Suit.Hearts, Rank.Ace),
+			new Card(Suit.Hearts, Rank.King),
+		];
+
+		it("Handles the right", function () {
+			const card = getCardFromHand(hand, "Spades11") as Card;
+			expect(card).toBe(hand[1]);
+			expect(card.suit).toBe(Suit.Spades);
+			expect(card.rank).toBe(Rank.Right);
+		});
+
+		it("Handles the left", function () {
+			const card = getCardFromHand(hand, "Clubs11") as Card;
+			expect(card).toBe(hand[2]);
+			expect(card.suit).toBe(Suit.Spades);
+			expect(card.rank).toBe(Rank.Left);
+		});
+
+		it("Handles the first card", function () {
+			expect(getCardFromHand(hand, "Diamonds14")).toBe(hand[0]);
+		});
+
+		it("Handles the last card", function () {
+			expect(getCardFromHand(hand, "Hearts13")).toBe(hand[4]);
+		});
+
+		it("Does not find other cards", function () {
+			expect(getCardFromHand(hand, "Hearts9")).toBeNull();
+		});
+	});
+
 	describe("getTeam", function () {
 		it("North", function () {
 			expect(getTeam(Player.North)).toBe(Team.NorthSouth);

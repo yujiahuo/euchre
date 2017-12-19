@@ -46,14 +46,15 @@ class Trick {
 		let card: Card | null = null;
 		const aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
 
+		const hand = this.__playerHands[this.__currentPlayer];
 		if (aiPlayer) {
-			const hand = this.__playerHands[this.__currentPlayer];
 			card = aiPlayer.pickCard(copyHand(hand), this.__maker, this.__trump, this.cardsPlayed());
 		} else {
 			if (pauseForTrick(aiPlayer)) {
 				return;
 			}
-			card = queuedHoomanCard;
+			//queuedHoomanCard is always a string if pauseForTrick returns false
+			card = getCardFromHand(hand, queuedHoomanCard as string);
 			clearHoomanQueue();
 		}
 		this.playCard(card);

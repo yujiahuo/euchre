@@ -162,10 +162,14 @@ function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card |
 //**TESTED**
 //returns: whether the card is in the hand
 function isInHand(hand: Card[], card: Card): boolean {
+	return !!getCardFromHand(hand, card.id);
+}
+
+function getCardFromHand(hand: Card[], cardId: string): Card | null {
 	for (const handCard of hand) {
-		if (handCard.id === card.id) { return true; }
+		if (handCard.id === cardId) { return handCard; }
 	}
-	return false;
+	return null;
 }
 
 function getWorstCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card | null {

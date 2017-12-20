@@ -7,13 +7,9 @@ function isTrump(card: Card, trump: Suit): boolean {
 }
 
 function followsSuit(card: Card, trickSuit: Suit): boolean {
-	if (card.suit === trickSuit) {
-		return true;
-	}
-	return false;
+	return card.suit === trickSuit;
 }
 
-//**NOT TESTING**
 //how many cards of a given suit a hand has
 function numCardsOfSuit(hand: Card[], suit: Suit): number {
 	let count = 0;
@@ -23,10 +19,9 @@ function numCardsOfSuit(hand: Card[], suit: Suit): number {
 	return count;
 }
 
-//**NOT TESTING**
 //number of suits a hand has
 function countSuits(hand: Card[]): number {
-	const suitArray: Suit[] = [];
+	const suitArray: Suit[] = [0, 0, 0, 0];
 	for (const card of hand) {
 		suitArray[card.suit] = 1;
 	}
@@ -120,10 +115,9 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null 
 	if (cards.length === 0) { return null; }
 	if (cards.length === 1) { return cards[0]; }
 
-	let bestCard: Card = cards[0].card;
-	let player: Player = cards[0].player;
-	const trickSuit: Suit = bestCard.suit;
-	let bestValue: number = getCardValue(bestCard, trickSuit, trump);
+	let bestCard = cards[0];
+	const trickSuit: Suit = bestCard.card.suit;
+	let bestValue: number = getCardValue(bestCard.card, trickSuit, trump);
 
 	for (let i = 1; i < cards.length; i++) {
 		if (cards[i].card.suit !== trickSuit && cards[i].card.suit !== trump) {
@@ -131,12 +125,11 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null 
 		}
 		const value = getCardValue(cards[i].card, trickSuit, trump);
 		if (value > bestValue) {
-			bestCard = cards[i].card;
-			player = cards[i].player;
+			bestCard = cards[i];
 			bestValue = value;
 		}
 	}
-	return { player, card: bestCard };
+	return bestCard;
 }
 
 //**TESTED**

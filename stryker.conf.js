@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
 	config.set({
 		files: [
 			'EuchreSolution/Euchre/*Script/*.ts',
@@ -13,7 +13,7 @@ module.exports = function(config) {
 		mutate: [
 			'EuchreSolution/Euchre/*Script/*.ts'
 		],
-		karmaConfigFile: "karma.conf.js",
+		karmaConfigFile: "karma-stryker.conf.ts",
 		tsconfigFile: "EuchreSolution/Euchre/stryker-tsconfig.json",
 		timeoutFactor: 3,
 	});

@@ -83,7 +83,7 @@
     <Content Include="jasmine\lib\jasmine-2.5.2\jasmine.js" />
     <Content Include="jasmine\lib\jasmine-2.5.2\jasmine_favicon.png" />
     <Content Include="jasmine\SpecRunner.html" />
-    <TypeScriptCompile Include="GameScript\xor4096.ts" />
+    <TypeScriptCompile Include="lib\xor4096.ts" />
     <TypeScriptCompile Include="jasmine\spec\APISpec.ts" />
     <TypeScriptCompile Include="jasmine\spec\BidSpec.ts" />
     <TypeScriptCompile Include="jasmine\spec\CardSpec.ts" />

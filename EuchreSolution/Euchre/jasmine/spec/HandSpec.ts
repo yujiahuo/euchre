@@ -387,7 +387,7 @@ describe("HandSpec", function () {
 		it("only has each card once", function () {
 			const index: { [key: string]: boolean } = {};
 			for (const card of deck) {
-				expect(index[card.id]).toBe(undefined);
+				expect(index[card.id]).toBeUndefined();
 				index[card.id] = true;
 			}
 		});

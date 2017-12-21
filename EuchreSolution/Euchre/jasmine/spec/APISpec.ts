@@ -32,8 +32,8 @@ describe("API", function () {
 	describe("greaterCard", function () {
 		let card1: Card;
 		let card2: Card;
-		let trickSuit = Suit.Spades;
-		let trump = Suit.Hearts;
+		const trickSuit = Suit.Spades;
+		const trump = Suit.Hearts;
 
 		it("FOLLOW SUIT: neither, TRUMP: neither", function () {
 			card1 = new Card(Suit.Clubs, Rank.Nine);
@@ -105,7 +105,7 @@ describe("API", function () {
 	});
 
 	describe("hasSuit", function () {
-		let hand = [
+		const hand = [
 			new Card(Suit.Spades, Rank.Nine),
 			new Card(Suit.Spades, Rank.Ten),
 			new Card(Suit.Spades, Rank.Jack),
@@ -124,7 +124,7 @@ describe("API", function () {
 
 	describe("getBestCardPlayed", function () {
 		let playedCards: PlayedCard[];
-		let trump: Suit = Suit.Spades;
+		const trump: Suit = Suit.Spades;
 		let result: PlayedCard | null;
 
 		it("no cards have been played", function () {
@@ -325,7 +325,7 @@ describe("API", function () {
 		});
 
 		it("Single card", function () {
-			let hand = [new Card(Suit.Spades, Rank.Nine)];
+			const hand = [new Card(Suit.Spades, Rank.Nine)];
 			let result = getWorstCardInHand(hand);
 			expect(result).not.toBeNull();
 			result = result as Card;
@@ -333,7 +333,7 @@ describe("API", function () {
 		});
 
 		it("Two cards, same suit", function () {
-			let hand = [
+			const hand = [
 				new Card(Suit.Spades, Rank.Nine),
 				new Card(Suit.Spades, Rank.Ten),
 			];
@@ -344,7 +344,7 @@ describe("API", function () {
 		});
 
 		it("Two cards, different suits", function () {
-			let hand = [
+			const hand = [
 				new Card(Suit.Spades, Rank.Nine),
 				new Card(Suit.Clubs, Rank.Ten),
 			];
@@ -385,7 +385,7 @@ describe("API", function () {
 	});
 
 	describe("isInHand", function () {
-		let hand = [
+		const hand = [
 			new Card(Suit.Hearts, Rank.Ace),
 			new Card(Suit.Hearts, Rank.King),
 			new Card(Suit.Diamonds, Rank.Ace),
@@ -409,19 +409,19 @@ describe("API", function () {
 		});
 
 		it("Handles the first card (copy of object)", function () {
-			let card = new Card(hand[0].suit, hand[0].rank);
+			const card = new Card(hand[0].suit, hand[0].rank);
 			expect(isInHand(hand, card)).toBe(true);
 		});
 
 		it("Handles the middle cards (copy of object)", function () {
 			for (let i = 1; i < hand.length - 1; i++) {
-				let card = new Card(hand[i].suit, hand[i].rank);
+				const card = new Card(hand[i].suit, hand[i].rank);
 				expect(isInHand(hand, card)).toBe(true);
 			}
 		});
 
 		it("Handles the last card (copy of object)", function () {
-			let card = new Card(hand[hand.length - 1].suit, hand[hand.length - 1].rank);
+			const card = new Card(hand[hand.length - 1].suit, hand[hand.length - 1].rank);
 			expect(isInHand(hand, card)).toBe(true);
 		});
 
@@ -451,7 +451,7 @@ describe("API", function () {
 	describe("copyHand", function () {
 		function testCopy(description: string, hand: Card[]) {
 			it(description, function () {
-				let result = copyHand(hand);
+				const result = copyHand(hand);
 				expect(result.length).toBe(hand.length);
 				for (let i = 0; i < result.length; i++) {
 					expect(result[i]).toEqual(hand[i]);

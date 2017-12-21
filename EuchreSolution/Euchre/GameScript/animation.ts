@@ -17,7 +17,7 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 		card.classList.add("cardBack");
 	}
 
-	let cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
+	const cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
 	cardsContainer.appendChild(card);
 
 	card.style.zIndex = zIndex.toString();
@@ -27,7 +27,7 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 }
 
 function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
-	let div = document.getElementById(cardID) as HTMLDivElement;
+	const div = document.getElementById(cardID) as HTMLDivElement;
 	div.style.top = top;
 	div.style.left = left;
 	if (z) {
@@ -46,8 +46,8 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 	let cardID: string;
 	let flippedUp: boolean;
 	let cardElem: HTMLElement | null;
-	let isOpenHands = settings.openHands;
-	let hasHooman = settings.hasHooman;
+	const isOpenHands = settings.openHands;
+	const hasHooman = settings.hasHooman;
 
 	player = nextPlayer(dealer);
 	delay = 0;
@@ -167,12 +167,12 @@ function animPlaceDealerButt(): void {
 function animSortHand(hand: Card[]): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let sortedDict: string[] = [];
+	const sortedDict: string[] = [];
 	let key: number;
 	let suit: Suit;
 	let pos: number;
 
-	for (let card of hand) {
+	for (const card of hand) {
 		key = 0;
 		suit = card.suit;
 		switch (suit) {
@@ -198,7 +198,7 @@ function animSortHand(hand: Card[]): void {
 	}
 
 	pos = 0;
-	for (let card of sortedDict) {
+	for (const card of sortedDict) {
 		setTimeout(animDealSingle, 300, Player.South, card, pos);
 		pos++;
 	}
@@ -240,7 +240,7 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 function animFlipCard(cardID: string): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardElement = document.getElementById(cardID);
+	const cardElement = document.getElementById(cardID);
 	if (cardElement) {
 		cardElement.classList.toggle("cardBack");
 	}
@@ -305,8 +305,8 @@ function animWinTrick(player: Player, cards: Card[]): void {
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let player = getPartner(alonePlayer);
-	for (let card of hands[player]) {
+	const player = getPartner(alonePlayer);
+	for (const card of hands[player]) {
 		animHideCard(document.getElementById(card.id) as HTMLElement);
 	}
 }
@@ -320,12 +320,11 @@ function animHideCard(cardElem: HTMLElement): void {
 function animClearTable(): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardsContainer = document.getElementById("cardsContainer");
+	const cardsContainer = document.getElementById("cardsContainer");
 	if (cardsContainer) {
 		cardsContainer.innerHTML = "";
 	}
 }
-
 
 //let human player poke the buttons
 //function animEnableBidding(hand: Card[]): void {
@@ -386,9 +385,8 @@ function animClearTable(): void {
 //	}
 //}
 
-
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
-	let allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
+	const allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
 	let logText = "";
 
 	if (messageLevel < allowedLevel) { return; }
@@ -414,7 +412,7 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 }
 
 function updateLog(text: string, overwrite?: boolean): void {
-	let div = document.getElementById("sidebarText");
+	const div = document.getElementById("sidebarText");
 	if (!div) {
 		return;
 	}
@@ -427,7 +425,7 @@ function updateLog(text: string, overwrite?: boolean): void {
 }
 
 function animShowTextTop(text: string, overwrite?: boolean): void {
-	let div = document.getElementById("sidebarTop");
+	const div = document.getElementById("sidebarTop");
 	if (!div) {
 		return;
 	}
@@ -438,14 +436,14 @@ function animShowTextTop(text: string, overwrite?: boolean): void {
 }
 
 function disableActions(): void {
-	let blanket = document.getElementById("blanket");
+	const blanket = document.getElementById("blanket");
 	if (blanket) {
 		blanket.style.display = "inline";
 	}
 }
 
 function enableActions(): void {
-	let blanket = document.getElementById("blanket");
+	const blanket = document.getElementById("blanket");
 	if (blanket) {
 		blanket.style.display = "none";
 	}

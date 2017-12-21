@@ -1,9 +1,9 @@
 function copyHands(hands: Card[][]): { hands: Card[][], jacks: Card[] } {
-	let playerHands: Card[][] = [[], [], [], []];
-	let jacks: Card[] = [];
+	const playerHands: Card[][] = [[], [], [], []];
+	const jacks: Card[] = [];
 	for (let i = 0; i < hands.length; i++) {
-		for (let card of hands[i]) {
-			let newCard = new Card(card);
+		for (const card of hands[i]) {
+			const newCard = new Card(card);
 			playerHands[i].push(newCard);
 			if (newCard.rank === Rank.Jack) {
 				jacks[newCard.suit] = newCard;
@@ -24,7 +24,7 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 
 	describe(description, function () {
 		beforeEach(function () {
-			let { hands: playerHands, jacks } = copyHands(hands);
+			const { hands: playerHands, jacks } = copyHands(hands);
 			bid = new Bid(playerHands, jacks, aiPlayers, dealer, trumpCandidate);
 			bidResult = bid.doBidding() as BidResult;
 		});
@@ -52,28 +52,28 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 }
 
 describe("BidSpec", function () {
-	let ordersItUpBiddingAI = new BiddingTestAI(true, null, false);
-	let ordersItUpAloneBiddingAI = new BiddingTestAI(true, null, true);
-	let doesNothingAI = new IdiotAI();
-	let ordersItUpAI = new MultiAI(ordersItUpBiddingAI, doesNothingAI);
-	let ordersItUpAloneAI = new MultiAI(ordersItUpAloneBiddingAI, doesNothingAI);
-	let callsClubsBiddingAI = new BiddingTestAI(false, Suit.Clubs, false);
-	let callsClubsAI = new MultiAI(callsClubsBiddingAI, doesNothingAI);
-	let callsClubsAloneBiddingAI = new BiddingTestAI(false, Suit.Clubs, true);
-	let callsClubsAloneAI = new MultiAI(callsClubsAloneBiddingAI, doesNothingAI);
-	let callsDiamondsBiddingAI = new BiddingTestAI(false, Suit.Diamonds, false);
-	let callsDiamondsAI = new MultiAI(callsDiamondsBiddingAI, doesNothingAI);
-	let callsDiamondsAloneBiddingAI = new BiddingTestAI(false, Suit.Diamonds, true);
-	let callsDiamondsAloneAI = new MultiAI(callsDiamondsAloneBiddingAI, doesNothingAI);
-	let callsHeartsBiddingAI = new BiddingTestAI(false, Suit.Hearts, false);
-	let callsHeartsAI = new MultiAI(callsHeartsBiddingAI, doesNothingAI);
-	let callsHeartsAloneBiddingAI = new BiddingTestAI(false, Suit.Hearts, true);
-	let callsHeartsAloneAI = new MultiAI(callsHeartsAloneBiddingAI, doesNothingAI);
-	let callsSpadesBiddingAI = new BiddingTestAI(false, Suit.Spades, false);
-	let callsSpadesAI = new MultiAI(callsSpadesBiddingAI, doesNothingAI);
-	let callsSpadesAloneBiddingAI = new BiddingTestAI(false, Suit.Spades, true);
-	let callsSpadesAloneAI = new MultiAI(callsSpadesAloneBiddingAI, doesNothingAI);
-	let hands = [
+	const ordersItUpBiddingAI = new BiddingTestAI(true, null, false);
+	const ordersItUpAloneBiddingAI = new BiddingTestAI(true, null, true);
+	const doesNothingAI = new IdiotAI();
+	const ordersItUpAI = new MultiAI(ordersItUpBiddingAI, doesNothingAI);
+	const ordersItUpAloneAI = new MultiAI(ordersItUpAloneBiddingAI, doesNothingAI);
+	const callsClubsBiddingAI = new BiddingTestAI(false, Suit.Clubs, false);
+	const callsClubsAI = new MultiAI(callsClubsBiddingAI, doesNothingAI);
+	const callsClubsAloneBiddingAI = new BiddingTestAI(false, Suit.Clubs, true);
+	const callsClubsAloneAI = new MultiAI(callsClubsAloneBiddingAI, doesNothingAI);
+	const callsDiamondsBiddingAI = new BiddingTestAI(false, Suit.Diamonds, false);
+	const callsDiamondsAI = new MultiAI(callsDiamondsBiddingAI, doesNothingAI);
+	const callsDiamondsAloneBiddingAI = new BiddingTestAI(false, Suit.Diamonds, true);
+	const callsDiamondsAloneAI = new MultiAI(callsDiamondsAloneBiddingAI, doesNothingAI);
+	const callsHeartsBiddingAI = new BiddingTestAI(false, Suit.Hearts, false);
+	const callsHeartsAI = new MultiAI(callsHeartsBiddingAI, doesNothingAI);
+	const callsHeartsAloneBiddingAI = new BiddingTestAI(false, Suit.Hearts, true);
+	const callsHeartsAloneAI = new MultiAI(callsHeartsAloneBiddingAI, doesNothingAI);
+	const callsSpadesBiddingAI = new BiddingTestAI(false, Suit.Spades, false);
+	const callsSpadesAI = new MultiAI(callsSpadesBiddingAI, doesNothingAI);
+	const callsSpadesAloneBiddingAI = new BiddingTestAI(false, Suit.Spades, true);
+	const callsSpadesAloneAI = new MultiAI(callsSpadesAloneBiddingAI, doesNothingAI);
+	const hands = [
 		[
 			new Card(Suit.Spades, Rank.Jack),
 			new Card(Suit.Clubs, Rank.Jack),
@@ -105,43 +105,43 @@ describe("BidSpec", function () {
 	];
 
 	it("Enforces card is in hand for discarding", function () {
-		let discard = new Card(Suit.Hearts, Rank.Nine);
-		let biddingAI = new BiddingTestAI(true, null, false, discard);
-		let testAI = new MultiAI(biddingAI, doesNothingAI);
-		let aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let { hands: playerHands, jacks } = copyHands(hands);
-		let trumpCandidate = new Card(Suit.Spades, Rank.Nine);
-		let bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
+		const discard = new Card(Suit.Hearts, Rank.Nine);
+		const biddingAI = new BiddingTestAI(true, null, false, discard);
+		const testAI = new MultiAI(biddingAI, doesNothingAI);
+		const aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
+		const { hands: playerHands, jacks } = copyHands(hands);
+		const trumpCandidate = new Card(Suit.Spades, Rank.Nine);
+		const bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		bid.doBidding();
 		expect(playerHands[0].length).toBe(5);
 	});
 
 	it("Allows discarding a valid card", function () {
-		let discard = new Card(Suit.Spades, Rank.Queen);
-		let biddingAI = new BiddingTestAI(true, null, false, discard);
-		let testAI = new MultiAI(biddingAI, doesNothingAI);
-		let aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let { hands: playerHands, jacks } = copyHands(hands);
-		let trumpCandidate = new Card(Suit.Spades, Rank.Nine);
-		let bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
+		const discard = new Card(Suit.Spades, Rank.Queen);
+		const biddingAI = new BiddingTestAI(true, null, false, discard);
+		const testAI = new MultiAI(biddingAI, doesNothingAI);
+		const aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
+		const { hands: playerHands, jacks } = copyHands(hands);
+		const trumpCandidate = new Card(Suit.Spades, Rank.Nine);
+		const bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		bid.doBidding();
 		expect(playerHands[0].length).toBe(5);
-		for (let card of playerHands[0]) {
+		for (const card of playerHands[0]) {
 			expect(card.id).not.toBe(discard.id);
 		}
 	});
 
 	it("Allows discarding the trump candidate", function () {
-		let discard = new Card(Suit.Spades, Rank.Nine);
-		let biddingAI = new BiddingTestAI(true, null, false, discard);
-		let testAI = new MultiAI(biddingAI, doesNothingAI);
-		let aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let { hands: playerHands, jacks } = copyHands(hands);
-		let trumpCandidate = new Card(Suit.Spades, Rank.Nine);
-		let bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
+		const discard = new Card(Suit.Spades, Rank.Nine);
+		const biddingAI = new BiddingTestAI(true, null, false, discard);
+		const testAI = new MultiAI(biddingAI, doesNothingAI);
+		const aiPlayers = [testAI, doesNothingAI, doesNothingAI, doesNothingAI];
+		const { hands: playerHands, jacks } = copyHands(hands);
+		const trumpCandidate = new Card(Suit.Spades, Rank.Nine);
+		const bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		bid.doBidding();
 		expect(playerHands[0].length).toBe(5);
-		for (let card of playerHands[0]) {
+		for (const card of playerHands[0]) {
 			expect(card.id).not.toBe(discard.id);
 		}
 	});
@@ -375,9 +375,9 @@ describe("BidSpec", function () {
 	);
 
 	describe("No one bids", function () {
-		let aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
-		let { hands: playerHands, jacks } = copyHands(hands);
-		let trumpCandidate = new Card(Suit.Clubs, Rank.Nine);
+		const aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
+		const { hands: playerHands, jacks } = copyHands(hands);
+		const trumpCandidate = new Card(Suit.Clubs, Rank.Nine);
 		let bid: Bid;
 		let bidResult: BidResult | null;
 		beforeEach(function () {
@@ -398,28 +398,28 @@ describe("BidSpec", function () {
 
 		beforeEach(function () {
 			aiPlayers = [doesNothingAI, doesNothingAI, doesNothingAI, doesNothingAI];
-			let { hands: playerHands, jacks } = copyHands(hands);
+			const { hands: playerHands, jacks } = copyHands(hands);
 			trumpCandidate = new Card(Suit.Spades, Rank.Nine);
 			bid = new Bid(playerHands, jacks, aiPlayers, Player.South, trumpCandidate);
 		});
 
 		it("Does not update the jacks before trump is called", function () {
 			testAI = new IdiotAI();
-			let orderUpSpy = spyOn(testAI, "chooseOrderUp").and.callThrough();
-			let pickTrumpSpy = spyOn(testAI, "pickTrump").and.callThrough();
+			const orderUpSpy = spyOn(testAI, "chooseOrderUp").and.callThrough();
+			const pickTrumpSpy = spyOn(testAI, "pickTrump").and.callThrough();
 			aiPlayers[0] = testAI;
 			bid.doBidding();
 
 			expect(orderUpSpy.calls.count()).toBe(1);
-			let [orderUpHand, orderUpTrumpCandidate] = orderUpSpy.calls.argsFor(0);
-			for (let card of orderUpHand as Card[]) {
+			const [orderUpHand, orderUpTrumpCandidate] = orderUpSpy.calls.argsFor(0);
+			for (const card of orderUpHand as Card[]) {
 				expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
 			}
 			expect((orderUpTrumpCandidate as Card).rank).toBeLessThanOrEqual(Rank.Ace);
 
 			expect(pickTrumpSpy.calls.count()).toBe(1);
-			let [pickTrumpHand, pickTrumpTrumpCandidate] = orderUpSpy.calls.argsFor(0);
-			for (let card of pickTrumpHand as Card[]) {
+			const [pickTrumpHand, pickTrumpTrumpCandidate] = orderUpSpy.calls.argsFor(0);
+			for (const card of pickTrumpHand as Card[]) {
 				expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
 			}
 			expect((pickTrumpTrumpCandidate as Card).rank).toBeLessThanOrEqual(Rank.Ace);
@@ -427,16 +427,16 @@ describe("BidSpec", function () {
 
 		it("Updates the jacks after it is ordered up", function () {
 			testAI = ordersItUpAI;
-			let chooseGoAloneSpy = spyOn(testAI, "chooseGoAlone").and.callThrough();
-			let pickDiscardSpy = spyOn(testAI, "pickDiscard").and.callThrough();
+			const chooseGoAloneSpy = spyOn(testAI, "chooseGoAlone").and.callThrough();
+			const pickDiscardSpy = spyOn(testAI, "pickDiscard").and.callThrough();
 			aiPlayers[0] = testAI;
 			bid.doBidding();
 
 			expect(chooseGoAloneSpy.calls.count()).toBe(1);
-			let [goAloneHand, goAloneSuit] = chooseGoAloneSpy.calls.argsFor(0);
-			let rightId = new Card(goAloneSuit, Rank.Jack).id;
-			let leftId = new Card(getOppositeSuit(goAloneSuit), Rank.Jack).id;
-			for (let card of goAloneHand as Card[]) {
+			const [goAloneHand, goAloneSuit] = chooseGoAloneSpy.calls.argsFor(0);
+			const rightId = new Card(goAloneSuit, Rank.Jack).id;
+			const leftId = new Card(getOppositeSuit(goAloneSuit), Rank.Jack).id;
+			for (const card of goAloneHand as Card[]) {
 				if (card.id === rightId) {
 					expect(card.rank).toBe(Rank.Right);
 					expect(card.suit).toBe(goAloneSuit);
@@ -449,8 +449,8 @@ describe("BidSpec", function () {
 			}
 
 			expect(pickDiscardSpy.calls.count()).toBe(1);
-			let [discardHand] = chooseGoAloneSpy.calls.argsFor(0);
-			for (let card of discardHand as Card[]) {
+			const [discardHand] = chooseGoAloneSpy.calls.argsFor(0);
+			for (const card of discardHand as Card[]) {
 				if (card.id === rightId) {
 					expect(card.rank).toBe(Rank.Right);
 					expect(card.suit).toBe(goAloneSuit);
@@ -465,16 +465,16 @@ describe("BidSpec", function () {
 
 		it("Updates the jacks after it is called", function () {
 			testAI = callsClubsAI;
-			let trump = Suit.Clubs;
-			let rightId = new Card(trump, Rank.Jack).id;
-			let leftId = new Card(getOppositeSuit(trump), Rank.Jack).id;
-			let chooseGoAloneSpy = spyOn(testAI, "chooseGoAlone").and.callThrough();
+			const trump = Suit.Clubs;
+			const rightId = new Card(trump, Rank.Jack).id;
+			const leftId = new Card(getOppositeSuit(trump), Rank.Jack).id;
+			const chooseGoAloneSpy = spyOn(testAI, "chooseGoAlone").and.callThrough();
 			aiPlayers[0] = testAI;
 			bid.doBidding();
 
 			expect(chooseGoAloneSpy.calls.count()).toBe(1);
-			let [hand] = chooseGoAloneSpy.calls.argsFor(0);
-			for (let card of hand as Card[]) {
+			const [hand] = chooseGoAloneSpy.calls.argsFor(0);
+			for (const card of hand as Card[]) {
 				if (card.id === rightId) {
 					expect(card.rank).toBe(Rank.Right);
 					expect(card.suit).toBe(trump);

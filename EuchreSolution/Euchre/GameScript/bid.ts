@@ -40,10 +40,10 @@ class Bid {
 			case BidStage.Round1:
 			case BidStage.Round2:
 				this.__bidResult = this.doBid(this.__stage);
-				let player = this.__currentPlayer;
+				const player = this.__currentPlayer;
 				this.advancePlayer();
 				if (this.__bidResult) {
-					let bidResult = this.__bidResult;
+					const bidResult = this.__bidResult;
 					let message = `${Player[bidResult.maker]} `;
 					if (bidResult.stage === BidStage.Round1) {
 						message += `ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[bidResult.trump]}`;
@@ -78,15 +78,15 @@ class Bid {
 	}
 
 	private doBid(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
-		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
+		const aiPlayer = this.__aiPlayers[this.__currentPlayer];
 		if (!aiPlayer) {
 			return this.getHoomanBidResult(stage);
 		}
-		let hand = this.__playerHands[this.__currentPlayer];
-		let trumpCandidate = this.__trumpCandidate;
+		const hand = this.__playerHands[this.__currentPlayer];
+		const trumpCandidate = this.__trumpCandidate;
 		let trump: Suit | null = null;
 		if (stage === BidStage.Round1) {
-			let orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
+			const orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
 			if (!orderItUp || !hasSuit(hand, trumpCandidate.suit)) {
 				return null;
 			}
@@ -109,9 +109,9 @@ class Bid {
 
 	private getGoAlone(trump: Suit, maker: Player): boolean {
 		let alone: boolean;
-		let aiPlayer = this.__aiPlayers[maker];
+		const aiPlayer = this.__aiPlayers[maker];
 		if (aiPlayer) {
-			let hand = this.__playerHands[maker];
+			const hand = this.__playerHands[maker];
 			alone = aiPlayer.chooseGoAlone(copyHand(hand), trump);
 		} else {
 			return false;
@@ -120,8 +120,8 @@ class Bid {
 	}
 
 	private doDiscard(dealer: Player): void {
-		let aiPlayer = this.__aiPlayers[dealer];
-		let hand = this.__playerHands[dealer];
+		const aiPlayer = this.__aiPlayers[dealer];
+		const hand = this.__playerHands[dealer];
 		let discard: Card | null = null;
 		if (aiPlayer) {
 			discard = aiPlayer.pickDiscard(copyHand(hand), this.__trumpCandidate.suit);
@@ -143,9 +143,9 @@ class Bid {
 	}
 
 	private setTrump(trump: Suit) {
-		let right = this.__jacks[trump];
+		const right = this.__jacks[trump];
 		right.rank = Rank.Right;
-		let left = this.__jacks[getOppositeSuit(trump)];
+		const left = this.__jacks[getOppositeSuit(trump)];
 		left.suit = trump;
 		left.rank = Rank.Left;
 	}
@@ -165,7 +165,7 @@ class Bid {
 			return null;
 		}
 
-		let bidResult: BidResult = {
+		const bidResult: BidResult = {
 			stage,
 			trump: queuedHoomanBidSuit,
 			maker: Player.South,

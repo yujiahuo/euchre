@@ -27,8 +27,8 @@ class TestAI implements EuchreAI {
 		if (trickSoFar.length === 0) {
 			return hand[0];
 		}
-		let trickSuit = trickSoFar[0].card.suit;
-		for (let card of hand) {
+		const trickSuit = trickSoFar[0].card.suit;
+		for (const card of hand) {
 			if (isValidPlay(hand, card, trickSuit)) {
 				return card;
 			}

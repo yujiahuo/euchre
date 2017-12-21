@@ -5,7 +5,7 @@
 declare var controller: Controller | null;
 
 function newGame(): void {
-	let menu = document.getElementById("menu");
+	const menu = document.getElementById("menu");
 	if (menu) {
 		menu.style.display = "none";
 	}
@@ -38,7 +38,7 @@ function howToPlay(): void {
 * Display utilities
 ***********************************/
 function appearMenu(menuName: string): void {
-	let menu = document.getElementById("menu");
+	const menu = document.getElementById("menu");
 	if (menu) {
 		menu.classList.add(menuName + "Active");
 	}
@@ -47,11 +47,11 @@ function appearMenu(menuName: string): void {
 }
 
 function disappearMenu(menuName: string): void {
-	let menu = document.getElementById("menu");
+	const menu = document.getElementById("menu");
 	if (menu) {
 		menu.classList.remove(menuName + "Active");
 	}
-	let menuItems = document.getElementById(menuName + "MenuItems");
+	const menuItems = document.getElementById(menuName + "MenuItems");
 	if (menuItems) {
 		menuItems.style.opacity = "0";
 	}
@@ -59,7 +59,7 @@ function disappearMenu(menuName: string): void {
 }
 
 function toggleDisplay(elemID: string, on: boolean): void {
-	let element = document.getElementById(elemID);
+	const element = document.getElementById(elemID);
 	if (!element) {
 		return;
 	}
@@ -71,7 +71,7 @@ function toggleDisplay(elemID: string, on: boolean): void {
 }
 
 function toggleOpacity(elemID: string, on: boolean): void {
-	let element = document.getElementById(elemID);
+	const element = document.getElementById(elemID);
 	if (!element) {
 		return;
 	}

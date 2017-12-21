@@ -16,11 +16,11 @@ function clickCard(this: HTMLElement): void {
 //}
 
 function doNothing(): void {
-	console.log("meh");
+	animShowText("meh", MessageLevel.Step);
 }
 
 function letHoomanBid(): void {
 	//while (queuedHoomanBidSuit === null) {
-		setTimeout(doNothing, 1000);
+	setTimeout(doNothing, 1000);
 	//}
 }

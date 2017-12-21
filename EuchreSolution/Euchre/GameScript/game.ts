@@ -5,7 +5,7 @@
 enum GameStage {
 	Playing,
 	Finished,
-};
+}
 
 class Game {
 	private __nsScore: number; //north south

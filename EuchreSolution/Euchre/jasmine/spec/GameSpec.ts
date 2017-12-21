@@ -2,7 +2,7 @@ describe("GameSpec", function () {
 	let game: Game;
 
 	beforeEach(function () {
-		let settings = {
+		const settings = {
 			sound: false,
 			openHands: false,
 			enableDefendAlone: false,

@@ -50,7 +50,7 @@ function pauseForTrick(aiPlayer: EuchreAI | null): boolean {
 function unpause() {
 	animDisableBidding();
 	pausing = false;
-	if (controller) controller.continue();
+	if (controller) { controller.continue(); }
 }
 
 function clearHoomanQueue() {

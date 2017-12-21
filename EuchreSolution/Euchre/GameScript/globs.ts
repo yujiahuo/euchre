@@ -31,17 +31,16 @@ const SORTEDDECK: Card[] = buildSortedDeck();
 
 //I think we deleted this, but I kind of need it for human players clicking cards
 let DECKDICT: { [id: string]: Card } = {};
-for (let i = 0; i < SORTEDDECK.length; i++) {
-	DECKDICT[SORTEDDECK[i].id] = SORTEDDECK[i];
-
+for (const card of SORTEDDECK) {
+	DECKDICT[card.id] = card;
 }
 
 function buildSortedDeck(): Card[] {
-	let deck: Card[] = [];
-	let ranks: Rank[] = [Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King, Rank.Ace];
+	const deck: Card[] = [];
+	const ranks: Rank[] = [Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King, Rank.Ace];
 
-	for (let suit of suitsArray) {
-		for (let rank of ranks) {
+	for (const suit of suitsArray) {
+		for (const rank of ranks) {
 			deck.push(new Card(suit, rank));
 		}
 	}

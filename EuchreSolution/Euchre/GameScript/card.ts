@@ -32,11 +32,11 @@ class Card {
 	constructor(card: Card)
 	constructor(suitOrCard: Suit | Card, rank?: Rank) {
 		if (typeof suitOrCard === "number") {
-			let suit = suitOrCard as Suit;
+			const suit = suitOrCard as Suit;
 			this.suit = suit;
 			this.rank = rank as Rank;
 		} else {
-			let card = suitOrCard;
+			const card = suitOrCard;
 			this.suit = card.suit;
 			this.rank = card.rank;
 		}
@@ -52,8 +52,8 @@ class Card {
 		this.id = Suit[suitForId] + rankForId;
 	}
 
-	public static safeCard(card: Card): Card
-	public static safeCard(card: null): null
+	public static safeCard(card: Card): Card;
+	public static safeCard(card: null): null;
 	public static safeCard(card: Card | null): Card | null {
 		if (card) {
 			return new Card(card);

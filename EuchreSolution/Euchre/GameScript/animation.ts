@@ -17,7 +17,7 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 		card.classList.add("cardBack");
 	}
 
-	let cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
+	const cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
 	cardsContainer.appendChild(card);
 
 	card.style.zIndex = zIndex.toString();
@@ -27,8 +27,8 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 }
 
 function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
-	let div = document.getElementById(cardID) as HTMLDivElement;
-	if (!div) return;
+	const div = document.getElementById(cardID) as HTMLDivElement;
+	if (!div) { return; }
 
 	div.style.top = top;
 	div.style.left = left;
@@ -48,8 +48,8 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 	let cardID: string;
 	let flippedUp: boolean;
 	let cardElem: HTMLElement | null;
-	let isOpenHands = settings.openHands;
-	let hasHooman = settings.hasHooman;
+	const isOpenHands = settings.openHands;
+	const hasHooman = settings.hasHooman;
 
 	animClearTable();
 
@@ -149,7 +149,7 @@ function animPlaceDealerButt(dealer: Player): void {
 	if (button === null) {
 		button = document.createElement("div");
 		button.id = "dealerButton";
-		let gameSpace = document.getElementById("gameSpace") as HTMLElement;
+		const gameSpace = document.getElementById("gameSpace") as HTMLElement;
 		gameSpace.appendChild(button);
 	}
 	switch (dealer) {
@@ -177,12 +177,12 @@ function animPlaceDealerButt(dealer: Player): void {
 function animSortHand(hand: Card[], player: Player): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let sortedDict: string[] = [];
+	const sortedDict: string[] = [];
 	let key: number;
 	let suit: Suit;
 	let pos: number;
 
-	for (let card of hand) {
+	for (const card of hand) {
 		key = 0;
 		suit = card.suit;
 		switch (suit) {
@@ -207,7 +207,7 @@ function animSortHand(hand: Card[], player: Player): void {
 
 	pos = 0;
 	// TODO: Isn't there a way to actually loop through values instead of keys?
-	for (let key in sortedDict) {
+	for (const key in sortedDict) {
 		setTimeout(animDealSingle, 300, player, sortedDict[key], pos);
 		pos++;
 	}
@@ -216,8 +216,8 @@ function animSortHand(hand: Card[], player: Player): void {
 function animPlayCard(player: Player, cardID: string): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardElem: HTMLElement | null = document.getElementById(cardID);
-	if (!cardElem) return;
+	const cardElem: HTMLElement | null = document.getElementById(cardID);
+	if (!cardElem) { return; }
 
 	let top: string = "";
 	let left: string = "";
@@ -252,7 +252,7 @@ function animPlayCard(player: Player, cardID: string): void {
 function animFlipCard(cardID: string): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardElement = document.getElementById(cardID);
+	const cardElement = document.getElementById(cardID);
 	if (cardElement) {
 		cardElement.classList.toggle("cardBack");
 	}
@@ -317,8 +317,8 @@ function animWinTrick(player: Player, playedCards: PlayedCard[]): void {
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let player = getPartner(alonePlayer);
-	for (let card of hands[player]) {
+	const player = getPartner(alonePlayer);
+	for (const card of hands[player]) {
 		animHideCard(document.getElementById(card.id) as HTMLElement);
 	}
 }
@@ -332,24 +332,23 @@ function animHideCard(cardElem: HTMLElement): void {
 function animClearTable(): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardsContainer = document.getElementById("cardsContainer");
+	const cardsContainer = document.getElementById("cardsContainer");
 	if (cardsContainer) {
 		cardsContainer.innerHTML = "";
 	}
 }
 
-
 //let human player poke the buttons
 function animEnableBidding(hand: Card[], bidStage: BidStage, trumpCandidate: Card): void {
-	if (controller && controller.isStatMode()) return;
+	if (controller && controller.isStatMode()) { return; }
 
 	// Make typescript happy
-	let orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
-	let orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
-	let spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
-	let clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
-	let heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
-	let diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
+	const orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
+	const orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
+	const spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
+	const clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
+	const heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
+	const diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
 
 	orderUpPrompt.style.display = "inline";
 
@@ -377,16 +376,16 @@ function animEnableBidding(hand: Card[], bidStage: BidStage, trumpCandidate: Car
 }
 
 function animDisableBidding(): void {
-	if (controller && controller.isStatMode()) return;
+	if (controller && controller.isStatMode()) { return; }
 
 	// Make typescript happy
-	let orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
-	let orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
-	let spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
-	let clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
-	let heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
-	let diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
-	let aloneButton: HTMLElement = document.getElementById("alone") as HTMLElement;
+	const orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
+	const orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
+	const spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
+	const clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
+	const heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
+	const diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
+	const aloneButton: HTMLElement = document.getElementById("alone") as HTMLElement;
 
 	orderUpPrompt.style.display = "none";
 	orderUpButton.style.display = "none";
@@ -411,9 +410,8 @@ function animDisableBidding(): void {
 //	}
 //}
 
-
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
-	let allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
+	const allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
 	let logText = "";
 
 	if (messageLevel < allowedLevel) { return; }
@@ -440,7 +438,7 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 }
 
 function updateLog(text: string, overwrite?: boolean): void {
-	let div = document.getElementById("sidebarText");
+	const div = document.getElementById("sidebarText");
 	if (!div) {
 		return;
 	}
@@ -453,7 +451,7 @@ function updateLog(text: string, overwrite?: boolean): void {
 }
 
 function animShowTextTop(text: string, overwrite?: boolean): void {
-	let div = document.getElementById("sidebarTop");
+	const div = document.getElementById("sidebarTop");
 	if (!div) {
 		return;
 	}
@@ -464,14 +462,14 @@ function animShowTextTop(text: string, overwrite?: boolean): void {
 }
 
 function disableActions(): void {
-	let blanket = document.getElementById("blanket");
+	const blanket = document.getElementById("blanket");
 	if (blanket) {
 		blanket.style.display = "inline";
 	}
 }
 
 function enableActions(): void {
-	let blanket = document.getElementById("blanket");
+	const blanket = document.getElementById("blanket");
 	if (blanket) {
 		blanket.style.display = "none";
 	}

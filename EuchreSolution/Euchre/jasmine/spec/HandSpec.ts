@@ -6,9 +6,9 @@ describe("HandSpec", function () {
 	let bid: Bid;
 
 	beforeEach(function () {
-		let dealer = Player.South;
+		const dealer = Player.South;
 		aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
-		let settings: Settings = {
+		const settings: Settings = {
 			aiPlayers,
 			enableDefendAlone: false,
 			enableNoTrump: false,
@@ -52,7 +52,7 @@ describe("HandSpec", function () {
 			],
 		];
 		(hand as any).__playerHands = playerHands;
-		let jacks = [
+		const jacks = [
 			playerHands[0][1],
 			playerHands[1][0],
 			playerHands[2][4],
@@ -288,7 +288,7 @@ describe("HandSpec", function () {
 		let jacks: Card[];
 
 		beforeEach(function () {
-			let { deck: testDeck, jacks: testJacks } = getShuffledDeck();
+			const { deck: testDeck, jacks: testJacks } = getShuffledDeck();
 			deck = testDeck;
 			jacks = testJacks;
 		});
@@ -298,17 +298,17 @@ describe("HandSpec", function () {
 		});
 
 		it("only has each card once", function () {
-			let index: { [key: string]: boolean } = {};
-			for (let card of deck) {
+			const index: { [key: string]: boolean } = {};
+			for (const card of deck) {
 				expect(index[card.id]).toBe(undefined);
 				index[card.id] = true;
 			}
 		});
 
 		it("has a copy of every card", function () {
-			for (let card of SORTEDDECK) {
+			for (const card of SORTEDDECK) {
 				let found = false;
-				for (let deckCard of deck) {
+				for (const deckCard of deck) {
 					if (card.id === deckCard.id) {
 						expect(deckCard).toEqual(card);
 						expect(deckCard).not.toBe(card);
@@ -321,7 +321,7 @@ describe("HandSpec", function () {
 		});
 
 		it("builds jacks correctly", function () {
-			for (let card of deck) {
+			for (const card of deck) {
 				if (card.rank === Rank.Jack) {
 					expect(jacks[card.suit]).toBe(card);
 				}
@@ -334,7 +334,7 @@ describe("HandSpec", function () {
 
 		beforeEach(function () {
 			hands = [[], [], [], []];
-			let { deck } = getShuffledDeck();
+			const { deck } = getShuffledDeck();
 			dealHands(deck, hands, Player.South);
 		});
 
@@ -408,10 +408,10 @@ describe("HandSpec", function () {
 
 	describe("Check AI calls", function () {
 		it("Calls init at the beginning", function () {
-			let testAI = new IdiotAI();
-			let initSpy = spyOn(testAI, "init");
+			const testAI = new IdiotAI();
+			const initSpy = spyOn(testAI, "init");
 			aiPlayers = [testAI, testAI, testAI, testAI];
-			let settings: Settings = {
+			const settings: Settings = {
 				aiPlayers,
 				enableDefendAlone: false,
 				enableNoTrump: false,
@@ -423,7 +423,7 @@ describe("HandSpec", function () {
 				sound: false,
 				statMode: true,
 			};
-			//tslint:disable-next-line:no-unused-new
+			// tslint:disable-next-line:no-unused-expression
 			new Hand(Player.West, aiPlayers, settings);
 			expect(initSpy.calls.count()).toBe(4);
 			expect(initSpy.calls.argsFor(0)).toEqual([Player.North]);

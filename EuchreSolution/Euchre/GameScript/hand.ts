@@ -4,17 +4,18 @@ enum HandStage {
 	Finished,
 }
 
+// tslint:disable-next-line:interface-over-type-literal
 type ShuffleResult = {
 	deck: Card[],
 	jacks: Card[],
 };
 
 function getShuffledDeck(): ShuffleResult {
-	let deck: Card[] = [];
-	let jacks: Card[] = [];
+	const deck: Card[] = [];
+	const jacks: Card[] = [];
 
 	for (let i = 0; i < DECKSIZE; i++) {
-		let j = rng.nextInRange(0, i);
+		const j = rng.nextInRange(0, i);
 		if (j !== i) {
 			deck[i] = deck[j];
 		}
@@ -24,23 +25,19 @@ function getShuffledDeck(): ShuffleResult {
 		}
 	}
 
-	return {
-		deck,
-		jacks,
-	};
+	return { deck, jacks };
 }
 
 function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
 	for (let i = 0; i < 20; i++) {
-		let player = (dealer + i) % 4;
-		let cardPos = Math.floor(i / 4);
+		const player = (dealer + i + 1) % 4;
+		const cardPos = Math.floor(i / 4);
 		//TODO: see if skipping the pop makes things faster
 		playerHands[player][cardPos] = deck.pop() as Card;
 	}
 }
 
-function calculatePointGain(tricksTaken: number, maker: boolean): number;
-function calculatePointGain(tricksTaken: number, maker: boolean, alone: boolean): number;
+function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean): number;
 function calculatePointGain(tricksTaken: number, maker: boolean, alone: true, defendingAlone: boolean): number;
 function calculatePointGain(tricksTaken: number, maker: boolean, alone: false, defendingAlone: false): number;
 function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean, defendingAlone?: boolean): number {
@@ -115,19 +112,20 @@ class Hand {
 		let player = dealer;
 		for (let i = 0; i < 4; i++) {
 			player = nextPlayer(player);
-			let aiPlayer = aiPlayers[player];
+			const aiPlayer = aiPlayers[player];
 			if (aiPlayer) {
 				aiPlayer.init(player);
 			}
 		}
 
 		//set up the deck and everyone's hands
-		let { deck, jacks } = getShuffledDeck();
+		const { deck, jacks } = getShuffledDeck();
 		this.__playerHands = [[], [], [], []];
 		dealHands(deck, this.__playerHands, this.__dealer);
 		this.__trumpCandidate = deck.pop() as Card;
 
 		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings);
+		animPlaceDealerButt(this.__dealer);
 
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
@@ -137,7 +135,10 @@ class Hand {
 	private advanceHand(): void {
 		switch (this.__handStage) {
 			case HandStage.Bidding:
-				let bidResult = this.__bid.doBidding();
+				const bidResult = this.__bid.doBidding();
+
+				if (pausing) { return; }
+
 				this.__bidResult = bidResult;
 				if (bidResult) {
 					this.__trick = new Trick(bidResult.trump, bidResult.alone,
@@ -149,7 +150,10 @@ class Hand {
 				}
 				break;
 			case HandStage.Playing:
-				let trickEnded = this.__trick.doTrick();
+				const trickEnded = this.__trick.doTrick();
+
+				if (pausing) { return; }
+
 				if (trickEnded) {
 					this.handleEndTrick();
 				}
@@ -171,9 +175,9 @@ class Hand {
 		if (this.__numTricksPlayed >= 5) {
 			this.endHand(true);
 		} else {
-			let bidResult = this.__bidResult as BidResult;
+			const bidResult = this.__bidResult as BidResult;
 			this.__trick = new Trick(bidResult.trump, bidResult.alone, this.__playerHands,
-				this.__aiPlayers, bidResult.maker, this.__trick.currentPlayer());
+				this.__aiPlayers, bidResult.maker, this.__trick.winner() as Player);
 		}
 	}
 
@@ -183,7 +187,7 @@ class Hand {
 			return; //TODO: deal with no one bidding
 		}
 
-		let isMaker = (this.__bidResult.maker === Player.North || this.__bidResult.maker === Player.South);
+		const isMaker = (this.__bidResult.maker === Player.North || this.__bidResult.maker === Player.South);
 		this.__nsPointsWon = calculatePointGain(this.__nsTricksWon, isMaker, this.__bidResult.alone);
 		this.__ewPointsWon = calculatePointGain(this.__ewTricksWon, !isMaker, this.__bidResult.alone);
 
@@ -192,7 +196,7 @@ class Hand {
 
 	/* Public functions */
 	public doHand(): void {
-		while (!this.isFinished()) {
+		while (!this.isFinished() && !pausing) {
 			this.advanceHand();
 		}
 		return;

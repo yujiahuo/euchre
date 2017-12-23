@@ -80,17 +80,22 @@ class Controller {
 	private grabSettings(): void {
 		//checkbox settings
 		this.__settings.sound = (document.getElementById("chkSound") as HTMLInputElement).checked;
-		this.__settings.openHands = false; //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
+		this.__settings.openHands = true; //(document.getElementById("chkOpenHands") as HTMLInputElement).checked;
 		this.__settings.enableDefendAlone = (document.getElementById("chkDefendAlone") as HTMLInputElement).checked;
 		this.__settings.enableNoTrump = (document.getElementById("chkNoTrump") as HTMLInputElement).checked;
 		this.__settings.showTrickHistory = (document.getElementById("chkShowHistory") as HTMLInputElement).checked;
 
 		//ai settings
-		this.__settings.aiPlayers = [new IdiotAI(), new IdiotAI(), new DecentAI(), new IdiotAI()];
+		this.__settings.aiPlayers = [
+			null,
+			new IdiotAI(),
+			new DecentAI(),
+			new IdiotAI(),
+		];
 		this.__settings.hasHooman = this.__settings.aiPlayers.indexOf(null) > -1;
 
 		//statMode: 4 AIs play against each other
-		this.__settings.statMode = true; //(document.getElementById("chkStatMode") as HTMLInputElement).checked;
+		this.__settings.statMode = false; //(document.getElementById("chkStatMode") as HTMLInputElement).checked;
 		this.__settings.messageLevel = MessageLevel.Step;
 		this.__settings.numGamesToPlay = 1;
 	}
@@ -115,22 +120,23 @@ class Controller {
 			this.__startTime = performance.now();
 			while (count < this.__settings.numGamesToPlay) {
 				this.__game = new Game(this.__settings);
-				this.__game.start();
+				this.__game.doGame();
 				if (this.__game.isFinished()) {
 					this.handleEndGame();
 					count++;
 				}
 			}
-		} else {
-			this.__game = new Game(this.__settings);
-			this.__game.start();
-		}
-
-		animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
-		animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
-		if (this.__settings.statMode) {
+			animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
+			animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
 			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
 			updateLog(this.logText);
+		} else {
+			this.__game = new Game(this.__settings);
+			this.__game.doGame();
 		}
+	}
+
+	public continue(): void {
+		this.__game.doGame();
 	}
 }

@@ -17,7 +17,7 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 		card.classList.add("cardBack");
 	}
 
-	let cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
+	const cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
 	cardsContainer.appendChild(card);
 
 	card.style.zIndex = zIndex.toString();
@@ -27,7 +27,9 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 }
 
 function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
-	let div = document.getElementById(cardID) as HTMLDivElement;
+	const div = document.getElementById(cardID) as HTMLDivElement;
+	if (!div) { return; }
+
 	div.style.top = top;
 	div.style.left = left;
 	if (z) {
@@ -46,8 +48,10 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 	let cardID: string;
 	let flippedUp: boolean;
 	let cardElem: HTMLElement | null;
-	let isOpenHands = settings.openHands;
-	let hasHooman = settings.hasHooman;
+	const isOpenHands = settings.openHands;
+	const hasHooman = settings.hasHooman;
+
+	animClearTable();
 
 	player = nextPlayer(dealer);
 	delay = 0;
@@ -78,6 +82,12 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 		player = (player + 1) % 4;
 	}
 
+	setTimeout(animSortHand, 1000, hands[Player.South], Player.South);
+	if (settings.openHands) {
+		setTimeout(animSortHand, 1000, hands[Player.West], Player.West);
+		setTimeout(animSortHand, 1000, hands[Player.North], Player.North);
+		setTimeout(animSortHand, 1000, hands[Player.East], Player.East);
+	}
 	setTimeout(animFlipCard, 1000, trumpCandidate.id);
 }
 
@@ -110,28 +120,28 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 }
 
 //gives trump to the dealer
-/*function animTakeTrump(toDiscardID: string): void {
-	if (game.isStatMode()) return;
+function animTakeTrump(trumpCandidate: Card, discard: Card, isAIPlayer: boolean): void {
+	if (!controller || controller.isStatMode()) { return; }
 
-	let trumpCandidate = game.getTrumpCandidate() as Card;
-	let toDiscardElem = document.getElementById(toDiscardID) as HTMLElement;
-	let trumpElem = document.getElementById(trumpCandidate.id) as HTMLElement;
-	let top = toDiscardElem.style.top;
-	let left = toDiscardElem.style.left;
+	const discardElem = document.getElementById(discard.id) as HTMLElement;
+	const trumpElem = document.getElementById(trumpCandidate.id) as HTMLElement;
+	const top = discardElem.style.top;
+	const left = discardElem.style.left;
 
-	toDiscardElem.classList.add("cardBack");
-	setTimeout(animMoveCard, 100, toDiscardID, "252px", "364px");
-	setTimeout(animHideCard, 400, toDiscardElem);
+	discardElem.classList.add("cardBack");
+	setTimeout(animMoveCard, 100, discard.id, "252px", "364px");
+	setTimeout(animHideCard, 400, discardElem);
 
-	if (game.getAIPlayer(game.getDealer()) && !game.isOpenHands()) {
+	if (!isAIPlayer && !controller.isOpenHands()) {
 		trumpElem.classList.add("cardBack");
 	}
-	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, toDiscardElem.style.zIndex);
-
+	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, discardElem.style.zIndex);
+	//TODO: sort the hand again? Probably only if it's visible
+	//TODO: make it look the same even if the picked up card gets discarded
 }
 
-function animPlaceDealerButt(): void {
-	if (game.isStatMode()) return;
+function animPlaceDealerButt(dealer: Player): void {
+	if (!controller || controller.isStatMode()) { return; }
 
 	let button;
 
@@ -139,10 +149,10 @@ function animPlaceDealerButt(): void {
 	if (button === null) {
 		button = document.createElement("div");
 		button.id = "dealerButton";
-		let gameSpace = document.getElementById("gameSpace") as HTMLElement;
+		const gameSpace = document.getElementById("gameSpace") as HTMLElement;
 		gameSpace.appendChild(button);
 	}
-	switch (game.getDealer()) {
+	switch (dealer) {
 		case Player.South:
 			button.style.top = "470px";
 			button.style.left = "270px";
@@ -160,24 +170,19 @@ function animPlaceDealerButt(): void {
 			button.style.left = "550px";
 			break;
 	}
-}*/
+}
 
 //sorts human player hand by alphabetical suit (after trump), then rank
 //within each suit
-function animSortHand(hand: Card[]): void {
+function animSortHand(hand: Card[], player: Player): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let sortedDict: string[] = [];
-	let key: number;
-	let suit: Suit;
-	let pos: number;
+	const cardIds: { [index: number]: string } = {};
+	const keys: number[] = [];
 
-	for (let card of hand) {
-		key = 0;
-		suit = card.suit;
-		switch (suit) {
-			/*case game.getTrump():
-				break;*/
+	for (const card of hand) {
+		let key = 0;
+		switch (card.suit) {
 			case Suit.Spades:
 				key += 100;
 				break;
@@ -194,23 +199,28 @@ function animSortHand(hand: Card[]): void {
 				break;
 		}
 		key += (20 - card.rank); //highest ranks come first
-		sortedDict[key] = card.id;
+		keys.push(key);
+		cardIds[key] = card.id;
 	}
 
-	pos = 0;
-	for (let card of sortedDict) {
-		setTimeout(animDealSingle, 300, Player.South, card, pos);
+	keys.sort();
+	let pos = 0;
+	for (const key of keys) {
+		setTimeout(animDealSingle, 300, player, cardIds[key], pos);
 		pos++;
 	}
 }
 
-function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
+function animPlayCard(player: Player, cardID: string): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let top = "";
-	let left = "";
+	const cardElem: HTMLElement | null = document.getElementById(cardID);
+	if (!cardElem) { return; }
 
-	if (flipCard && !controller.isOpenHands()) { animFlipCard(cardID); }
+	let top: string = "";
+	let left: string = "";
+
+	if (cardElem.classList.contains("cardBack") && !controller.isOpenHands()) { animFlipCard(cardID); }
 
 	switch (player) {
 		case Player.South:
@@ -240,13 +250,13 @@ function animPlayCard(player: Player, cardID: string, flipCard: boolean): void {
 function animFlipCard(cardID: string): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardElement = document.getElementById(cardID);
+	const cardElement = document.getElementById(cardID);
 	if (cardElement) {
 		cardElement.classList.toggle("cardBack");
 	}
 }
 
-function animWinTrick(player: Player, cards: Card[]): void {
+function animWinTrick(player: Player, playedCards: PlayedCard[]): void {
 	if (!controller || controller.isStatMode()) { return; }
 
 	let cardElem;
@@ -275,11 +285,11 @@ function animWinTrick(player: Player, cards: Card[]): void {
 	}
 
 	for (let i = 0; i < 4; i++) {
-		if (cards[i] === null) {
+		if (!playedCards[i] || !playedCards[i].card) {
 			//TODO: either mark the parameter as (Card | null)[], or remove this check
 			continue;
 		}
-		cardElem = document.getElementById(cards[i].id) as HTMLElement;
+		cardElem = document.getElementById(playedCards[i].card.id) as HTMLElement;
 		cardElem.style.top = top;
 		cardElem.style.left = left;
 		cardElem.classList.add("cardBack");
@@ -305,8 +315,8 @@ function animWinTrick(player: Player, cards: Card[]): void {
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let player = getPartner(alonePlayer);
-	for (let card of hands[player]) {
+	const player = getPartner(alonePlayer);
+	for (const card of hands[player]) {
 		animHideCard(document.getElementById(card.id) as HTMLElement);
 	}
 }
@@ -320,58 +330,70 @@ function animHideCard(cardElem: HTMLElement): void {
 function animClearTable(): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardsContainer = document.getElementById("cardsContainer");
+	const cardsContainer = document.getElementById("cardsContainer");
 	if (cardsContainer) {
 		cardsContainer.innerHTML = "";
 	}
 }
 
-
 //let human player poke the buttons
-//function animEnableBidding(hand: Card[]): void {
-//	if (controller && controller.isStatMode()) return;
+function animEnableBidding(hand: Card[], bidStage: BidStage, trumpCandidate: Card): void {
+	if (controller && controller.isStatMode()) { return; }
 
-//	document.getElementById("orderUpPrompt").style.display = "inline";
-//	document.getElementById("pass").style.display = "inline";
+	// Make typescript happy
+	const orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
+	const orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
+	const spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
+	const clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
+	const heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
+	const diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
 
-//	if (game.getGameStage() === GameStage.BidRound1 && hasSuit(hand, game.getTrumpCandidate().suit)) {
-//		document.getElementById("orderUp").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//		return;
-//	}
+	orderUpPrompt.style.display = "inline";
 
-//	if (canOrderUpSuit(hand, Suit.Spades)) {
-//		document.getElementById("pickSpades").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//	if (canOrderUpSuit(hand, Suit.Clubs)) {
-//		document.getElementById("pickClubs").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//	if (canOrderUpSuit(hand, Suit.Hearts)) {
-//		document.getElementById("pickHearts").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//	if (canOrderUpSuit(hand, Suit.Diamonds)) {
-//		document.getElementById("pickDiamonds").style.display = "inline";
-//		document.getElementById("alone").style.display = "inline";
-//	}
-//}
+	// Bidding round 1
+	if (bidStage === BidStage.Round1) {
+		if (hasSuit(hand, trumpCandidate.suit)) {
+			orderUpButton.style.display = "inline";
+		}
+		return;
+	}
 
-//function animDisableBidding(): void {
-//	if (controller && controller.isStatMode()) return;
+	// Bidding round 2
+	if (trumpCandidate.suit !== Suit.Spades && hasSuit(hand, Suit.Spades)) {
+		spadesButton.style.display = "inline";
+	}
+	if (trumpCandidate.suit !== Suit.Clubs && hasSuit(hand, Suit.Clubs)) {
+		clubsButton.style.display = "inline";
+	}
+	if (trumpCandidate.suit !== Suit.Hearts && hasSuit(hand, Suit.Hearts)) {
+		heartsButton.style.display = "inline";
+	}
+	if (trumpCandidate.suit !== Suit.Diamonds && hasSuit(hand, Suit.Diamonds)) {
+		diamondsButton.style.display = "inline";
+	}
+}
 
-//	document.getElementById("orderUpPrompt").style.display = "none";
-//	document.getElementById("orderUp").style.display = "none";
-//	document.getElementById("pass").style.display = "none";
+function animDisableBidding(): void {
+	if (controller && controller.isStatMode()) { return; }
 
-//	document.getElementById("pickSpades").style.display = "none";
-//	document.getElementById("pickClubs").style.display = "none";
-//	document.getElementById("pickHearts").style.display = "none";
-//	document.getElementById("pickDiamonds").style.display = "none";
-//	document.getElementById("alone").style.display = "none";
-//	document.getElementById("alone").style.backgroundColor = "green";
-//}
+	// Make typescript happy
+	const orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
+	const orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
+	const spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
+	const clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
+	const heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
+	const diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
+	const aloneButton: HTMLElement = document.getElementById("alone") as HTMLElement;
+
+	orderUpPrompt.style.display = "none";
+	orderUpButton.style.display = "none";
+
+	spadesButton.style.display = "none";
+	clubsButton.style.display = "none";
+	heartsButton.style.display = "none";
+	diamondsButton.style.display = "none";
+	aloneButton.style.backgroundColor = "green";
+}
 
 ////flips a button on or off
 ////needs to be generic but for now flips the 'go alone' button
@@ -386,9 +408,8 @@ function animClearTable(): void {
 //	}
 //}
 
-
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
-	let allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
+	const allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
 	let logText = "";
 
 	if (messageLevel < allowedLevel) { return; }
@@ -410,11 +431,12 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 		}
 	} else {
 		updateLog(logText, overwrite);
+		//setTimeout(updateLog, 2000, logText, overwrite);
 	}
 }
 
 function updateLog(text: string, overwrite?: boolean): void {
-	let div = document.getElementById("sidebarText");
+	const div = document.getElementById("sidebarText");
 	if (!div) {
 		return;
 	}
@@ -427,7 +449,7 @@ function updateLog(text: string, overwrite?: boolean): void {
 }
 
 function animShowTextTop(text: string, overwrite?: boolean): void {
-	let div = document.getElementById("sidebarTop");
+	const div = document.getElementById("sidebarTop");
 	if (!div) {
 		return;
 	}
@@ -438,14 +460,14 @@ function animShowTextTop(text: string, overwrite?: boolean): void {
 }
 
 function disableActions(): void {
-	let blanket = document.getElementById("blanket");
+	const blanket = document.getElementById("blanket");
 	if (blanket) {
 		blanket.style.display = "inline";
 	}
 }
 
 function enableActions(): void {
-	let blanket = document.getElementById("blanket");
+	const blanket = document.getElementById("blanket");
 	if (blanket) {
 		blanket.style.display = "none";
 	}

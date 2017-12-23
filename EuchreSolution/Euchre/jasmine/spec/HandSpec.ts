@@ -2,13 +2,14 @@ describe("HandSpec", function () {
 	let hand: Hand;
 	let aiPlayers: EuchreAI[];
 	let playerHands: Card[][];
+	let jacks: Card[];
 	let trumpCandidate: Card;
 	let bid: Bid;
 
 	beforeEach(function () {
-		let dealer = Player.South;
+		const dealer = Player.South;
 		aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
-		let settings: Settings = {
+		const settings: Settings = {
 			aiPlayers,
 			enableDefendAlone: false,
 			enableNoTrump: false,
@@ -52,7 +53,7 @@ describe("HandSpec", function () {
 			],
 		];
 		(hand as any).__playerHands = playerHands;
-		let jacks = [
+		jacks = [
 			playerHands[0][1],
 			playerHands[1][0],
 			playerHands[2][4],
@@ -167,6 +168,22 @@ describe("HandSpec", function () {
 		});
 		it("isFinished", function () {
 			expect(hand.isFinished()).toBe(true);
+		});
+	});
+
+	describe("Trick winner leads next", function () {
+		beforeEach(function () {
+			spyOn(aiPlayers[0], "chooseOrderUp").and.returnValue(true);
+			spyOn(aiPlayers[0], "pickCard").and.callThrough();
+			hand.doHand();
+		});
+		it("Right player leads", function () {
+			const calls = (aiPlayers[0].pickCard as jasmine.Spy).calls;
+			expect(calls.argsFor(0)[3].length).toBe(3);
+			expect(calls.argsFor(1)[3].length).toBe(0);
+			expect(calls.argsFor(2)[3].length).toBe(0);
+			expect(calls.argsFor(3)[3].length).toBe(0);
+			expect(calls.argsFor(4)[3].length).toBe(0);
 		});
 	});
 
@@ -285,10 +302,9 @@ describe("HandSpec", function () {
 
 	describe("getShuffledDeck", function () {
 		let deck: Card[];
-		let jacks: Card[];
 
 		beforeEach(function () {
-			let { deck: testDeck, jacks: testJacks } = getShuffledDeck();
+			const { deck: testDeck, jacks: testJacks } = getShuffledDeck();
 			deck = testDeck;
 			jacks = testJacks;
 		});
@@ -298,17 +314,17 @@ describe("HandSpec", function () {
 		});
 
 		it("only has each card once", function () {
-			let index: { [key: string]: boolean } = {};
-			for (let card of deck) {
+			const index: { [key: string]: boolean } = {};
+			for (const card of deck) {
 				expect(index[card.id]).toBe(undefined);
 				index[card.id] = true;
 			}
 		});
 
 		it("has a copy of every card", function () {
-			for (let card of SORTEDDECK) {
+			for (const card of SORTEDDECK) {
 				let found = false;
-				for (let deckCard of deck) {
+				for (const deckCard of deck) {
 					if (card.id === deckCard.id) {
 						expect(deckCard).toEqual(card);
 						expect(deckCard).not.toBe(card);
@@ -321,7 +337,7 @@ describe("HandSpec", function () {
 		});
 
 		it("builds jacks correctly", function () {
-			for (let card of deck) {
+			for (const card of deck) {
 				if (card.rank === Rank.Jack) {
 					expect(jacks[card.suit]).toBe(card);
 				}
@@ -334,7 +350,7 @@ describe("HandSpec", function () {
 
 		beforeEach(function () {
 			hands = [[], [], [], []];
-			let { deck } = getShuffledDeck();
+			const { deck } = getShuffledDeck();
 			dealHands(deck, hands, Player.South);
 		});
 
@@ -408,10 +424,10 @@ describe("HandSpec", function () {
 
 	describe("Check AI calls", function () {
 		it("Calls init at the beginning", function () {
-			let testAI = new IdiotAI();
-			let initSpy = spyOn(testAI, "init");
+			const testAI = new IdiotAI();
+			const initSpy = spyOn(testAI, "init");
 			aiPlayers = [testAI, testAI, testAI, testAI];
-			let settings: Settings = {
+			const settings: Settings = {
 				aiPlayers,
 				enableDefendAlone: false,
 				enableNoTrump: false,
@@ -423,13 +439,76 @@ describe("HandSpec", function () {
 				sound: false,
 				statMode: true,
 			};
-			//tslint:disable-next-line:no-unused-new
+			// tslint:disable-next-line:no-unused-expression
 			new Hand(Player.West, aiPlayers, settings);
 			expect(initSpy.calls.count()).toBe(4);
 			expect(initSpy.calls.argsFor(0)).toEqual([Player.North]);
 			expect(initSpy.calls.argsFor(1)).toEqual([Player.East]);
 			expect(initSpy.calls.argsFor(2)).toEqual([Player.South]);
 			expect(initSpy.calls.argsFor(3)).toEqual([Player.West]);
+		});
+	});
+
+	describe("Human players", function () {
+		describe("Pauses for a human player", function () {
+			beforeEach(function () {
+				const mixedPlayers: Settings["aiPlayers"] = aiPlayers.slice();
+				mixedPlayers[0] = null;
+				const settings: Settings = {
+					aiPlayers: mixedPlayers,
+					enableDefendAlone: false,
+					enableNoTrump: false,
+					hasHooman: true,
+					messageLevel: MessageLevel.Game,
+					numGamesToPlay: 1,
+					openHands: false,
+					showTrickHistory: false,
+					sound: false,
+					statMode: true,
+				};
+				hand = new Hand(Player.North, mixedPlayers, settings);
+				(hand as any).__playerHands = playerHands;
+				(hand as any).__trumpCandidate = trumpCandidate;
+				bid = new Bid(playerHands, jacks, mixedPlayers, Player.North, trumpCandidate);
+				(hand as any).__bid = bid;
+				spyOn(mixedPlayers[3], "chooseOrderUp").and.returnValue(true);
+				hand.doHand();
+			});
+
+			afterEach(function () {
+				pausing = false;
+			});
+
+			it("handStage", function () {
+				expect(hand.handStage()).toBe(HandStage.Playing);
+			});
+			it("dealer", function () {
+				expect(hand.dealer()).toBe(Player.North);
+			});
+			it("playerHands", function () {
+				expect(hand.playerHands()).toBe(playerHands);
+			});
+			it("trumpCandidate", function () {
+				expect(hand.trumpCandidate()).toBe(trumpCandidate);
+			});
+			it("numTricksPlayed", function () {
+				expect(hand.numTricksPlayed()).toBe(0);
+			});
+			it("nsTricksWon", function () {
+				expect(hand.nsTricksWon()).toBe(0);
+			});
+			it("ewTricksWon", function () {
+				expect(hand.ewTricksWon()).toBe(0);
+			});
+			it("nsPointsWon", function () {
+				expect(hand.nsPointsWon()).toBe(0);
+			});
+			it("ewPointsWon", function () {
+				expect(hand.ewPointsWon()).toBe(0);
+			});
+			it("isFinished", function () {
+				expect(hand.isFinished()).toBe(false);
+			});
 		});
 	});
 });

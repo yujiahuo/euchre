@@ -2,7 +2,7 @@ describe("GameSpec", function () {
 	let game: Game;
 
 	beforeEach(function () {
-		let settings = {
+		const settings = {
 			sound: false,
 			openHands: false,
 			enableDefendAlone: false,
@@ -32,7 +32,7 @@ describe("GameSpec", function () {
 
 	describe("End game", function () {
 		beforeEach(function () {
-			game.start();
+			game.doGame();
 		});
 
 		it("isFinished", function () {

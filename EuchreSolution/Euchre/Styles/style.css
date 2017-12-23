@@ -70,8 +70,17 @@ table {
 	height: 110px;
 	position: absolute;
 	left: 80%;
-	top: 80%;
+	top: 70%;
 	z-index: 9001;
+	display: none;
+}
+
+#orderUpPrompt,
+#orderUp,
+#pickSpades,
+#pickClubs,
+#pickHearts,
+#pickDiamonds {
 	display: none;
 }
 
@@ -116,27 +125,27 @@ table {
 }
 
 #Clubs14 {
-	background: url('../../Images/cards.png') -1px -1px;
+	background: url('../Images/cards.png') -1px -1px;
 }
 
 #Clubs13 {
-	background: url('../../Images/cards.png') -877px -1px;
+	background: url('../Images/cards.png') -877px -1px;
 }
 
 #Clubs12 {
-	background: url('../../Images/cards.png') -804px -1px;
+	background: url('../Images/cards.png') -804px -1px;
 }
 
 #Clubs11 {
-	background: url('../../Images/cards.png') -731px -1px;
+	background: url('../Images/cards.png') -731px -1px;
 }
 
 #Clubs10 {
-	background: url('../../Images/cards.png') -658px -1px;
+	background: url('../Images/cards.png') -658px -1px;
 }
 
 #Clubs9 {
-	background: url('../../Images/cards.png') -585px -1px;
+	background: url('../Images/cards.png') -585px -1px;
 }
 
 #Diamonds14 {

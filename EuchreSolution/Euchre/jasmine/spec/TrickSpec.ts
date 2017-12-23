@@ -138,7 +138,7 @@ describe("Trick", function () {
 			trick.playCard(new Card(Suit.Clubs, Rank.Ten));
 			trick.playCard(new Card(Suit.Spades, Rank.King));
 
-			let cardsPlayed = trick.cardsPlayed();
+			const cardsPlayed = trick.cardsPlayed();
 			expect(cardsPlayed.length).toBe(4);
 			expect(cardsPlayed[0].card).toEqual(new Card(Suit.Spades, Rank.Ace));
 			expect(cardsPlayed[0].player).toBe(Player.South);
@@ -167,7 +167,7 @@ describe("Trick", function () {
 		});
 
 		it("Correctly copies the right", function () {
-			let right = new Card(Suit.Spades, Rank.Jack);
+			const right = new Card(Suit.Spades, Rank.Jack);
 			right.rank = Rank.Right;
 			let cardsPlayed: PlayedCard[];
 
@@ -179,7 +179,7 @@ describe("Trick", function () {
 		});
 
 		it("Correctly copies the left", function () {
-			let left = new Card(Suit.Clubs, Rank.Jack);
+			const left = new Card(Suit.Clubs, Rank.Jack);
 			left.rank = Rank.Left;
 			left.suit = Suit.Spades;
 			let cardsPlayed: PlayedCard[];
@@ -198,12 +198,12 @@ describe("Trick", function () {
 		});
 
 		it("Handles a null card", function () {
-			let firstCard = hands[Player.West][0];
+			const firstCard = hands[Player.West][0];
 			expect(trick.playCard(null)).toEqual(firstCard);
 		});
 
 		it("Handles a non-null card that's not in the player's hand", function () {
-			let firstCard = hands[Player.West][0];
+			const firstCard = hands[Player.West][0];
 			expect(trick.playCard(new Card(Suit.Clubs, Rank.Ace))).toEqual(firstCard);
 		});
 
@@ -240,7 +240,7 @@ describe("Trick", function () {
 			expect(trick.playCard(new Card(Suit.Clubs, Rank.Ace))).toEqual(new Card(Suit.Clubs, Rank.Ace));
 			expect(trick.playCard(new Card(Suit.Spades, Rank.Ace))).toEqual(new Card(Suit.Spades, Rank.Ace));
 			expect(trick.playCard(new Card(Suit.Diamonds, Rank.King))).toBeNull();
-			let playedCards = trick.cardsPlayed();
+			const playedCards = trick.cardsPlayed();
 			expect(playedCards.length).toBe(4);
 			expect(playedCards[0].player).toBe(Player.West);
 			expect(playedCards[1].player).toBe(Player.North);
@@ -314,7 +314,7 @@ describe("Trick", function () {
 			expect(trick.winningTeam()).toBe(Team.NorthSouth);
 			expect(trick.suitLead()).toBe(Suit.Diamonds);
 			expect(trick.playersPlayed()).toBe(4);
-			let playedCards = trick.cardsPlayed();
+			const playedCards = trick.cardsPlayed();
 			expect(playedCards.length).toBe(4);
 			expect(playedCards[0].player).toBe(Player.West);
 			expect(playedCards[1].player).toBe(Player.North);
@@ -331,7 +331,7 @@ describe("Trick", function () {
 			expect(trick.winningTeam()).toBe(Team.NorthSouth);
 			expect(trick.suitLead()).toBe(Suit.Diamonds);
 			expect(trick.playersPlayed()).toBe(3);
-			let playedCards = trick.cardsPlayed();
+			const playedCards = trick.cardsPlayed();
 			expect(playedCards.length).toBe(3);
 			expect(playedCards[0].player).toBe(Player.West);
 			expect(playedCards[1].player).toBe(Player.East);

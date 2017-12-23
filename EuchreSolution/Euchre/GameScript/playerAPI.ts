@@ -32,7 +32,7 @@ function followsSuit(card: Card, trickSuit: Suit): boolean {
 //how many cards of a given suit a hand has
 function numCardsOfSuit(hand: Card[], suit: Suit): number {
 	let count = 0;
-	for (let card of hand) {
+	for (const card of hand) {
 		if (card.suit === suit) { count++; }
 	}
 	return count;
@@ -41,8 +41,8 @@ function numCardsOfSuit(hand: Card[], suit: Suit): number {
 //**NOT TESTING**
 //number of suits a hand has
 function countSuits(hand: Card[]): number {
-	let suitArray: Suit[] = [];
-	for (let card of hand) {
+	const suitArray: Suit[] = [];
+	for (const card of hand) {
 		suitArray[card.suit] = 1;
 	}
 	return suitArray[Suit.Clubs] + suitArray[Suit.Diamonds] + suitArray[Suit.Hearts] + suitArray[Suit.Spades];
@@ -50,7 +50,7 @@ function countSuits(hand: Card[]): number {
 
 //**NOT TESTING**
 function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | undefined {
-	for (let card of hand) {
+	for (const card of hand) {
 		if (isValidPlay(hand, card, suitLead)) {
 			return card;
 		}
@@ -111,7 +111,7 @@ function isValidPlay(playerHand: Card[], card: Card, trickSuit?: Suit): boolean 
 
 //**TESTED**
 function hasSuit(hand: Card[], suit: Suit): boolean {
-	for (let card of hand) {
+	for (const card of hand) {
 		if (card.suit === suit) { return true; }
 	}
 	return false;
@@ -138,14 +138,14 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null 
 
 	let bestCard: Card = cards[0].card;
 	let player: Player = cards[0].player;
-	let trickSuit: Suit = bestCard.suit;
+	const trickSuit: Suit = bestCard.suit;
 	let bestValue: number = getCardValue(bestCard, trickSuit, trump);
 
 	for (let i = 1; i < cards.length; i++) {
 		if (cards[i].card.suit !== trickSuit && cards[i].card.suit !== trump) {
 			continue;
 		}
-		let value = getCardValue(cards[i].card, trickSuit, trump);
+		const value = getCardValue(cards[i].card, trickSuit, trump);
 		if (value > bestValue) {
 			bestCard = cards[i].card;
 			player = cards[i].player;
@@ -165,7 +165,7 @@ function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card |
 	let bestValue: number = getCardValue(bestCard, trickSuit, trump);
 
 	for (let i = 1; i < hand.length; i++) {
-		let value = getCardValue(hand[i], trickSuit, trump);
+		const value = getCardValue(hand[i], trickSuit, trump);
 		if (value > bestValue) {
 			bestCard = hand[i];
 			bestValue = value;
@@ -177,7 +177,7 @@ function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card |
 //**TESTED**
 //returns: whether the card is in the hand
 function isInHand(hand: Card[], card: Card): boolean {
-	for (let handCard of hand) {
+	for (const handCard of hand) {
 		if (handCard.id === card.id) { return true; }
 	}
 	return false;
@@ -188,10 +188,10 @@ function getWorstCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card 
 	let worstValue = 9999;
 	let value;
 
-	for (let i = 0; i < hand.length; i++) {
-		value = getCardValue(hand[i], trickSuit, trump);
+	for (const card of hand) {
+		value = getCardValue(card, trickSuit, trump);
 		if (value < worstValue) {
-			worstCard = hand[i];
+			worstCard = card;
 			worstValue = value;
 		}
 	}
@@ -255,8 +255,8 @@ function getNextDealer(prevDealer?: Player): Player {
 }
 
 function copyHand(hand: Card[]): Card[] {
-	let newHand: Card[] = [];
-	for (let card of hand) {
+	const newHand: Card[] = [];
+	for (const card of hand) {
 		newHand.push(new Card(card));
 	}
 	return newHand;

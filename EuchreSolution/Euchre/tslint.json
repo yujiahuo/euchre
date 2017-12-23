@@ -3,8 +3,8 @@
 	"rules": {
 		"align": [
 			true,
-			//"elements",
-			//"members",
+			"elements",
+			"members",
 			"statements"
 		],
 		"array-type": [
@@ -35,6 +35,15 @@
 		],
 		"only-arrow-functions": [
 			false
+		],
+		"space-before-function-paren": [
+			true,
+			{
+				"anonymous": "always",
+				"constructor": "never",
+				"method": "never",
+				"named": "never"
+			}
 		],
 		"switch-default": false,
 		"variable-name": [

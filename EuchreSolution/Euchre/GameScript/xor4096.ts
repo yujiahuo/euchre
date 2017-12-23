@@ -22,7 +22,7 @@ class XorGen {
 		let i: number;
 		let j: number;
 		let w: number = 0;
-		let X: number[] = [];
+		const X: number[] = [];
 		let limit = 128;
 		v = 0;
 		limit = Math.max(limit, seed.length);
@@ -67,7 +67,7 @@ class XorGen {
 
 	public next(): number {
 		let w = this.w;
-		let X = this.X;
+		const X = this.X;
 		let i = this.i;
 
 		// Update Weyl generator.
@@ -87,7 +87,7 @@ class XorGen {
 	}
 
 	public nextInRange(minimum: number, maximum: number): number {
-		let size = maximum - minimum + 1;
+		const size = maximum - minimum + 1;
 		let next = this.next() % size;
 		if (next < 0) {
 			next += size;
@@ -98,11 +98,11 @@ class XorGen {
 
 let rng: XorGen;
 {
-	let seed = new Uint16Array(128);
+	const seed = new Uint16Array(128);
 	if (!seed.join) {
 		seed.join = Array.prototype.join;
 	}
-	let cryptoObj = window.crypto || ((window as any).msCrypto as Crypto);
+	const cryptoObj = window.crypto || ((window as any).msCrypto as Crypto);
 	if (cryptoObj && cryptoObj.getRandomValues) {
 		cryptoObj.getRandomValues(seed);
 	} else {

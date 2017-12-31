@@ -54,7 +54,7 @@ class Trick {
 				return;
 			}
 			//queuedHoomanCard is always a string if pauseForTrick returns false
-			card = getCardFromHand(hand, queuedHoomanCard as string);
+			card = getCardFromHand(hand, queuedHoomanCardId as string);
 			clearHoomanQueue();
 		}
 		this.playCard(card);

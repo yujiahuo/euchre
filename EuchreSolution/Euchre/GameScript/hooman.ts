@@ -2,10 +2,10 @@
 let animating: boolean = false;
 let queuedHoomanOrderUp: boolean | null = null;
 let queuedHoomanBidSuit: Suit | null = null;
-let queuedHoomanCard: string | null = null;
+let queuedHoomanCardId: string | null = null;
 
 function clickCard(this: HTMLElement): void {
-	queuedHoomanCard = this.id;
+	queuedHoomanCardId = this.id;
 	unpause();
 }
 
@@ -37,7 +37,7 @@ function pauseForBid(aiPlayer: EuchreAI | null, hand: Card[], stage: BidStage, t
 }
 
 function pauseForTrick(aiPlayer: EuchreAI | null): boolean {
-	if (aiPlayer !== null || queuedHoomanCard !== null) {
+	if (aiPlayer !== null || queuedHoomanCardId !== null) {
 		return false;
 	}
 
@@ -57,5 +57,5 @@ function unpause() {
 function clearHoomanQueue() {
 	queuedHoomanOrderUp = null;
 	queuedHoomanBidSuit = null;
-	queuedHoomanCard = null;
+	queuedHoomanCardId = null;
 }

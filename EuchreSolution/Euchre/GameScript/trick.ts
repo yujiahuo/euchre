@@ -16,11 +16,11 @@ class Trick {
 		return this.__suitLead;
 	}
 	public cardsPlayed(): PlayedCard[] {
-		let playedCards: PlayedCard[] = [];
+		const playedCards: PlayedCard[] = [];
 
-		for (let playedCard of this.__playedCards) {
-			let card = playedCard.card;
-			let player = playedCard.player;
+		for (const playedCard of this.__playedCards) {
+			const card = playedCard.card;
+			const player = playedCard.player;
 
 			//make deep copy of cards
 			playedCards.push({ player, card: new Card(card) });
@@ -44,16 +44,17 @@ class Trick {
 
 	private advanceTrick(): void {
 		let card: Card | null = null;
-		let aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
+		const aiPlayer: EuchreAI | null = this.__aiPlayers[this.__currentPlayer];
 
+		const hand = this.__playerHands[this.__currentPlayer];
 		if (aiPlayer) {
-			let hand = this.__playerHands[this.__currentPlayer];
 			card = aiPlayer.pickCard(copyHand(hand), this.__maker, this.__trump, this.cardsPlayed());
 		} else {
 			if (pauseForTrick(aiPlayer)) {
 				return;
 			}
-			card = queuedHoomanCard;
+			//queuedHoomanCard is always a string if pauseForTrick returns false
+			card = getCardFromHand(hand, queuedHoomanCard as string);
 			clearHoomanQueue();
 		}
 		this.playCard(card);
@@ -63,7 +64,7 @@ class Trick {
 	}
 
 	private endTrick(): void {
-		for (let ai of this.__aiPlayers) {
+		for (const ai of this.__aiPlayers) {
 			if (ai) {
 				ai.trickEnd(this.cardsPlayed);
 			}
@@ -75,7 +76,7 @@ class Trick {
 	protected playCard(card: Card | null): Card | null {
 		if (this.isFinished()) { return null; }
 
-		let hand: Card[] = this.__playerHands[this.__currentPlayer];
+		const hand: Card[] = this.__playerHands[this.__currentPlayer];
 
 		if (!card || !isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
 			card = getFirstLegalCard(hand, this.__suitLead) as Card;
@@ -99,7 +100,7 @@ class Trick {
 	}
 
 	private removeFromHand(player: Player, card: Card): void {
-		let cardID = card.id;
+		const cardID = card.id;
 
 		for (let i = 0; i < this.__playerHands[player].length; i++) {
 			if (this.__playerHands[player][i].id === cardID) {
@@ -118,12 +119,12 @@ class Trick {
 	}
 
 	public isFinished(): boolean {
-		let cardsToPlay = this.__alone ? 3 : 4;
+		const cardsToPlay = this.__alone ? 3 : 4;
 		return this.__playedCards.length >= cardsToPlay;
 	}
 
 	public winningTeam(): Team | null {
-		let winner = this.winner();
+		const winner = this.winner();
 		if (winner === null) {
 			return null;
 		}
@@ -132,7 +133,7 @@ class Trick {
 	}
 
 	public winner(): Player | null {
-		let bestCardPlayed = getBestCardPlayed(this.__playedCards, this.__trump);
+		const bestCardPlayed = getBestCardPlayed(this.__playedCards, this.__trump);
 		if (!bestCardPlayed) {
 			return null;
 		}

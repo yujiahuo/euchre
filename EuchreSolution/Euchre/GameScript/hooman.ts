@@ -2,10 +2,10 @@
 let animating: boolean = false;
 let queuedHoomanOrderUp: boolean | null = null;
 let queuedHoomanBidSuit: Suit | null = null;
-let queuedHoomanCard: Card | null = null;
+let queuedHoomanCard: string | null = null;
 
 function clickCard(this: HTMLElement): void {
-	queuedHoomanCard = DECKDICT[this.id];
+	queuedHoomanCard = this.id;
 	unpause();
 }
 
@@ -50,9 +50,10 @@ function pauseForTrick(aiPlayer: EuchreAI | null): boolean {
 function unpause() {
 	animDisableBidding();
 	pausing = false;
-	if (controller) controller.continue();
+	if (controller) { controller.continue(); }
 }
 
+//TODO: call this or block queueing up cards before human bidding is done some other way
 function clearHoomanQueue() {
 	queuedHoomanOrderUp = null;
 	queuedHoomanBidSuit = null;

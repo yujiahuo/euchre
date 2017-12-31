@@ -25,7 +25,7 @@ class DecentAI implements EuchreAI {
 		if (!trumpCandidate) {
 			return null;
 		}
-		let trumpCandidateSuit = trumpCandidate.suit;
+		const trumpCandidateSuit = trumpCandidate.suit;
 		if (trumpCandidateSuit !== Suit.Clubs) {
 			this.handStrength = this.calculateHandStrength(Suit.Clubs);
 			if (this.handStrength > 2) { return Suit.Clubs; }
@@ -68,9 +68,9 @@ class DecentAI implements EuchreAI {
 			return getBestCardInHand(this.hand, undefined, trump);
 		}
 
-		let trickSuit = trickSoFar[0].card.suit;
+		const trickSuit = trickSoFar[0].card.suit;
 		//Find currently winning value
-		let bestPlayedCard = getBestCardPlayed(trickSoFar, trump) as PlayedCard;
+		const bestPlayedCard = getBestCardPlayed(trickSoFar, trump) as PlayedCard;
 		winningValue = getCardValue(bestPlayedCard.card, trump);
 
 		//If not last player, play the lowest card that can win
@@ -110,7 +110,7 @@ class DecentAI implements EuchreAI {
 	}
 
 	private theyHaveTheLeft(trump: Suit) {
-		for (let card of this.hand) {
+		for (const card of this.hand) {
 			if (card.rank === Rank.Jack && card.suit === getOppositeSuit(trump)) {
 				return true;
 			}

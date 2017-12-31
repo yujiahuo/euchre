@@ -41,12 +41,12 @@ class Bid {
 			case BidStage.Round2:
 				this.__bidResult = this.doBid(this.__stage);
 
-				if (pausing) return;
+				if (pausing) { return; }
 
 				this.advancePlayer();
 
 				if (this.__bidResult) {
-					let bidResult = this.__bidResult;
+					const bidResult = this.__bidResult;
 					if (bidResult.stage === BidStage.Round1) {
 						this.__stage = BidStage.Discard;
 					} else {
@@ -64,6 +64,7 @@ class Bid {
 				}
 				break;
 			case BidStage.Discard:
+				this.__playerHands[this.__dealer].push(this.__trumpCandidate);
 				this.doDiscard(this.__dealer);
 				this.__stage = BidStage.Finished;
 				break;
@@ -73,7 +74,7 @@ class Bid {
 	}
 
 	private doBid(stage: BidStage.Round1 | BidStage.Round2): BidResult | null {
-		let aiPlayer = this.__aiPlayers[this.__currentPlayer];
+		const aiPlayer = this.__aiPlayers[this.__currentPlayer];
 		let message = `${Player[this.__currentPlayer]} `;
 
 		// human, go!
@@ -81,7 +82,7 @@ class Bid {
 			return null;
 		}
 
-		let hand = this.__playerHands[this.__currentPlayer];
+		const hand = this.__playerHands[this.__currentPlayer];
 		let trump: Suit | null = null;
 
 		if (aiPlayer !== null) {
@@ -101,9 +102,7 @@ class Bid {
 		this.setTrump(trump);
 		if (stage === BidStage.Round1) {
 			message += `ordered up the ${Rank[this.__trumpCandidate.rank]} of ${Suit[this.__trumpCandidate.suit]}`;
-			this.__playerHands[this.__dealer].push(this.__trumpCandidate);
-		}
-		else {
+		} else {
 			message += `called ${Suit[trump]}`;
 		}
 		animShowText(message, MessageLevel.Step, 1);
@@ -117,37 +116,28 @@ class Bid {
 
 	//TODO: unit test
 	private doBidHooman(stage: BidStage, hand: Card[]): Suit | null {
-		let trump: Suit | null;
-		let trumpCandidate = this.__trumpCandidate;
+		const trumpCandidate = this.__trumpCandidate;
 
 		if (stage === BidStage.Round1 && queuedHoomanOrderUp === true) {
-			if (!hasSuit(hand, trumpCandidate.suit)) {
-				clearHoomanQueue();
-				return null;
+			if (hasSuit(hand, trumpCandidate.suit)) {
+				return trumpCandidate.suit;
 			}
-			trump = trumpCandidate.suit;
-		}
-		else if (stage === BidStage.Round2 && queuedHoomanBidSuit !== null) {
-			trump = queuedHoomanBidSuit;
-			if (trump === trumpCandidate.suit || !hasSuit(hand, trump)) {
-				clearHoomanQueue();
-				return null;
+		} else if (stage === BidStage.Round2 && queuedHoomanBidSuit !== null) {
+			if (queuedHoomanBidSuit !== trumpCandidate.suit && hasSuit(hand, queuedHoomanBidSuit)) {
+				return queuedHoomanBidSuit;
 			}
 		}
-		else {
-			clearHoomanQueue();
-			return null;
-		}
-		return trump;
+		clearHoomanQueue();
+		return null;
 	}
 
 	//TODO: unit test
 	private doBidAI(aiPlayer: EuchreAI, stage: BidStage, hand: Card[]): Suit | null {
 		let trump: Suit | null;
-		let trumpCandidate = this.__trumpCandidate;
+		const trumpCandidate = this.__trumpCandidate;
 
 		if (stage === BidStage.Round1) {
-			let orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
+			const orderItUp = aiPlayer.chooseOrderUp(copyHand(hand), new Card(trumpCandidate), this.__dealer);
 			if (!orderItUp || !hasSuit(hand, trumpCandidate.suit)) {
 				return null;
 			}
@@ -164,9 +154,9 @@ class Bid {
 
 	private getGoAlone(trump: Suit, maker: Player): boolean {
 		let alone: boolean;
-		let aiPlayer = this.__aiPlayers[maker];
+		const aiPlayer = this.__aiPlayers[maker];
 		if (aiPlayer) {
-			let hand = this.__playerHands[maker];
+			const hand = this.__playerHands[maker];
 			alone = aiPlayer.chooseGoAlone(copyHand(hand), trump);
 		} else {
 			return false;
@@ -175,8 +165,8 @@ class Bid {
 	}
 
 	private doDiscard(dealer: Player): void {
-		let aiPlayer = this.__aiPlayers[dealer];
-		let hand = this.__playerHands[dealer];
+		const aiPlayer = this.__aiPlayers[dealer];
+		const hand = this.__playerHands[dealer];
 		let discard: Card | null = null;
 		if (aiPlayer) {
 			discard = aiPlayer.pickDiscard(copyHand(hand), this.__trumpCandidate.suit);
@@ -185,8 +175,10 @@ class Bid {
 			discard = hand[0];
 		}
 		for (let i = 0; i < hand.length; i++) {
-			if (hand[i].id === discard.id) {
+			const card = hand[i];
+			if (card.id === discard.id) {
 				hand.splice(i, 1);
+				animTakeTrump(this.__trumpCandidate, card, !!aiPlayer);
 				break;
 			}
 		}
@@ -198,9 +190,9 @@ class Bid {
 	}
 
 	private setTrump(trump: Suit) {
-		let right = this.__jacks[trump];
+		const right = this.__jacks[trump];
 		right.rank = Rank.Right;
-		let left = this.__jacks[getOppositeSuit(trump)];
+		const left = this.__jacks[getOppositeSuit(trump)];
 		left.suit = trump;
 		left.rank = Rank.Left;
 	}

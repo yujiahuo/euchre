@@ -5,7 +5,7 @@
 enum GameStage {
 	Playing,
 	Finished,
-};
+}
 
 class Game {
 	private __nsScore: number; //north south
@@ -45,7 +45,7 @@ class Game {
 		}
 		this.__hand.doHand();
 
-		if (pausing) return;
+		if (pausing) { return; }
 
 		if (this.__hand.isFinished()) {
 			this.handleEndHand();

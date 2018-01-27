@@ -30,7 +30,7 @@ class Bid {
 		this.__jacks = jacks;
 		this.__aiPlayers = aiPlayers;
 		this.__dealer = dealer;
-		this.__currentPlayer = nextPlayer(dealer);
+		this.__currentPlayer = getNextPlayer(dealer);
 		this.__stage = BidStage.Round1;
 		this.__trumpCandidate = trumpCandidate;
 	}
@@ -187,7 +187,7 @@ class Bid {
 	}
 
 	private advancePlayer(): void {
-		this.__currentPlayer = nextPlayer(this.__currentPlayer);
+		this.__currentPlayer = getNextPlayer(this.__currentPlayer);
 		this.__playersBid++;
 	}
 

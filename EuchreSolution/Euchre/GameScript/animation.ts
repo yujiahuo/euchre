@@ -53,7 +53,7 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, setting
 
 	animClearTable();
 
-	player = nextPlayer(dealer);
+	player = getNextPlayer(dealer);
 	delay = 0;
 
 	makeCardElem("deck", false);

@@ -111,7 +111,7 @@ class Hand {
 		this.__aiPlayers = aiPlayers;
 		let player = dealer;
 		for (let i = 0; i < 4; i++) {
-			player = nextPlayer(player);
+			player = getNextPlayer(player);
 			const aiPlayer = aiPlayers[player];
 			if (aiPlayer) {
 				aiPlayer.init(player);
@@ -143,7 +143,7 @@ class Hand {
 				if (bidResult) {
 					this.__trick = new Trick(bidResult.trump, bidResult.alone,
 						this.__playerHands, this.__aiPlayers, bidResult.maker,
-						nextPlayer(this.__dealer));
+						getNextPlayer(this.__dealer));
 					this.__handStage = HandStage.Playing;
 				} else {
 					this.endHand(false);

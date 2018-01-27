@@ -35,6 +35,10 @@ class Bid {
 		this.__currentPlayer = getNextPlayer(dealer);
 		this.__stage = BidStage.Round1;
 		this.__trumpCandidate = trumpCandidate;
+		const aloneCheckbox = document.getElementById("alone") as HTMLInputElement | undefined;
+		if (aloneCheckbox) {
+			aloneCheckbox.checked = false;
+		}
 	}
 
 	private advanceBid(): void {
@@ -154,15 +158,17 @@ class Bid {
 	}
 
 	private getGoAlone(trump: Suit, maker: Player): boolean {
-		let alone: boolean;
 		const aiPlayer = this.__aiPlayers[maker];
 		if (aiPlayer) {
 			const hand = this.__playerHands[maker];
-			alone = aiPlayer.chooseGoAlone(copyHand(hand), trump);
+			return aiPlayer.chooseGoAlone(copyHand(hand), trump);
 		} else {
-			return false;
+			const aloneCheckbox = document.getElementById("alone") as HTMLInputElement | null;
+			if (!aloneCheckbox) {
+				return false;
+			}
+			return aloneCheckbox.checked;
 		}
-		return alone;
 	}
 
 	private doDiscard(dealer: Player): boolean {

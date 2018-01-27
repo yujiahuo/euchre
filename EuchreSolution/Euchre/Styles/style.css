@@ -84,13 +84,6 @@ table {
 	display: none;
 }
 
-#alone {
-	background-color: green;
-	width: 80px;
-	height: 16px;
-	text-align: center;
-}
-
 #dealerButton {
 	background: url('../Images/dealerButton.png');
 	background-size: contain;

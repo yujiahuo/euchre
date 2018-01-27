@@ -105,18 +105,31 @@ let rng: XorGen;
 	}
 	//tslint:disable-next-line:strict-boolean-expressions -- can't trust the TS types on older browsers
 	const cryptoObj = window.crypto || ((window as any).msCrypto as Crypto);
-	//tslint:disable-next-line:strict-boolean-expressions -- can't trust the TS types on older browsers
-	if (cryptoObj && cryptoObj.getRandomValues) {
-		cryptoObj.getRandomValues(seed);
-	} else {
-		// Not as good, but we can't actually end up with enough randomness
-		// unless we include something outside of just Math.random
-		seed[0] = new Date().getTime() % (2 ** 16);
-		for (let i = 1; i < seed.length; i++) {
-			seed[i] = Math.floor(Math.random() * (2 ** 16));
+
+	let done = false;
+	const pageParameters = window.location.search;
+	if (pageParameters) {
+		const url = new URL(window.location.href);
+		const randomSeedString = url.searchParams.get("randomseed");
+		if (randomSeedString) {
+			randomSeedString.split(",").map((value, index) => seed[index] = parseInt(value, 10));
+			done = true;
 		}
 	}
-	//tslint:disable-next-line:no-console
-	console.log("Random seed: " + seed.join(", "));
+	if (!done) {
+		//tslint:disable-next-line:strict-boolean-expressions -- can't trust the TS types on older browsers
+		if (cryptoObj && cryptoObj.getRandomValues) {
+			cryptoObj.getRandomValues(seed);
+		} else {
+			// Not as good, but we can't actually end up with enough randomness
+			// unless we include something outside of just Math.random
+			seed[0] = new Date().getTime() % (2 ** 16);
+			for (let i = 1; i < seed.length; i++) {
+				seed[i] = Math.floor(Math.random() * (2 ** 16));
+			}
+		}
+	}
+	//tslint:disable-next-line:no-console -- needed to debug issues
+	console.log("Random seed: " + seed.join(","));
 	rng = new XorGen(seed);
 }

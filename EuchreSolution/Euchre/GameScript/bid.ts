@@ -191,7 +191,7 @@ class Bid {
 		this.__playersBid++;
 	}
 
-	private setTrump(trump: Suit) {
+	private setTrump(trump: Suit): void {
 		const right = this.__jacks[trump];
 		right.rank = Rank.Right;
 		const left = this.__jacks[getOppositeSuit(trump)];
@@ -199,7 +199,7 @@ class Bid {
 		left.rank = Rank.Left;
 	}
 
-	private everyoneBid() {
+	private everyoneBid(): boolean {
 		return this.__playersBid === 4;
 	}
 

@@ -10,50 +10,6 @@ type ShuffleResult = {
 	jacks: Card[],
 };
 
-function getShuffledDeck(): ShuffleResult {
-	const deck: Card[] = [];
-	const jacks: Card[] = [];
-
-	for (let i = 0; i < DECKSIZE; i++) {
-		const j = rng.nextInRange(0, i);
-		if (j !== i) {
-			deck[i] = deck[j];
-		}
-		deck[j] = new Card(SORTEDDECK[i]);
-		if (deck[j].rank === Rank.Jack) {
-			jacks[deck[j].suit] = deck[j];
-		}
-	}
-
-	return { deck, jacks };
-}
-
-function dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
-	for (let i = 0; i < 20; i++) {
-		const player = (dealer + i + 1) % 4;
-		const cardPos = Math.floor(i / 4);
-		//TODO: see if skipping the pop makes things faster
-		playerHands[player][cardPos] = deck.pop() as Card;
-	}
-}
-
-function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean): number;
-function calculatePointGain(tricksTaken: number, maker: boolean, alone: true, defendingAlone: boolean): number;
-function calculatePointGain(tricksTaken: number, maker: boolean, alone: false, defendingAlone: false): number;
-function calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean, defendingAlone?: boolean): number {
-	if (tricksTaken < 3) { return 0; }
-
-	if (maker) {
-		if (tricksTaken === 5) {
-			return alone ? 4 : 2;
-		} else {
-			return 1;
-		}
-	} else {
-		return alone && defendingAlone ? 4 : 2;
-	}
-}
-
 class Hand {
 	//General stuff
 	private __settings: Settings;
@@ -119,9 +75,9 @@ class Hand {
 		}
 
 		//set up the deck and everyone's hands
-		const { deck, jacks } = getShuffledDeck();
+		const { deck, jacks } = Hand.getShuffledDeck();
 		this.__playerHands = [[], [], [], []];
-		dealHands(deck, this.__playerHands, this.__dealer);
+		Hand.dealHands(deck, this.__playerHands, this.__dealer);
 		this.__trumpCandidate = deck.pop() as Card;
 
 		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings);
@@ -130,6 +86,52 @@ class Hand {
 		//set up bidding
 		this.__handStage = HandStage.Bidding;
 		this.__bid = new Bid(this.__playerHands, jacks, this.__aiPlayers, this.__dealer, this.__trumpCandidate);
+	}
+
+	public static getShuffledDeck(): ShuffleResult {
+		const deck: Card[] = [];
+		const jacks: Card[] = [];
+
+		for (let i = 0; i < DECKSIZE; i++) {
+			const j = rng.nextInRange(0, i);
+			if (j !== i) {
+				deck[i] = deck[j];
+			}
+			deck[j] = new Card(SORTEDDECK[i]);
+			if (deck[j].rank === Rank.Jack) {
+				jacks[deck[j].suit] = deck[j];
+			}
+		}
+
+		return { deck, jacks };
+	}
+
+	public static dealHands(deck: Card[], playerHands: Card[][], dealer: Player): void {
+		for (let i = 0; i < 20; i++) {
+			const player = (dealer + i + 1) % 4;
+			const cardPos = Math.floor(i / 4);
+			//TODO: see if skipping the pop makes things faster
+			playerHands[player][cardPos] = deck.pop() as Card;
+		}
+	}
+
+	public static calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean): number;
+	public static calculatePointGain(tricksTaken: number, maker: boolean, alone: true, defendingAlone: boolean): number;
+	public static calculatePointGain(tricksTaken: number, maker: boolean, alone: false, defendingAlone: false): number;
+	public static calculatePointGain(tricksTaken: number, maker: boolean, alone?: boolean,
+		defendingAlone?: boolean): number {
+
+		if (tricksTaken < 3) { return 0; }
+
+		if (maker) {
+			if (tricksTaken === 5) {
+				return alone ? 4 : 2;
+			} else {
+				return 1;
+			}
+		} else {
+			return alone && defendingAlone ? 4 : 2;
+		}
 	}
 
 	private advanceHand(): void {
@@ -188,8 +190,8 @@ class Hand {
 		}
 
 		const isMaker = (this.__bidResult.maker === Player.North || this.__bidResult.maker === Player.South);
-		this.__nsPointsWon = calculatePointGain(this.__nsTricksWon, isMaker, this.__bidResult.alone);
-		this.__ewPointsWon = calculatePointGain(this.__ewTricksWon, !isMaker, this.__bidResult.alone);
+		this.__nsPointsWon = Hand.calculatePointGain(this.__nsTricksWon, isMaker, this.__bidResult.alone);
+		this.__ewPointsWon = Hand.calculatePointGain(this.__ewTricksWon, !isMaker, this.__bidResult.alone);
 
 		this.__handStage = HandStage.Finished;
 	}

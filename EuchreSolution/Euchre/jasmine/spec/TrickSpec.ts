@@ -285,7 +285,7 @@ describe("Trick", function () {
 		});
 	});
 
-	describe("winningTeam+winner", function () {
+	describe("winningTeam/winner", function () {
 		it("Starts out null", function () {
 			expect(trick.winningTeam()).toBeNull();
 		});

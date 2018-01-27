@@ -45,7 +45,7 @@ class Game {
 		}
 		this.__hand.doHand();
 
-		if (pausing) { return; }
+		if (pausedForHuman) { return; }
 
 		if (this.__hand.isFinished()) {
 			this.handleEndHand();
@@ -76,7 +76,7 @@ class Game {
 	 ********************************/
 
 	public doGame(): void {
-		while (!this.isFinished() && !pausing) {
+		while (!this.isFinished() && !pausedForHuman) {
 			this.advanceGame();
 		}
 		return;

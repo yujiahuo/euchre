@@ -137,7 +137,7 @@ class Hand {
 			case HandStage.Bidding:
 				const bidResult = this.__bid.doBidding();
 
-				if (pausing) { return; }
+				if (pausedForHuman) { return; }
 
 				this.__bidResult = bidResult;
 				if (bidResult) {
@@ -152,7 +152,7 @@ class Hand {
 			case HandStage.Playing:
 				const trickEnded = this.__trick.doTrick();
 
-				if (pausing) { return; }
+				if (pausedForHuman) { return; }
 
 				if (trickEnded) {
 					this.handleEndTrick();
@@ -196,7 +196,7 @@ class Hand {
 
 	/* Public functions */
 	public doHand(): void {
-		while (!this.isFinished() && !pausing) {
+		while (!this.isFinished() && !pausedForHuman) {
 			this.advanceHand();
 		}
 		return;

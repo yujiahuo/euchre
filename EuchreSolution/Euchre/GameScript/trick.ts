@@ -110,7 +110,7 @@ class Trick {
 
 	/* Public functions */
 	public doTrick(): boolean {
-		while (!this.isFinished() && !pausing) {
+		while (!this.isFinished() && !pausedForHuman) {
 			this.advanceTrick();
 		}
 		return true;

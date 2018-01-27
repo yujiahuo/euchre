@@ -106,6 +106,8 @@ class Bid {
 			message += `called ${Suit[trump]}`;
 		}
 		animShowText(message, MessageLevel.Step, 1);
+		animShowTextTop(`Trump: ${Suit[trump]}`);
+		animShowTextTop(`Maker: ${Player[this.__currentPlayer]}`);
 		return {
 			stage,
 			trump,

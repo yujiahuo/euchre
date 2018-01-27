@@ -104,12 +104,10 @@ function hasSuit(hand: Card[], suit: Suit): boolean {
 
 //**TESTED**
 function getCardValue(card: Card, trickSuit?: Suit, trump?: Suit): number {
-	let value;
-
-	value = card.rank;
-	if (trump && isTrump(card, trump)) {
+	let value = card.rank;
+	if (trump !== undefined && isTrump(card, trump)) {
 		value += 1000;
-	} else if (trickSuit && followsSuit(card, trickSuit)) {
+	} else if (trickSuit !== undefined && followsSuit(card, trickSuit)) {
 		value += 100;
 	}
 	return value;

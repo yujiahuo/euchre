@@ -34,12 +34,13 @@ function countSuits(hand: Card[]): number {
 }
 
 //**NOT TESTING**
-function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | undefined {
+function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | null {
 	for (const card of hand) {
 		if (isValidPlay(hand, card, suitLead)) {
 			return card;
 		}
 	}
+	return null;
 }
 
 function getTeam(player: Player): Team {
@@ -173,12 +174,9 @@ function getCardFromHand(hand: Card[], cardId: string): Card | null {
 function getWorstCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card | null {
 	let worstCard = null;
 	let worstValue = 9999;
-	let value;
-
-	if (!hand) { return null; }
 
 	for (const card of hand) {
-		value = getCardValue(card, trickSuit, trump);
+		const value = getCardValue(card, trickSuit, trump);
 		if (value < worstValue) {
 			worstCard = card;
 			worstValue = value;
@@ -231,16 +229,10 @@ function getOppositeSuit(suit: Suit): Suit {
 
 //**TESTED**
 function getNextDealer(prevDealer?: Player): Player {
-	let dealer;
-
-	if (prevDealer !== undefined) {
-		//if we have a dealer, get the next dealer
-		dealer = nextPlayer(prevDealer);
-	} else {
-		//otherwise just randomly grab one
-		dealer = rng.nextInRange(0, 3);
+	if (prevDealer === undefined) {
+		return rng.nextInRange(0, 3);
 	}
-	return dealer;
+	return nextPlayer(prevDealer);
 }
 
 function copyHand(hand: Card[]): Card[] {

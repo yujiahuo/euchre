@@ -68,6 +68,8 @@ class Game {
 		}
 		this.__nsScore += this.__hand.nsPointsWon();
 		this.__ewScore += this.__hand.ewPointsWon();
+
+		animShowTextTop(`NS: ${this.__nsScore} EW: ${this.__ewScore}`, true);
 	}
 
 	private endGame() {

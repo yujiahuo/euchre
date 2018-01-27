@@ -6,14 +6,13 @@
 		"**/.svn": true,
 		"**/.hg": true,
 		"**/.DS_Store": true,
-		"**/*.js": true,
-		"**/*.js.map": true
+		"*/*/**/*.js": true,
+		"**/*.js.map": true,
 	},
 	"html.format.enable": false,
-	"lcov": {
-		"branchCoverage": "full",
-		"path": [
-			"coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcovonly"
-		]
-	}
+	"lcov.branchCoverage": "full",
+	"lcov.path": [
+		"coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcovonly",
+	],
+	"typescript.tsdk": "node_modules/typescript/lib",
 }

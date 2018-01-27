@@ -45,6 +45,13 @@
 				"named": "never"
 			}
 		],
+		"strict-boolean-expressions": [
+			true,
+			"allow-null-union",
+			"allow-undefined-union",
+			"allow-string",
+			"allow-mix"
+		],
 		"switch-default": false,
 		"variable-name": [
 			true,

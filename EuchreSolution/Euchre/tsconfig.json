@@ -2,12 +2,17 @@
 	"compilerOptions": {
 		"target": "es2015",
 		"sourceMap": true,
-		"strictNullChecks": true,
-		"alwaysStrict": true,
-		"noImplicitAny": true,
-		"noImplicitThis": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true
+		"noUnusedParameters": true,
+		"removeComments": true,
+		"strict": true,
+		"plugins": [
+			{
+				"name": "tslint-language-service",
+			},
+		],
 	},
-	"compileOnSave": true
+	"compileOnSave": true,
 }

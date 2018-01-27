@@ -27,7 +27,7 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 }
 
 function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
-	const div = document.getElementById(cardID) as HTMLDivElement;
+	const div = document.getElementById(cardID) as HTMLDivElement | null;
 	if (!div) { return; }
 
 	div.style.top = top;
@@ -284,12 +284,8 @@ function animWinTrick(player: Player, playedCards: PlayedCard[]): void {
 			return;
 	}
 
-	for (let i = 0; i < 4; i++) {
-		if (!playedCards[i] || !playedCards[i].card) {
-			//TODO: either mark the parameter as (Card | null)[], or remove this check
-			continue;
-		}
-		cardElem = document.getElementById(playedCards[i].card.id) as HTMLElement;
+	for (const playedCard of playedCards) {
+		cardElem = document.getElementById(playedCard.card.id) as HTMLElement;
 		cardElem.style.top = top;
 		cardElem.style.left = left;
 		cardElem.classList.add("cardBack");
@@ -409,12 +405,16 @@ function animDisableBidding(): void {
 //}
 
 function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
-	const allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
+
+	let allowedLevel: MessageLevel = MessageLevel.Step;
+	if (controller) {
+		allowedLevel = controller.getMessageLevel();
+	}
 	let logText = "";
 
 	if (messageLevel < allowedLevel) { return; }
 
-	if (!nest) {
+	if (nest === undefined) {
 		nest = 0;
 	}
 	for (let i = 0; i < nest; i++) {

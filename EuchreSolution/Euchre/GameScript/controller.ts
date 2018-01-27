@@ -117,6 +117,7 @@ class Controller {
 	public playGames(): void {
 		this.__gameCount = 0;
 
+		AnimController.setDoDelays(!this.__settings.statMode);
 		this.playGame();
 	}
 

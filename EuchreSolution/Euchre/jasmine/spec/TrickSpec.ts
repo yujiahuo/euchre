@@ -350,6 +350,6 @@ describe("Trick", function () {
 
 class TestTrick extends Trick {
 	public playCard(card: Card | null): Card | null {
-		return super.playCard(card);
+		return super.playCard(card, false);
 	}
 }

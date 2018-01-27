@@ -59,7 +59,7 @@ class Trick {
 			card = getCardFromHand(hand, queuedHoomanCardId as string);
 			clearHoomanQueue();
 		}
-		this.playCard(card);
+		this.playCard(card, !!aiPlayer);
 		if (this.isFinished()) {
 			this.endTrick();
 		}
@@ -75,7 +75,7 @@ class Trick {
 		animWinTrick(this.winner() as Player, this.cardsPlayed());
 	}
 
-	protected playCard(card: Card | null): Card | null {
+	protected playCard(card: Card | null, delay: boolean): Card | null {
 		if (this.isFinished()) { return null; }
 
 		const currentPlayer = this.__currentPlayer;
@@ -93,7 +93,11 @@ class Trick {
 
 		const message = `${Player[currentPlayer]} played ${getCardShorthand(card)}`;
 		animShowText(message, MessageLevel.Step, 1);
-		animPlayCard(currentPlayer, card.id);
+		const cardId = card.id;
+		const wrapper = () => {
+			animPlayCard(currentPlayer, cardId);
+		};
+		AnimController.queueAnimation(delay ? AnimType.PlayCard : AnimType.NoDelay, wrapper);
 
 		const alonePlayer = this.__alone ? this.__maker : undefined;
 		this.__currentPlayer = getNextPlayer(currentPlayer, alonePlayer);

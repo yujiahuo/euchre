@@ -141,6 +141,14 @@ class Hand {
 		this.doHand();
 	}
 
+	private dealDone = (jacks: Card[]): void => {
+		this.__waiting = false;
+		this.__bid = new Bid(this.bidComplete, this.__playerHands, jacks,
+			this.__aiPlayers, this.__dealer, this.__trumpCandidate);
+		this.__handStage = HandStage.Bidding;
+		this.doHand();
+	}
+
 	private advanceHand(): void {
 		switch (this.__handStage) {
 			case HandStage.Dealing:
@@ -149,14 +157,9 @@ class Hand {
 				this.__playerHands = [[], [], [], []];
 				Hand.dealHands(deck, this.__playerHands, this.__dealer);
 				this.__trumpCandidate = deck.pop() as Card;
-
-				animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings);
-				animPlaceDealerButt(this.__dealer);
-
-				//set up bidding
-				this.__handStage = HandStage.Bidding;
-				this.__bid = new Bid(this.bidComplete, this.__playerHands, jacks, this.__aiPlayers,
-					this.__dealer, this.__trumpCandidate);
+				this.__waiting = true;
+				const wrapper = () => this.dealDone(jacks);
+				animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings, wrapper);
 				break;
 			case HandStage.Bidding:
 				this.__bid.doBidding();

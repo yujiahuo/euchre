@@ -67,8 +67,9 @@ class Bid {
 				break;
 			case BidStage.Discard:
 				this.__playerHands[this.__dealer].push(this.__trumpCandidate);
-				this.doDiscard(this.__dealer);
-				this.__stage = BidStage.Finished;
+				if (this.doDiscard(this.__dealer)) {
+					this.__stage = BidStage.Finished;
+				}
 				break;
 			default:
 				break;
@@ -164,12 +165,18 @@ class Bid {
 		return alone;
 	}
 
-	private doDiscard(dealer: Player): void {
+	private doDiscard(dealer: Player): boolean {
 		const aiPlayer = this.__aiPlayers[dealer];
 		const hand = this.__playerHands[dealer];
 		let discard: Card | null = null;
+		if (pauseForDiscard(aiPlayer, this.__trumpCandidate)) {
+			return false;
+		}
 		if (aiPlayer) {
 			discard = aiPlayer.pickDiscard(copyHand(hand), this.__trumpCandidate.suit);
+		} else {
+			discard = getCardFromHand(hand, queuedHoomanDiscardCardId as string);
+			discarding = false;
 		}
 		if (!discard || !isInHand(hand, discard)) {
 			discard = hand[0];
@@ -179,9 +186,10 @@ class Bid {
 			if (card.id === discard.id) {
 				hand.splice(i, 1);
 				animTakeTrump(this.__trumpCandidate, card, !!aiPlayer);
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	private advancePlayer(): void {

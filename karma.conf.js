@@ -33,17 +33,11 @@ module.exports = function (config) {
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['progress', 'karma-typescript'],
-
-		// web server port
-		port: 9876,
-
-		// enable / disable colors in the output (reporters and logs)
-		colors: true,
+		reporters: ['dots', 'karma-typescript'],
 
 		// level of logging
 		// possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-		logLevel: config.LOG_INFO,
+		logLevel: config.LOG_WARN,
 
 		// enable / disable watching file and executing tests whenever any file changes
 		autoWatch: true,

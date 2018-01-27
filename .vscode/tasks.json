@@ -15,5 +15,44 @@
 				"isDefault": true
 			}
 		},
+		{
+			"type": "shell",
+			"command": "node_modules/karma/bin/karma start karma.conf.js | awk -f karma-output-transform.awk",
+			"group": {
+				"kind": "test",
+				"isDefault": true,
+			},
+			"isBackground": true,
+			"label": "Start continuous integration",
+			"presentation": {
+				"reveal": "silent",
+			},
+			"problemMatcher": {
+				"severity": "warning",
+				"fileLocation": [
+					"relative",
+					"${workspaceFolder}/EuchreSolution/"
+				],
+				"applyTo": "allDocuments",
+				"pattern": [
+					{
+						"regexp": "^TEST CASE FAILED: ([^:]+):(\\d+):(\\d+)",
+						"file": 1,
+						"line": 2,
+						"column": 3,
+					},
+					{
+						"regexp": "^([^E]|E[^N]|EN[^D]|END.).*",
+						"message": 0,
+						"loop": true,
+					},
+				],
+				"background": {
+					"activeOnStart": false,
+					"beginsPattern": "PhantomJS .*LOG: ",
+					"endsPattern": "PhantomJS .*Executed (\\d+) of ",
+				},
+			},
+		},
 	],
 }

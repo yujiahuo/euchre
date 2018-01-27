@@ -54,10 +54,10 @@ describe("HandSpec", function () {
 		];
 		(hand as any).__playerHands = playerHands;
 		jacks = [
-			playerHands[0][1],
-			playerHands[1][0],
-			playerHands[2][4],
 			playerHands[0][0],
+			playerHands[2][4],
+			playerHands[1][0],
+			playerHands[0][1],
 		];
 		trumpCandidate = new Card(Suit.Spades, Rank.Ten);
 		(hand as any).__trumpCandidate = trumpCandidate;

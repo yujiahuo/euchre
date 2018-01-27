@@ -88,7 +88,7 @@ class Trick {
 		this.__playedCards.push({ player: this.__currentPlayer, card });
 		this.removeFromHand(this.__currentPlayer, card);
 
-		animShowText(Player[this.__currentPlayer] + " played " + card.id, MessageLevel.Step, 1);
+		animShowText(Player[this.__currentPlayer] + " played " + getCardShorthand(card), MessageLevel.Step, 1);
 		animPlayCard(this.__currentPlayer, card.id);
 
 		this.__currentPlayer = nextPlayer(this.__currentPlayer);

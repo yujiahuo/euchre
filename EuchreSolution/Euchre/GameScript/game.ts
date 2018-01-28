@@ -15,6 +15,8 @@ class Game {
 	private __settings: Settings;
 	private __hand: Hand | null;
 	private __aiPlayers: (EuchreAI | null)[];
+	private __doneCallback: () => void;
+	private __waiting = false;
 
 	public nsScore(): number {
 		return this.__nsScore;
@@ -27,7 +29,8 @@ class Game {
 	}
 
 	/* constructor */
-	constructor(settings: Settings) {
+	constructor(doneCallback: () => void, settings: Settings) {
+		this.__doneCallback = doneCallback;
 		this.__nsScore = 0;
 		this.__ewScore = 0;
 		this.__gameStage = GameStage.Playing;
@@ -41,21 +44,22 @@ class Game {
 	 ********************************/
 	private advanceGame(): void {
 		if (!this.__hand) {
-			this.__hand = new Hand(this.__dealer, this.__aiPlayers, this.__settings);
+			this.__hand = new Hand(this.handDone, this.__dealer, this.__aiPlayers, this.__settings);
 		}
+		this.__waiting = true;
 		this.__hand.doHand();
+	}
 
-		if (pausedForHuman) { return; }
-
-		if (this.__hand.isFinished()) {
-			this.handleEndHand();
-			this.__hand = null;
-			if (this.__nsScore >= 10 || this.__ewScore >= 10) {
-				this.endGame();
-			} else {
-				this.__dealer = getNextDealer(this.__dealer);
-			}
+	private handDone = (): void => {
+		this.__waiting = false;
+		this.handleEndHand();
+		this.__hand = null;
+		if (this.__nsScore >= 10 || this.__ewScore >= 10) {
+			this.endGame();
+		} else {
+			this.__dealer = getNextDealer(this.__dealer);
 		}
+		this.doGame();
 	}
 
 	private handleEndHand() {
@@ -78,8 +82,13 @@ class Game {
 	public doGame(): void {
 		while (!this.isFinished() && !pausedForHuman) {
 			this.advanceGame();
+			if (this.__waiting) {
+				break;
+			}
 		}
-		return;
+		if (this.isFinished()) {
+			this.__doneCallback();
+		}
 	}
 
 	public isFinished(): boolean {

@@ -1,4 +1,5 @@
 enum HandStage {
+	Dealing,
 	Bidding,
 	Playing,
 	Finished,
@@ -16,7 +17,8 @@ class Hand {
 	private __dealer: Player;
 	private __playerHands: Card[][]; //2d array of everyone's hands
 	private __aiPlayers: (EuchreAI | null)[];
-	private __handStage: HandStage;
+	private __handStage = HandStage.Dealing;
+	private __waiting = false;
 
 	//Bidding related
 	private __bid: Bid;
@@ -30,6 +32,7 @@ class Hand {
 	private __ewTricksWon = 0;
 	private __nsPointsWon = 0;
 	private __ewPointsWon = 0;
+	private __doneCallback: () => void;
 
 	/* Properties */
 	public handStage(): HandStage {
@@ -61,31 +64,21 @@ class Hand {
 	}
 
 	/* constructor */
-	constructor(dealer: Player, aiPlayers: (EuchreAI | null)[], settings: Settings) {
-		this.__settings = settings;
+	constructor(doneCallback: () => void, dealer: Player,
+		aiPlayers: (EuchreAI | null)[], settings: Settings) {
+		this.__doneCallback = doneCallback;
 		this.__dealer = dealer;
 		this.__aiPlayers = aiPlayers;
-		let player = dealer;
+		this.__settings = settings;
+
+		let player = this.__dealer;
 		for (let i = 0; i < 4; i++) {
 			player = getNextPlayer(player);
-			const aiPlayer = aiPlayers[player];
+			const aiPlayer = this.__aiPlayers[player];
 			if (aiPlayer) {
 				aiPlayer.init(player);
 			}
 		}
-
-		//set up the deck and everyone's hands
-		const { deck, jacks } = Hand.getShuffledDeck();
-		this.__playerHands = [[], [], [], []];
-		Hand.dealHands(deck, this.__playerHands, this.__dealer);
-		this.__trumpCandidate = deck.pop() as Card;
-
-		animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings);
-		animPlaceDealerButt(this.__dealer);
-
-		//set up bidding
-		this.__handStage = HandStage.Bidding;
-		this.__bid = new Bid(this.__playerHands, jacks, this.__aiPlayers, this.__dealer, this.__trumpCandidate);
 	}
 
 	public static getShuffledDeck(): ShuffleResult {
@@ -134,38 +127,50 @@ class Hand {
 		}
 	}
 
+	private bidComplete = (result: BidResult | null): void => {
+		this.__waiting = false;
+		this.__bidResult = result;
+		if (result) {
+			const nextPlayer = getNextPlayer(this.__dealer, result.alone ? result.maker : undefined);
+			this.__trick = new Trick(this.handleEndTrick, result.trump, result.alone,
+				this.__playerHands, this.__aiPlayers, result.maker, nextPlayer);
+			this.__handStage = HandStage.Playing;
+		} else {
+			this.endHand(false);
+		}
+		this.doHand();
+	}
+
 	private advanceHand(): void {
 		switch (this.__handStage) {
+			case HandStage.Dealing:
+				//set up the deck and everyone's hands
+				const { deck, jacks } = Hand.getShuffledDeck();
+				this.__playerHands = [[], [], [], []];
+				Hand.dealHands(deck, this.__playerHands, this.__dealer);
+				this.__trumpCandidate = deck.pop() as Card;
+
+				animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings);
+				animPlaceDealerButt(this.__dealer);
+
+				//set up bidding
+				this.__handStage = HandStage.Bidding;
+				this.__bid = new Bid(this.bidComplete, this.__playerHands, jacks, this.__aiPlayers,
+					this.__dealer, this.__trumpCandidate);
+				break;
 			case HandStage.Bidding:
-				const bidResult = this.__bid.doBidding();
-
-				if (pausedForHuman) { return; }
-
-				this.__bidResult = bidResult;
-				if (bidResult) {
-					this.__trick = new Trick(bidResult.trump, bidResult.alone,
-						this.__playerHands, this.__aiPlayers, bidResult.maker,
-						getNextPlayer(this.__dealer));
-					this.__handStage = HandStage.Playing;
-				} else {
-					this.endHand(false);
-				}
+				this.__bid.doBidding();
 				break;
 			case HandStage.Playing:
-				const trickEnded = this.__trick.doTrick();
-
-				if (pausedForHuman) { return; }
-
-				if (trickEnded) {
-					this.handleEndTrick();
-				}
+				this.__trick.doTrick();
 				break;
 			default:
 				break;
 		}
 	}
 
-	private handleEndTrick(): void {
+	private handleEndTrick = (): void => {
+		this.__waiting = false;
 		if (this.__trick.winningTeam() === Team.NorthSouth) {
 			this.__nsTricksWon++;
 			animShowText("NS won this trick", MessageLevel.Step, 2);
@@ -176,14 +181,14 @@ class Hand {
 		this.__numTricksPlayed++;
 		if (this.__numTricksPlayed >= 5) {
 			this.endHand(true);
-		} else {
-			const bidResult = this.__bidResult as BidResult;
-			this.__trick = new Trick(bidResult.trump, bidResult.alone, this.__playerHands,
-				this.__aiPlayers, bidResult.maker, this.__trick.winner() as Player);
+			return;
 		}
+		const bidResult = this.__bidResult as BidResult;
+		this.__trick = new Trick(this.handleEndTrick, bidResult.trump, bidResult.alone,
+			this.__playerHands, this.__aiPlayers, bidResult.maker, this.__trick.winner() as Player);
 	}
 
-	private endHand(completed: boolean): void {
+	private endHand = (completed: boolean): void => {
 		if (!completed || !this.__bidResult) {
 			this.__handStage = HandStage.Finished;
 			return; //TODO: deal with no one bidding
@@ -200,8 +205,13 @@ class Hand {
 	public doHand(): void {
 		while (!this.isFinished() && !pausedForHuman) {
 			this.advanceHand();
+			if (this.__waiting) {
+				break;
+			}
 		}
-		return;
+		if (this.isFinished()) {
+			this.__doneCallback();
+		}
 	}
 
 	public isFinished(): boolean {

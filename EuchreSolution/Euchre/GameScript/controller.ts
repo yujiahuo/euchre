@@ -20,6 +20,7 @@ class Controller {
 	private __settings: Settings;
 	private __game: Game;
 	private __startTime: number;
+	private __gameCount: number;
 
 	public logText = "";
 
@@ -114,25 +115,26 @@ class Controller {
 	 * Public functions
 	 ********************************/
 	public playGames(): void {
-		let count: number = 0;
+		this.__gameCount = 0;
 
-		if (this.__settings.statMode) {
-			this.__startTime = performance.now();
-			while (count < this.__settings.numGamesToPlay) {
-				this.__game = new Game(this.__settings);
-				this.__game.doGame();
-				if (this.__game.isFinished()) {
-					this.handleEndGame();
-					count++;
-				}
-			}
+		this.playGame();
+	}
+
+	private playGame(): void {
+		this.__game = new Game(this.gameDone, this.__settings);
+		this.continue();
+	}
+
+	private gameDone = (): void => {
+		this.handleEndGame();
+		this.__gameCount++;
+		if (this.__gameCount < this.__settings.numGamesToPlay) {
+			this.playGame();
+		} else if (this.__settings.statMode) {
 			animShowText("Games won: " + this.__nsGamesWon + " : " + this.__ewGamesWon, MessageLevel.Multigame);
 			animShowText("Total score: " + this.__nsTotalScore + " : " + this.__ewTotalScore, MessageLevel.Multigame);
 			animShowText("Total time: " + (performance.now() - this.__startTime).toFixed(2) + "ms", MessageLevel.Multigame);
 			updateLog(this.logText);
-		} else {
-			this.__game = new Game(this.__settings);
-			this.__game.doGame();
 		}
 	}
 

@@ -7,6 +7,7 @@ class Trick {
 	private __aiPlayers: (EuchreAI | null)[];
 	private __maker: Player;
 	private __currentPlayer: Player;
+	private __doneCallback: () => void;
 
 	/* Properties */
 	public playersPlayed(): number {
@@ -32,8 +33,9 @@ class Trick {
 	}
 
 	/* constructor */
-	constructor(trump: Suit, alone: boolean, hands: Card[][],
+	constructor(doneCallback: () => void, trump: Suit, alone: boolean, hands: Card[][],
 		aiPlayers: (EuchreAI | null)[], maker: Player, firstPlayer: Player) {
+		this.__doneCallback = doneCallback;
 		this.__trump = trump;
 		this.__alone = alone;
 		this.__playerHands = hands;
@@ -111,11 +113,13 @@ class Trick {
 	}
 
 	/* Public functions */
-	public doTrick(): boolean {
+	public doTrick(): void {
 		while (!this.isFinished() && !pausedForHuman) {
 			this.advanceTrick();
 		}
-		return true;
+		if (this.isFinished()) {
+			this.__doneCallback();
+		}
 	}
 
 	public isFinished(): boolean {

@@ -37,6 +37,30 @@ function animMoveCard(cardOrIdOrElement: Card | string | HTMLDivElement,
 	}
 }
 
+function dealOneRoundToOnePlayer(player: Player, hand: Card[], start: number, end: number,
+	isOpenHands: boolean, hasHooman: boolean): void {
+
+	const flippedUp = (isOpenHands || (hasHooman && player === Player.South));
+	const cardsToDeal: Card[] = [];
+
+	const playerCopy = player;
+	const delegate = () => {
+		for (let i = start; i < end; i++) {
+			const card = hand[i];
+			const cardElem = getCardElement(card) as HTMLDivElement;
+			if (hasHooman && playerCopy === Player.South) {
+				cardElem.addEventListener("click", clickCard);
+			}
+			cardsToDeal.push(card);
+		}
+
+		for (let i = 0; i < cardsToDeal.length; i++) {
+			animDealSingle(playerCopy, cardsToDeal[i], i + start, flippedUp);
+		}
+	};
+	AnimController.queueAnimation(AnimType.DealHands, delegate);
+}
+
 function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player,
 	settings: Settings, callback: () => void): void {
 
@@ -65,49 +89,13 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player,
 	let player = dealer;
 	for (let i = 0; i < hands.length; i++) {
 		player = getNextPlayer(player);
-		const flippedUp = (isOpenHands || (hasHooman && player === Player.South));
 		const dealThree = (dealer + i) % 2;
-		const cardsToDeal: Card[] = [];
-
-		const playerCopy = player;
-		const dealFirstRoundDelegate = () => {
-			for (let j = 0; j < 2 + dealThree; j++) {
-				const card = hands[playerCopy][j];
-				const cardElem = getCardElement(card) as HTMLDivElement;
-				if (hasHooman && playerCopy === Player.South) {
-					cardElem.addEventListener("click", clickCard);
-				}
-				cardsToDeal.push(card);
-			}
-
-			for (let j = 0; j < cardsToDeal.length; j++) {
-				animDealSingle(playerCopy, cardsToDeal[j], j, flippedUp);
-			}
-		};
-		AnimController.queueAnimation(AnimType.DealHands, dealFirstRoundDelegate);
+		dealOneRoundToOnePlayer(player, hands[player], 0, 2 + dealThree, isOpenHands, hasHooman);
 	}
 	for (let i = 0; i < hands.length; i++) {
 		player = getNextPlayer(player);
-		const flippedUp = (isOpenHands || (hasHooman && player === Player.South));
 		const dealThree = (dealer + i) % 2;
-		const cardsToDeal: Card[] = [];
-
-		const playerCopy = player;
-		const dealSecondRoundDelegate = () => {
-			for (let j = 2 + dealThree; j < hands[playerCopy].length; j++) {
-				const card = hands[playerCopy][j];
-				const cardElem = getCardElement(card) as HTMLDivElement;
-				if (hasHooman && playerCopy === Player.South) {
-					cardElem.addEventListener("click", clickCard);
-				}
-				cardsToDeal.push(card);
-			}
-
-			for (let j = 0; j < cardsToDeal.length; j++) {
-				animDealSingle(playerCopy, cardsToDeal[j], j + 2 + dealThree, flippedUp);
-			}
-		};
-		AnimController.queueAnimation(AnimType.DealHands, dealSecondRoundDelegate);
+		dealOneRoundToOnePlayer(player, hands[player], 2 + dealThree, hands[player].length, isOpenHands, hasHooman);
 	}
 
 	const sortHandsDelegate = () => {
@@ -122,11 +110,11 @@ function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player,
 	};
 	AnimController.queueAnimation(AnimType.DealHands, sortHandsDelegate);
 
-	const showTrumpCandidateCallback = () => {
+	const showTrumpCandidateDelegate = () => {
 		animFlipCard(trumpCandidateId, true);
 		callback();
 	};
-	AnimController.queueAnimation(AnimType.DealHands, showTrumpCandidateCallback);
+	AnimController.queueAnimation(AnimType.DealHands, showTrumpCandidateDelegate);
 }
 
 function animDealSingle(player: Player, cardOrIdOrElement: Card | string | HTMLDivElement,

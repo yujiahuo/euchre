@@ -58,8 +58,7 @@
 		{
 			"label": "Run mutation testing",
 			"type": "shell",
-			//TODO: figure out why xdg-open doesn't work and fix it
-			"command": "node_modules/.bin/stryker run && firefox '${workspaceFolder}/reports/mutation/html/GameScript/index.html'",
+			"command": "node_modules/.bin/stryker run && xdg-open '${workspaceFolder}/reports/mutation/html/GameScript/index.html'",
 			"osx": {
 				"command": "node_modules/.bin/stryker run && open '${workspaceFolder}/reports/mutation/html/GameScript/index.html'",
 			},

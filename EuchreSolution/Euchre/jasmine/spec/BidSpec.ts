@@ -21,6 +21,7 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 	stage: BidStage, alone: boolean) {
 	let bid: Bid;
 	let bidResult: BidResult;
+	let discardSpy: jasmine.Spy;
 
 	describe(description, function () {
 		beforeEach(function (done: DoneFn) {
@@ -29,6 +30,7 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 				bidResult = result as BidResult;
 				done();
 			};
+			discardSpy = spyOn(aiPlayers[maker], "pickDiscard").and.callThrough();
 			bid = new Bid(callback, playerHands, jacks, aiPlayers, dealer, trumpCandidate);
 			bid.doBidding();
 		});
@@ -47,6 +49,10 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 
 		it("stage", function () {
 			expect(bidResult.stage).toBe(stage);
+		});
+
+		it("discard", function () {
+			expect(discardSpy.calls.count()).toBe(stage == BidStage.Round1 ? 1 : 0);
 		});
 
 		it("alone", function () {
@@ -516,6 +522,24 @@ describe("BidSpec", function () {
 					expect(card.rank).toBeLessThanOrEqual(Rank.Ace);
 				}
 			}
+		});
+	});
+
+	describe("UI tests", () => {
+		//TODO: update this to just verify that it happens before the human player's turn to bid
+		it("Resets the alone checkbox to unchecked", () => {
+			const aloneCheckbox = document.createElement("input");
+			aloneCheckbox.id = "alone";
+			aloneCheckbox.type = "checkbox";
+			aloneCheckbox.checked = true;
+			document.body.appendChild(aloneCheckbox);
+
+			const retrievedAloneCheckbox = document.getElementById("alone") as HTMLInputElement;
+			expect(retrievedAloneCheckbox).toBe(aloneCheckbox);
+
+			new Bid(() => { }, [], [], [], Player.South, new Card(Suit.Clubs, Rank.Nine));
+			expect(retrievedAloneCheckbox.checked).toBeFalsy();
+			document.body.removeChild(retrievedAloneCheckbox);
 		});
 	});
 });

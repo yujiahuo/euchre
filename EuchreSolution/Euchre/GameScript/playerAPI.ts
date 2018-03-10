@@ -113,16 +113,12 @@ function getCardValue(card: Card, trickSuit?: Suit, trump?: Suit): number {
 //returns: the best card of the trick and who played it as a PlayedCard
 function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null {
 	if (cards.length === 0) { return null; }
-	if (cards.length === 1) { return cards[0]; }
 
 	let bestCard = cards[0];
 	const trickSuit: Suit = bestCard.card.suit;
 	let bestValue: number = getCardValue(bestCard.card, trickSuit, trump);
 
 	for (let i = 1; i < cards.length; i++) {
-		if (cards[i].card.suit !== trickSuit && cards[i].card.suit !== trump) {
-			continue;
-		}
 		const value = getCardValue(cards[i].card, trickSuit, trump);
 		if (value > bestValue) {
 			bestCard = cards[i];
@@ -136,7 +132,6 @@ function getBestCardPlayed(cards: PlayedCard[], trump: Suit): PlayedCard | null 
 //returns: the strongest card in your hand as a Card
 function getBestCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card | null {
 	if (hand.length === 0) { return null; }
-	if (hand.length === 1) { return hand[0]; }
 
 	let bestCard: Card = hand[0];
 	let bestValue: number = getCardValue(bestCard, trickSuit, trump);

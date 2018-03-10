@@ -4,6 +4,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Start continuous build",
 			"type": "typescript",
 			"tsconfig": "EuchreSolution/Euchre/tsconfig.json",
 			"option": "watch",
@@ -16,6 +17,7 @@
 			}
 		},
 		{
+			"label": "Start continuous integration",
 			"type": "shell",
 			"command": "node_modules/karma/bin/karma start karma.conf.ts | grep --line-buffered -v '<Jasmine>' | awk -f karma-output-transform.awk",
 			"group": {
@@ -23,7 +25,6 @@
 				"isDefault": true,
 			},
 			"isBackground": true,
-			"label": "Start continuous integration",
 			"presentation": {
 				"reveal": "silent",
 			},
@@ -52,6 +53,24 @@
 					"beginsPattern": "PhantomJS .*LOG: ",
 					"endsPattern": "PhantomJS .*Executed (\\d+) of ",
 				},
+			},
+		},
+		{
+			"label": "Run mutation testing",
+			"type": "shell",
+			//TODO: figure out why xdg-open doesn't work and fix it
+			"command": "node_modules/.bin/stryker run && firefox '${workspaceFolder}/reports/mutation/html/GameScript/index.html'",
+			"osx": {
+				"command": "node_modules/.bin/stryker run && open '${workspaceFolder}/reports/mutation/html/GameScript/index.html'",
+			},
+			"windows": {
+				"command": "node_modules\\.bin\\stryker run && start '${workspaceFolder}\\reports\\mutation\\html\\GameScript\\index.html'",
+			},
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
 			},
 		},
 	],

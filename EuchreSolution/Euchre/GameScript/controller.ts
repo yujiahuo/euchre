@@ -19,8 +19,8 @@ class Controller {
 	private __ewTotalScore: number;
 	private __settings: Settings;
 	private __game: Game;
-	private __startTime: number;
-	private __gameCount: number;
+	private __startTime: number = 0;
+	private __gameCount: number = 0;
 
 	public logText = "";
 
@@ -73,6 +73,7 @@ class Controller {
 		this.__ewGamesWon = 0;
 
 		this.grabSettings();
+		this.__game = new Game(this.gameDone, this.__settings);
 	}
 
 	/*******************************
@@ -116,6 +117,7 @@ class Controller {
 	 ********************************/
 	public playGames(): void {
 		this.__gameCount = 0;
+		this.__startTime = performance.now();
 
 		AnimController.setDoDelays(!this.__settings.statMode);
 		this.playGame();

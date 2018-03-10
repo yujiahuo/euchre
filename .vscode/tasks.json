@@ -17,7 +17,7 @@
 		},
 		{
 			"type": "shell",
-			"command": "node_modules/karma/bin/karma start karma.conf.js | awk -f karma-output-transform.awk",
+			"command": "node_modules/karma/bin/karma start karma.conf.ts | grep --line-buffered -v '<Jasmine>' | awk -f karma-output-transform.awk",
 			"group": {
 				"kind": "test",
 				"isDefault": true,

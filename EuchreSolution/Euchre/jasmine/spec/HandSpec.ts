@@ -91,10 +91,10 @@ describe("HandSpec", function () {
 			expect(hand.dealer()).toBe(Player.South);
 		});
 		it("playerHands", function () {
-			expect(hand.playerHands()).toBeUndefined();
+			expect(hand.playerHands()).toEqual([[], [], [], []]);
 		});
 		it("trumpCandidate", function () {
-			expect(hand.trumpCandidate()).toBeUndefined();
+			expect(hand.trumpCandidate()).toBeNull();
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(0);

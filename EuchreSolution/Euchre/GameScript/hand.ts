@@ -15,18 +15,18 @@ class Hand {
 	//General stuff
 	private __settings: Settings;
 	private __dealer: Player;
-	private __playerHands: Card[][]; //2d array of everyone's hands
+	private __playerHands: Card[][] = [[], [], [], []]; //2d array of everyone's hands
 	private __aiPlayers: (EuchreAI | null)[];
 	private __handStage = HandStage.Dealing;
 	private __waiting = false;
 
 	//Bidding related
-	private __bid: Bid;
-	private __bidResult: BidResult | null;
-	private __trumpCandidate: Card; //turned up card
+	private __bid: Bid | null = null;
+	private __bidResult: BidResult | null = null;
+	private __trumpCandidate: Card | null = null; //turned up card
 
 	//Playing related
-	private __trick: Trick;
+	private __trick: Trick | null = null;
 	private __numTricksPlayed = 0;
 	private __nsTricksWon = 0;
 	private __ewTricksWon = 0;
@@ -44,7 +44,7 @@ class Hand {
 	public playerHands(): Card[][] {
 		return this.__playerHands;
 	}
-	public trumpCandidate(): Card | undefined {
+	public trumpCandidate(): Card | null {
 		return this.__trumpCandidate;
 	}
 	public numTricksPlayed(): number {
@@ -144,7 +144,7 @@ class Hand {
 	private dealDone = (jacks: Card[]): void => {
 		this.__waiting = false;
 		this.__bid = new Bid(this.bidComplete, this.__playerHands, jacks,
-			this.__aiPlayers, this.__dealer, this.__trumpCandidate);
+			this.__aiPlayers, this.__dealer, this.__trumpCandidate as Card);
 		this.__handStage = HandStage.Bidding;
 		this.doHand();
 	}
@@ -162,10 +162,10 @@ class Hand {
 				animDeal(this.__playerHands, this.__trumpCandidate, this.__dealer, this.__settings, wrapper);
 				break;
 			case HandStage.Bidding:
-				this.__bid.doBidding();
+				(this.__bid as Bid).doBidding();
 				break;
 			case HandStage.Playing:
-				this.__trick.doTrick();
+				(this.__trick as Trick).doTrick();
 				break;
 			default:
 				break;
@@ -174,6 +174,9 @@ class Hand {
 
 	private handleEndTrick = (): void => {
 		this.__waiting = false;
+		if (!this.__trick) {
+			return;
+		}
 		if (this.__trick.winningTeam() === Team.NorthSouth) {
 			this.__nsTricksWon++;
 			animShowText("NS won this trick", MessageLevel.Step, 2);

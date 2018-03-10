@@ -4,7 +4,7 @@
 /* If last player and partner is winning, sluff
 /*******************************************************/
 class DecentAI implements EuchreAI {
-	private handStrength: number;
+	private handStrength: number = 0;
 
 	//tslint:disable-next-line:no-empty
 	public init(_me: Player): void { }

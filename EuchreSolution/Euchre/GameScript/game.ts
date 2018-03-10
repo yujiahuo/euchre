@@ -13,7 +13,7 @@ class Game {
 	private __gameStage: GameStage;
 	private __dealer: Player;
 	private __settings: Settings;
-	private __hand: Hand | null;
+	private __hand: Hand | null = null;
 	private __aiPlayers: (EuchreAI | null)[];
 	private __doneCallback: () => void;
 	private __waiting = false;

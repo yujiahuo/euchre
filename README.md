@@ -7,24 +7,24 @@ A Euchre game and simulator in TypeScript and HTML
 You can use Visual Studio or Visual Studio Code. We've done more to integrate well with Visual Studio Code, so that's what is covered here.
 
 ### Installing software
-Get [Visual Studio Code](https://code.visualstudio.com/) and [Node.js](https://nodejs.org/en/download/package-manager/) if you don't have them already.
+Get [Visual Studio Code](https://code.visualstudio.com/),  [Node.js](https://nodejs.org/en/download/package-manager/), and [git](https://git-scm.com/downloads) if you don't have them already.
 
 If you want unit test failures to show up as issues in VS Code, you will also want [awk](http://gnuwin32.sourceforge.net/packages/gawk.htm). Once it's installed, set it up in your PATH so you can just run awk at the command line. In Windows 10:
-1. Type "environment" into the start menu, then select "Edit environment variables for your account" or "Edit the system environment variables"
+1. Type `environment` into the start menu, then select `Edit environment variables for your account` or `Edit the system environment variables`
 2. Click the Environment Variables button on the popup that opens
 3. Click PATH in the appropriate list, then click Edit
-4. Click new, then enter the Gawk installation directory (typically C:\Program Files (x86)\GnuWin32\bin)
+4. Click new, then enter the Gawk installation directory (typically `C:\Program Files (x86)\GnuWin32\bin`)
 5. Click OK on all the popups you opened
-6. (optional) To verify that you did it right, open a new command prompt window and type "awk". If you get usage information, you're good to go.
+6. (optional) To verify that you did it right, open a new command prompt window and type `awk`. If you get usage information, you're good to go.
 
-**You will need to reboot before VS Code's terminal picks up on changes to PATH**
+**Note:** You will need to reboot before VS Code's terminal picks up on changes to PATH
 
-Run npm install in the project directory to get the needed dependencies.
+Run `npm install` in the project directory to get the needed dependencies.
 
 ### VS Code Tasks
 Run via Tasks -> Run Task
 | Task                         | Description |
 | ---                          | --- |
-| Start continuous build       | Builds all TypeScript files in watch mode (will build as you modify things) |
-| Start continuous integration | Runs all unit tests in watch mode (will run again as you modify things). Test failures will show up as issues (requires awk). |
+| Start continuous build       | Builds all TypeScript files in watch mode (will re-build as you modify things). Also available via `Ctrl+Shift+B`. |
+| Start continuous integration | Runs all unit tests in watch mode (will re-test as you modify things). Test failures will show up as issues (requires awk). |
 | Run mutation tests           | Runs all mutation tests (once), and opens the report if it succeeds |

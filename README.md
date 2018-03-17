@@ -17,9 +17,11 @@ If you want unit test failures to show up as issues in VS Code, you will also wa
 5. Click OK on all the popups you opened
 6. (optional) To verify that you did it right, open a new command prompt window and type `awk`. If you get usage information, you're good to go.
 
-**Note:** You will need to reboot before VS Code's terminal picks up on changes to PATH
+**Note:** You will need to reboot before VS Code's terminal picks up on changes to PATH (some tasks will not work until you do)
 
 Run `npm install` in the project directory to get the needed dependencies.
+
+You should be prompted to install workspace-recommended extensions when you open the project in VS Code. If not, you can go to the Extensions tab, then click the more menu and Show Recommended Extensions to see the recommendations.
 
 ### VS Code Tasks
 Run via Tasks -> Run Task
@@ -28,3 +30,8 @@ Run via Tasks -> Run Task
 | Start continuous build       | Builds all TypeScript files in watch mode (will re-build as you modify things). Also available via `Ctrl+Shift+B`. |
 | Start continuous integration | Runs all unit tests in watch mode (will re-test as you modify things). Test failures will show up as issues (requires awk). |
 | Run mutation tests           | Runs all mutation tests (once), and opens the report if it succeeds |
+
+### Seeing code coverage
+If you want to see code coverage decorations, press `Ctrl+Shift+P`, type `lcov`, and select `LCOV Menu`, then `Enable decorations`. This uses the data from the `Start continuous integration` task, and will update a few seconds after you save a file with the new coverage data.
+
+If that doesn't change anything in the TypeScript files you have open, you may need to add another coverage path in `settings.json` (to the `lcov.path` setting). Add each folder under `coverage` to the array, and please send a pull request on GitHub with that change.

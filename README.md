@@ -23,6 +23,8 @@ Run npm install in the project directory to get the needed dependencies.
 
 ### VS Code Tasks
 Run via Tasks -> Run Task
-* Start continuous build: builds all TypeScript files in watch mode (will build as you modify things).
-* Start continuous integration: runs all unit tests in watch mode (will run again as you modify things). Test failures will show up as issues (requires awk).
-* Run mutation tests: runs all mutation tests (once), and opens the report if it succeeds.
+| Task                         | Description |
+| ---                          | --- |
+| Start continuous build       | Builds all TypeScript files in watch mode (will build as you modify things) |
+| Start continuous integration | Runs all unit tests in watch mode (will run again as you modify things). Test failures will show up as issues (requires awk). |
+| Run mutation tests           | Runs all mutation tests (once), and opens the report if it succeeds |

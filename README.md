@@ -27,7 +27,8 @@ You should be prompted to install workspace-recommended extensions when you open
 Run via Tasks -> Run Task
 | Task                         | Description |
 | ---                          | --- |
-| Start continuous build       | Builds all TypeScript files in watch mode (will re-build as you modify things). Also available via `Ctrl+Shift+B`. |
+| tsc: build                   | Builds all TypeScript files (once). Also available via `Ctrl+Shift+B`. |
+| tsc: watch                   | Builds all TypeScript files in watch mode (will re-build as you modify things). Also available via `Ctrl+Shift+B`. |
 | Start continuous integration | Runs all unit tests in watch mode (will re-test as you modify things). Test failures will show up as issues (requires awk). |
 | Run mutation tests           | Runs all mutation tests (once), and opens the report if it succeeds |
 

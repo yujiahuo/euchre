@@ -35,7 +35,7 @@ describe("Trick", function () {
 			],
 		];
 		aiPlayers = [new IdiotAI(), new IdiotAI(), new IdiotAI(), new IdiotAI()];
-		trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.South);
+		trick = new TestTrick(() => { return; }, Suit.Spades, false, hands, aiPlayers, Player.South, Player.South);
 	});
 
 	describe("playersPlayed", function () {
@@ -194,7 +194,7 @@ describe("Trick", function () {
 
 	describe("playCard", function () {
 		beforeEach(function () {
-			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
+			trick = new TestTrick(() => { return; }, Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
 		});
 
 		it("Handles a null card", function () {
@@ -267,7 +267,7 @@ describe("Trick", function () {
 
 		describe("Alone", function () {
 			beforeEach(function () {
-				trick = new TestTrick(Suit.Spades, true, hands, aiPlayers, Player.South, Player.South);
+				trick = new TestTrick(() => { return; }, Suit.Spades, true, hands, aiPlayers, Player.South, Player.South);
 			});
 
 			it("Starts not finished", function () {
@@ -285,63 +285,71 @@ describe("Trick", function () {
 		});
 	});
 
-	describe("winningTeam+winner", function () {
+	describe("winningTeam/winner", function () {
 		it("Starts out null", function () {
 			expect(trick.winningTeam()).toBeNull();
 		});
 
 		it("Updates correctly", function () {
-			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
+			trick = new TestTrick(() => { return; }, Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
 
-			trick.playCard(null);
+			trick.playCard(new Card(Suit.Diamonds, Rank.Ace));
 			expect(trick.winningTeam()).toBe(Team.EastWest);
-			trick.playCard(null);
+			trick.playCard(new Card(Suit.Hearts, Rank.Jack));
 			expect(trick.winningTeam()).toBe(Team.EastWest);
-			trick.playCard(null);
+			trick.playCard(new Card(Suit.Clubs, Rank.Ace));
 			expect(trick.winningTeam()).toBe(Team.EastWest);
-			trick.playCard(null);
+			trick.playCard(new Card(Suit.Spades, Rank.Right));
 			expect(trick.winningTeam()).toBe(Team.NorthSouth);
 		});
 	});
 
 	describe("doTrick", function () {
-		it("Works with all players", function () {
-			trick = new TestTrick(Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
-			expect(trick.doTrick()).toBe(true);
-			expect(trick.currentPlayer()).toBe(Player.West);
-			expect(trick.isFinished()).toBe(true);
-			expect(trick.winner()).toBe(Player.South);
-			expect(trick.winningTeam()).toBe(Team.NorthSouth);
-			expect(trick.suitLead()).toBe(Suit.Diamonds);
-			expect(trick.playersPlayed()).toBe(4);
-			const playedCards = trick.cardsPlayed();
-			expect(playedCards.length).toBe(4);
-			expect(playedCards[0].player).toBe(Player.West);
-			expect(playedCards[1].player).toBe(Player.North);
-			expect(playedCards[2].player).toBe(Player.East);
-			expect(playedCards[3].player).toBe(Player.South);
+		describe("Everyone playing", function () {
+			beforeEach(function (done: DoneFn) {
+				trick = new TestTrick(done, Suit.Spades, false, hands, aiPlayers, Player.South, Player.West);
+				trick.doTrick();
+			});
+			it("Works", function () {
+				expect(trick.currentPlayer()).toBe(Player.West);
+				expect(trick.isFinished()).toBe(true);
+				expect(trick.winner()).toBe(Player.South);
+				expect(trick.winningTeam()).toBe(Team.NorthSouth);
+				expect(trick.suitLead()).toBe(Suit.Diamonds);
+				expect(trick.playersPlayed()).toBe(4);
+				const playedCards = trick.cardsPlayed();
+				expect(playedCards.length).toBe(4);
+				expect(playedCards[0].player).toBe(Player.West);
+				expect(playedCards[1].player).toBe(Player.North);
+				expect(playedCards[2].player).toBe(Player.East);
+				expect(playedCards[3].player).toBe(Player.South);
+			});
 		});
 
-		it("Works with a player going alone", function () {
-			trick = new TestTrick(Suit.Spades, true, hands, aiPlayers, Player.South, Player.West);
-			expect(trick.doTrick()).toBe(true);
-			expect(trick.currentPlayer()).toBe(Player.West);
-			expect(trick.isFinished()).toBe(true);
-			expect(trick.winner()).toBe(Player.South);
-			expect(trick.winningTeam()).toBe(Team.NorthSouth);
-			expect(trick.suitLead()).toBe(Suit.Diamonds);
-			expect(trick.playersPlayed()).toBe(3);
-			const playedCards = trick.cardsPlayed();
-			expect(playedCards.length).toBe(3);
-			expect(playedCards[0].player).toBe(Player.West);
-			expect(playedCards[1].player).toBe(Player.East);
-			expect(playedCards[2].player).toBe(Player.South);
+		describe("A player goes alone", function () {
+			beforeEach(function (done: DoneFn) {
+				trick = new TestTrick(done, Suit.Spades, true, hands, aiPlayers, Player.South, Player.West);
+				trick.doTrick();
+			});
+			it("Works with a player going alone", function () {
+				expect(trick.currentPlayer()).toBe(Player.West);
+				expect(trick.isFinished()).toBe(true);
+				expect(trick.winner()).toBe(Player.South);
+				expect(trick.winningTeam()).toBe(Team.NorthSouth);
+				expect(trick.suitLead()).toBe(Suit.Diamonds);
+				expect(trick.playersPlayed()).toBe(3);
+				const playedCards = trick.cardsPlayed();
+				expect(playedCards.length).toBe(3);
+				expect(playedCards[0].player).toBe(Player.West);
+				expect(playedCards[1].player).toBe(Player.East);
+				expect(playedCards[2].player).toBe(Player.South);
+			});
 		});
 	});
 });
 
 class TestTrick extends Trick {
 	public playCard(card: Card | null): Card | null {
-		return super.playCard(card);
+		return super.playCard(card, false);
 	}
 }

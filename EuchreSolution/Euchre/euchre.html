@@ -2,23 +2,24 @@
 <html lang="en-US">
 <head>
 	<meta charset="utf-8"/>
-	<script src="GameScript/xor4096.js" type="text/javascript"></script>
-	<script src="GameScript/card.js" type="text/javascript"></script>
-	<script src="GameScript/globs.js" type="text/javascript"></script>
-	<script src="GameScript/hooman.js" type="text/javascript"></script>
-	<script src="GameScript/animation.js" type="text/javascript"></script>
-	<script src="GameScript/trick.js" type="text/javascript"></script>
-	<script src="GameScript/hand.js" type="text/javascript"></script>
-	<script src="GameScript/bid.js" type="text/javascript"></script>
-	<script src="GameScript/game.js" type="text/javascript"></script>
-	<script src="GameScript/controller.js" type="text/javascript"></script>
-	<script src="GameScript/menuLogic.js" type="text/javascript"></script>
-	<script src="GameScript/playerAPI.js" type="text/javascript"></script>
-	<script src="AIScript/decentAI.js" type="text/javascript"></script>
-	<script src="AIScript/idiotAI.js" type="text/javascript"></script>
-	<script src="AIScript/testAI.js" type="text/javascript"></script>
-	<script src="AIScript/MultiAI.js" type="text/javascript"></script>
-	<script src="AIScript/BiddingTestAI.js" type="text/javascript"></script>
+	<script src="GameScript/xor4096.js"></script>
+	<script src="GameScript/animController.js"></script>
+	<script src="GameScript/card.js"></script>
+	<script src="GameScript/globs.js"></script>
+	<script src="GameScript/hooman.js"></script>
+	<script src="GameScript/animation.js"></script>
+	<script src="GameScript/trick.js"></script>
+	<script src="GameScript/hand.js"></script>
+	<script src="GameScript/bid.js"></script>
+	<script src="GameScript/game.js"></script>
+	<script src="GameScript/controller.js"></script>
+	<script src="GameScript/menuLogic.js"></script>
+	<script src="GameScript/playerAPI.js"></script>
+	<script src="AIScript/decentAI.js"></script>
+	<script src="AIScript/idiotAI.js"></script>
+	<script src="AIScript/testAI.js"></script>
+	<script src="AIScript/MultiAI.js"></script>
+	<script src="AIScript/BiddingTestAI.js"></script>
 	<link rel="stylesheet" type="text/css" href="Styles/style.css" id="style"/>
 	<link rel="stylesheet" type="text/css" href="Styles/menuStyle.css" id="menuStyle"/>
 
@@ -226,9 +227,8 @@
 			</div>
 
 			<div id="orderUpPrompt">
-				<div id="alone" onclick="clickGoAlone()">
-					Alone
-				</div>
+				<input id="alone" type="checkbox">
+				<label for="alone">Alone</label>
 				<button id="orderUp" onclick="clickOrderUp()">Order Up</button>
 				<button id="pickSpades" onclick="clickTrump(Suit.Spades)">Spades</button>
 				<button id="pickClubs" onclick="clickTrump(Suit.Clubs)">Clubs</button>

@@ -34,12 +34,13 @@ function countSuits(hand: Card[]): number {
 }
 
 //**NOT TESTING**
-function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | undefined {
+function getFirstLegalCard(hand: Card[], suitLead?: Suit): Card | null {
 	for (const card of hand) {
 		if (isValidPlay(hand, card, suitLead)) {
 			return card;
 		}
 	}
+	return null;
 }
 
 function getTeam(player: Player): Team {
@@ -104,12 +105,10 @@ function hasSuit(hand: Card[], suit: Suit): boolean {
 
 //**TESTED**
 function getCardValue(card: Card, trickSuit?: Suit, trump?: Suit): number {
-	let value;
-
-	value = card.rank;
-	if (trump && isTrump(card, trump)) {
+	let value = card.rank;
+	if (trump !== undefined && isTrump(card, trump)) {
 		value += 1000;
-	} else if (trickSuit && followsSuit(card, trickSuit)) {
+	} else if (trickSuit !== undefined && followsSuit(card, trickSuit)) {
 		value += 100;
 	}
 	return value;
@@ -175,12 +174,9 @@ function getCardFromHand(hand: Card[], cardId: string): Card | null {
 function getWorstCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card | null {
 	let worstCard = null;
 	let worstValue = 9999;
-	let value;
-
-	if (!hand) { return null; }
 
 	for (const card of hand) {
-		value = getCardValue(card, trickSuit, trump);
+		const value = getCardValue(card, trickSuit, trump);
 		if (value < worstValue) {
 			worstCard = card;
 			worstValue = value;
@@ -190,7 +186,16 @@ function getWorstCardInHand(hand: Card[], trickSuit?: Suit, trump?: Suit): Card 
 }
 
 //**NOT TESTING**
-function nextPlayer(currentPlayer: Player): Player {
+function getNextPlayer(currentPlayer: Player, aloneMaker?: Player): Player {
+	const nextPlayer = getNextPlayerNaive(currentPlayer);
+	if (aloneMaker === undefined || nextPlayer !== getPartner(aloneMaker)) {
+		return nextPlayer;
+	}
+	return getNextPlayerNaive(nextPlayer);
+}
+
+//**NOT TESTING**
+function getNextPlayerNaive(currentPlayer: Player): Player {
 	switch (currentPlayer) {
 		case Player.South:
 			return Player.West;
@@ -233,16 +238,10 @@ function getOppositeSuit(suit: Suit): Suit {
 
 //**TESTED**
 function getNextDealer(prevDealer?: Player): Player {
-	let dealer;
-
-	if (prevDealer !== undefined) {
-		//if we have a dealer, get the next dealer
-		dealer = nextPlayer(prevDealer);
-	} else {
-		//otherwise just randomly grab one
-		dealer = rng.nextInRange(0, 3);
+	if (prevDealer === undefined) {
+		return rng.nextInRange(0, 3);
 	}
-	return dealer;
+	return getNextPlayer(prevDealer);
 }
 
 function copyHand(hand: Card[]): Card[] {

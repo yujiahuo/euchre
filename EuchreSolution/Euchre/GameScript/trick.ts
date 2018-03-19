@@ -7,6 +7,7 @@ class Trick {
 	private __aiPlayers: (EuchreAI | null)[];
 	private __maker: Player;
 	private __currentPlayer: Player;
+	private __doneCallback: () => void;
 
 	/* Properties */
 	public playersPlayed(): number {
@@ -32,8 +33,9 @@ class Trick {
 	}
 
 	/* constructor */
-	constructor(trump: Suit, alone: boolean, hands: Card[][],
+	constructor(doneCallback: () => void, trump: Suit, alone: boolean, hands: Card[][],
 		aiPlayers: (EuchreAI | null)[], maker: Player, firstPlayer: Player) {
+		this.__doneCallback = doneCallback;
 		this.__trump = trump;
 		this.__alone = alone;
 		this.__playerHands = hands;
@@ -57,7 +59,7 @@ class Trick {
 			card = getCardFromHand(hand, queuedHoomanCardId as string);
 			clearHoomanQueue();
 		}
-		this.playCard(card);
+		this.playCard(card, !!aiPlayer);
 		if (this.isFinished()) {
 			this.endTrick();
 		}
@@ -73,10 +75,11 @@ class Trick {
 		animWinTrick(this.winner() as Player, this.cardsPlayed());
 	}
 
-	protected playCard(card: Card | null): Card | null {
+	protected playCard(card: Card | null, delay: boolean): Card | null {
 		if (this.isFinished()) { return null; }
 
-		const hand: Card[] = this.__playerHands[this.__currentPlayer];
+		const currentPlayer = this.__currentPlayer;
+		const hand: Card[] = this.__playerHands[currentPlayer];
 
 		if (!card || !isInHand(hand, card) || !isValidPlay(hand, card, this.__suitLead)) {
 			card = getFirstLegalCard(hand, this.__suitLead) as Card;
@@ -85,16 +88,19 @@ class Trick {
 		if (this.__playedCards.length === 0) {
 			this.__suitLead = card.suit;
 		}
-		this.__playedCards.push({ player: this.__currentPlayer, card });
-		this.removeFromHand(this.__currentPlayer, card);
+		this.__playedCards.push({ player: currentPlayer, card });
+		this.removeFromHand(currentPlayer, card);
 
-		animShowText(Player[this.__currentPlayer] + " played " + card.id, MessageLevel.Step, 1);
-		animPlayCard(this.__currentPlayer, card.id);
+		const message = `${Player[currentPlayer]} played ${getCardShorthand(card)}`;
+		animShowText(message, MessageLevel.Step, 1);
+		const cardId = card.id;
+		const wrapper = () => {
+			animPlayCard(currentPlayer, cardId);
+		};
+		AnimController.queueAnimation(delay ? AnimType.PlayCard : AnimType.NoDelay, wrapper);
 
-		this.__currentPlayer = nextPlayer(this.__currentPlayer);
-		if (this.__alone && this.__currentPlayer === getPartner(this.__maker)) {
-			this.__currentPlayer = nextPlayer(this.__currentPlayer);
-		}
+		const alonePlayer = this.__alone ? this.__maker : undefined;
+		this.__currentPlayer = getNextPlayer(currentPlayer, alonePlayer);
 
 		return card;
 	}
@@ -111,11 +117,13 @@ class Trick {
 	}
 
 	/* Public functions */
-	public doTrick(): boolean {
-		while (!this.isFinished() && !pausing) {
+	public doTrick(): void {
+		while (!this.isFinished() && !pausedForHuman) {
 			this.advanceTrick();
 		}
-		return true;
+		if (this.isFinished()) {
+			this.__doneCallback();
+		}
 	}
 
 	public isFinished(): boolean {

@@ -6,16 +6,11 @@
 
 declare var controller: Controller | null;
 
-function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
-	let card;
-
-	card = document.createElement("div");
+function makeCardElem(cardId: string): HTMLDivElement {
+	const card = document.createElement("div");
 	card.className = "card";
-	card.id = cardID;
-
-	if (!flippedUp) {
-		card.classList.add("cardBack");
-	}
+	card.id = cardId;
+	animFlipCard(card, false);
 
 	const cardsContainer = document.getElementById("cardsContainer") as HTMLElement;
 	cardsContainer.appendChild(card);
@@ -26,72 +21,110 @@ function makeCardElem(cardID: string, flippedUp: boolean): HTMLDivElement {
 	return card;
 }
 
-function animMoveCard(cardID: string, top: string, left: string, z?: string): void {
-	const div = document.getElementById(cardID) as HTMLDivElement;
-	if (!div) { return; }
+function animMoveCard(cardOrIdOrElement: Card | string | HTMLDivElement,
+	top: string, left: string, z?: string): void {
 
-	div.style.top = top;
-	div.style.left = left;
+	const cardElement = getCardElement(cardOrIdOrElement);
+	if (!cardElement) { return; }
+
+	cardElement.style.top = top;
+	cardElement.style.left = left;
 	if (z) {
-		div.style.zIndex = z;
+		cardElement.style.zIndex = z;
 	} else {
-		div.style.zIndex = zIndex.toString();
+		cardElement.style.zIndex = zIndex.toString();
+		zIndex++;
 	}
-	zIndex++;
 }
 
-function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player, settings: Settings): void {
-	if (!controller || controller.isStatMode()) { return; }
+function dealOneRoundToOnePlayer(player: Player, hand: Card[], start: number, end: number,
+	isOpenHands: boolean, hasHooman: boolean): void {
 
-	let player: Player;
-	let delay: number; //delay to second round deal
-	let cardID: string;
-	let flippedUp: boolean;
-	let cardElem: HTMLElement | null;
+	const flippedUp = (isOpenHands || (hasHooman && player === Player.South));
+	const cardsToDeal: Card[] = [];
+
+	const playerCopy = player;
+	const delegate = () => {
+		for (let i = start; i < end; i++) {
+			const card = hand[i];
+			const cardElem = getCardElement(card) as HTMLDivElement;
+			if (hasHooman && playerCopy === Player.South) {
+				cardElem.addEventListener("click", clickCard);
+			}
+			cardsToDeal.push(card);
+		}
+
+		for (let i = 0; i < cardsToDeal.length; i++) {
+			animDealSingle(playerCopy, cardsToDeal[i], i + start, flippedUp);
+		}
+	};
+	AnimController.queueAnimation(AnimType.DealHands, delegate);
+}
+
+function animDeal(hands: Card[][], trumpCandidate: Card, dealer: Player,
+	settings: Settings, callback: () => void): void {
+
+	if (!controller || controller.isStatMode()) {
+		callback();
+		return;
+	}
+
 	const isOpenHands = settings.openHands;
 	const hasHooman = settings.hasHooman;
 
-	animClearTable();
-
-	player = nextPlayer(dealer);
-	delay = 0;
-
-	makeCardElem("deck", false);
-	makeCardElem(trumpCandidate.id, false);
-
-	for (let i = 0; i < hands.length; i++) {
-		flippedUp = (isOpenHands || (hasHooman && player === Player.South));
-		delay = (dealer + i + 1) % 2;
-
-		for (let j = 0; j < hands[i].length; j++) {
-			cardID = hands[player][j].id;
-			makeCardElem(cardID, flippedUp);
-			if (hasHooman && player === Player.South) {
-				cardElem = document.getElementById(cardID);
-				if (cardElem) { cardElem.addEventListener("click", clickCard); }
-			}
-
-			if (j < 2) {
-				setTimeout(animDealSingle, i * 100, player, cardID, j);
-			} else if (j === 2) {
-				setTimeout(animDealSingle, i * 100 + (delay * 500), player, cardID, j);
-			} else {
-				setTimeout(animDealSingle, i * 100 + 500, player, cardID, j);
+	const trumpCandidateId = trumpCandidate.id;
+	const startDealDelegate = () => {
+		animClearTable();
+		animPlaceDealerButt(dealer);
+		makeCardElem("deck");
+		makeCardElem(trumpCandidateId);
+		for (const hand of hands) {
+			for (const card of hand) {
+				makeCardElem(card.id);
 			}
 		}
-		player = (player + 1) % 4;
+	};
+	AnimController.queueAnimation(AnimType.DealHands, startDealDelegate);
+
+	let player = dealer;
+	for (let i = 0; i < hands.length; i++) {
+		player = getNextPlayer(player);
+		const dealThree = (dealer + i) % 2;
+		dealOneRoundToOnePlayer(player, hands[player], 0, 2 + dealThree, isOpenHands, hasHooman);
+	}
+	for (let i = 0; i < hands.length; i++) {
+		player = getNextPlayer(player);
+		const dealThree = (dealer + i) % 2;
+		dealOneRoundToOnePlayer(player, hands[player], 2 + dealThree, hands[player].length, isOpenHands, hasHooman);
 	}
 
-	setTimeout(animSortHand, 1000, hands[Player.South], Player.South);
-	if (settings.openHands) {
-		setTimeout(animSortHand, 1000, hands[Player.West], Player.West);
-		setTimeout(animSortHand, 1000, hands[Player.North], Player.North);
-		setTimeout(animSortHand, 1000, hands[Player.East], Player.East);
-	}
-	setTimeout(animFlipCard, 1000, trumpCandidate.id);
+	const sortHandsDelegate = () => {
+		for (const _ of hands) {
+			player = getNextPlayer(player);
+			const flippedUp = (isOpenHands || (hasHooman && player === Player.South));
+
+			if (flippedUp) {
+				animSortHand(hands[player], player);
+			}
+		}
+	};
+	AnimController.queueAnimation(AnimType.DealHands, sortHandsDelegate);
+
+	const showTrumpCandidateDelegate = () => {
+		animFlipCard(trumpCandidateId, true);
+		callback();
+	};
+	AnimController.queueAnimation(AnimType.DealHands, showTrumpCandidateDelegate);
 }
 
-function animDealSingle(player: Player, cardID: string, cardPos: number): void {
+function animDealSingle(player: Player, cardOrIdOrElement: Card | string | HTMLDivElement,
+	cardPos: number, flippedUp: boolean): void {
+
+	const cardElem = getCardElement(cardOrIdOrElement);
+	if (!cardElem) {
+		return;
+	}
+
 	let top;
 	let left;
 
@@ -116,26 +149,40 @@ function animDealSingle(player: Player, cardID: string, cardPos: number): void {
 			return;
 	}
 
-	animMoveCard(cardID, top, left);
+	if (flippedUp) {
+		animFlipCard(cardElem, true);
+	}
+	animMoveCard(cardElem, top, left);
 }
 
 //gives trump to the dealer
 function animTakeTrump(trumpCandidate: Card, discard: Card, isAIPlayer: boolean): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	const discardElem = document.getElementById(discard.id) as HTMLElement;
-	const trumpElem = document.getElementById(trumpCandidate.id) as HTMLElement;
-	const top = discardElem.style.top;
-	const left = discardElem.style.left;
+	const discardElement = getCardElement(discard) as HTMLDivElement;
+	const trumpCandidateElement = getCardElement(trumpCandidate) as HTMLDivElement;
+	const top = discardElement.style.top as string;
+	const left = discardElement.style.left as string;
+	const zIndex = discardElement.style.zIndex as string;
 
-	discardElem.classList.add("cardBack");
-	setTimeout(animMoveCard, 100, discard.id, "252px", "364px");
-	setTimeout(animHideCard, 400, discardElem);
+	animFlipCard(discardElement, false);
+	AnimController.queueAnimation(AnimType.Discard, () => {
+		animMoveCard(discardElement, "252px", "364px");
+	});
 
-	if (!isAIPlayer && !controller.isOpenHands()) {
-		trumpElem.classList.add("cardBack");
+	if (isAIPlayer && !controller.isOpenHands()) {
+		animFlipCard(trumpCandidateElement, false);
 	}
-	setTimeout(animMoveCard, 200, trumpCandidate.id, top, left, discardElem.style.zIndex);
+	AnimController.queueAnimation(AnimType.Discard, () => {
+		animMoveCard(trumpCandidateElement, top, left, zIndex);
+	});
+	if (!isAIPlayer) {
+		trumpCandidateElement.addEventListener("click", clickCard);
+		discardElement.removeEventListener("click", clickCard);
+	}
+	AnimController.queueAnimation(AnimType.Discard, () => {
+		animHideCard(discardElement);
+	});
 	//TODO: sort the hand again? Probably only if it's visible
 	//TODO: make it look the same even if the picked up card gets discarded
 }
@@ -143,9 +190,7 @@ function animTakeTrump(trumpCandidate: Card, discard: Card, isAIPlayer: boolean)
 function animPlaceDealerButt(dealer: Player): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let button;
-
-	button = document.getElementById("dealerButton");
+	let button = document.getElementById("dealerButton");
 	if (button === null) {
 		button = document.createElement("div");
 		button.id = "dealerButton";
@@ -177,7 +222,7 @@ function animPlaceDealerButt(dealer: Player): void {
 function animSortHand(hand: Card[], player: Player): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	const cardIds: { [index: number]: string } = {};
+	const cards: { [index: number]: Card } = {};
 	const keys: number[] = [];
 
 	for (const card of hand) {
@@ -200,27 +245,27 @@ function animSortHand(hand: Card[], player: Player): void {
 		}
 		key += (20 - card.rank); //highest ranks come first
 		keys.push(key);
-		cardIds[key] = card.id;
+		cards[key] = card;
 	}
 
 	keys.sort();
 	let pos = 0;
 	for (const key of keys) {
-		setTimeout(animDealSingle, 300, player, cardIds[key], pos);
-		pos++;
+		animDealSingle(player, cards[key], pos++, false);
 	}
+	//TODO: make this avoid gaps, always look like things are moving
 }
 
-function animPlayCard(player: Player, cardID: string): void {
+function animPlayCard(player: Player, cardId: string): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	const cardElem: HTMLElement | null = document.getElementById(cardID);
-	if (!cardElem) { return; }
+	const cardElement = getCardElement(cardId);
+	if (!cardElement) { return; }
 
-	let top: string = "";
-	let left: string = "";
+	let top: string;
+	let left: string;
 
-	if (cardElem.classList.contains("cardBack") && !controller.isOpenHands()) { animFlipCard(cardID); }
+	animFlipCard(cardElement, true);
 
 	switch (player) {
 		case Player.South:
@@ -242,74 +287,94 @@ function animPlayCard(player: Player, cardID: string): void {
 		default:
 			return;
 	}
-	animMoveCard(cardID, top, left);
+	animMoveCard(cardId, top, left);
+}
+
+function getCardElement(cardOrIdOrElement: Card | string | HTMLDivElement): HTMLDivElement | null {
+	let cardId: string;
+	if (typeof (cardOrIdOrElement) === "string") {
+		cardId = cardOrIdOrElement;
+	} else if (cardOrIdOrElement instanceof Card) {
+		cardId = cardOrIdOrElement.id;
+	} else {
+		return cardOrIdOrElement;
+	}
+	return document.getElementById(cardId) as HTMLDivElement | null;
 }
 
 //check for class list and flip the other way too
 //correct this in doBidding
-function animFlipCard(cardID: string): void {
+function animFlipCard(cardOrIdOrElement: Card | string | HTMLDivElement, faceUp: boolean): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	const cardElement = document.getElementById(cardID);
-	if (cardElement) {
-		cardElement.classList.toggle("cardBack");
+	const cardElement = getCardElement(cardOrIdOrElement);
+	if (!cardElement) {
+		return;
+	}
+	if (faceUp) {
+		cardElement.classList.remove("cardBack");
+	} else {
+		cardElement.classList.add("cardBack");
 	}
 }
 
 function animWinTrick(player: Player, playedCards: PlayedCard[]): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	let cardElem;
-	let top;
-	let left;
+	const moveDelegate = () => {
+		let top;
+		let left;
 
-	switch (player) {
-		case Player.South:
-			top = "450px";
-			left = "320px";
-			break;
-		case Player.West:
-			top = "252px";
-			left = "50px";
-			break;
-		case Player.North:
-			top = "50px";
-			left = "320px";
-			break;
-		case Player.East:
-			top = "252px";
-			left = "600px";
-			break;
-		default:
-			return;
-	}
-
-	for (let i = 0; i < 4; i++) {
-		if (!playedCards[i] || !playedCards[i].card) {
-			//TODO: either mark the parameter as (Card | null)[], or remove this check
-			continue;
+		switch (player) {
+			case Player.South:
+				top = "450px";
+				left = "320px";
+				break;
+			case Player.West:
+				top = "252px";
+				left = "50px";
+				break;
+			case Player.North:
+				top = "50px";
+				left = "320px";
+				break;
+			case Player.East:
+				top = "252px";
+				left = "600px";
+				break;
+			default:
+				return;
 		}
-		cardElem = document.getElementById(playedCards[i].card.id) as HTMLElement;
-		cardElem.style.top = top;
-		cardElem.style.left = left;
-		cardElem.classList.add("cardBack");
-		setTimeout(animHideCard, 400, cardElem);
-	}
+
+		for (const playedCard of playedCards) {
+			const cardElem = getCardElement(playedCard.card) as HTMLDivElement;
+			cardElem.style.top = top;
+			cardElem.style.left = left;
+			animFlipCard(cardElem, false);
+		}
+	};
+	AnimController.queueAnimation(AnimType.WinTrick, moveDelegate);
+	const hideDelegate = () => {
+		for (const playedCard of playedCards) {
+			animHideCard(playedCard.card);
+		}
+	};
+	AnimController.queueAnimation(AnimType.WinTrick, hideDelegate);
 }
 
-/*function animRemoveKitty(): void {
-	if (game.isStatMode()) return;
+/*function animRemoveKitty(trumpCandidate: Card, trumpSuit: Suit): void {
+	if (!controller || controller.isStatMode()) { return; }
 
-	let elem;
-	let trumpCandidate;
+	const deckElement = document.getElementById("deck") as HTMLDivElement;
+	const hideTrumpCandidate = trumpCandidate.suit !== trumpSuit;
 
-	trumpCandidate = game.getTrumpCandidate() as Card;
-	elem = document.getElementById("deck");
-	setTimeout(animHideCard, 300, elem);
-	if (trumpCandidate.suit !== game.getTrump()) { //trump candidate wasn't picked up
-		elem = document.getElementById(trumpCandidate.id);
-		setTimeout(animHideCard, 300, elem);
-	}
+	const delegate = () => {
+		animHideCard(deckElement);
+		if (hideTrumpCandidate) {
+			animHideCard(trumpCandidate);
+		}
+	};
+	AnimController.queueAnimation(AnimType.DealHands, delegate);
 }*/
 
 function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
@@ -317,14 +382,18 @@ function animHidePartnerHand(alonePlayer: Player, hands: Card[][]): void {
 
 	const player = getPartner(alonePlayer);
 	for (const card of hands[player]) {
-		animHideCard(document.getElementById(card.id) as HTMLElement);
+		animHideCard(card);
 	}
 }
 
-function animHideCard(cardElem: HTMLElement): void {
+function animHideCard(cardOrIdOrElement: Card | string | HTMLDivElement): void {
 	if (!controller || controller.isStatMode()) { return; }
 
-	cardElem.style.display = "none";
+	const cardElement = getCardElement(cardOrIdOrElement);
+	if (!cardElement) {
+		return;
+	}
+	cardElement.style.display = "none";
 }
 
 function animClearTable(): void {
@@ -341,12 +410,16 @@ function animEnableBidding(hand: Card[], bidStage: BidStage, trumpCandidate: Car
 	if (controller && controller.isStatMode()) { return; }
 
 	// Make typescript happy
-	const orderUpPrompt: HTMLElement = document.getElementById("orderUpPrompt") as HTMLElement;
-	const orderUpButton: HTMLElement = document.getElementById("orderUp") as HTMLElement;
-	const spadesButton: HTMLElement = document.getElementById("pickSpades") as HTMLElement;
-	const clubsButton: HTMLElement = document.getElementById("pickClubs") as HTMLElement;
-	const heartsButton: HTMLElement = document.getElementById("pickHearts") as HTMLElement;
-	const diamondsButton: HTMLElement = document.getElementById("pickDiamonds") as HTMLElement;
+	const orderUpPrompt = document.getElementById("orderUpPrompt");
+	if (!orderUpPrompt) {
+		return;
+	}
+
+	const orderUpButton = document.getElementById("orderUp") as HTMLElement;
+	const spadesButton = document.getElementById("pickSpades") as HTMLElement;
+	const clubsButton = document.getElementById("pickClubs") as HTMLElement;
+	const heartsButton = document.getElementById("pickHearts") as HTMLElement;
+	const diamondsButton = document.getElementById("pickDiamonds") as HTMLElement;
 
 	orderUpPrompt.style.display = "inline";
 
@@ -395,26 +468,18 @@ function animDisableBidding(): void {
 	aloneButton.style.backgroundColor = "green";
 }
 
-////flips a button on or off
-////needs to be generic but for now flips the 'go alone' button
-//function animFlipButton(on: boolean): void {
-//	if (controller && controller.isStatMode()) return;
+function animShowText(text: string, messageLevel: MessageLevel,
+	nest?: number, overwrite?: boolean): void {
 
-//	if (on) {
-//		document.getElementById("alone").style.backgroundColor = "red";
-//	}
-//	else {
-//		document.getElementById("alone").style.backgroundColor = "green";
-//	}
-//}
-
-function animShowText(text: string, messageLevel: MessageLevel, nest?: number, overwrite?: boolean): void {
-	const allowedLevel: MessageLevel = controller && controller.getMessageLevel() || MessageLevel.Step;
+	let allowedLevel: MessageLevel = MessageLevel.Step;
+	if (controller) {
+		allowedLevel = controller.getMessageLevel();
+	}
 	let logText = "";
 
 	if (messageLevel < allowedLevel) { return; }
 
-	if (!nest) {
+	if (nest === undefined) {
 		nest = 0;
 	}
 	for (let i = 0; i < nest; i++) {
@@ -431,7 +496,6 @@ function animShowText(text: string, messageLevel: MessageLevel, nest?: number, o
 		}
 	} else {
 		updateLog(logText, overwrite);
-		//setTimeout(updateLog, 2000, logText, overwrite);
 	}
 }
 

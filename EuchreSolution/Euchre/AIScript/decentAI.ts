@@ -4,45 +4,40 @@
 /* If last player and partner is winning, sluff
 /*******************************************************/
 class DecentAI implements EuchreAI {
-	private hand: Card[];
 	private handStrength: number;
 
 	//tslint:disable-next-line:no-empty
 	public init(_me: Player): void { }
 
 	public chooseOrderUp(hand: Card[], trumpCandidate: Card, _dealer: Player): boolean {
-		this.hand = hand;
-		this.handStrength = this.calculateHandStrength(trumpCandidate.suit);
+		this.handStrength = this.calculateHandStrength(hand, trumpCandidate.suit);
 		if (this.handStrength > 2) { return true; }
 		return false;
 	}
 
-	public pickDiscard(_hand: Card[], trump: Suit): Card | null {
-		return getWorstCardInHand(this.hand, undefined, trump);
+	public pickDiscard(hand: Card[], trump: Suit): Card | null {
+		return getWorstCardInHand(hand, undefined, trump);
 	}
 
-	public pickTrump(_hand: Card[], trumpCandidate: Card): Suit | null {
-		if (!trumpCandidate) {
-			return null;
-		}
+	public pickTrump(hand: Card[], trumpCandidate: Card): Suit | null {
 		const trumpCandidateSuit = trumpCandidate.suit;
 		if (trumpCandidateSuit !== Suit.Clubs) {
-			this.handStrength = this.calculateHandStrength(Suit.Clubs);
+			this.handStrength = this.calculateHandStrength(hand, Suit.Clubs);
 			if (this.handStrength > 2) { return Suit.Clubs; }
 		}
 
 		if (trumpCandidateSuit !== Suit.Diamonds) {
-			this.handStrength = this.calculateHandStrength(Suit.Diamonds);
+			this.handStrength = this.calculateHandStrength(hand, Suit.Diamonds);
 			if (this.handStrength > 2) { return Suit.Diamonds; }
 		}
 
 		if (trumpCandidateSuit !== Suit.Spades) {
-			this.handStrength = this.calculateHandStrength(Suit.Spades);
+			this.handStrength = this.calculateHandStrength(hand, Suit.Spades);
 			if (this.handStrength > 2) { return Suit.Spades; }
 		}
 
 		if (trumpCandidateSuit !== Suit.Hearts) {
-			this.handStrength = this.calculateHandStrength(Suit.Hearts);
+			this.handStrength = this.calculateHandStrength(hand, Suit.Hearts);
 			if (this.handStrength > 2) { return Suit.Hearts; }
 		}
 
@@ -61,11 +56,9 @@ class DecentAI implements EuchreAI {
 		let value;
 		let i;
 
-		this.hand = hand; //you need to do this or else
-
 		numPlayersPlayed = trickSoFar.length;
 		if (numPlayersPlayed === 0) {
-			return getBestCardInHand(this.hand, undefined, trump);
+			return getBestCardInHand(hand, undefined, trump);
 		}
 
 		const trickSuit = trickSoFar[0].card.suit;
@@ -75,12 +68,12 @@ class DecentAI implements EuchreAI {
 
 		//If not last player, play the lowest card that can win
 		//If we can't win, then sluff
-		for (i = 0; i < this.hand.length; i++) {
-			if (!isValidPlay(this.hand, this.hand[i], trickSuit)) { continue; }
-			value = getCardValue(this.hand[i], trickSuit, trump);
+		for (i = 0; i < hand.length; i++) {
+			if (!isValidPlay(hand, hand[i], trickSuit)) { continue; }
+			value = getCardValue(hand[i], trickSuit, trump);
 			if (value > winningValue) {
 				if (value < lowestWinningValue) {
-					lowestWinningCard = this.hand[i];
+					lowestWinningCard = hand[i];
 					lowestWinningValue = value;
 				}
 			}
@@ -89,7 +82,7 @@ class DecentAI implements EuchreAI {
 		if (lowestWinningCard) {
 			return lowestWinningCard;
 		} else {
-			return getWorstCardInHand(this.hand, trickSuit, trump);
+			return getWorstCardInHand(hand, trickSuit, trump);
 		}
 	}
 
@@ -97,11 +90,11 @@ class DecentAI implements EuchreAI {
 	public trickEnd(_playedCardsCallback: () => PlayedCard[]): void { }
 
 	//Whatever just count trump
-	private calculateHandStrength(trump: Suit) {
+	private calculateHandStrength(hand: Card[], trump: Suit) {
 		let smartlyCalculatedValue;
 
-		smartlyCalculatedValue = numCardsOfSuit(this.hand, trump);
-		if (this.theyHaveTheLeft(trump)) {
+		smartlyCalculatedValue = numCardsOfSuit(hand, trump);
+		if (this.theyHaveTheLeft(hand, trump)) {
 			smartlyCalculatedValue++;
 		}
 
@@ -109,8 +102,8 @@ class DecentAI implements EuchreAI {
 		return smartlyCalculatedValue;
 	}
 
-	private theyHaveTheLeft(trump: Suit) {
-		for (const card of this.hand) {
+	private theyHaveTheLeft(hand: Card[], trump: Suit) {
+		for (const card of hand) {
 			if (card.rank === Rank.Jack && card.suit === getOppositeSuit(trump)) {
 				return true;
 			}

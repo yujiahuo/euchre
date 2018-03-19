@@ -1,15 +1,58 @@
 {
 	// See https://go.microsoft.com/fwlink/?LinkId=733558
 	// for the documentation about the tasks.json format
-	"version": "0.1.0",
-	"command": "tsc",
-	"isShellCommand": true,
-	"args": [
-		"--watch",
-		"--project",
-		"./EuchreSolution/Euchre"
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "typescript",
+			"tsconfig": "EuchreSolution/Euchre/tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"command": "node_modules/karma/bin/karma start karma.conf.js | awk -f karma-output-transform.awk",
+			"group": {
+				"kind": "test",
+				"isDefault": true,
+			},
+			"isBackground": true,
+			"label": "Start continuous integration",
+			"presentation": {
+				"reveal": "silent",
+			},
+			"problemMatcher": {
+				"severity": "warning",
+				"fileLocation": [
+					"relative",
+					"${workspaceFolder}/EuchreSolution/"
+				],
+				"applyTo": "allDocuments",
+				"pattern": [
+					{
+						"regexp": "^TEST CASE FAILED: ([^:]+):(\\d+):(\\d+)",
+						"file": 1,
+						"line": 2,
+						"column": 3,
+					},
+					{
+						"regexp": "^([^E]|E[^N]|EN[^D]|END.).*",
+						"message": 0,
+						"loop": true,
+					},
+				],
+				"background": {
+					"activeOnStart": false,
+					"beginsPattern": "PhantomJS .*LOG: ",
+					"endsPattern": "PhantomJS .*Executed (\\d+) of ",
+				},
+			},
+		},
 	],
-	"showOutput": "silent",
-	"isBackground": true,
-	"problemMatcher": "$tsc-watch"
 }

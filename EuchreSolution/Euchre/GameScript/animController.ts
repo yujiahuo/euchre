@@ -1,67 +1,60 @@
 enum AnimType {
+	NoDelay,
 	DealHands,
 	PlayCard,
 	Discard,
 	WinTrick,
 }
 
-class Animation {
-	public animType: AnimType;
-	public player: Player | null;
-	public cardID: string | null;
-	public text: string | null;
-
-	constructor(animType: AnimType, player?: Player, cardID?: string, text?: string) {
-		this.animType = animType;
-		if (player !== undefined) {
-			this.player = player;
-		}
-		if (cardID !== undefined) {
-			this.cardID = cardID;
-		}
-		if (text !== undefined) {
-			this.text = text;
-		}
-	}
-
+interface Animation {
+	readonly delay: number;
+	readonly delegate: () => void;
 }
 
+const delays = {
+	[AnimType.NoDelay]: 0,
+	[AnimType.DealHands]: 200,
+	[AnimType.PlayCard]: 500,
+	[AnimType.Discard]: 500,
+	[AnimType.WinTrick]: 500,
+};
 
 class AnimController {
-	public queuedAnimations: Animation[];
+	private static queuedAnimations: Animation[] = [];
+	private static running = false;
+	private static doDelays = true;
 
-	public pushAnimation(animType: AnimType, player?: Player, cardID?: string, text?: string): void {
-		let animation: Animation = new Animation(animType, player, cardID, text);
-		this.queuedAnimations.push(animation);
+	public static setDoDelays(doDelays: boolean): void {
+		this.doDelays = doDelays;
 	}
 
-	public executeAnimations(): void {
-		let pauseTime: number = 500;
-		let delay: number;
-		let animFunction: Function;
-
-		if (this.queuedAnimations.length <= 0) { return; }
-
-		for (let i = 0; i < this.queuedAnimations.length; i++) {
-			delay = pauseTime * i;
-			animFunction = this.getAnimFunction(animType, player, cardID);
-
-
+	public static queueAnimation(animType: AnimType, delegate: () => void): void {
+		if (!this.doDelays) {
+			delegate();
+			return;
 		}
+		const animation: Animation = { delay: delays[animType], delegate };
+		this.queuedAnimations.push(animation);
+		this.executeNextAnimation();
 	}
 
-	public getAnimFunction(animType: AnimType, player?: Player, cardID?: string): Function {
-		switch (animType){
-			case AnimType.DealHands:
-				return animDeal();
-			case AnimType.Discard:
-				break;
-			case AnimType.PlayCard;
-				break;
-			case AnimType.WinTrick;
-				break;
-			default:
-				break;
-		}	
+	private static executeNextAnimation(): void {
+		if (this.queuedAnimations.length <= 0) {
+			this.running = false;
+			return;
+		}
+		if (this.running) {
+			return;
+		}
+
+		this.running = true;
+
+		const animation = this.queuedAnimations.shift() as Animation;
+		const wrapper = () => {
+			animation.delegate();
+			this.running = false;
+			this.executeNextAnimation();
+		};
+		setTimeout(wrapper, animation.delay);
 	}
 }

@@ -1,8 +1,9 @@
 describe("GameSpec", function () {
 	let game: Game;
+	let settings: Settings;
 
 	beforeEach(function () {
-		const settings = {
+		settings = {
 			sound: false,
 			openHands: false,
 			enableDefendAlone: false,
@@ -15,7 +16,7 @@ describe("GameSpec", function () {
 			numGamesToPlay: 1,
 		};
 
-		game = new Game(settings);
+		game = new Game(() => { return; }, settings);
 	});
 
 	describe("Initial state", function () {
@@ -31,7 +32,8 @@ describe("GameSpec", function () {
 	});
 
 	describe("End game", function () {
-		beforeEach(function () {
+		beforeEach(function (done: DoneFn) {
+			game = new Game(done, settings);
 			game.doGame();
 		});
 

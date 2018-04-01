@@ -6,7 +6,7 @@ enum AnimType {
 	WinTrick,
 }
 
-interface Animation {
+interface EuchreAnimation {
 	readonly delay: number;
 	readonly delegate: () => void;
 }
@@ -20,7 +20,7 @@ const delays = {
 };
 
 class AnimController {
-	private static queuedAnimations: Animation[] = [];
+	private static queuedAnimations: EuchreAnimation[] = [];
 	private static running = false;
 	private static doDelays = true;
 
@@ -33,7 +33,7 @@ class AnimController {
 			delegate();
 			return;
 		}
-		const animation: Animation = { delay: delays[animType], delegate };
+		const animation: EuchreAnimation = { delay: delays[animType], delegate };
 		this.queuedAnimations.push(animation);
 		this.executeNextAnimation();
 	}
@@ -49,7 +49,7 @@ class AnimController {
 
 		this.running = true;
 
-		const animation = this.queuedAnimations.shift() as Animation;
+		const animation = this.queuedAnimations.shift() as EuchreAnimation;
 		const wrapper = () => {
 			animation.delegate();
 			this.running = false;

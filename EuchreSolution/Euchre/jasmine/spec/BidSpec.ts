@@ -52,7 +52,7 @@ function testBid(description: string, hands: Card[][], aiPlayers: (EuchreAI | nu
 		});
 
 		it("discard", function () {
-			expect(discardSpy.calls.count()).toBe(stage == BidStage.Round1 ? 1 : 0);
+			expect(discardSpy.calls.count()).toBe(stage === BidStage.Round1 ? 1 : 0);
 		});
 
 		it("alone", function () {
@@ -537,7 +537,8 @@ describe("BidSpec", function () {
 			const retrievedAloneCheckbox = document.getElementById("alone") as HTMLInputElement;
 			expect(retrievedAloneCheckbox).toBe(aloneCheckbox);
 
-			new Bid(() => { }, [], [], [], Player.South, new Card(Suit.Clubs, Rank.Nine));
+			//tslint:disable-next-line:no-unused-expression
+			new Bid(() => { return; }, [], [], [], Player.South, new Card(Suit.Clubs, Rank.Nine));
 			expect(retrievedAloneCheckbox.checked).toBeFalsy();
 			document.body.removeChild(retrievedAloneCheckbox);
 		});

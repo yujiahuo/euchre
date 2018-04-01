@@ -6,9 +6,9 @@
 		{
 			"label": "Start continuous integration",
 			"type": "shell",
-			"command": "node_modules/karma/bin/karma start karma.conf.ts | awk '!/<Jasmine>/' | awk -f karma-output-transform.awk",
+			"command": "node_modules/karma/bin/karma start karma.conf.ts | awk -f karma-output-transform.awk",
 			"windows": {
-				"command": "node .\\node_modules\\karma\\bin\\karma start karma.conf.ts | awk '!/<Jasmine>/' | awk -f karma-output-transform.awk",
+				"command": "node .\\node_modules\\karma\\bin\\karma start karma.conf.ts | awk -f karma-output-transform.awk",
 			},
 			"group": {
 				"kind": "test",

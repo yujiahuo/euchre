@@ -3,33 +3,29 @@
 /*******************************************************/
 
 class IdiotAI implements EuchreAI {
+	// tslint:disable-next-line:no-empty
+	public init(): void { }
 
-	//tslint:disable-next-line:no-empty
-	public init() {
-		//just chillin'
-	}
-
-	public chooseOrderUp() {
+	public chooseOrderUp(): boolean {
 		return false;
 	}
 
-	public pickDiscard() {
+	public pickDiscard(): Card | null {
 		return null;
 	}
 
-	public pickTrump() {
+	public pickTrump(): Suit | null {
 		return null;
 	}
 
-	public chooseGoAlone() {
+	public chooseGoAlone(): boolean {
 		return false;
 	}
 
-	public pickCard() {
+	public pickCard(): Card | null {
 		return null;
 	}
 
-	public trickEnd(): void {
-		return;
-	}
+	// tslint:disable-next-line:no-empty
+	public trickEnd(): void { }
 }

@@ -60,4 +60,24 @@ describe("Card", function () {
 			expect(card.id).toBe("Spades14");
 		});
 	});
+
+	describe("safeCard", () => {
+		it("Handles each rank", () => {
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Nine))).toBe("9♡");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Ten))).toBe("10♡");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Jack))).toBe("J♡");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Queen))).toBe("Q♡");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.King))).toBe("K♡");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Ace))).toBe("A♡");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Left))).toBe("J♢");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Right))).toBe("J♡");
+		});
+
+		it("Handles each suit", () => {
+			expect(getCardShorthand(new Card(Suit.Spades, Rank.Nine))).toBe("9♠");
+			expect(getCardShorthand(new Card(Suit.Hearts, Rank.Nine))).toBe("9♡");
+			expect(getCardShorthand(new Card(Suit.Diamonds, Rank.Nine))).toBe("9♢");
+			expect(getCardShorthand(new Card(Suit.Clubs, Rank.Nine))).toBe("9♣");
+		});
+	});
 });

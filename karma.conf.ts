@@ -13,7 +13,7 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'Euchre/GameScript/xor4096.ts',
+			'Euchre/lib/*.ts',
 			'Euchre/GameScript/*.ts',
 			'**/*.ts',
 		],
@@ -56,8 +56,8 @@ module.exports = function (config) {
 
 		karmaTypescriptConfig: {
 			reports: {
-				'lcovonly': 'coverage'
-			}
+				'lcovonly': 'coverage',
+			},
 		},
 	})
 }

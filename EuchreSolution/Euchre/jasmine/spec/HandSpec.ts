@@ -91,10 +91,10 @@ describe("HandSpec", function () {
 			expect(hand.dealer()).toBe(Player.South);
 		});
 		it("playerHands", function () {
-			expect(hand.playerHands()).toBeUndefined();
+			expect(hand.playerHands()).toEqual([[], [], [], []]);
 		});
 		it("trumpCandidate", function () {
-			expect(hand.trumpCandidate()).toBeUndefined();
+			expect(hand.trumpCandidate()).toBeNull();
 		});
 		it("numTricksPlayed", function () {
 			expect(hand.numTricksPlayed()).toBe(0);
@@ -387,7 +387,7 @@ describe("HandSpec", function () {
 		it("only has each card once", function () {
 			const index: { [key: string]: boolean } = {};
 			for (const card of deck) {
-				expect(index[card.id]).toBe(undefined);
+				expect(index[card.id]).toBeUndefined();
 				index[card.id] = true;
 			}
 		});

@@ -540,4 +540,38 @@ describe("API", function () {
 			],
 		);
 	});
+
+	describe("numCardsOfSuit", function () {
+		const hand = [
+			new Card(Suit.Hearts, Rank.Ace),
+			new Card(Suit.Spades, Rank.Right),
+			new Card(Suit.Spades, Rank.Left),
+			new Card(Suit.Diamonds, Rank.Jack),
+			new Card(Suit.Hearts, Rank.King),
+		];
+
+		it("Counts suits correctly", function () {
+			expect(numCardsOfSuit(hand, Suit.Diamonds)).toBe(1);
+			expect(numCardsOfSuit(hand, Suit.Hearts)).toBe(2);
+		});
+
+		it("Counts bowers correctly", function () {
+			expect(numCardsOfSuit(hand, Suit.Clubs)).toBe(0);
+			expect(numCardsOfSuit(hand, Suit.Spades)).toBe(2);
+		});
+	});
+
+	describe("countSuits", function () {
+		const hand = [
+			new Card(Suit.Hearts, Rank.Ace),
+			new Card(Suit.Spades, Rank.Right),
+			new Card(Suit.Spades, Rank.Left),
+			new Card(Suit.Diamonds, Rank.Jack),
+			new Card(Suit.Hearts, Rank.King),
+		];
+
+		it("Counts suits correctly", function () {
+			expect(countSuits(hand)).toBe(3);
+		});
+	});
 });
